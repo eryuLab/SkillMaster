@@ -64,11 +64,41 @@ public class SkillUser {
 
         @Override
         public void run() {
-            //タイマー:近くに敵がいたら
-            // 敵が武器を構えていたら防御
-            // 構えていなかったら待機
-            //タイマー切れ:近くに敵がいたら攻撃
-            tick--;
+            // 一番近いentityを標的とする
+            Entity target = getNearestEntity(1.5);
+
+            // hold前
+            // hold
+            // next
+            if (tick < hold) { //武器を構え中
+                // 敵が武器を構えていたら防御
+                if (false) {
+                    // todo 防御処理
+                }
+                // 構えていなかったら待機
+
+            } else if (tick == hold) { //構え終わり
+                // 近くに敵がいたら攻撃
+                if (target != null) {
+                    attack(target);
+                }
+                // 構え解除
+                reinforced = false;
+                sendMessage("構え解除");
+
+            } else if (tick == next) { // 構えのクールタイム
+                canBeReinforced = true;
+                cancel();
+            }
+            tick++;
+        }
+
+        private void attack(Entity target) {
+            // HP減らす
+            // ノックバック
+            // 音
+            player.attack(target);
+            playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
         }
     }
 
@@ -78,18 +108,33 @@ public class SkillUser {
      * todo 目線から一番近いentityが標的
      * todo 複数の標的に攻撃
      */
-    public void attack() {
-        List<Entity> targets = player.getNearbyEntities(1.5, 1.5, 1.5);
-    }
+    public void attack() {}
 
     /**
      * このプレイヤーの位置から一番近いentityを取得します
      * @return このプレイヤーの位置から一番近いentity
      */
-    private Entity getNearestEntityByLocation(double radius) {
-        List<Entity> entities = player.getNearbyEntities(radius, radius, radius);
-        if (entities.size() == 0) return null;
-        return entities.get(0);
+    private Entity getNearestEntity(double radius) {
+        // 半径radiusで近くのentityのリストを取得
+        List<Entity> near = player.getNearbyEntities(radius, radius, radius);
+
+        // 近くになにもいなかったらnullを返す
+        if (near.size() == 0) return null;
+
+        // near.get(0)の値で初期化
+        Entity nearest = near.get(0);
+        double distance1 = player.getLocation().distance(nearest.getLocation());
+
+        // 一番近いentityを見つける
+        for (Entity entity : near) {
+            double distance2 = player.getLocation().distance(entity.getLocation());
+            if (distance1 < distance2) {
+                distance1 = distance2;
+                nearest = entity;
+            }
+        }
+
+        return nearest;
     }
 
     /**
