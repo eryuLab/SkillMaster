@@ -1,0 +1,5 @@
+name: SkillMaster
+version: '${version}'
+main: net.lifecity.mc.skillmaster.SkillMaster
+api-version: 1.18
+authors: [ Koryu25, hirotask ]
