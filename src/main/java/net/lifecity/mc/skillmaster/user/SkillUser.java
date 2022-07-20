@@ -152,4 +152,13 @@ public class SkillUser {
     public void playSound(Sound sound) {
         player.playSound(player.getLocation(), sound, 1f, 1f);
     }
+
+    /**
+     * UUIDが一致しているかを確認します
+     * @param target 比較するPlayer
+     * @return UUIDが一致するか
+     */
+    public boolean match(Player target) {
+        return player.getUniqueId().toString().equals(target.getUniqueId().toString());
+    }
 }
