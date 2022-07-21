@@ -24,12 +24,9 @@ public class SkillUser {
     }
 
     /**
-     * 武器を構えます
-     * ケース１:お互いが構えた状態で接する
-     * ケース２:どちらかが構えた時、すでに接している状態
-     * 攻撃失敗 and 防御成功
-     * ケース３:Aが構えているが、Bが構えていない
-     * A攻撃成功 and B防御失敗
+     * 攻撃する
+     * 入力してから数tick防御状態となる
+     * 攻撃が発動したら防御状態にならない
      */
     public void reinforce() {
         if (!canBeReinforced) { //クールタイム確認
@@ -40,7 +37,7 @@ public class SkillUser {
                 sendMessage("まだ武器を構えられない");
         }
 
-        new Reinforce(3, 5); //処理開始
+        new Reinforce(3, 8); //処理開始
     }
 
     private class Reinforce extends BukkitRunnable {
@@ -59,7 +56,7 @@ public class SkillUser {
 
             sendMessage("武器を構えた");
 
-            runTaskTimer(SkillMaster.instance, 0, next);
+            runTaskTimer(SkillMaster.instance, 0, 1);
         }
 
         @Override
@@ -88,6 +85,7 @@ public class SkillUser {
 
             } else if (tick == next) { // 構えのクールタイム
                 canBeReinforced = true;
+                sendMessage("クールタイム終了");
                 cancel();
             }
             tick++;
