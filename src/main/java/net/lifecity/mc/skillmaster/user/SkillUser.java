@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -55,7 +56,7 @@ public class SkillUser {
             reinforced = true; //武器を構える
             canBeReinforced = false; //一定時間武器を構えられなくなる
 
-            sendMessage("武器を構えた");
+            sendActionBar(ChatColor.BLUE + "武器を構えた");
 
             runTaskTimer(SkillMaster.instance, 0, 1);
         }
@@ -74,7 +75,7 @@ public class SkillUser {
                     SkillUser opponent = SkillMaster.instance.getUserList().get((Player) target);
                     if (opponent.reinforced) {
                         // 防御処理
-                        defense(player, opponent.getPlayer());
+                        defense(opponent.getPlayer());
                     }
                 }
                 // 構えていなかったら待機
@@ -86,11 +87,11 @@ public class SkillUser {
                 }
                 // 構え解除
                 reinforced = false;
-                sendMessage("構え解除");
+                sendActionBar(ChatColor.RED + "構え解除");
 
             } else if (tick == next) { // 構えのクールタイム
                 canBeReinforced = true;
-                sendMessage("クールタイム終了");
+                sendActionBar(ChatColor.GREEN + "クールタイム終了");
                 cancel();
             }
             tick++;
@@ -104,24 +105,27 @@ public class SkillUser {
             playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
         }
 
-        private void defense(Entity entity1, Entity entity2) {
-            // ノックバック
+        private void defense(Entity opponent) {
+            // シフト押しているとき：パリング
+            // シフト押していないとき：ノックバック
+
+            if (player.isSneaking()) //パリング
+                player.setVelocity(player.getVelocity().multiply(-0.47));
+
+            else //ノックバック
+                player.setVelocity(player.getVelocity().multiply(-1));
 
             // 間のLocationを取得
-            Location loc1 = entity1.getLocation();
-            Location loc2 = entity2.getLocation();
+            Location loc1 = player.getLocation();
+            Location loc2 = opponent.getLocation();
             double x = Math.abs(loc1.getX() - loc2.getX());
             double y = Math.abs(loc1.getY() - loc2.getY());
             double z = Math.abs(loc1.getZ() - loc2.getZ());
-            Location center = new Location(entity1.getWorld(), x, y, z);
+            Location center = new Location(player.getWorld(), x, y, z);
 
-            // SE再生
+            // 間のLocationでSE再生
             center.getWorld().playSound(center, Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1f, 1f);
         }
-    }
-
-    public void defense() {
-
     }
 
     /**
@@ -165,6 +169,14 @@ public class SkillUser {
      */
     public void sendMessage(String msg) {
         player.sendMessage(msg);
+    }
+
+    /**
+     * アクションバーでメッセージを送信します
+     * @param msg 送信するメッセージ
+     */
+    public void sendActionBar(String msg) {
+        player.sendActionBar(msg);
     }
 
     /**
