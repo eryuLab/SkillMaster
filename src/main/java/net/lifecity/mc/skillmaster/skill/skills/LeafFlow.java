@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.skill.skills;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.lifecity.mc.skillmaster.skill.ActionableSkill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Sound;
@@ -15,14 +17,20 @@ public class LeafFlow extends ActionableSkill {
 
     @Override
     public void activate(SkillUser user) {
-        Vector vector = user.getPlayer().getVelocity().normalize().multiply(1.5);
+        Vector vector = user.getPlayer().getVelocity().setY(0).multiply(10).setY(0.15);
+
         user.getPlayer().setVelocity(vector);
     }
 
     @Override
     public void action(SkillUser user) {
+        // 再度攻撃不可
+        if (!actionable)
+            return;
+        actionable = false;
+
         // 一番近いEntityを取得
-        Entity entity = user.getNearestEntity(1.5);
+        Entity entity = user.getNearestEntity(1);
 
         // 近くにEntityがいなければreturn
         if (entity == null)
@@ -33,7 +41,7 @@ public class LeafFlow extends ActionableSkill {
             target.damage(3);
 
             // 標的をノックバックさせる
-            target.setVelocity(user.getPlayer().getVelocity().normalize().multiply(0.5));
+            target.setVelocity(user.getPlayer().getVelocity().normalize().setY(0.15));
 
             // SE再生
             user.playSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
