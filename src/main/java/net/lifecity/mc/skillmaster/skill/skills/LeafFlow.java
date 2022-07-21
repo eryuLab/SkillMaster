@@ -22,9 +22,13 @@ public class LeafFlow extends ActionableSkill {
     @Override
     public void action(SkillUser user) {
         // 一番近いEntityを取得
-        Entity nearestEntity = user.getNearestEntity(1.5);
+        Entity entity = user.getNearestEntity(1.5);
 
-        if (nearestEntity instanceof Damageable target) {
+        // 近くにEntityがいなければreturn
+        if (entity == null)
+            return;
+
+        if (entity instanceof Damageable target) {
             // 標的にダメージを与える
             target.damage(3);
 
