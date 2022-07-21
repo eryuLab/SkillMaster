@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 public class LeafFlow extends ActionableSkill {
 
     public LeafFlow() {
-        super("リーフフロー", 0);
+        super("リーフフロー", 0, 40);
     }
 
     @Override

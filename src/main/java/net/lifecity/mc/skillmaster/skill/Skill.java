@@ -11,9 +11,13 @@ public abstract class Skill {
     @Getter
     private final int point;
 
-    protected Skill(String name, int point) {
+    @Getter
+    private final int interval;
+
+    protected Skill(String name, int point, int interval) {
         this.name = name;
         this.point = point;
+        this.interval = interval;
     }
 
     public abstract void activate(SkillUser user);
