@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -24,12 +25,9 @@ public class SkillUser {
     }
 
     /**
-     * 武器を構えます
-     * ケース１:お互いが構えた状態で接する
-     * ケース２:どちらかが構えた時、すでに接している状態
-     * 攻撃失敗 and 防御成功
-     * ケース３:Aが構えているが、Bが構えていない
-     * A攻撃成功 and B防御失敗
+     * 攻撃する
+     * 入力してから数tick防御状態となる
+     * 攻撃が発動したら防御状態にならない
      */
     public void reinforce() {
         if (!canBeReinforced) { //クールタイム確認
@@ -40,7 +38,7 @@ public class SkillUser {
                 sendMessage("まだ武器を構えられない");
         }
 
-        new Reinforce(3, 5); //処理開始
+        new Reinforce(3, 8); //処理開始
     }
 
     private class Reinforce extends BukkitRunnable {
@@ -59,17 +57,71 @@ public class SkillUser {
 
             sendMessage("武器を構えた");
 
-            runTaskTimer(SkillMaster.instance, 0, next);
+            runTaskTimer(SkillMaster.instance, 0, 1);
         }
 
         @Override
         public void run() {
-            //タイマー:近くに敵がいたら
-            // 敵が武器を構えていたら防御
-            // 構えていなかったら待機
-            //タイマー切れ:近くに敵がいたら攻撃
-            tick--;
+            // 一番近いentityを標的とする
+            Entity target = getNearestEntity(1.5);
+
+            // hold前
+            // hold
+            // next
+            if (tick < hold) { //武器を構え中
+                // 敵が武器を構えていたら防御
+                if (target instanceof Player) {
+                    SkillUser opponent = SkillMaster.instance.getUserList().get((Player) target);
+                    if (opponent.reinforced) {
+                        // 防御処理
+                        defense(player, opponent.getPlayer());
+                    }
+                }
+                // 構えていなかったら待機
+
+            } else if (tick == hold) { //構え終わり
+                // 近くに敵がいたら攻撃
+                if (target != null) {
+                    attack(target);
+                }
+                // 構え解除
+                reinforced = false;
+                sendMessage("構え解除");
+
+            } else if (tick == next) { // 構えのクールタイム
+                canBeReinforced = true;
+                sendMessage("クールタイム終了");
+                cancel();
+            }
+            tick++;
         }
+
+        private void attack(Entity target) {
+            // HP減らす
+            // ノックバック
+            // 音
+            player.attack(target);
+            playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+        }
+
+        private void defense(Entity entity1, Entity entity2) {
+            // ノックバック
+
+            // 間のLocationを取得
+            Location loc1 = entity1.getLocation();
+            Location loc2 = entity2.getLocation();
+            double x = Math.abs(loc1.getX() - loc2.getX());
+            double y = Math.abs(loc1.getY() - loc2.getY());
+            double z = Math.abs(loc1.getZ() - loc2.getZ());
+            Location center = new Location(entity1.getWorld(), x, y, z);
+
+            // SE再生
+            center.getWorld().playSound(center, Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1f, 1f);
+        }
+    }
+
+    public void defense() {
+
     }
 
     /**
@@ -78,18 +130,33 @@ public class SkillUser {
      * todo 目線から一番近いentityが標的
      * todo 複数の標的に攻撃
      */
-    public void attack() {
-        List<Entity> targets = player.getNearbyEntities(1.5, 1.5, 1.5);
-    }
+    public void attack() {}
 
     /**
      * このプレイヤーの位置から一番近いentityを取得します
      * @return このプレイヤーの位置から一番近いentity
      */
-    private Entity getNearestEntityByLocation(double radius) {
-        List<Entity> entities = player.getNearbyEntities(radius, radius, radius);
-        if (entities.size() == 0) return null;
-        return entities.get(0);
+    private Entity getNearestEntity(double radius) {
+        // 半径radiusで近くのentityのリストを取得
+        List<Entity> near = player.getNearbyEntities(radius, radius, radius);
+
+        // 近くになにもいなかったらnullを返す
+        if (near.size() == 0) return null;
+
+        // near.get(0)の値で初期化
+        Entity nearest = near.get(0);
+        double distance1 = player.getLocation().distance(nearest.getLocation());
+
+        // 一番近いentityを見つける
+        for (Entity entity : near) {
+            double distance2 = player.getLocation().distance(entity.getLocation());
+            if (distance1 < distance2) {
+                distance1 = distance2;
+                nearest = entity;
+            }
+        }
+
+        return nearest;
     }
 
     /**
@@ -106,5 +173,14 @@ public class SkillUser {
      */
     public void playSound(Sound sound) {
         player.playSound(player.getLocation(), sound, 1f, 1f);
+    }
+
+    /**
+     * UUIDが一致しているかを確認します
+     * @param target 比較するPlayer
+     * @return UUIDが一致するか
+     */
+    public boolean match(Player target) {
+        return player.getUniqueId().toString().equals(target.getUniqueId().toString());
     }
 }
