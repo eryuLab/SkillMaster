@@ -1,14 +1,17 @@
 package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
+import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.ActionableSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -17,33 +20,73 @@ public class SkillUser {
     @Getter
     private final Player player;
 
-    private Skill activatingSkill;
+    private ActionableSkill activatingSkill;
 
-    private Skill rightClick;
+    private UserSkill rightClick;
 
     public SkillUser(Player player) {
         this.player = player;
-        this.rightClick = new LeafFlow();
+        this.rightClick = new UserSkill(this, new LeafFlow());
     }
 
     public void leftClick() {
         // 発動中の攻撃スキルが存在するか
         if (activatingSkill != null)
-            if (activatingSkill instanceof ActionableSkill)
-                ((ActionableSkill) activatingSkill).action(this);
+            activatingSkill.action(this);
         else
             attack();
     }
 
     public void rightClick() {
-        activatingSkill = rightClick;
-        activateSkill();
+        activate(rightClick);
     }
 
-    private void activateSkill() {
-        if (activatingSkill == null)
-            return;
-        activatingSkill.activate(this);
+    private void activate(UserSkill userSkill) {
+        // スキルが追加動作を持っている場合、動作を使えるように登録
+        if (userSkill.getSkill() instanceof ActionableSkill actionableSkill)
+            activatingSkill = actionableSkill;
+
+        // スキルを発動
+        userSkill.activate();
+
+        // ログ
+        sendActionBar(ChatColor.DARK_AQUA + "スキル『" + userSkill.getSkill().getName() + "』発動");
+    }
+
+    private class UserSkill {
+
+        private final SkillUser user;
+
+        @Getter
+        private final Skill skill;
+
+        private boolean inInterval = false;
+
+        public UserSkill(SkillUser user, Skill skill) {
+            this.user = user;
+            this.skill = skill;
+        }
+
+        public void activate() {
+            if (inInterval) //インターバル中は発動不可
+                return;
+
+            skill.activate(user); //スキル発動
+            inInterval = true; //「インターバル中」に設定
+
+            new BukkitRunnable() { //インターバルが過ぎたら再度発動可能
+                @Override
+                public void run() {
+                    inInterval = false;
+
+                    if (user.activatingSkill == skill)
+                        user.activatingSkill = null;
+                        ((ActionableSkill) skill).setActionable(true);
+
+                    sendActionBar(ChatColor.RED + "スキル『" + skill.getName() + "』終了");
+                }
+            }.runTaskLater(SkillMaster.instance, skill.getInterval()); //インターバル後に実行
+        }
     }
 
     /**
