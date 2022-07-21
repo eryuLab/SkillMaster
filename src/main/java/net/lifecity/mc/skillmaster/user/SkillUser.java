@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -69,8 +70,12 @@ public class SkillUser {
             // next
             if (tick < hold) { //武器を構え中
                 // 敵が武器を構えていたら防御
-                if (false) {
-                    // todo 防御処理
+                if (target instanceof Player) {
+                    SkillUser opponent = SkillMaster.instance.getUserList().get((Player) target);
+                    if (opponent.reinforced) {
+                        // 防御処理
+                        defense(player, opponent.getPlayer());
+                    }
                 }
                 // 構えていなかったら待機
 
@@ -98,6 +103,25 @@ public class SkillUser {
             player.attack(target);
             playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
         }
+
+        private void defense(Entity entity1, Entity entity2) {
+            // ノックバック
+
+            // 間のLocationを取得
+            Location loc1 = entity1.getLocation();
+            Location loc2 = entity2.getLocation();
+            double x = Math.abs(loc1.getX() - loc2.getX());
+            double y = Math.abs(loc1.getY() - loc2.getY());
+            double z = Math.abs(loc1.getZ() - loc2.getZ());
+            Location center = new Location(entity1.getWorld(), x, y, z);
+
+            // SE再生
+            center.getWorld().playSound(center, Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1f, 1f);
+        }
+    }
+
+    public void defense() {
+
     }
 
     /**
