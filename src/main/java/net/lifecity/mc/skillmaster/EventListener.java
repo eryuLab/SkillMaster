@@ -31,10 +31,10 @@ public class EventListener implements Listener {
         if (user.getHandMaterial() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
 
             if (event.getAction().isLeftClick()) //武器を構える
-                user.reinforce();
+                user.leftClick();
 
             else if (event.getAction().isRightClick()) //素早く移動する
-                user.moveQuickly();
+                user.rightClick();
         }
     }
 
