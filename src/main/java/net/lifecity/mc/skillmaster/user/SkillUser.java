@@ -4,10 +4,14 @@ import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -20,6 +24,9 @@ public class SkillUser {
     private boolean reinforced = false;
     @Getter
     private boolean canBeReinforced = true;
+
+    @Getter
+    private boolean canMoveQuickly = true;
 
     public SkillUser(Player player) {
         this.player = player;
@@ -39,7 +46,7 @@ public class SkillUser {
                 sendMessage("まだ武器を構えられない");
         }
 
-        new Reinforce(3, 8); //処理開始
+        new Reinforce(3, 10); //処理開始
     }
 
     private class Reinforce extends BukkitRunnable {
@@ -76,18 +83,24 @@ public class SkillUser {
                     if (opponent.reinforced) {
                         // 防御処理
                         defense(opponent.getPlayer());
+
+                        // 構えが崩れる処理
+                        reinforced = false;
+                        sendActionBar(ChatColor.RED + "武器を振った");
                     }
                 }
                 // 構えていなかったら待機
 
-            } else if (tick == hold) { //構え終わり
+            } else if (tick == hold) { //武器を振る
                 // 近くに敵がいたら攻撃
                 if (target != null) {
                     attack(target);
                 }
                 // 構え解除
-                reinforced = false;
-                sendActionBar(ChatColor.RED + "構え解除");
+                if (reinforced) {
+                    reinforced = false;
+                    sendActionBar(ChatColor.RED + "武器を振った");
+                }
 
             } else if (tick == next) { // 構えのクールタイム
                 canBeReinforced = true;
@@ -97,14 +110,26 @@ public class SkillUser {
             tick++;
         }
 
-        private void attack(Entity target) {
+        /**
+         * 標的を攻撃します
+         * todo 位置から一番近いentityが標的
+         * todo 目線から一番近いentityが標的
+         * todo 複数の標的に攻撃
+         */
+        private void attack(Entity entity) {
             // HP減らす
-            // ノックバック
+            Damageable target = (Damageable) entity;
+            target.damage(3);
+            // playerの見ている方向にノックバック
+            target.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(0.7).setY(0.4));
             // 音
-            player.attack(target);
-            playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+            playSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
         }
 
+        /**
+         * 敵からの攻撃を防御します
+         * @param opponent 敵
+         */
         private void defense(Entity opponent) {
             // シフト押しているとき：パリング
             // シフト押していないとき：ノックバック
@@ -129,12 +154,27 @@ public class SkillUser {
     }
 
     /**
-     * 標的を攻撃します
-     * todo 位置から一番近いentityが標的
-     * todo 目線から一番近いentityが標的
-     * todo 複数の標的に攻撃
+     * 向いている方向に素早く移動します
+     * todo 移動している方向に素早く移動
      */
-    public void attack() {}
+    public void moveQuickly() {
+        if (canMoveQuickly) {
+            Vector vector = player.getEyeLocation().getDirection()
+                    .normalize()
+                    .multiply(1.75)
+                    .setY(0.15);
+            player.setVelocity(vector);
+
+            canMoveQuickly = false;
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    canMoveQuickly = true;
+                }
+            }.runTaskLater(SkillMaster.instance, 8);
+        }
+    }
 
     /**
      * このプレイヤーの位置から一番近いentityを取得します
@@ -161,6 +201,14 @@ public class SkillUser {
         }
 
         return nearest;
+    }
+
+    /**
+     * メインハンドのMaterialを取得します
+     * @return メインハンドのMaterial
+     */
+    public Material getHandMaterial() {
+        return player.getInventory().getItemInMainHand().getType();
     }
 
     /**
