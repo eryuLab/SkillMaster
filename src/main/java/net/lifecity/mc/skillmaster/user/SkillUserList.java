@@ -28,6 +28,10 @@ public class SkillUserList extends ArrayList<SkillUser> {
         return get(player) != null;
     }
 
+    /**
+     * プレイヤーをSkillUserとしてリストに追加します
+     * @param player 追加するPlayer
+     */
     public void add(Player player) {
         if (!contains(player)) {
             add(new SkillUser(player));
