@@ -15,10 +15,6 @@ import org.bukkit.util.Vector;
 
 public class LeafFlow extends ActionableSkill {
 
-    @Getter
-    @Setter
-    private double radius = 1;
-
     public LeafFlow() {
         super("リーフフロー", 0, 40);
     }
@@ -57,7 +53,7 @@ public class LeafFlow extends ActionableSkill {
         actionable = false;
 
         // 一番近いEntityを取得
-        Entity entity = user.getNearestEntity(radius);
+        Entity entity = user.getNearestEntity(1);
 
         // 近くにEntityがいなければreturn
         if (entity == null)
