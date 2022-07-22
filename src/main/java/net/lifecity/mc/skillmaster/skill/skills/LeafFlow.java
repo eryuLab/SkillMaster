@@ -16,31 +16,15 @@ import org.bukkit.util.Vector;
 public class LeafFlow extends ActionableSkill {
 
     public LeafFlow() {
-        super("リーフフロー", 0, 40);
+        super("リーフフロー", 0, 10);
     }
 
     @Override
     public void activate(SkillUser user) {
 
-        Location from = user.getPlayer().getLocation();
+        Vector vector = user.getPlayer().getEyeLocation().getDirection().normalize().multiply(1).setY(0.15);
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Location to = user.getPlayer().getLocation();
-
-                Vector vector = to.toVector().subtract(from.toVector());
-
-                vector.setY(0).normalize().multiply(1.5).setY(0.2);
-
-                if (Double.isNaN(vector.length())) {
-                    user.sendMessage("NaN");
-                    return;
-                }
-
-                user.getPlayer().setVelocity(vector);
-            }
-        }.runTaskLater(SkillMaster.instance, 1);
+        user.getPlayer().setVelocity(vector);
     }
 
     @Override
@@ -53,7 +37,7 @@ public class LeafFlow extends ActionableSkill {
         actionable = false;
 
         // 一番近いEntityを取得
-        Entity entity = user.getNearestEntity(1);
+        Entity entity = user.getNearestEntity(1.8);
 
         // 近くにEntityがいなければreturn
         if (entity == null)
