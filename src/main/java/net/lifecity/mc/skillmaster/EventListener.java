@@ -52,14 +52,18 @@ public class EventListener implements Listener {
     public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
-        if (user.getHandMaterial() == Material.WOODEN_SWORD) //Fスキル入力
+        if (user.getHandMaterial() == Material.WOODEN_SWORD) { //Fスキル入力
+            event.setCancelled(true);
             user.f();
+        }
     }
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
-        if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) //Qスキル入力
+        if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) { //Qスキル入力
+            event.setCancelled(true);
             user.q();
+        }
     }
 }
