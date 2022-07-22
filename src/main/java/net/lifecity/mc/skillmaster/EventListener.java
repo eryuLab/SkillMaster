@@ -9,10 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
 
@@ -57,5 +54,12 @@ public class EventListener implements Listener {
 
         if (user.getHandMaterial() == Material.WOODEN_SWORD) //Fスキル入力
             user.f();
+    }
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
+
+        if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) //Qスキル入力
+            user.q();
     }
 }
