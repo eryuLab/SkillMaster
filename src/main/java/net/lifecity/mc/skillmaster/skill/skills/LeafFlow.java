@@ -2,14 +2,21 @@ package net.lifecity.mc.skillmaster.skill.skills;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.ActionableSkill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class LeafFlow extends ActionableSkill {
+
+    @Getter
+    @Setter
+    private double radius = 1;
 
     public LeafFlow() {
         super("リーフフロー", 0, 40);
@@ -17,7 +24,15 @@ public class LeafFlow extends ActionableSkill {
 
     @Override
     public void activate(SkillUser user) {
-        Vector vector = user.getPlayer().getVelocity().setY(0).multiply(10).setY(0.15);
+
+        Vector vector = user.getPlayer().getVelocity()
+                .setY(0)
+                .normalize()
+                .multiply(1.5)
+                .setY(0.15);
+
+        if (Double.isNaN(vector.length()))
+            return;
 
         user.getPlayer().setVelocity(vector);
     }
@@ -30,7 +45,7 @@ public class LeafFlow extends ActionableSkill {
         actionable = false;
 
         // 一番近いEntityを取得
-        Entity entity = user.getNearestEntity(1);
+        Entity entity = user.getNearestEntity(radius);
 
         // 近くにEntityがいなければreturn
         if (entity == null)

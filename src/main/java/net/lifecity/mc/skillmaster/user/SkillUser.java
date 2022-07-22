@@ -22,6 +22,7 @@ public class SkillUser {
 
     private ActionableSkill activatingSkill;
 
+    @Getter
     private UserSkill rightClick;
 
     public SkillUser(Player player) {
@@ -53,7 +54,7 @@ public class SkillUser {
         sendActionBar(ChatColor.DARK_AQUA + "スキル『" + userSkill.getSkill().getName() + "』発動");
     }
 
-    private class UserSkill {
+    public class UserSkill {
 
         private final SkillUser user;
 
