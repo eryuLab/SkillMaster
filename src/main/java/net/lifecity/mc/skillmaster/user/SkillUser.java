@@ -1,17 +1,21 @@
 package net.lifecity.mc.skillmaster.user;
 
+import com.google.j2objc.annotations.ObjectiveCName;
 import lombok.Getter;
+import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.ActionableSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -23,11 +27,17 @@ public class SkillUser {
     private ActionableSkill activatingSkill;
 
     @Getter
-    private UserSkill rightClick;
+    private SkillSet[] skillSet;
+    @Getter
+    private int setIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
-        this.rightClick = new UserSkill(this, new LeafFlow());
+        this.skillSet = new SkillSet[]{
+                new SkillSet(new UserSkill(new LeafFlow()), null, null),
+                new SkillSet(null, null, null),
+                new SkillSet(null, null, null)
+        };
     }
 
     public void leftClick() {
@@ -39,10 +49,39 @@ public class SkillUser {
     }
 
     public void rightClick() {
-        activate(rightClick);
+        // Shiftが押されているか
+        if (player.isSneaking())
+            shift(0);
+        else
+            activate(skillSet[setIndex].right);
+    }
+    public void f() {
+        // Shiftが押されているか
+        if (player.isSneaking())
+            shift(1);
+        else
+            activate(skillSet[setIndex].f);
+    }
+    public void q() {
+        // Shiftば押されているか
+        if (player.isSneaking())
+            shift(2);
+        else
+            activate(skillSet[setIndex].q);
+    }
+
+    private void shift(int setIndex) {
+        this.setIndex = setIndex;
+        playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
     }
 
     private void activate(UserSkill userSkill) {
+        // null確認
+        if (userSkill == null) {
+            sendMessage("スキルがセットされていません");
+            return;
+        }
+
         // スキルが追加動作を持っている場合、動作を使えるように登録
         if (userSkill.getSkill() instanceof ActionableSkill actionableSkill)
             activatingSkill = actionableSkill;
@@ -54,17 +93,35 @@ public class SkillUser {
         sendActionBar(ChatColor.DARK_AQUA + "スキル『" + userSkill.getSkill().getName() + "』発動");
     }
 
-    public class UserSkill {
+    public class SkillSet {
 
-        private final SkillUser user;
+        @Getter
+        @Setter
+        private UserSkill right;
+
+        @Getter
+        @Setter
+        private UserSkill f;
+
+        @Getter
+        @Setter
+        private UserSkill q;
+
+        public SkillSet(UserSkill right, UserSkill f, UserSkill q) {
+            this.right = right;
+            this.f = f;
+            this.q = q;
+        }
+    }
+
+    public class UserSkill {
 
         @Getter
         private final Skill skill;
 
         private boolean inInterval = false;
 
-        public UserSkill(SkillUser user, Skill skill) {
-            this.user = user;
+        public UserSkill(Skill skill) {
             this.skill = skill;
         }
 
@@ -72,7 +129,7 @@ public class SkillUser {
             if (inInterval) //インターバル中は発動不可
                 return;
 
-            skill.activate(user); //スキル発動
+            skill.activate(SkillUser.this); //スキル発動
             inInterval = true; //「インターバル中」に設定
 
             new BukkitRunnable() { //インターバルが過ぎたら再度発動可能
@@ -80,8 +137,8 @@ public class SkillUser {
                 public void run() {
                     inInterval = false;
 
-                    if (user.activatingSkill == skill)
-                        user.activatingSkill = null;
+                    if (SkillUser.this.activatingSkill == skill)
+                        SkillUser.this.activatingSkill = null;
                         ((ActionableSkill) skill).setActionable(true);
 
                     sendActionBar(ChatColor.RED + "スキル『" + skill.getName() + "』終了");
