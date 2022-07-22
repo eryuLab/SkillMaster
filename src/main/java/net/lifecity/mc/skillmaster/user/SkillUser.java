@@ -96,7 +96,7 @@ public class SkillUser {
      * todo 目線から一番近いentityが標的
      * todo 複数の標的に攻撃
      */
-    private void attack() {
+    public void attack() {
         Entity entity = getNearestEntity(1.5);
 
         if (entity == null)

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.ActionableSkill;
+import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -25,23 +26,34 @@ public class LeafFlow extends ActionableSkill {
     @Override
     public void activate(SkillUser user) {
 
-        Vector vector = user.getPlayer().getVelocity()
-                .setY(0)
-                .normalize()
-                .multiply(1.5)
-                .setY(0.15);
+        Location from = user.getPlayer().getLocation();
 
-        if (Double.isNaN(vector.length()))
-            return;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Location to = user.getPlayer().getLocation();
 
-        user.getPlayer().setVelocity(vector);
+                Vector vector = to.toVector().subtract(from.toVector());
+
+                vector.setY(0).normalize().multiply(1.5).setY(0.2);
+
+                if (Double.isNaN(vector.length())) {
+                    user.sendMessage("NaN");
+                    return;
+                }
+
+                user.getPlayer().setVelocity(vector);
+            }
+        }.runTaskLater(SkillMaster.instance, 1);
     }
 
     @Override
     public void action(SkillUser user) {
         // 再度攻撃不可
-        if (!actionable)
+        if (!actionable) {
+            user.attack();
             return;
+        }
         actionable = false;
 
         // 一番近いEntityを取得
