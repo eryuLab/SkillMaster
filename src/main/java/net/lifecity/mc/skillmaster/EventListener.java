@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster;
 
+import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -8,9 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
 
@@ -30,11 +29,11 @@ public class EventListener implements Listener {
 
         if (user.getHandMaterial() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
 
-            if (event.getAction().isLeftClick()) //武器を構える
-                user.reinforce();
+            if (event.getAction().isLeftClick()) //攻撃を入力
+                user.leftClick();
 
-            else if (event.getAction().isRightClick()) //素早く移動する
-                user.moveQuickly();
+            else if (event.getAction().isRightClick()) //右クリックスキルを入力
+                user.rightClick();
         }
     }
 
@@ -46,6 +45,25 @@ public class EventListener implements Listener {
             if (user.getHandMaterial() == Material.WOODEN_SWORD) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
+        SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
+
+        if (user.getHandMaterial() == Material.WOODEN_SWORD) { //Fスキル入力
+            event.setCancelled(true);
+            user.f();
+        }
+    }
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
+
+        if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) { //Qスキル入力
+            event.setCancelled(true);
+            user.q();
         }
     }
 }

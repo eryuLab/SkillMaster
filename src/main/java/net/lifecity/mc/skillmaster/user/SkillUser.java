@@ -1,14 +1,18 @@
 package net.lifecity.mc.skillmaster.user;
 
+import com.google.j2objc.annotations.ObjectiveCName;
 import lombok.Getter;
+import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import net.lifecity.mc.skillmaster.skill.ActionableSkill;
+import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -20,167 +24,161 @@ public class SkillUser {
     @Getter
     private final Player player;
 
-    @Getter
-    private boolean reinforced = false;
-    @Getter
-    private boolean canBeReinforced = true;
+    private ActionableSkill activatingSkill;
 
     @Getter
-    private boolean canMoveQuickly = true;
+    private SkillSet[] skillSet;
+    @Getter
+    private int setIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
+        this.skillSet = new SkillSet[]{
+                new SkillSet(new UserSkill(new LeafFlow()), null, null),
+                new SkillSet(null, null, null),
+                new SkillSet(null, null, null)
+        };
     }
 
-    /**
-     * 攻撃する
-     * 入力してから数tick防御状態となる
-     * 攻撃が発動したら防御状態にならない
-     */
-    public void reinforce() {
-        if (!canBeReinforced) { //クールタイム確認
-            playSound(Sound.ENTITY_PLAYER_ATTACK_NODAMAGE);
-            if (reinforced)
-                sendMessage("すでに武器を構えている");
-            else
-                sendMessage("まだ武器を構えられない");
-        }
-
-        new Reinforce(3, 10); //処理開始
+    public void leftClick() {
+        // 発動中の攻撃スキルが存在するか
+        if (activatingSkill != null)
+            activatingSkill.action(this);
+        else
+            attack();
     }
 
-    private class Reinforce extends BukkitRunnable {
+    public void rightClick() {
+        // Shiftが押されているか
+        if (player.isSneaking())
+            shift(0);
+        else
+            activate(skillSet[setIndex].right);
+    }
+    public void f() {
+        // Shiftが押されているか
+        if (player.isSneaking())
+            shift(1);
+        else
+            activate(skillSet[setIndex].f);
+    }
+    public void q() {
+        // Shiftば押されているか
+        if (player.isSneaking())
+            shift(2);
+        else
+            activate(skillSet[setIndex].q);
+    }
 
-        private int hold;
-        private int next;
+    private void shift(int setIndex) {
+        this.setIndex = setIndex;
+        playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+    }
 
-        private int tick = 0;
-
-        public Reinforce(int hold, int next) {
-            this.hold = hold;
-            this.next = next;
-
-            reinforced = true; //武器を構える
-            canBeReinforced = false; //一定時間武器を構えられなくなる
-
-            sendActionBar(ChatColor.BLUE + "武器を構えた");
-
-            runTaskTimer(SkillMaster.instance, 0, 1);
+    private void activate(UserSkill userSkill) {
+        // null確認
+        if (userSkill == null) {
+            sendMessage("スキルがセットされていません");
+            return;
         }
 
-        @Override
-        public void run() {
-            // 一番近いentityを標的とする
-            Entity target = getNearestEntity(1.5);
+        // スキルが追加動作を持っている場合、動作を使えるように登録
+        if (userSkill.getSkill() instanceof ActionableSkill actionableSkill)
+            activatingSkill = actionableSkill;
 
-            // hold前
-            // hold
-            // next
-            if (tick < hold) { //武器を構え中
-                // 敵が武器を構えていたら防御
-                if (target instanceof Player) {
-                    SkillUser opponent = SkillMaster.instance.getUserList().get((Player) target);
-                    if (opponent.reinforced) {
-                        // 防御処理
-                        defense(opponent.getPlayer());
+        // スキルを発動
+        userSkill.activate();
 
-                        // 構えが崩れる処理
-                        reinforced = false;
-                        sendActionBar(ChatColor.RED + "武器を振った");
-                    }
-                }
-                // 構えていなかったら待機
+        // ログ
+        sendActionBar(ChatColor.DARK_AQUA + "スキル『" + userSkill.getSkill().getName() + "』発動");
+    }
 
-            } else if (tick == hold) { //武器を振る
-                // 近くに敵がいたら攻撃
-                if (target != null) {
-                    attack(target);
-                }
-                // 構え解除
-                if (reinforced) {
-                    reinforced = false;
-                    sendActionBar(ChatColor.RED + "武器を振った");
-                }
+    public class SkillSet {
 
-            } else if (tick == next) { // 構えのクールタイム
-                canBeReinforced = true;
-                sendActionBar(ChatColor.GREEN + "クールタイム終了");
-                cancel();
-            }
-            tick++;
-        }
+        @Getter
+        @Setter
+        private UserSkill right;
 
-        /**
-         * 標的を攻撃します
-         * todo 位置から一番近いentityが標的
-         * todo 目線から一番近いentityが標的
-         * todo 複数の標的に攻撃
-         */
-        private void attack(Entity entity) {
-            // HP減らす
-            Damageable target = (Damageable) entity;
-            target.damage(3);
-            // playerの見ている方向にノックバック
-            target.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(0.7).setY(0.4));
-            // 音
-            playSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
-        }
+        @Getter
+        @Setter
+        private UserSkill f;
 
-        /**
-         * 敵からの攻撃を防御します
-         * @param opponent 敵
-         */
-        private void defense(Entity opponent) {
-            // シフト押しているとき：パリング
-            // シフト押していないとき：ノックバック
+        @Getter
+        @Setter
+        private UserSkill q;
 
-            if (player.isSneaking()) //パリング
-                player.setVelocity(player.getVelocity().multiply(-0.47));
-
-            else //ノックバック
-                player.setVelocity(player.getVelocity().multiply(-1));
-
-            // 間のLocationを取得
-            Location loc1 = player.getLocation();
-            Location loc2 = opponent.getLocation();
-            double x = Math.abs(loc1.getX() - loc2.getX());
-            double y = Math.abs(loc1.getY() - loc2.getY());
-            double z = Math.abs(loc1.getZ() - loc2.getZ());
-            Location center = new Location(player.getWorld(), x, y, z);
-
-            // 間のLocationでSE再生
-            center.getWorld().playSound(center, Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1f, 1f);
+        public SkillSet(UserSkill right, UserSkill f, UserSkill q) {
+            this.right = right;
+            this.f = f;
+            this.q = q;
         }
     }
 
-    /**
-     * 向いている方向に素早く移動します
-     * todo 移動している方向に素早く移動
-     */
-    public void moveQuickly() {
-        if (canMoveQuickly) {
-            Vector vector = player.getEyeLocation().getDirection()
-                    .normalize()
-                    .multiply(1.75)
-                    .setY(0.15);
-            player.setVelocity(vector);
+    public class UserSkill {
 
-            canMoveQuickly = false;
+        @Getter
+        private final Skill skill;
 
-            new BukkitRunnable() {
+        private boolean inInterval = false;
+
+        public UserSkill(Skill skill) {
+            this.skill = skill;
+        }
+
+        public void activate() {
+            if (inInterval) //インターバル中は発動不可
+                return;
+
+            skill.activate(SkillUser.this); //スキル発動
+            inInterval = true; //「インターバル中」に設定
+
+            new BukkitRunnable() { //インターバルが過ぎたら再度発動可能
                 @Override
                 public void run() {
-                    canMoveQuickly = true;
+                    inInterval = false;
+
+                    if (SkillUser.this.activatingSkill == skill)
+                        SkillUser.this.activatingSkill = null;
+                        ((ActionableSkill) skill).setActionable(true);
+
+                    sendActionBar(ChatColor.RED + "スキル『" + skill.getName() + "』終了");
                 }
-            }.runTaskLater(SkillMaster.instance, 8);
+            }.runTaskLater(SkillMaster.instance, skill.getInterval()); //インターバル後に実行
         }
     }
+
+    /**
+     * 標的を攻撃します
+     * todo 位置から一番近いentityが標的
+     * todo 目線から一番近いentityが標的
+     * todo 複数の標的に攻撃
+     */
+    public void attack() {
+        Entity entity = getNearestEntity(1.5);
+
+        if (entity == null)
+            return;
+
+        if (entity instanceof Damageable target) {
+            target.damage(1);
+
+            target.setVelocity(player.getVelocity().normalize().multiply(0.2));
+
+            playSound(Sound.ENTITY_PLAYER_ATTACK_NODAMAGE);
+        }
+    }
+
+    /**
+     * 敵からの攻撃を防御します
+     * todo 複数の攻撃を防御
+     */
+    private void defense() {}
 
     /**
      * このプレイヤーの位置から一番近いentityを取得します
      * @return このプレイヤーの位置から一番近いentity
      */
-    private Entity getNearestEntity(double radius) {
+    public Entity getNearestEntity(double radius) {
         // 半径radiusで近くのentityのリストを取得
         List<Entity> near = player.getNearbyEntities(radius, radius, radius);
 
