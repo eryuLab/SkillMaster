@@ -59,7 +59,7 @@ public class EventListener implements Listener {
 
         if (user.getHandMaterial() == Material.WOODEN_SWORD) { //Fスキル入力
             event.setCancelled(true);
-            user.f();
+            user.swap();
         }
     }
     @EventHandler
@@ -68,7 +68,7 @@ public class EventListener implements Listener {
 
         if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) { //Qスキル入力
             event.setCancelled(true);
-            user.q();
+            user.drop();
         }
     }
 }
