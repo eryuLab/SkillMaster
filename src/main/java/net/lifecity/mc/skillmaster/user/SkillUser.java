@@ -21,6 +21,8 @@ import java.util.List;
 
 public class SkillUser {
 
+    private final int SKILL_SET_SIZE = 3;
+
     @Getter
     private final Player player;
 
@@ -28,16 +30,39 @@ public class SkillUser {
     private ActionableSkill activatingSkill;
 
     @Getter
-    private SkillSet[] skillSet;
+    private UserSkill[] rightSkillSet;
+
     @Getter
-    private int setIndex = 0;
+    private int rightIndex = 0;
+
+    @Getter
+    private UserSkill[] qSkillSet;
+
+    @Getter
+    private int qIndex = 0;
+
+    @Getter
+    private UserSkill[] fSkillSet;
+
+    @Getter
+    private int fIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
-        this.skillSet = new SkillSet[]{
-                new SkillSet(new UserSkill(new LeafFlow()), null, null),
-                new SkillSet(null, null, null),
-                new SkillSet(null, null, null)
+        this.rightSkillSet = new UserSkill[] {
+                new UserSkill(new LeafFlow()),
+                null,
+                null
+        };
+        this.qSkillSet = new UserSkill[] {
+                null,
+                null,
+                null
+        };
+        this.fSkillSet = new UserSkill[] {
+                null,
+                null,
+                null
         };
     }
 
@@ -45,35 +70,37 @@ public class SkillUser {
         // 発動中の攻撃スキルが存在するか
         if (activatingSkill != null)
             activatingSkill.action(this);
-        else
-            attack();
     }
 
     public void rightClick() {
         // Shiftが押されているか
-        if (player.isSneaking())
-            shift(0);
+        if (player.isSneaking()) {
+            rightIndex++;
+            if (rightIndex == SKILL_SET_SIZE)
+                rightIndex = 0;
+        }
         else
-            activate(skillSet[setIndex].right);
-    }
-    public void f() {
-        // Shiftが押されているか
-        if (player.isSneaking())
-            shift(1);
-        else
-            activate(skillSet[setIndex].f);
+            activate(rightSkillSet[rightIndex]);
     }
     public void q() {
         // Shiftば押されているか
-        if (player.isSneaking())
-            shift(2);
+        if (player.isSneaking()) {
+            qIndex++;
+            if (qIndex == SKILL_SET_SIZE)
+                qIndex = 0;
+        }
         else
-            activate(skillSet[setIndex].q);
+            activate(qSkillSet[qIndex]);
     }
-
-    private void shift(int setIndex) {
-        this.setIndex = setIndex;
-        playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+    public void f() {
+        // Shiftが押されているか
+        if (player.isSneaking()) {
+            fIndex++;
+            if (fIndex == SKILL_SET_SIZE)
+                fIndex = 0;
+        }
+        else
+            activate(fSkillSet[fIndex]);
     }
 
     private void activate(UserSkill userSkill) {
@@ -92,27 +119,6 @@ public class SkillUser {
 
         // ログ
         sendActionBar(ChatColor.DARK_AQUA + "スキル『" + userSkill.getSkill().getName() + "』発動");
-    }
-
-    public class SkillSet {
-
-        @Getter
-        @Setter
-        private UserSkill right;
-
-        @Getter
-        @Setter
-        private UserSkill f;
-
-        @Getter
-        @Setter
-        private UserSkill q;
-
-        public SkillSet(UserSkill right, UserSkill f, UserSkill q) {
-            this.right = right;
-            this.f = f;
-            this.q = q;
-        }
     }
 
     public class UserSkill {
