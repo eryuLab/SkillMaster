@@ -43,7 +43,12 @@ public class EventListener implements Listener {
         if (event.getDamager() instanceof Player player) {
             SkillUser user = SkillMaster.instance.getUserList().get(player);
             if (user.getHandMaterial() == Material.WOODEN_SWORD) {
-                event.setCancelled(true);
+
+                if (user.getActivatingSkill() != null) { //発動中のすきるがあるか
+                    event.setCancelled(true);
+                } else {
+                    event.setDamage(1.5);
+                }
             }
         }
     }

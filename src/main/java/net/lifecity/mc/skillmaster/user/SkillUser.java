@@ -24,6 +24,7 @@ public class SkillUser {
     @Getter
     private final Player player;
 
+    @Getter
     private ActionableSkill activatingSkill;
 
     @Getter
@@ -154,18 +155,14 @@ public class SkillUser {
      * todo 複数の標的に攻撃
      */
     public void attack() {
-        Entity entity = getNearestEntity(1.5);
+        Entity target = player.getTargetEntity(4, false);
 
-        if (entity == null)
+        if (target == null)
             return;
+        player.attack(target);
 
-        if (entity instanceof Damageable target) {
-            target.damage(1);
-
-            target.setVelocity(player.getVelocity().normalize().multiply(0.2));
-
-            playSound(Sound.ENTITY_PLAYER_ATTACK_NODAMAGE);
-        }
+        // ダメージ
+        // ノックバック
     }
 
     /**
