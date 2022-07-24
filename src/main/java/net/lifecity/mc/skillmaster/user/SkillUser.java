@@ -1,21 +1,16 @@
 package net.lifecity.mc.skillmaster.user;
 
-import com.google.j2objc.annotations.ObjectiveCName;
 import lombok.Getter;
-import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.ActionableSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -36,16 +31,16 @@ public class SkillUser {
     private int rightIndex = 0;
 
     @Getter
-    private UserSkill[] qSkillSet;
+    private UserSkill[] dropSkillSet;
 
     @Getter
-    private int qIndex = 0;
+    private int dropIndex = 0;
 
     @Getter
-    private UserSkill[] fSkillSet;
+    private UserSkill[] swapSkillSet;
 
     @Getter
-    private int fIndex = 0;
+    private int swapIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
@@ -54,12 +49,12 @@ public class SkillUser {
                 null,
                 null
         };
-        this.qSkillSet = new UserSkill[] {
+        this.dropSkillSet = new UserSkill[] {
                 null,
                 null,
                 null
         };
-        this.fSkillSet = new UserSkill[] {
+        this.swapSkillSet = new UserSkill[] {
                 null,
                 null,
                 null
@@ -79,31 +74,34 @@ public class SkillUser {
             if (rightIndex == SKILL_SET_SIZE)
                 rightIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+            sendMessage("右クリックのスキルを" + rightIndex + "に変更しました。");
         }
         else
             activate(rightSkillSet[rightIndex]);
     }
-    public void q() {
+    public void drop() {
         // Shiftば押されているか
         if (player.isSneaking()) {
-            qIndex++;
-            if (qIndex == SKILL_SET_SIZE)
-                qIndex = 0;
+            dropIndex++;
+            if (dropIndex == SKILL_SET_SIZE)
+                dropIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+            sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
         }
         else
-            activate(qSkillSet[qIndex]);
+            activate(dropSkillSet[dropIndex]);
     }
-    public void f() {
+    public void swap() {
         // Shiftが押されているか
         if (player.isSneaking()) {
-            fIndex++;
-            if (fIndex == SKILL_SET_SIZE)
-                fIndex = 0;
+            swapIndex++;
+            if (swapIndex == SKILL_SET_SIZE)
+                swapIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+            sendMessage("スワップのスキルを" + swapIndex + "に変更しました。");
         }
         else
-            activate(fSkillSet[fIndex]);
+            activate(swapSkillSet[swapIndex]);
     }
 
     private void activate(UserSkill userSkill) {
@@ -149,7 +147,7 @@ public class SkillUser {
 
                     if (SkillUser.this.activatingSkill == skill)
                         SkillUser.this.activatingSkill = null;
-                        ((ActionableSkill) skill).setActionable(true);
+                        ((ActionableSkill) skill).setNormalAttack(true);
 
                     sendActionBar(ChatColor.RED + "スキル『" + skill.getName() + "』終了");
                 }
