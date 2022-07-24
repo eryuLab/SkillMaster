@@ -10,14 +10,17 @@ import org.bukkit.util.Vector;
 public class LeafFlow extends ActionableSkill {
 
     public LeafFlow() {
-        super("リーフフロー", 0, 40);
+        super("リーフフロー", 0, 10);
     }
 
     @Override
     public void activate(SkillUser user) {
         normalAttack = false;
 
-        Vector vector = user.getPlayer().getEyeLocation().getDirection().normalize().multiply(1).setY(0.15);
+        Vector vector = user.getPlayer().getEyeLocation().getDirection()
+                .normalize()
+                .multiply(1)
+                .setY(0.15);
 
         user.getPlayer().setVelocity(vector);
     }
