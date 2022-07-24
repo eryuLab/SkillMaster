@@ -78,6 +78,7 @@ public class SkillUser {
             rightIndex++;
             if (rightIndex == SKILL_SET_SIZE)
                 rightIndex = 0;
+            playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
         }
         else
             activate(rightSkillSet[rightIndex]);
@@ -88,6 +89,7 @@ public class SkillUser {
             qIndex++;
             if (qIndex == SKILL_SET_SIZE)
                 qIndex = 0;
+            playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
         }
         else
             activate(qSkillSet[qIndex]);
@@ -98,6 +100,7 @@ public class SkillUser {
             fIndex++;
             if (fIndex == SKILL_SET_SIZE)
                 fIndex = 0;
+            playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
         }
         else
             activate(fSkillSet[fIndex]);
