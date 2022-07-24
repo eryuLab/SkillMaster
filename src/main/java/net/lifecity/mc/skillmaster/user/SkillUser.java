@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.ActionableSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.skill.skills.JumpAttack;
 import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,16 +32,16 @@ public class SkillUser {
     private int rightIndex = 0;
 
     @Getter
-    private UserSkill[] dropSkillSet;
-
-    @Getter
-    private int dropIndex = 0;
-
-    @Getter
     private UserSkill[] swapSkillSet;
 
     @Getter
     private int swapIndex = 0;
+
+    @Getter
+    private UserSkill[] dropSkillSet;
+
+    @Getter
+    private int dropIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
@@ -49,12 +50,12 @@ public class SkillUser {
                 null,
                 null
         };
-        this.dropSkillSet = new UserSkill[] {
-                null,
+        this.swapSkillSet = new UserSkill[] {
+                new UserSkill(new JumpAttack()),
                 null,
                 null
         };
-        this.swapSkillSet = new UserSkill[] {
+        this.dropSkillSet = new UserSkill[] {
                 null,
                 null,
                 null
@@ -79,18 +80,6 @@ public class SkillUser {
         else
             activate(rightSkillSet[rightIndex]);
     }
-    public void drop() {
-        // Shiftば押されているか
-        if (player.isSneaking()) {
-            dropIndex++;
-            if (dropIndex == SKILL_SET_SIZE)
-                dropIndex = 0;
-            playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-            sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
-        }
-        else
-            activate(dropSkillSet[dropIndex]);
-    }
     public void swap() {
         // Shiftが押されているか
         if (player.isSneaking()) {
@@ -103,6 +92,18 @@ public class SkillUser {
         else
             activate(swapSkillSet[swapIndex]);
     }
+    public void drop() {
+        // Shiftば押されているか
+        if (player.isSneaking()) {
+            dropIndex++;
+            if (dropIndex == SKILL_SET_SIZE)
+                dropIndex = 0;
+            playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+            sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
+        }
+        else
+            activate(dropSkillSet[dropIndex]);
+    }
 
     private void activate(UserSkill userSkill) {
         // null確認
@@ -110,6 +111,10 @@ public class SkillUser {
             sendMessage("スキルがセットされていません");
             return;
         }
+
+        // すでに発動しているスキルがあるか
+        if (activatingSkill != null)
+            return;
 
         // スキルが追加動作を持っている場合、動作を使えるように登録
         if (userSkill.getSkill() instanceof ActionableSkill actionableSkill)
