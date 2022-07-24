@@ -148,11 +148,13 @@ public class SkillUser {
             new BukkitRunnable() { //インターバルが過ぎたら再度発動可能
                 @Override
                 public void run() {
+
+                    // スキルインスタンスの初期化
+
                     inInterval = false;
 
-                    if (SkillUser.this.activatingSkill == skill)
-                        SkillUser.this.activatingSkill = null;
-                        ((ActionableSkill) skill).setNormalAttack(true);
+                    SkillUser.this.activatingSkill = null;
+                    ((ActionableSkill) skill).setNormalAttack(true);
 
                     sendActionBar(ChatColor.RED + "スキル『" + skill.getName() + "』終了");
                 }
