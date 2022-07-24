@@ -1,8 +1,7 @@
 package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
-import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.skill.ActionableSkill;
+import lombok.Setter;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.JumpAttack;
 import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
@@ -11,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -23,51 +21,58 @@ public class SkillUser {
     private final Player player;
 
     @Getter
-    private ActionableSkill activatingSkill;
+    @Setter
+    private Skill activatingSkill;
 
     @Getter
-    private UserSkill[] rightSkillSet;
+    private Skill[] rightSkillSet;
 
     @Getter
     private int rightIndex = 0;
 
     @Getter
-    private UserSkill[] swapSkillSet;
+    private Skill[] swapSkillSet;
 
     @Getter
     private int swapIndex = 0;
 
     @Getter
-    private UserSkill[] dropSkillSet;
+    private Skill[] dropSkillSet;
 
     @Getter
     private int dropIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
-        this.rightSkillSet = new UserSkill[] {
-                new UserSkill(new LeafFlow()),
+        this.rightSkillSet = new Skill[] {
+                new LeafFlow(this),
                 null,
                 null
         };
-        this.swapSkillSet = new UserSkill[] {
-                new UserSkill(new JumpAttack()),
+        this.swapSkillSet = new Skill[] {
+                new JumpAttack(this),
                 null,
                 null
         };
-        this.dropSkillSet = new UserSkill[] {
+        this.dropSkillSet = new Skill[] {
                 null,
                 null,
                 null
         };
     }
 
+    /**
+     * 左クリックを入力した時の処理
+     */
     public void leftClick() {
         // 発動中の攻撃スキルが存在するか
         if (activatingSkill != null)
-            activatingSkill.action(this);
+            activatingSkill.leftClick();
     }
 
+    /**
+     * 右クリックを入力した時の処理
+     */
     public void rightClick() {
         // Shiftが押されているか
         if (player.isSneaking()) {
@@ -80,6 +85,10 @@ public class SkillUser {
         else
             activate(rightSkillSet[rightIndex]);
     }
+
+    /**
+     * スワップキーを押した時の処理
+     */
     public void swap() {
         // Shiftが押されているか
         if (player.isSneaking()) {
@@ -92,6 +101,10 @@ public class SkillUser {
         else
             activate(swapSkillSet[swapIndex]);
     }
+
+    /**
+     * ドロップキーを押した時の処理
+     */
     public void drop() {
         // Shiftば押されているか
         if (player.isSneaking()) {
@@ -105,61 +118,35 @@ public class SkillUser {
             activate(dropSkillSet[dropIndex]);
     }
 
-    private void activate(UserSkill userSkill) {
+    /**
+     * スキルを起動するためのメソッド
+     * @param skill 起動するスキル
+     */
+    private void activate(Skill skill) {
         // null確認
-        if (userSkill == null) {
+        if (skill == null) {
             sendMessage("スキルがセットされていません");
             return;
         }
 
         // すでに発動しているスキルがあるか
-        if (activatingSkill != null)
+        if (activatingSkill != null) {
+            sendMessage("すでに発動中のスキルがあります: スキル『" + activatingSkill.getName() + "』");
+            return;
+        }
+
+        // インターバル中か確認
+        if (skill.isInInterval()) {
+            sendMessage("インターバル中です");
+            return;
+        }
+
+        // 発動中であるか確認
+        if (skill.isActivating())
             return;
 
-        // スキルが追加動作を持っている場合、動作を使えるように登録
-        if (userSkill.getSkill() instanceof ActionableSkill actionableSkill)
-            activatingSkill = actionableSkill;
-
         // スキルを発動
-        userSkill.activate();
-
-        // ログ
-        sendActionBar(ChatColor.DARK_AQUA + "スキル『" + userSkill.getSkill().getName() + "』発動");
-    }
-
-    public class UserSkill {
-
-        @Getter
-        private final Skill skill;
-
-        private boolean inInterval = false;
-
-        public UserSkill(Skill skill) {
-            this.skill = skill;
-        }
-
-        public void activate() {
-            if (inInterval) //インターバル中は発動不可
-                return;
-
-            skill.activate(SkillUser.this); //スキル発動
-            inInterval = true; //「インターバル中」に設定
-
-            new BukkitRunnable() { //インターバルが過ぎたら再度発動可能
-                @Override
-                public void run() {
-
-                    // スキルインスタンスの初期化
-
-                    inInterval = false;
-
-                    SkillUser.this.activatingSkill = null;
-                    ((ActionableSkill) skill).setNormalAttack(true);
-
-                    sendActionBar(ChatColor.RED + "スキル『" + skill.getName() + "』終了");
-                }
-            }.runTaskLater(SkillMaster.instance, skill.getInterval()); //インターバル後に実行
-        }
+        skill.activate();
     }
 
     /**
