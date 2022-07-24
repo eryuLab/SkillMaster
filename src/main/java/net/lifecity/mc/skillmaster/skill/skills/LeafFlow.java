@@ -1,32 +1,32 @@
 package net.lifecity.mc.skillmaster.skill.skills;
 
-import net.lifecity.mc.skillmaster.skill.ActionableSkill;
+import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-public class LeafFlow extends ActionableSkill {
+public class LeafFlow extends Skill {
 
-    public LeafFlow() {
-        super("リーフフロー", 0, 40);
+    public LeafFlow(SkillUser user){
+        super("リーフフロー", 0, 8, 0, user);
     }
 
     @Override
-    public void activate(SkillUser user) {
-        normalAttack = false;
+    public void activate() {
+        super.activate();
 
-        Vector vector = user.getPlayer().getEyeLocation().getDirection().normalize().multiply(1).setY(0.15);
+        Vector vector = user.getPlayer().getEyeLocation().getDirection()
+                .normalize()
+                .multiply(1)
+                .setY(0.15);
 
         user.getPlayer().setVelocity(vector);
     }
 
     @Override
-    public void action(SkillUser user) {
-        // 再度攻撃不可(通常攻撃に変換)
-        normalAttack = true;
-
+    public void leftClick() {
         // 一番近いEntityを取得
         Entity entity = user.getNearestEntity(1.8);
 
@@ -44,5 +44,8 @@ public class LeafFlow extends ActionableSkill {
             // SE再生
             user.playSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
         }
+
+        // 終了
+        deactivate();
     }
 }
