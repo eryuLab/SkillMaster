@@ -204,9 +204,15 @@ public class SkillUser {
      * @param sound このSEを再生します
      */
     public void attackNearest(double radius, double damage, Vector vector, Sound sound) {
-        Entity entity = getNearEntities(radius).get(0);
+        List<Entity> entities = getNearEntities(radius);
+
+        if (entities.size() == 0)
+            return;
+
+        Entity entity = entities.get(0);
         if (entity == null)
             return;
+
         if (entity instanceof Damageable target) {
             // 標的にダメージを与える
             target.damage(damage);
