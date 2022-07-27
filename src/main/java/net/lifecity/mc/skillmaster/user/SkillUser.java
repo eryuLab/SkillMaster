@@ -21,10 +21,6 @@ public class SkillUser {
     private final Player player;
 
     @Getter
-    @Setter
-    private Skill activatingSkill;
-
-    @Getter
     private Skill[] rightSkillSet;
 
     @Getter
@@ -66,6 +62,7 @@ public class SkillUser {
      */
     public void leftClick() {
         // 発動中の攻撃スキルが存在するか
+        Skill activatingSkill = getActivatingSkill();
         if (activatingSkill != null)
             activatingSkill.leftClick();
     }
@@ -130,6 +127,7 @@ public class SkillUser {
         }
 
         // すでに発動しているスキルがあるか
+        Skill activatingSkill = getActivatingSkill();
         if (activatingSkill != null) {
             sendMessage("すでに発動中のスキルがあります: スキル『" + activatingSkill.getName() + "』");
             return;
@@ -147,6 +145,34 @@ public class SkillUser {
 
         // スキルを発動
         skill.activate();
+    }
+
+    /**
+     * 発動中のスキルを返します
+     * @return 発動中のスキル
+     */
+    public Skill getActivatingSkill() {
+
+        for (Skill skill : rightSkillSet) {
+            if (skill == null)
+                continue;
+            if (skill.isActivating())
+                return skill;
+        }
+        for (Skill skill : swapSkillSet) {
+            if (skill == null)
+                continue;
+            if (skill.isActivating())
+                return skill;
+        }
+        for (Skill skill : dropSkillSet) {
+            if (skill == null)
+                continue;
+            if (skill.isActivating())
+                return skill;
+        }
+
+        return null;
     }
 
     /**
