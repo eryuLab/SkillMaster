@@ -1,16 +1,20 @@
 package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
-import lombok.Setter;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.JumpAttack;
 import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
-import org.bukkit.ChatColor;
+import net.lifecity.mc.skillmaster.utils.EntitySort;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SkillUser {
@@ -193,6 +197,35 @@ public class SkillUser {
     }
 
     /**
+     * 一番近いEntityを攻撃します
+     * @param radius この半径内のEntityに攻撃します
+     * @param damage このダメージを与えます
+     * @param vector このベクトルを与えます
+     * @param sound このSEを再生します
+     */
+    public void attackNearest(double radius, double damage, Vector vector, Sound sound) {
+        List<Entity> entities = getNearEntities(radius);
+
+        if (entities.size() == 0)
+            return;
+
+        Entity entity = entities.get(0);
+        if (entity == null)
+            return;
+
+        if (entity instanceof Damageable target) {
+            // 標的にダメージを与える
+            target.damage(damage);
+
+            // 標的をノックバックさせる
+            target.setVelocity(vector);
+
+            // SE再生
+            playSound(sound);
+        }
+    }
+
+    /**
      * 敵からの攻撃を防御します
      * todo 複数の攻撃を防御
      */
@@ -202,13 +235,14 @@ public class SkillUser {
      * このプレイヤーの位置から一番近いentityを取得します
      * @return このプレイヤーの位置から一番近いentity
      */
-    public Entity getNearestEntity(double radius) {
+    public List<Entity> getNearEntities(double radius) {
         // 半径radiusで近くのentityのリストを取得
         List<Entity> near = player.getNearbyEntities(radius, radius, radius);
 
-        // 近くになにもいなかったらnullを返す
-        if (near.size() == 0) return null;
+        // 近い順にする
+        EntitySort.quicksort(player, near, 0, near.size() - 1);
 
+        /*
         // near.get(0)の値で初期化
         Entity nearest = near.get(0);
         double distance1 = player.getLocation().distance(nearest.getLocation());
@@ -222,7 +256,9 @@ public class SkillUser {
             }
         }
 
-        return nearest;
+         */
+
+        return near;
     }
 
     /**
