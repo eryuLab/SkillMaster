@@ -27,23 +27,14 @@ public class LeafFlow extends Skill {
 
     @Override
     public void leftClick() {
-        // 一番近いEntityを取得
-        Entity entity = user.getNearestEntity(1.8);
 
-        // 近くにEntityがいなければreturn
-        if (entity == null)
-            return;
-
-        if (entity instanceof Damageable target) {
-            // 標的にダメージを与える
-            target.damage(3);
-
-            // 標的をノックバックさせる
-            target.setVelocity(user.getPlayer().getVelocity().normalize().setY(0.15));
-
-            // SE再生
-            user.playSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
-        }
+        // 一番近いEntityを攻撃
+        user.attackNearest(
+                1.8,
+                3,
+                user.getPlayer().getVelocity().normalize().setY(0.15),
+                Sound.ENTITY_PLAYER_ATTACK_SWEEP
+                );
 
         // 終了
         deactivate();

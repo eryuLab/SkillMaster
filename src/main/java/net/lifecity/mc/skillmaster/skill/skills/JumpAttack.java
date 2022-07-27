@@ -61,22 +61,13 @@ public class JumpAttack extends Skill {
 
         } else if (step == 2) {
 
-            // 一番近いEntityを取得
-            Entity entity = user.getNearestEntity(2);
-
-            // 近くにEntityがいなければreturn
-            if (entity != null) {
-                if (entity instanceof Damageable target) {
-                    // 標的にダメージを与える
-                    target.damage(5);
-
-                    // 標的をノックバックさせる
-                    target.setVelocity(user.getPlayer().getVelocity().setY(0.45));
-
-                    // SE再生
-                    user.playSound(Sound.ENTITY_PLAYER_ATTACK_CRIT);
-                }
-            }
+            // 一番近いEntityを攻撃
+            user.attackNearest(
+                    2,
+                    5,
+                    user.getPlayer().getVelocity().setY(0.45),
+                    Sound.ENTITY_PLAYER_ATTACK_CRIT
+            );
 
             deactivate(); //終了処理
         }
