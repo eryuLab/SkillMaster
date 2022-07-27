@@ -37,13 +37,11 @@ public abstract class Skill {
      * スキルを発動します
      */
     public void activate() {
-        // 発動中にする
-        user.setActivatingSkill(this);
 
         // ログ
         user.sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
 
-        // 発動開始
+        // 発動中にする
         activating = true;
 
         // 終了処理
@@ -85,8 +83,6 @@ public abstract class Skill {
             return;
 
         activating = false; //非発動化する
-
-        user.setActivatingSkill(null); //ユーザーのスキルをnull化
 
         // ログ
         user.sendActionBar(ChatColor.RED + "スキル『" + name + "』終了");
