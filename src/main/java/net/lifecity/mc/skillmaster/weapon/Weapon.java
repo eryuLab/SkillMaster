@@ -1,47 +1,59 @@
 package net.lifecity.mc.skillmaster.weapon;
 
-import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
+public enum Weapon {
+    STRAIGHT_SWORD("直剣", 1),
+    DAGGER("短剣", 2),
+    GREAT_SWORD("大剣", 3),
+    LONG_SWORD("太刀", 4),
+    RAPIER("刺剣", 5),
+    MACE("槌矛", 6);
 
-public class Weapon {
+    private String jp;
 
-    @Getter
-    private final String name;
+    private int digit;
 
-    @Getter
-    private final String jp;
-
-    private final int cmdDigit;
-
-    protected Weapon(String name, String jp, int cmdDigit) {
-        this.name = name;
+    Weapon(String jp, int digit) {
         this.jp = jp;
-        this.cmdDigit = cmdDigit;
+        this.digit = digit;
     }
 
     /**
-     * アイテムがこの武器であるか確認する
-     * @param item 確かめるアイテム
-     * @return この武器であるか
+     * このWeaponとItemStackが一致するか確認します
+     * @param itemStack 対象となるItemStack
+     * @return 一致するか
      */
-    public boolean match(ItemStack item) {
+    public boolean match(ItemStack itemStack) {
 
-        if (item.getType() != Material.WOODEN_SWORD) //Materialを確認
+        // Materialを確認
+        if (itemStack.getType() != Material.WOODEN_SWORD)
             return false;
 
-        ItemMeta meta = item.getItemMeta();
+        // カスタムモデルデータを確認
+        ItemMeta meta = itemStack.getItemMeta();
 
-        // カスタムモデルデータの確認
         if (!meta.hasCustomModelData())
             return false;
 
-        if (meta.getCustomModelData() <= cmdDigit * 100 || meta.getCustomModelData() > cmdDigit * 100 + 99)
+        if (meta.getCustomModelData() <= digit * 100 || meta.getCustomModelData() > digit * 100 + 99)
             return false;
 
         return true;
+    }
+
+    /**
+     * ItemStackからWeaponを取得します
+     * @param itemStack 対象となるItemStack
+     * @return 一致したWeapon
+     */
+    public static Weapon from(ItemStack itemStack) {
+        for (Weapon weapon : values()) {
+            if (weapon.match(itemStack))
+                return weapon;
+        }
+        return null;
     }
 }
