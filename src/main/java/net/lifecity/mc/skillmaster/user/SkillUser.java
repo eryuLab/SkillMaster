@@ -257,7 +257,7 @@ public class SkillUser {
         return player.getInventory().getItemInMainHand();
     }
     public Weapon getHandWeapon() {
-        return Weapon.from(getHandItem());
+        return Weapon.fromItemStack(getHandItem());
     }
 
     /**

@@ -25,6 +25,19 @@ public enum Weapon {
         this.digit = digit;
     }
 
+    public ItemStack toItemStack() {
+        ItemStack itemStack = new ItemStack(Material.WOODEN_SWORD);
+        ItemMeta meta = itemStack.getItemMeta();
+
+        meta.setCustomModelData(digit * 100);
+
+        meta.setDisplayName(jp);
+
+        itemStack.setItemMeta(meta);
+
+        return itemStack;
+    }
+
     /**
      * このWeaponとItemStackが一致するか確認します
      * @param itemStack 対象となるItemStack
@@ -53,9 +66,30 @@ public enum Weapon {
      * @param itemStack 対象となるItemStack
      * @return 一致したWeapon
      */
-    public static Weapon from(ItemStack itemStack) {
+    public static Weapon fromItemStack(ItemStack itemStack) {
         for (Weapon weapon : values()) {
             if (weapon.match(itemStack))
+                return weapon;
+        }
+        return null;
+    }
+
+    /**
+     * 日本語名からWeaponを取得します
+     * @param jpName この名前を検索に使います
+     * @return nameが一致したWeapon
+     */
+    public static Weapon fromJP(String jpName) {
+        for (Weapon weapon : values()) {
+            if (weapon.getJp().equals(jpName))
+                return weapon;
+        }
+        return null;
+    }
+
+    public static Weapon fromName(String name) {
+        for (Weapon weapon : values()) {
+            if (weapon.name().equalsIgnoreCase(name))
                 return weapon;
         }
         return null;
