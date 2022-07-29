@@ -239,24 +239,8 @@ public class SkillUser {
         // 半径radiusで近くのentityのリストを取得
         List<Entity> near = player.getNearbyEntities(radius, radius, radius);
 
-        // 近い順にする
+        // クイックソートで近い順にする
         EntitySort.quicksort(player, near, 0, near.size() - 1);
-
-        /*
-        // near.get(0)の値で初期化
-        Entity nearest = near.get(0);
-        double distance1 = player.getLocation().distance(nearest.getLocation());
-
-        // 一番近いentityを見つける
-        for (Entity entity : near) {
-            double distance2 = player.getLocation().distance(entity.getLocation());
-            if (distance1 < distance2) {
-                distance1 = distance2;
-                nearest = entity;
-            }
-        }
-
-         */
 
         return near;
     }
