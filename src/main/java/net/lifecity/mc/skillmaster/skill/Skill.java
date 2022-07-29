@@ -102,7 +102,7 @@ public abstract class Skill {
             @Override
             public void run() {
                 inInterval = false;
-                user.sendMessage("インターバル解除");
+                user.sendMessage(name + ": インターバル終了");
             }
         }.runTaskLater(SkillMaster.instance, interval);
     }
