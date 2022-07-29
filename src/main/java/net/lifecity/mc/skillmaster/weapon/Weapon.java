@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.weapon;
 
+import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -12,6 +14,7 @@ public enum Weapon {
     RAPIER("刺剣", 5),
     MACE("槌矛", 6);
 
+    @Getter
     private String jp;
 
     private int digit;
@@ -38,7 +41,7 @@ public enum Weapon {
         if (!meta.hasCustomModelData())
             return false;
 
-        if (meta.getCustomModelData() <= digit * 100 || meta.getCustomModelData() > digit * 100 + 99)
+        if (meta.getCustomModelData() < digit * 100 || meta.getCustomModelData() > digit * 100 + 99)
             return false;
 
         return true;
