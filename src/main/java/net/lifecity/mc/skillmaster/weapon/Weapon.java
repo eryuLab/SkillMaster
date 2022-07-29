@@ -17,6 +17,7 @@ public enum Weapon {
     @Getter
     private String jp;
 
+    @Getter
     private int digit;
 
     Weapon(String jp, int digit) {
