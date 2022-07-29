@@ -136,7 +136,7 @@ public class SkillUser {
         }
 
         // 持っている武器を確認
-        if (!skill.usable(Weapon.from(getHandItem()))) {
+        if (!skill.usable(getHandWeapon())) {
             sendMessage("この武器ではこのスキルを発動できません");
             return;
         }
@@ -255,6 +255,9 @@ public class SkillUser {
      */
     public ItemStack getHandItem() {
         return player.getInventory().getItemInMainHand();
+    }
+    public Weapon getHandWeapon() {
+        return Weapon.fromItemStack(getHandItem());
     }
 
     /**

@@ -7,16 +7,14 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Skill {
 
     @Getter
     protected final String name;
 
-    protected final List<Weapon> weaponList;
+    protected final Set<Weapon> weaponSet;
 
     protected final int point;
 
@@ -34,7 +32,7 @@ public abstract class Skill {
 
     protected Skill(String name, List<Weapon> weaponList, int point, int activationTime, int interval, SkillUser user) {
         this.name = name;
-        this.weaponList = weaponList;
+        this.weaponSet = new HashSet<>(weaponList);
         this.point = point;
         this.activationTime = activationTime;
         this.interval = interval;
@@ -102,12 +100,12 @@ public abstract class Skill {
             @Override
             public void run() {
                 inInterval = false;
-                user.sendMessage("インターバル解除");
+                user.sendMessage(name + ": インターバル終了");
             }
         }.runTaskLater(SkillMaster.instance, interval);
     }
 
     public boolean usable(Weapon weapon) {
-        return weaponList.contains(weapon);
+        return weaponSet.contains(weapon);
     }
 }
