@@ -5,16 +5,14 @@ import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.JumpAttack;
 import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
-import org.bukkit.Material;
+import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class SkillUser {
@@ -137,6 +135,12 @@ public class SkillUser {
             return;
         }
 
+        // 持っている武器を確認
+        if (!skill.usable(getHandWeapon())) {
+            sendMessage("この武器ではこのスキルを発動できません");
+            return;
+        }
+
         // インターバル中か確認
         if (skill.isInInterval()) {
             sendMessage("インターバル中です");
@@ -239,24 +243,8 @@ public class SkillUser {
         // 半径radiusで近くのentityのリストを取得
         List<Entity> near = player.getNearbyEntities(radius, radius, radius);
 
-        // 近い順にする
+        // クイックソートで近い順にする
         EntitySort.quicksort(player, near, 0, near.size() - 1);
-
-        /*
-        // near.get(0)の値で初期化
-        Entity nearest = near.get(0);
-        double distance1 = player.getLocation().distance(nearest.getLocation());
-
-        // 一番近いentityを見つける
-        for (Entity entity : near) {
-            double distance2 = player.getLocation().distance(entity.getLocation());
-            if (distance1 < distance2) {
-                distance1 = distance2;
-                nearest = entity;
-            }
-        }
-
-         */
 
         return near;
     }
@@ -265,8 +253,11 @@ public class SkillUser {
      * メインハンドのMaterialを取得します
      * @return メインハンドのMaterial
      */
-    public Material getHandMaterial() {
-        return player.getInventory().getItemInMainHand().getType();
+    public ItemStack getHandItem() {
+        return player.getInventory().getItemInMainHand();
+    }
+    public Weapon getHandWeapon() {
+        return Weapon.fromItemStack(getHandItem());
     }
 
     /**

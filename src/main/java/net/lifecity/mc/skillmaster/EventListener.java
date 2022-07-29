@@ -1,13 +1,10 @@
 package net.lifecity.mc.skillmaster;
 
-import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
@@ -28,7 +25,7 @@ public class EventListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
-        if (user.getHandMaterial() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
+        if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
 
             if (event.getAction().isLeftClick()) //攻撃を入力
                 user.leftClick();
@@ -43,7 +40,7 @@ public class EventListener implements Listener {
         // プレイヤーが木の剣で攻撃したらイベントキャンセル
         if (event.getDamager() instanceof Player player) {
             SkillUser user = SkillMaster.instance.getUserList().get(player);
-            if (user.getHandMaterial() == Material.WOODEN_SWORD) {
+            if (user.getHandItem().getType() == Material.WOODEN_SWORD) {
 
                 if (user.getActivatingSkill() != null) { //発動中のすきるがあるか
                     event.setCancelled(true);
@@ -66,7 +63,7 @@ public class EventListener implements Listener {
     public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
-        if (user.getHandMaterial() == Material.WOODEN_SWORD) { //Fスキル入力
+        if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //Fスキル入力
             event.setCancelled(true);
             user.swap();
         }
