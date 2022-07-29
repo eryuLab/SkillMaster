@@ -3,13 +3,20 @@ package net.lifecity.mc.skillmaster.skill;
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Skill {
 
     @Getter
     protected final String name;
+
+    protected final List<Weapon> weaponList;
 
     protected final int point;
 
@@ -25,8 +32,9 @@ public abstract class Skill {
     @Getter
     protected boolean inInterval = false;
 
-    protected Skill(String name, int point, int activationTime, int interval, SkillUser user) {
+    protected Skill(String name, List<Weapon> weaponList, int point, int activationTime, int interval, SkillUser user) {
         this.name = name;
+        this.weaponList = weaponList;
         this.point = point;
         this.activationTime = activationTime;
         this.interval = interval;
@@ -99,4 +107,7 @@ public abstract class Skill {
         }.runTaskLater(SkillMaster.instance, interval);
     }
 
+    public boolean usable(Weapon weapon) {
+        return weaponList.contains(weapon);
+    }
 }
