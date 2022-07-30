@@ -35,11 +35,9 @@ public class EventListener implements Listener {
                 user.leftClick();
 
             else if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-                user.sendMessage("right_click_air");
                 user.rightClick();
             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if(!flag) {
-                    user.sendMessage("right_click_block");
                     user.rightClick();
                     flag = true;
                 } else {
