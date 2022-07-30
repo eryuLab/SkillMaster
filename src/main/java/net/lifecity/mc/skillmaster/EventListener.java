@@ -5,11 +5,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
+
+    private boolean flag = false;
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -27,11 +30,22 @@ public class EventListener implements Listener {
 
         if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
 
+
             if (event.getAction().isLeftClick()) //攻撃を入力
                 user.leftClick();
 
-            else if (event.getAction().isRightClick()) //右クリックスキルを入力
+            else if (event.getAction() == Action.RIGHT_CLICK_AIR) {
+                user.sendMessage("right_click_air");
                 user.rightClick();
+            } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if(!flag) {
+                    user.sendMessage("right_click_block");
+                    user.rightClick();
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+            }
         }
     }
 
@@ -52,7 +66,7 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDamage(EntityDamageEvent event) {
+    public void onEntityDamage(EntityDamageEvent event) {
 
         // 落下ダメージを無効化
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL)
@@ -68,6 +82,7 @@ public class EventListener implements Listener {
             user.swap();
         }
     }
+
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
