@@ -12,6 +12,8 @@ import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
 
+    private boolean flag = false;
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         SkillMaster.instance.getUserList().add(event.getPlayer());
@@ -28,6 +30,7 @@ public class EventListener implements Listener {
 
         if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
 
+
             if (event.getAction().isLeftClick()) //攻撃を入力
                 user.leftClick();
 
@@ -35,8 +38,13 @@ public class EventListener implements Listener {
                 user.sendMessage("right_click_air");
                 user.rightClick();
             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                user.sendMessage("right_click_block");
-                user.rightClick();
+                if(!flag) {
+                    user.sendMessage("right_click_block");
+                    user.rightClick();
+                    flag = true;
+                } else {
+                    flag = false;
+                }
             }
         }
     }
@@ -74,6 +82,7 @@ public class EventListener implements Listener {
             user.swap();
         }
     }
+
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
