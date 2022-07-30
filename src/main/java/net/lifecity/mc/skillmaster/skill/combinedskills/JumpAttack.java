@@ -1,18 +1,16 @@
-package net.lifecity.mc.skillmaster.skill.skills;
+package net.lifecity.mc.skillmaster.skill.combinedskills;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.skill.CombinedSkill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
-public class JumpAttack extends Skill {
+public class JumpAttack extends CombinedSkill {
 
     /**
      * step0: 飛び上がってから攻撃できるようになるまで

@@ -1,9 +1,10 @@
 package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
+import net.lifecity.mc.skillmaster.skill.CombinedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
-import net.lifecity.mc.skillmaster.skill.skills.JumpAttack;
-import net.lifecity.mc.skillmaster.skill.skills.LeafFlow;
+import net.lifecity.mc.skillmaster.skill.combinedskills.JumpAttack;
+import net.lifecity.mc.skillmaster.skill.combinedskills.LeafFlow;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -42,17 +43,17 @@ public class SkillUser {
 
     public SkillUser(Player player) {
         this.player = player;
-        this.rightSkillSet = new Skill[] {
+        this.rightSkillSet = new CombinedSkill[] {
                 new LeafFlow(this),
                 null,
                 null
         };
-        this.swapSkillSet = new Skill[] {
+        this.swapSkillSet = new CombinedSkill[] {
                 new JumpAttack(this),
                 null,
                 null
         };
-        this.dropSkillSet = new Skill[] {
+        this.dropSkillSet = new CombinedSkill[] {
                 null,
                 null,
                 null
@@ -64,7 +65,7 @@ public class SkillUser {
      */
     public void leftClick() {
         // 発動中の攻撃スキルが存在するか
-        Skill activatingSkill = getActivatingSkill();
+        CombinedSkill activatingSkill = getActivatingSkill();
         if (activatingSkill != null)
             activatingSkill.leftClick();
     }
@@ -128,30 +129,31 @@ public class SkillUser {
             return;
         }
 
-        // すでに発動しているスキルがあるか
-        Skill activatingSkill = getActivatingSkill();
-        if (activatingSkill != null) {
-            sendMessage("すでに発動中のスキルがあります: スキル『" + activatingSkill.getName() + "』");
-            return;
-        }
-
         // 持っている武器を確認
         if (!skill.usable(getHandWeapon())) {
-            sendMessage("この武器ではこのスキルを発動できません");
+            sendMessage("この武器ではこのスキルを使用できません");
             return;
         }
 
-        // インターバル中か確認
-        if (skill.isInInterval()) {
-            sendMessage("インターバル中です");
+        // インターバル確認
+        if (skill.isInInterval())
             return;
+
+        // 複合スキルの場合
+        if (skill instanceof CombinedSkill combinedSkill) {
+
+            CombinedSkill activatingSkill = getActivatingSkill();
+
+            if (activatingSkill != null) {
+                sendMessage("すでに発動中のスキルがあります: スキル『" + activatingSkill.getName() + "』");
+                return;
+            }
+
+            if (combinedSkill.isActivating())
+                return;
+
         }
 
-        // 発動中であるか確認
-        if (skill.isActivating())
-            return;
-
-        // スキルを発動
         skill.activate();
     }
 
@@ -159,25 +161,28 @@ public class SkillUser {
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    public Skill getActivatingSkill() {
+    public CombinedSkill getActivatingSkill() {
 
         for (Skill skill : rightSkillSet) {
+            CombinedSkill combinedSkill = (CombinedSkill) skill;
             if (skill == null)
                 continue;
-            if (skill.isActivating())
-                return skill;
+            if (combinedSkill.isActivating())
+                return combinedSkill;
         }
         for (Skill skill : swapSkillSet) {
+            CombinedSkill combinedSkill = (CombinedSkill) skill;
             if (skill == null)
                 continue;
-            if (skill.isActivating())
-                return skill;
+            if (combinedSkill.isActivating())
+                return combinedSkill;
         }
         for (Skill skill : dropSkillSet) {
+            CombinedSkill combinedSkill = (CombinedSkill) skill;
             if (skill == null)
                 continue;
-            if (skill.isActivating())
-                return skill;
+            if (combinedSkill.isActivating())
+                return combinedSkill;
         }
 
         return null;
@@ -243,7 +248,7 @@ public class SkillUser {
         // 半径radiusで近くのentityのリストを取得
         List<Entity> near = player.getNearbyEntities(radius, radius, radius);
 
-        // クイックソートで近い順にする
+        // Entityのリストを近い順に並べ替える
         EntitySort.quicksort(player, near, 0, near.size() - 1);
 
         return near;
