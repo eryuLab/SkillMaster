@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.combinedskills.JumpAttack;
 import net.lifecity.mc.skillmaster.skill.combinedskills.LeafFlow;
 import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
+import net.lifecity.mc.skillmaster.skill.skills.VectorAttack;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -45,13 +46,13 @@ public class SkillUser {
     public SkillUser(Player player) {
         this.player = player;
         this.rightSkillSet = new Skill[] {
+                new VectorAttack(this),
                 new LeafFlow(this),
-                null,
                 null
         };
         this.swapSkillSet = new Skill[] {
                 new MoveFast(this),
-                null,
+                new JumpAttack(this),
                 null
         };
         this.dropSkillSet = new Skill[] {
