@@ -41,12 +41,17 @@ public class Skill {
     public void activate() {
         // ログ
         user.sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
+
+        deactivate();
     }
 
     /**
      * スキルを終了し、インターバルタイマーを起動します
      */
     public void deactivate() {
+        if (inInterval)
+            return;
+
         // インターバル中にする
         inInterval = true;
 
