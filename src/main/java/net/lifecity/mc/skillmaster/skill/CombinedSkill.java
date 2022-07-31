@@ -25,7 +25,8 @@ public abstract class CombinedSkill extends Skill {
      * スキルを発動します
      */
     public void activate() {
-        super.activate();
+        // ログ
+        user.sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
 
         // 発動中にする
         activating = true;
