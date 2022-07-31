@@ -46,7 +46,7 @@ public class Skill {
     /**
      * スキルを終了し、インターバルタイマーを起動します
      */
-    protected void deactivate() {
+    public void deactivate() {
         // インターバル中にする
         inInterval = true;
 

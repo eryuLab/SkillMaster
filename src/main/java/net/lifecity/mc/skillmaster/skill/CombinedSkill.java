@@ -57,14 +57,14 @@ public abstract class CombinedSkill extends Skill {
     }
 
     /**
-     * 呼び出し前に必ずinActivating()がtrueになっていることを確認してください
+     * 呼び出し前に必ずisInActivating()がtrueになっていることを確認してください
      */
     public abstract void leftClick();
 
     /**
      * スキルを終了します
      */
-    protected void deactivate() {
+    public void deactivate() {
         if (!activating) //発動していなかったら戻る
             return;
 
