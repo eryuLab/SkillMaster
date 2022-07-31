@@ -32,7 +32,7 @@ public class SkillCommand {
     }
     
     @Subcommand("mode")
-    public static void mode(Player player, @AMultiLiteralArgument({"lobby", "battle"}) String name) {
+    public static void mode(Player player, @AMultiLiteralArgument({"LOBBY", "BATTLE"}) String name) {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
 
         UserMode mode = UserMode.valueOf(name);
