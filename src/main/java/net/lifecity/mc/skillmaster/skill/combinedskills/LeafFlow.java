@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class LeafFlow extends CombinedSkill {
 
     public LeafFlow(SkillUser user) {
-        super("リーフフロー", Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER), 0, 8, 0, user);
+        super("リーフフロー", Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER), 0, 8, 15, user);
     }
 
     @Override

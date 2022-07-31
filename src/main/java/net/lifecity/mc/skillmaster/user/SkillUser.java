@@ -147,8 +147,9 @@ public class SkillUser {
             CombinedSkill activatingSkill = getActivatingSkill();
 
             if (activatingSkill != null) {
-                sendMessage("すでに発動中のスキルがあります: スキル『" + activatingSkill.getName() + "』");
-                return;
+                if (activatingSkill != skill) {
+                    activatingSkill.deactivate();
+                }
             }
 
             // 発動中だったら追加入力
