@@ -47,7 +47,7 @@ public class JumpAttack extends CombinedSkill {
     }
 
     @Override
-    public void leftClick() { //向いている方向(下)に突っ込み、攻撃する
+    public void additionalInput() { //向いている方向(下)に突っ込み、攻撃する
 
         if (step == 1) { //突っ込みの入力
 

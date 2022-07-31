@@ -27,7 +27,7 @@ public class LeafFlow extends CombinedSkill {
     }
 
     @Override
-    public void leftClick() {
+    public void additionalInput() {
 
         // 一番近いEntityを攻撃
         user.attackNearest(
