@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster;
 
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +29,9 @@ public class EventListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
+        if (user.getMode() == UserMode.LOBBY)
+            return;
+
         if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
 
 
@@ -52,6 +56,10 @@ public class EventListener implements Listener {
         // プレイヤーが木の剣で攻撃したらイベントキャンセル
         if (event.getDamager() instanceof Player player) {
             SkillUser user = SkillMaster.instance.getUserList().get(player);
+
+            if (user.getMode() == UserMode.LOBBY)
+                return;
+
             if (user.getHandItem().getType() == Material.WOODEN_SWORD) {
 
                 if (user.getActivatingSkill() != null) { //発動中のすきるがあるか
@@ -68,12 +76,16 @@ public class EventListener implements Listener {
 
         // 落下ダメージを無効化
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL)
-            event.setCancelled(true);
+            if (event.getEntity() instanceof Player)
+                event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
+
+        if (user.getMode() == UserMode.LOBBY)
+            return;
 
         if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //Fスキル入力
             event.setCancelled(true);
@@ -84,6 +96,9 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
+
+        if (user.getMode() == UserMode.LOBBY)
+            return;
 
         if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) { //Qスキル入力
             event.setCancelled(true);
