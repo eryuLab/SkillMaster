@@ -59,7 +59,7 @@ public abstract class CombinedSkill extends Skill {
     /**
      * 呼び出し前に必ずisInActivating()がtrueになっていることを確認してください
      */
-    public abstract void leftClick();
+    public abstract void additionalInput();
 
     /**
      * スキルを終了します
