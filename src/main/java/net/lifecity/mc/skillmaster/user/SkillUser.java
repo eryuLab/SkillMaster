@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.lifecity.mc.skillmaster.skill.CombinedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.combinedskills.JumpAttack;
@@ -26,6 +27,7 @@ public class SkillUser {
     private final Player player;
 
     @Getter
+    @Setter
     private UserMode mode = UserMode.LOBBY;
 
     @Getter

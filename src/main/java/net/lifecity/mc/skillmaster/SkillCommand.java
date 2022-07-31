@@ -4,6 +4,8 @@ import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.AStringArgument;
+import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.entity.Player;
 
@@ -27,5 +29,14 @@ public class SkillCommand {
         }
 
         player.getInventory().addItem(weapon.toItemStack());
+    }
+
+    @Subcommand("mode")
+    public static void mode(Player player, @AMultiLiteralArgument({"lobby", "battle"}) String name) {
+        SkillUser user = SkillMaster.instance.getUserList().get(player);
+
+        UserMode mode = UserMode.valueOf(name);
+
+        user.setMode(mode);
     }
 }
