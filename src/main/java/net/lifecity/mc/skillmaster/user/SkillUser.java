@@ -26,6 +26,9 @@ public class SkillUser {
     private final Player player;
 
     @Getter
+    private UserMode mode = UserMode.LOBBY;
+
+    @Getter
     private Skill[] rightSkillSet;
 
     @Getter
