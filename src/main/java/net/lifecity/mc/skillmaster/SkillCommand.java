@@ -28,4 +28,8 @@ public class SkillCommand {
 
         player.getInventory().addItem(weapon.toItemStack());
     }
+    @Subcommand("mode")
+    public static void mode() {
+        
+    }
 }
