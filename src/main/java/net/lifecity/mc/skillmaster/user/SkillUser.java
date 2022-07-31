@@ -64,24 +64,12 @@ public class SkillUser {
      * 左クリックを入力した時の処理
      */
     public void leftClick() {
-        // シフト＋左クリックでスキル解除とベクトルの大きさを0にする
-        if (player.isSneaking()) {
+        // 左クリックでスキル解除とベクトルの大きさを0にする
+        CombinedSkill activatingSkill = getActivatingSkill();
+        if (activatingSkill != null)
+            activatingSkill.deactivate();
 
-            // 発動中のスキルが存在したらスキル解除
-            CombinedSkill activatingSkill = getActivatingSkill();
-            if (activatingSkill != null)
-                activatingSkill.deactivate();
-
-            // ベクトルを0にする
-            player.setVelocity(new Vector(0, 0, 0));
-
-        } else {
-            // スキル発動中だったら左クリックの処理が変わる
-            CombinedSkill activatingSkill = getActivatingSkill();
-            if (activatingSkill != null)
-                activatingSkill.leftClick();
-
-        }
+        player.setVelocity(new Vector(0, 0, 0));
     }
 
     /**
@@ -97,7 +85,7 @@ public class SkillUser {
             sendMessage("右クリックのスキルを" + rightIndex + "に変更しました。");
         }
         else
-            activate(rightSkillSet[rightIndex]);
+            skillInput(rightSkillSet[rightIndex]);
     }
 
     /**
@@ -113,7 +101,7 @@ public class SkillUser {
             sendMessage("スワップのスキルを" + swapIndex + "に変更しました。");
         }
         else
-            activate(swapSkillSet[swapIndex]);
+            skillInput(swapSkillSet[swapIndex]);
     }
 
     /**
@@ -129,14 +117,14 @@ public class SkillUser {
             sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
         }
         else
-            activate(dropSkillSet[dropIndex]);
+            skillInput(dropSkillSet[dropIndex]);
     }
 
     /**
      * スキルを起動するためのメソッド
      * @param skill 起動するスキル
      */
-    private void activate(Skill skill) {
+    private void skillInput(Skill skill) {
         // null確認
         if (skill == null) {
             sendMessage("スキルがセットされていません");
@@ -163,8 +151,11 @@ public class SkillUser {
                 return;
             }
 
-            if (combinedSkill.isActivating())
+            // 発動中だったら追加入力
+            if (combinedSkill.isActivating()) {
+                combinedSkill.additionalInput();
                 return;
+            }
 
         }
 
