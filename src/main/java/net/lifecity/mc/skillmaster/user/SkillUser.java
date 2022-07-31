@@ -164,25 +164,28 @@ public class SkillUser {
     public CombinedSkill getActivatingSkill() {
 
         for (Skill skill : rightSkillSet) {
-            CombinedSkill combinedSkill = (CombinedSkill) skill;
             if (skill == null)
                 continue;
-            if (combinedSkill.isActivating())
-                return combinedSkill;
+            if (skill instanceof CombinedSkill combinedSkill) {
+                if (combinedSkill.isActivating())
+                    return combinedSkill;
+            }
         }
         for (Skill skill : swapSkillSet) {
-            CombinedSkill combinedSkill = (CombinedSkill) skill;
             if (skill == null)
                 continue;
-            if (combinedSkill.isActivating())
-                return combinedSkill;
+            if (skill instanceof CombinedSkill combinedSkill) {
+                if (combinedSkill.isActivating())
+                    return combinedSkill;
+            }
         }
         for (Skill skill : dropSkillSet) {
-            CombinedSkill combinedSkill = (CombinedSkill) skill;
             if (skill == null)
                 continue;
-            if (combinedSkill.isActivating())
-                return combinedSkill;
+            if (skill instanceof CombinedSkill combinedSkill) {
+                if (combinedSkill.isActivating())
+                    return combinedSkill;
+            }
         }
 
         return null;
