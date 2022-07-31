@@ -70,7 +70,7 @@ public class SkillUser {
         if (activatingSkill != null)
             activatingSkill.deactivate();
 
-        player.setVelocity(new Vector(0, 0, 0));
+        player.setVelocity(new Vector(0, player.getVelocity().getY(), 0));
     }
 
     /**
