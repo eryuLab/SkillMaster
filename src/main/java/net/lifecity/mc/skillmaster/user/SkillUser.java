@@ -64,10 +64,24 @@ public class SkillUser {
      * 左クリックを入力した時の処理
      */
     public void leftClick() {
-        // 発動中の攻撃スキルが存在するか
-        CombinedSkill activatingSkill = getActivatingSkill();
-        if (activatingSkill != null)
-            activatingSkill.leftClick();
+        // シフト＋左クリックでスキル解除とベクトルの大きさを0にする
+        if (player.isSneaking()) {
+
+            // 発動中のスキルが存在したらスキル解除
+            CombinedSkill activatingSkill = getActivatingSkill();
+            if (activatingSkill != null)
+                activatingSkill.deactivate();
+
+            // ベクトルを0にする
+            player.setVelocity(new Vector(0, 0, 0));
+
+        } else {
+            // スキル発動中だったら左クリックの処理が変わる
+            CombinedSkill activatingSkill = getActivatingSkill();
+            if (activatingSkill != null)
+                activatingSkill.leftClick();
+
+        }
     }
 
     /**
