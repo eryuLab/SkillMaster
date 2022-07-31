@@ -30,7 +30,7 @@ public class SkillCommand {
 
         player.getInventory().addItem(weapon.toItemStack());
     }
-
+    
     @Subcommand("mode")
     public static void mode(Player player, @AMultiLiteralArgument({"lobby", "battle"}) String name) {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
