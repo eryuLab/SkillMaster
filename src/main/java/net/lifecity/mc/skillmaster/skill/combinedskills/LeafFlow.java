@@ -33,7 +33,7 @@ public class LeafFlow extends CombinedSkill {
         user.attackNearest(
                 1.8,
                 3,
-                user.getPlayer().getVelocity().normalize().setY(0.15),
+                user.getPlayer().getVelocity().multiply(0.3).normalize().setY(0.15),
                 Sound.ENTITY_PLAYER_ATTACK_SWEEP
                 );
 

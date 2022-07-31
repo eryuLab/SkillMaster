@@ -66,7 +66,7 @@ public class JumpAttack extends CombinedSkill {
             user.attackNearest(
                     2,
                     5,
-                    user.getPlayer().getVelocity().setY(0.45),
+                    user.getPlayer().getVelocity().setY(0.5),
                     Sound.ENTITY_PLAYER_ATTACK_CRIT
             );
 
