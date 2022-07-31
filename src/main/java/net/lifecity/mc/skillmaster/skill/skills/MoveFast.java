@@ -6,12 +6,11 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class MoveFast extends Skill {
 
 
-    protected MoveFast(SkillUser user) {
+    public MoveFast(SkillUser user) {
         super("高速移動", Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.LONG_SWORD, Weapon.RAPIER), 0, 25, user);
     }
 

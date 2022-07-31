@@ -5,6 +5,7 @@ import net.lifecity.mc.skillmaster.skill.CombinedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.combinedskills.JumpAttack;
 import net.lifecity.mc.skillmaster.skill.combinedskills.LeafFlow;
+import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -49,7 +50,7 @@ public class SkillUser {
                 null
         };
         this.swapSkillSet = new Skill[] {
-                new JumpAttack(this),
+                new MoveFast(this),
                 null,
                 null
         };
