@@ -43,17 +43,17 @@ public class SkillUser {
 
     public SkillUser(Player player) {
         this.player = player;
-        this.rightSkillSet = new CombinedSkill[] {
+        this.rightSkillSet = new Skill[] {
                 new LeafFlow(this),
                 null,
                 null
         };
-        this.swapSkillSet = new CombinedSkill[] {
+        this.swapSkillSet = new Skill[] {
                 new JumpAttack(this),
                 null,
                 null
         };
-        this.dropSkillSet = new CombinedSkill[] {
+        this.dropSkillSet = new Skill[] {
                 null,
                 null,
                 null
