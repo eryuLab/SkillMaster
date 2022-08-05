@@ -15,6 +15,8 @@ import org.bukkit.util.Consumer;
 
 public class WeaponInv {
 
+    private int page = 0;
+
     public WeaponInv(SkillUser user) {
         ChestGui gui = new ChestGui(3, "武器メニュー");
 
@@ -36,8 +38,54 @@ public class WeaponInv {
         return edge;
     }
 
+    /**
+     * 前のページへ移行できるPaneを返します
+     * @return 前ページに移行できるPane
+     */
     private static OutlinePane previous() {
         OutlinePane previous = new OutlinePane(0, 0, 1, 3);
+
+        previous.addItem(ironBars());
+
+        // "前のページへ"のアイテムを作成
+        ItemStack toPage = new ItemStack(Material.ARROW);
+        ItemMeta itemMeta = toPage.getItemMeta();
+        itemMeta.setDisplayName("前のページへ");
+        toPage.setItemMeta(itemMeta);
+
+        // todo 前のページへ移行する処理
+        previous.addItem(new GuiItem(toPage, event -> {
+
+        }));
+
+        previous.addItem(ironBars());
+
+        return previous;
+    }
+
+    /**
+     * 次のページへ移行できるPaneを返します
+     * @return 次ページに移行できるPane
+     */
+    private static OutlinePane next() {
+        OutlinePane next = new OutlinePane(8, 0, 1, 3);
+
+        next.addItem(ironBars());
+
+        // "前のページへ"のアイテムを作成
+        ItemStack toPage = new ItemStack(Material.ARROW);
+        ItemMeta itemMeta = toPage.getItemMeta();
+        itemMeta.setDisplayName("次のページへ");
+        toPage.setItemMeta(itemMeta);
+
+        // todo 次のページへ移行する処理
+        next.addItem(new GuiItem(toPage, event -> {
+
+        }));
+
+        next.addItem(ironBars());
+
+        return next;
     }
 
     /**
