@@ -11,12 +11,14 @@ import net.lifecity.mc.skillmaster.skill.skills.VectorAttack;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SkillUser {
@@ -28,43 +30,32 @@ public class SkillUser {
 
     @Getter
     @Setter
-    private UserMode mode = UserMode.LOBBY;
+    private UserMode mode = UserMode.BATTLE;
 
     @Getter
-    private Skill[] rightSkillSet;
+    @Setter
+    private Weapon selectedWeapon = Weapon.STRAIGHT_SWORD;
+
+    private SkillSetList skillSet = new SkillSetList(this);
 
     @Getter
     private int rightIndex = 0;
 
     @Getter
-    private Skill[] swapSkillSet;
-
-    @Getter
     private int swapIndex = 0;
-
-    @Getter
-    private Skill[] dropSkillSet;
 
     @Getter
     private int dropIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
-        this.rightSkillSet = new Skill[] {
-                new VectorAttack(this),
-                new LeafFlow(this),
-                null
-        };
-        this.swapSkillSet = new Skill[] {
-                new MoveFast(this),
-                new JumpAttack(this),
-                null
-        };
-        this.dropSkillSet = new Skill[] {
-                null,
-                null,
-                null
-        };
+        for (Weapon weapon : Weapon.values()) {
+            skillSet.add(new SkillSet(this, weapon));
+        }
+        selectedSet().getRightSkillSet()[0] = new VectorAttack(this);
+        selectedSet().getRightSkillSet()[1] = new LeafFlow(this);
+        selectedSet().getSwapSkillSet()[0] = new MoveFast(this);
+        selectedSet().getSwapSkillSet()[1] = new JumpAttack(this);
     }
 
     /**
@@ -92,7 +83,7 @@ public class SkillUser {
             sendMessage("右クリックのスキルを" + rightIndex + "に変更しました。");
         }
         else
-            skillInput(rightSkillSet[rightIndex]);
+            skillInput(selectedSet().getRightSkillSet()[rightIndex]);
     }
 
     /**
@@ -108,7 +99,7 @@ public class SkillUser {
             sendMessage("スワップのスキルを" + swapIndex + "に変更しました。");
         }
         else
-            skillInput(swapSkillSet[swapIndex]);
+            skillInput(selectedSet().getSwapSkillSet()[swapIndex]);
     }
 
     /**
@@ -124,7 +115,7 @@ public class SkillUser {
             sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
         }
         else
-            skillInput(dropSkillSet[dropIndex]);
+            skillInput(selectedSet().getDropSkillSet()[dropIndex]);
     }
 
     /**
@@ -176,7 +167,7 @@ public class SkillUser {
      */
     public SeparatedSkill getActivatingSkill() {
 
-        for (Skill skill : rightSkillSet) {
+        for (Skill skill : selectedSet().getRightSkillSet()) {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -184,7 +175,7 @@ public class SkillUser {
                     return combinedSkill;
             }
         }
-        for (Skill skill : swapSkillSet) {
+        for (Skill skill : selectedSet().getSwapSkillSet()) {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -192,7 +183,7 @@ public class SkillUser {
                     return combinedSkill;
             }
         }
-        for (Skill skill : dropSkillSet) {
+        for (Skill skill : selectedSet().getDropSkillSet()) {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -202,6 +193,14 @@ public class SkillUser {
         }
 
         return null;
+    }
+
+    /**
+     * 選択中の武器のSkillSetを取得します
+     * @return 選択中の武器のSkillSet
+     */
+    public SkillSet selectedSet() {
+        return skillSet.get(selectedWeapon);
     }
 
     /**
