@@ -9,14 +9,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public abstract class CombinedSkill extends Skill {
+public abstract class SeparatedSkill extends Skill {
 
     protected final int activationTime;
 
     @Getter
     protected boolean activating = false;
 
-    protected CombinedSkill(String name, List<Weapon> weaponList, int point, int activationTime, int interval, SkillUser user) {
+    protected SeparatedSkill(String name, List<Weapon> weaponList, int point, int activationTime, int interval, SkillUser user) {
         super(name, weaponList, point, interval, user);
         this.activationTime = activationTime;
     }

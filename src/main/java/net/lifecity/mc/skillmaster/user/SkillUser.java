@@ -2,10 +2,10 @@ package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.lifecity.mc.skillmaster.skill.CombinedSkill;
+import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
-import net.lifecity.mc.skillmaster.skill.combinedskills.JumpAttack;
-import net.lifecity.mc.skillmaster.skill.combinedskills.LeafFlow;
+import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttack;
+import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow;
 import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
 import net.lifecity.mc.skillmaster.skill.skills.VectorAttack;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
@@ -72,7 +72,7 @@ public class SkillUser {
      */
     public void leftClick() {
         // 左クリックでスキル解除とベクトルの大きさを0にする
-        CombinedSkill activatingSkill = getActivatingSkill();
+        SeparatedSkill activatingSkill = getActivatingSkill();
         if (activatingSkill != null)
             activatingSkill.deactivate();
 
@@ -149,9 +149,9 @@ public class SkillUser {
             return;
 
         // 複合スキルの場合
-        if (skill instanceof CombinedSkill combinedSkill) {
+        if (skill instanceof SeparatedSkill combinedSkill) {
 
-            CombinedSkill activatingSkill = getActivatingSkill();
+            SeparatedSkill activatingSkill = getActivatingSkill();
 
             if (activatingSkill != null) {
                 if (activatingSkill != skill) {
@@ -174,12 +174,12 @@ public class SkillUser {
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    public CombinedSkill getActivatingSkill() {
+    public SeparatedSkill getActivatingSkill() {
 
         for (Skill skill : rightSkillSet) {
             if (skill == null)
                 continue;
-            if (skill instanceof CombinedSkill combinedSkill) {
+            if (skill instanceof SeparatedSkill combinedSkill) {
                 if (combinedSkill.isActivating())
                     return combinedSkill;
             }
@@ -187,7 +187,7 @@ public class SkillUser {
         for (Skill skill : swapSkillSet) {
             if (skill == null)
                 continue;
-            if (skill instanceof CombinedSkill combinedSkill) {
+            if (skill instanceof SeparatedSkill combinedSkill) {
                 if (combinedSkill.isActivating())
                     return combinedSkill;
             }
@@ -195,7 +195,7 @@ public class SkillUser {
         for (Skill skill : dropSkillSet) {
             if (skill == null)
                 continue;
-            if (skill instanceof CombinedSkill combinedSkill) {
+            if (skill instanceof SeparatedSkill combinedSkill) {
                 if (combinedSkill.isActivating())
                     return combinedSkill;
             }

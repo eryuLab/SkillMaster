@@ -1,6 +1,6 @@
-package net.lifecity.mc.skillmaster.skill.combinedskills;
+package net.lifecity.mc.skillmaster.skill.separatedskills;
 
-import net.lifecity.mc.skillmaster.skill.CombinedSkill;
+import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
-public class LeafFlow extends CombinedSkill {
+public class LeafFlow extends SeparatedSkill {
 
     public LeafFlow(SkillUser user) {
         super("リーフフロー", Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER), 0, 8, 15, user);
