@@ -11,6 +11,7 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Consumer;
 
 public class WeaponInv {
 
@@ -26,13 +27,7 @@ public class WeaponInv {
     private static OutlinePane edge() {
         OutlinePane edge = new OutlinePane(0, 0, 1, 3);
 
-        ItemStack item = new ItemStack(Material.IRON_BARS);
-
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(" ");
-        item.setItemMeta(meta);
-
-        edge.addItem(new GuiItem(item));
+        edge.addItem(ironBars());
 
         edge.setRepeat(true);
 
@@ -41,6 +36,14 @@ public class WeaponInv {
         return edge;
     }
 
+    private static OutlinePane previous() {
+        OutlinePane previous = new OutlinePane(0, 0, 1, 3);
+    }
+
+    /**
+     * 無名の鉄格子を返します
+     * @return 鉄格子のGuiItem
+     */
     private static GuiItem ironBars() {
         ItemStack item = new ItemStack(Material.IRON_BARS);
 
@@ -48,6 +51,6 @@ public class WeaponInv {
         meta.setDisplayName(" ");
         item.setItemMeta(meta);
 
-        return new GuiItem(item);
+        return new GuiItem(item, event -> event.setCancelled(true));
     }
 }
