@@ -18,7 +18,7 @@ public class MoveFast extends Skill {
     public void activate() {
         super.activate();
 
-        Vector vector = user.getPlayer().getEyeLocation().getDirection();
+        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.7);
 
         user.getPlayer().setVelocity(vector);
     }
