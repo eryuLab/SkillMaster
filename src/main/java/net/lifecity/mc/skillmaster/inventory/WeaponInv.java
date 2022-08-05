@@ -40,4 +40,14 @@ public class WeaponInv {
 
         return edge;
     }
+
+    private static GuiItem ironBars() {
+        ItemStack item = new ItemStack(Material.IRON_BARS);
+
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(" ");
+        item.setItemMeta(meta);
+
+        return new GuiItem(item);
+    }
 }
