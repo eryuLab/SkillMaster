@@ -1,7 +1,6 @@
 package net.lifecity.mc.skillmaster.weapon;
 
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,18 +17,22 @@ public enum Weapon {
     private String jp;
 
     @Getter
-    private int digit;
+    private int number;
 
-    Weapon(String jp, int digit) {
+    Weapon(String jp, int number) {
         this.jp = jp;
-        this.digit = digit;
+        this.number = number;
     }
 
+    /**
+     * プレイヤーが武器として使えるItemStackを返します
+     * @return 武器として使えるItemStack
+     */
     public ItemStack toItemStack() {
         ItemStack itemStack = new ItemStack(Material.WOODEN_SWORD);
         ItemMeta meta = itemStack.getItemMeta();
 
-        meta.setCustomModelData(digit * 100);
+        meta.setCustomModelData(number * 100);
 
         meta.setDisplayName(jp);
 
@@ -55,7 +58,7 @@ public enum Weapon {
         if (!meta.hasCustomModelData())
             return false;
 
-        if (meta.getCustomModelData() < digit * 100 || meta.getCustomModelData() > digit * 100 + 99)
+        if (meta.getCustomModelData() < number * 100 || meta.getCustomModelData() > number * 100 + 99)
             return false;
 
         return true;
@@ -90,6 +93,14 @@ public enum Weapon {
     public static Weapon fromName(String name) {
         for (Weapon weapon : values()) {
             if (weapon.name().equalsIgnoreCase(name))
+                return weapon;
+        }
+        return null;
+    }
+
+    public static Weapon fromNumber(int number) {
+        for (Weapon weapon : values()) {
+            if (weapon.number == number)
                 return weapon;
         }
         return null;
