@@ -25,13 +25,14 @@ public class SSVectorAttack extends Skill {
         double damage = user.getPlayer().getVelocity().length();
         damage *= 2;
 
-        user.attackNearest(
+        boolean b = user.attackNearest(
                 1.8,
                 damage,
                 user.getPlayer().getVelocity().multiply(0.25).setY(0.15),
                 Sound.ENTITY_PLAYER_ATTACK_CRIT
         );
 
-        user.sendMessage("damage: " + damage);
+        if (b)
+            user.sendMessage("damage: " + damage);
     }
 }
