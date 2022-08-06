@@ -7,16 +7,12 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class Skill {
 
     @Getter
     protected final String name;
 
-    protected final Set<Weapon> weaponSet;
+    protected final Weapon weapon;
 
     protected final int point;
 
@@ -27,9 +23,9 @@ public class Skill {
     @Getter
     protected boolean inInterval = false;
 
-    protected Skill(String name, List<Weapon> weaponList, int point, int interval, SkillUser user) {
+    protected Skill(String name, Weapon weapon, int point, int interval, SkillUser user) {
         this.name = name;
-        this.weaponSet = new HashSet<>(weaponList);
+        this.weapon = weapon;
         this.point = point;
         this.interval = interval;
         this.user = user;
@@ -69,6 +65,6 @@ public class Skill {
      * @return 武器が使えるかどうか
      */
     public boolean usable(Weapon weapon) {
-        return weaponSet.contains(weapon);
+        return this.weapon == weapon;
     }
 }
