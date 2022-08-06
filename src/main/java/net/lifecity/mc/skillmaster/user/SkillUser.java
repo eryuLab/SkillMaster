@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
@@ -241,17 +242,36 @@ public class SkillUser {
         if (entity == null)
             return false;
 
-        if (entity instanceof Damageable target) {
-            // 標的にダメージを与える
-            target.damage(damage);
+        // プレイヤーだった時の処理
+        if (entity instanceof Player player) {
+            SkillUser user = SkillMaster.instance.getUserList().get(player);
 
-            // 標的をノックバックさせる
-            target.setVelocity(vector);
+            if (user == null)
+                return false;
 
-            // SE再生
-            playSound(sound);
+            // 攻撃処理
+            user.damage(damage, vector);
+
+        } else {
+            // 攻撃処理
+            if (entity instanceof Damageable target) {
+                // 標的にダメージを与える
+                target.damage(damage);
+
+                // 標的をノックバックさせる
+                target.setVelocity(vector);
+
+                // SE再生
+                playSound(sound);
+            }
         }
         return true;
+    }
+
+    private void damage(double damage, Vector vector) {
+        // ダメージ処理
+        // ノックバック処理
+        // SE再生
     }
 
     /**
