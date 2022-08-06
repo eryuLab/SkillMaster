@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills;
+package net.lifecity.mc.skillmaster.skill.separatedskills.straightsword;
 
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -8,9 +8,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
-public class LeafFlow extends SeparatedSkill {
+public class SSLeafFlow extends SeparatedSkill {
 
-    public LeafFlow(SkillUser user) {
+    public SSLeafFlow(SkillUser user) {
         super("リーフフロー", Weapon.STRAIGHT_SWORD, 0, 8, 15, user);
     }
 

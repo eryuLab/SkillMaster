@@ -4,21 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
-import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttack;
-import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow;
-import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
-import net.lifecity.mc.skillmaster.skill.skills.VectorAttack;
+import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
+import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSMoveFast;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
-import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SkillUser {
@@ -57,13 +53,13 @@ public class SkillUser {
     public SkillUser(Player player) {
         this.player = player;
         this.rightSkillSet = new Skill[] {
-                new VectorAttack(this),
-                new LeafFlow(this),
+                new SSVectorAttack(this),
+                null,
                 null
         };
         this.swapSkillSet = new Skill[] {
-                new MoveFast(this),
-                new JumpAttack(this),
+                new SSMoveFast(this),
+                null,
                 null
         };
         this.dropSkillSet = new Skill[] {

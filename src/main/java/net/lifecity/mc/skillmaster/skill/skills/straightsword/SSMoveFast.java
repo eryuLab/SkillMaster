@@ -1,16 +1,13 @@
-package net.lifecity.mc.skillmaster.skill.skills;
+package net.lifecity.mc.skillmaster.skill.skills.straightsword;
 
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
+public class SSMoveFast extends Skill {
 
-public class MoveFast extends Skill {
-
-
-    public MoveFast(SkillUser user) {
+    public SSMoveFast(SkillUser user) {
         super("高速移動", Weapon.STRAIGHT_SWORD, 0, 25, user);
     }
 
@@ -18,7 +15,7 @@ public class MoveFast extends Skill {
     public void activate() {
         super.activate();
 
-        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.7);
+        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.55);
 
         user.getPlayer().setVelocity(vector);
     }

@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills;
+package net.lifecity.mc.skillmaster.skill.separatedskills.straightsword;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
-public class JumpAttack extends SeparatedSkill {
+public class SSJumpAttack extends SeparatedSkill {
 
     /**
      * step0: 飛び上がってから攻撃できるようになるまで
@@ -19,7 +19,7 @@ public class JumpAttack extends SeparatedSkill {
      */
     private int step = 0;
 
-    public JumpAttack(SkillUser user) {
+    public SSJumpAttack(SkillUser user) {
         super("ジャンプアタック", Weapon.STRAIGHT_SWORD, 0, 28, 20, user);
     }
 

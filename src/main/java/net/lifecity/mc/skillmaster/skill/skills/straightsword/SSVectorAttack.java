@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.skills;
+package net.lifecity.mc.skillmaster.skill.skills.straightsword;
 
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -8,9 +8,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
-public class VectorAttack extends Skill {
+public class SSVectorAttack extends Skill {
 
-    public VectorAttack(SkillUser user) {
+    public SSVectorAttack(SkillUser user) {
         super("ベクトルアタック", Weapon.STRAIGHT_SWORD, 0, 40, user);
     }
 
@@ -18,8 +18,12 @@ public class VectorAttack extends Skill {
     public void activate() {
         super.activate();
 
+        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.2);
+
+        user.getPlayer().setVelocity(vector);
+
         double damage = user.getPlayer().getVelocity().length();
-        damage *= 3;
+        damage *= 2;
 
         user.attackNearest(
                 1.8,

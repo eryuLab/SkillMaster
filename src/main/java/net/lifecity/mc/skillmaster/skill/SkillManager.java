@@ -1,7 +1,10 @@
 package net.lifecity.mc.skillmaster.skill;
 
 import lombok.Getter;
-import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
+import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSJumpAttack;
+import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSLeafFlow;
+import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSMoveFast;
+import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 
 import java.util.HashSet;
@@ -16,7 +19,10 @@ public class SkillManager {
     private final Set<Skill> straightSword = new HashSet<>();
 
     public SkillManager(SkillUser user) {
-        straightSword.add(new MoveFast(user));
+        straightSword.add(new SSMoveFast(user));
+        straightSword.add(new SSVectorAttack(user));
+        straightSword.add(new SSLeafFlow(user));
+        straightSword.add(new SSJumpAttack(user));
 
         allSkill.addAll(straightSword);
     }
