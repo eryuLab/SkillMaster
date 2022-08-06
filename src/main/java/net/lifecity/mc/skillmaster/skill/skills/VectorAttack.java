@@ -11,13 +11,7 @@ import java.util.Arrays;
 public class VectorAttack extends Skill {
 
     public VectorAttack(SkillUser user) {
-        super(
-                "ベクトルアタック",
-                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD, Weapon.MACE),
-                0,
-                40,
-                user
-        );
+        super("ベクトルアタック", Weapon.STRAIGHT_SWORD, 0, 40, user);
     }
 
     @Override

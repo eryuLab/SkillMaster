@@ -20,7 +20,7 @@ public class JumpAttack extends SeparatedSkill {
     private int step = 0;
 
     public JumpAttack(SkillUser user) {
-        super("ジャンプアタック", Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.MACE), 0, 28, 20, user);
+        super("ジャンプアタック", Weapon.STRAIGHT_SWORD, 0, 28, 20, user);
     }
 
     @Override

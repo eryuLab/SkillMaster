@@ -11,7 +11,7 @@ public class MoveFast extends Skill {
 
 
     public MoveFast(SkillUser user) {
-        super("高速移動", Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.LONG_SWORD, Weapon.RAPIER), 0, 25, user);
+        super("高速移動", Weapon.STRAIGHT_SWORD, 0, 25, user);
     }
 
     @Override

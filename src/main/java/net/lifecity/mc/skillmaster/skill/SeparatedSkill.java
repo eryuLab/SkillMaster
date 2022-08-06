@@ -16,8 +16,8 @@ public abstract class SeparatedSkill extends Skill {
     @Getter
     protected boolean activating = false;
 
-    protected SeparatedSkill(String name, List<Weapon> weaponList, int point, int activationTime, int interval, SkillUser user) {
-        super(name, weaponList, point, interval, user);
+    protected SeparatedSkill(String name, Weapon weapon, int point, int activationTime, int interval, SkillUser user) {
+        super(name, weapon, point, interval, user);
         this.activationTime = activationTime;
     }
 

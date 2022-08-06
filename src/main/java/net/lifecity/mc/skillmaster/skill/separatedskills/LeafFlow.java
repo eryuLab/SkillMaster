@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class LeafFlow extends SeparatedSkill {
 
     public LeafFlow(SkillUser user) {
-        super("リーフフロー", Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER), 0, 8, 15, user);
+        super("リーフフロー", Weapon.STRAIGHT_SWORD, 0, 8, 15, user);
     }
 
     @Override
