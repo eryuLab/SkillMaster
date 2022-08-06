@@ -36,26 +36,41 @@ public class SkillUser {
     @Setter
     private Weapon selectedWeapon = Weapon.STRAIGHT_SWORD;
 
-    private SkillSetList skillSet = new SkillSetList(this);
+    @Getter
+    private Skill[] rightSkillSet;
 
     @Getter
     private int rightIndex = 0;
 
     @Getter
+    private Skill[] swapSkillSet;
+
+    @Getter
     private int swapIndex = 0;
+
+    @Getter
+    private Skill[] dropSkillSet;
 
     @Getter
     private int dropIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
-        for (Weapon weapon : Weapon.values()) {
-            skillSet.add(new SkillSet(this, weapon));
-        }
-        selectedSet().getRightSkillSet()[0] = new VectorAttack(this);
-        selectedSet().getRightSkillSet()[1] = new LeafFlow(this);
-        selectedSet().getSwapSkillSet()[0] = new MoveFast(this);
-        selectedSet().getSwapSkillSet()[1] = new JumpAttack(this);
+        this.rightSkillSet = new Skill[] {
+                new VectorAttack(this),
+                new LeafFlow(this),
+                null
+        };
+        this.swapSkillSet = new Skill[] {
+                new MoveFast(this),
+                new JumpAttack(this),
+                null
+        };
+        this.dropSkillSet = new Skill[] {
+                null,
+                null,
+                null
+        };
     }
 
     /**
@@ -83,7 +98,7 @@ public class SkillUser {
             sendMessage("右クリックのスキルを" + rightIndex + "に変更しました。");
         }
         else
-            skillInput(selectedSet().getRightSkillSet()[rightIndex]);
+            skillInput(rightSkillSet[rightIndex]);
     }
 
     /**
@@ -99,7 +114,7 @@ public class SkillUser {
             sendMessage("スワップのスキルを" + swapIndex + "に変更しました。");
         }
         else
-            skillInput(selectedSet().getSwapSkillSet()[swapIndex]);
+            skillInput(swapSkillSet[swapIndex]);
     }
 
     /**
@@ -115,7 +130,7 @@ public class SkillUser {
             sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
         }
         else
-            skillInput(selectedSet().getDropSkillSet()[dropIndex]);
+            skillInput(dropSkillSet[dropIndex]);
     }
 
     /**
@@ -167,7 +182,7 @@ public class SkillUser {
      */
     public SeparatedSkill getActivatingSkill() {
 
-        for (Skill skill : selectedSet().getRightSkillSet()) {
+        for (Skill skill : rightSkillSet) {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -175,7 +190,7 @@ public class SkillUser {
                     return combinedSkill;
             }
         }
-        for (Skill skill : selectedSet().getSwapSkillSet()) {
+        for (Skill skill : swapSkillSet) {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -183,7 +198,7 @@ public class SkillUser {
                     return combinedSkill;
             }
         }
-        for (Skill skill : selectedSet().getDropSkillSet()) {
+        for (Skill skill : dropSkillSet) {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -193,14 +208,6 @@ public class SkillUser {
         }
 
         return null;
-    }
-
-    /**
-     * 選択中の武器のSkillSetを取得します
-     * @return 選択中の武器のSkillSet
-     */
-    public SkillSet selectedSet() {
-        return skillSet.get(selectedWeapon);
     }
 
     /**
