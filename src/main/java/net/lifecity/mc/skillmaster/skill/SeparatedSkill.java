@@ -7,14 +7,12 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
-
 public abstract class SeparatedSkill extends Skill {
 
     protected final int activationTime;
 
     @Getter
-    protected boolean activating = false;
+    protected boolean activated = false;
 
     protected SeparatedSkill(String name, Weapon weapon, int point, int activationTime, int interval, SkillUser user) {
         super(name, weapon, point, interval, user);
@@ -29,7 +27,7 @@ public abstract class SeparatedSkill extends Skill {
         user.sendActionBar(ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動");
 
         // 発動中にする
-        activating = true;
+        activated = true;
 
         // 終了処理
         new ActivationTimer();
@@ -45,7 +43,7 @@ public abstract class SeparatedSkill extends Skill {
 
         @Override
         public void run() {
-            if (!activating) //発動中か確認
+            if (!activated) //発動中か確認
                 cancel();
 
             if (count >= activationTime) { //カウント確認
@@ -66,10 +64,10 @@ public abstract class SeparatedSkill extends Skill {
      * スキルを終了します
      */
     public void deactivate() {
-        if (!activating) //発動していなかったら戻る
+        if (!activated) //発動していなかったら戻る
             return;
 
-        activating = false; //非発動化する
+        activated = false; //非発動化する
 
         // ログ
         user.sendActionBar(ChatColor.RED + "複合スキル『" + name + "』終了");
