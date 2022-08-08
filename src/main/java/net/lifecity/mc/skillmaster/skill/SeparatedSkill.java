@@ -72,7 +72,7 @@ public abstract class SeparatedSkill extends Skill {
         activating = false; //非発動化する
 
         // ログ
-        user.sendActionBar(ChatColor.RED + "スキル『" + name + "』終了");
+        user.sendActionBar(ChatColor.RED + "複合スキル『" + name + "』終了");
 
         //インターバル処理
         super.deactivate();
