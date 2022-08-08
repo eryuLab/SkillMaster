@@ -26,7 +26,7 @@ public abstract class SeparatedSkill extends Skill {
      */
     public void activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
+        user.sendActionBar(ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動");
 
         // 発動中にする
         activating = true;
