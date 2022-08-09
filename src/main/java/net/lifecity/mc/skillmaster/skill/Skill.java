@@ -14,6 +14,8 @@ public class Skill {
 
     protected final Weapon weapon;
 
+    protected final SkillType type;
+
     protected final int point;
 
     protected final int interval;
@@ -23,9 +25,10 @@ public class Skill {
     @Getter
     protected boolean inInterval = false;
 
-    protected Skill(String name, Weapon weapon, int point, int interval, SkillUser user) {
+    protected Skill(String name, Weapon weapon, SkillType type, int point, int interval, SkillUser user) {
         this.name = name;
         this.weapon = weapon;
+        this.type = type;
         this.point = point;
         this.interval = interval;
         this.user = user;

@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.skill.separatedskills.straightsword;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
+import net.lifecity.mc.skillmaster.skill.SkillType;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -18,7 +19,7 @@ public class SSJumpAttack extends SeparatedSkill {
     private int step = 0;
 
     public SSJumpAttack(SkillUser user) {
-        super("ジャンプアタック", Weapon.STRAIGHT_SWORD, 0, 28, 20, user);
+        super("ジャンプアタック", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, 0, 28, 20, user);
     }
 
     @Override

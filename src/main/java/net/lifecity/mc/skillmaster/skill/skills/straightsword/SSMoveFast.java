@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.skill.skills.straightsword;
 
 import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.skill.SkillType;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.util.Vector;
@@ -8,7 +9,7 @@ import org.bukkit.util.Vector;
 public class SSMoveFast extends Skill {
 
     public SSMoveFast(SkillUser user) {
-        super("高速移動", Weapon.STRAIGHT_SWORD, 0, 25, user);
+        super("高速移動", Weapon.STRAIGHT_SWORD, SkillType.MOVE, 0, 25, user);
     }
 
     @Override

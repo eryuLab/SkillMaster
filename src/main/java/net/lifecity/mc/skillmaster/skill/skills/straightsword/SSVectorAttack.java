@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.skill.skills.straightsword;
 
 import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.skill.SkillType;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public class SSVectorAttack extends Skill {
 
     public SSVectorAttack(SkillUser user) {
-        super("ベクトルアタック", Weapon.STRAIGHT_SWORD, 0, 40, user);
+        super("ベクトルアタック", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, 0, 40, user);
     }
 
     @Override

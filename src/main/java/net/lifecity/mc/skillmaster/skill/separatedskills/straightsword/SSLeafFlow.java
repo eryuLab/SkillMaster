@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.skill.separatedskills.straightsword;
 
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
+import net.lifecity.mc.skillmaster.skill.SkillType;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public class SSLeafFlow extends SeparatedSkill {
 
     public SSLeafFlow(SkillUser user) {
-        super("リーフフロー", Weapon.STRAIGHT_SWORD, 0, 8, 15, user);
+        super("リーフフロー", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, 0, 8, 15, user);
     }
 
     @Override
