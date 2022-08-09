@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster;
 
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
+import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -102,7 +103,7 @@ public class EventListener implements Listener {
 
         if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) { //Qスキル入力
             event.setCancelled(true);
-            user.drop();
+            user.drop(Weapon.fromItemStack(event.getItemDrop().getItemStack()));
         }
     }
 }

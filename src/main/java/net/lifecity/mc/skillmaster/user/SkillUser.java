@@ -97,7 +97,7 @@ public class SkillUser {
             sendMessage("右クリックのスキルを" + rightIndex + "に変更しました。");
         }
         else
-            skillInput(rightSkillSet[rightIndex]);
+            skillInput(rightSkillSet[rightIndex], getHandWeapon());
     }
 
     /**
@@ -113,13 +113,13 @@ public class SkillUser {
             sendMessage("スワップのスキルを" + swapIndex + "に変更しました。");
         }
         else
-            skillInput(swapSkillSet[swapIndex]);
+            skillInput(swapSkillSet[swapIndex], getHandWeapon());
     }
 
     /**
      * ドロップキーを押した時の処理
      */
-    public void drop() {
+    public void drop(Weapon weapon) {
         // Shiftば押されているか
         if (player.isSneaking()) {
             dropIndex++;
@@ -129,14 +129,14 @@ public class SkillUser {
             sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
         }
         else
-            skillInput(dropSkillSet[dropIndex]);
+            skillInput(dropSkillSet[dropIndex], weapon);
     }
 
     /**
      * スキルを起動するためのメソッド
      * @param skill 起動するスキル
      */
-    private void skillInput(Skill skill) {
+    private void skillInput(Skill skill, Weapon weapon) {
         // null確認
         if (skill == null) {
             sendMessage("スキルがセットされていません");
@@ -144,7 +144,7 @@ public class SkillUser {
         }
 
         // 持っている武器を確認
-        if (!skill.usable(getHandWeapon())) {
+        if (!skill.usable(weapon)) {
             sendMessage("この武器ではこのスキルを使用できません");
             return;
         }
