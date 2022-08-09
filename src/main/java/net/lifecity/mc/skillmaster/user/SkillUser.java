@@ -163,7 +163,7 @@ public class SkillUser {
             }
 
             // 発動中だったら追加入力
-            if (combinedSkill.isActivating()) {
+            if (combinedSkill.isActivated()) {
                 combinedSkill.additionalInput();
                 return;
             }
@@ -183,7 +183,7 @@ public class SkillUser {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
-                if (combinedSkill.isActivating())
+                if (combinedSkill.isActivated())
                     return combinedSkill;
             }
         }
@@ -191,7 +191,7 @@ public class SkillUser {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
-                if (combinedSkill.isActivating())
+                if (combinedSkill.isActivated())
                     return combinedSkill;
             }
         }
@@ -199,7 +199,7 @@ public class SkillUser {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
-                if (combinedSkill.isActivating())
+                if (combinedSkill.isActivated())
                     return combinedSkill;
             }
         }
@@ -269,6 +269,8 @@ public class SkillUser {
     }
 
     private void damage(double damage, Vector vector) {
+        // 防御スキル確認
+
         // ダメージ処理
         // ノックバック処理
         // SE再生
