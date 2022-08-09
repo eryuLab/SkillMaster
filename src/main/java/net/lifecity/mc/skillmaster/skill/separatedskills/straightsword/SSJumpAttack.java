@@ -8,8 +8,6 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
-
 public class SSJumpAttack extends SeparatedSkill {
 
     /**
@@ -77,7 +75,7 @@ public class SSJumpAttack extends SeparatedSkill {
 
     @Override
     public void deactivate() {
-        if (!activating)
+        if (!activated)
             return;
 
         super.deactivate();
