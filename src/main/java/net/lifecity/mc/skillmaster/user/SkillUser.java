@@ -214,14 +214,6 @@ public class SkillUser {
      * todo 複数の標的に攻撃
      */
     public void attack() {
-        Entity target = player.getTargetEntity(4, false);
-
-        if (target == null)
-            return;
-        player.attack(target);
-
-        // ダメージ
-        // ノックバック
     }
 
     /**
