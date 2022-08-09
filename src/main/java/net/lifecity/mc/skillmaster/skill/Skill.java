@@ -14,6 +14,7 @@ public class Skill {
 
     protected final Weapon weapon;
 
+    @Getter
     protected final SkillType type;
 
     protected final int point;
