@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.user;
 import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import net.lifecity.mc.skillmaster.skill.DefenseSkill;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
@@ -242,7 +243,7 @@ public class SkillUser {
                 return false;
 
             // 攻撃処理
-            user.damage(damage, vector);
+            user.damage(damage, vector, sound);
 
         } else {
             // 攻撃処理
@@ -260,12 +261,25 @@ public class SkillUser {
         return true;
     }
 
-    private void damage(double damage, Vector vector) {
+    private void damage(double damage, Vector vector, Sound sound) {
         // 防御スキル確認
+        SeparatedSkill activatingSkill = getActivatingSkill();
 
-        // ダメージ処理
-        // ノックバック処理
+        if (activatingSkill != null) {
+            if (activatingSkill instanceof DefenseSkill defenseSkill) {
+                defenseSkill.defense(damage, vector);
+                return;
+            }
+        }
+
+        // ダメージを与える
+        player.damage(damage);
+
+        // ノックバックさせる
+        player.setVelocity(vector);
+
         // SE再生
+        playSound(sound);
     }
 
     /**
