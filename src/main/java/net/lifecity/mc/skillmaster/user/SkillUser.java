@@ -78,8 +78,9 @@ public class SkillUser {
     public void leftClick() {
         // 左クリックでスキル解除とベクトルの大きさを0にする
         SeparatedSkill activatingSkill = getActivatingSkill();
-        if (activatingSkill != null)
+        if (activatingSkill != null) {
             activatingSkill.deactivate();
+        }
 
         player.setVelocity(new Vector(0, player.getVelocity().getY(), 0));
     }
@@ -154,7 +155,7 @@ public class SkillUser {
             return;
 
         // 複合スキルの場合
-        if (skill instanceof SeparatedSkill combinedSkill) {
+        if (skill instanceof SeparatedSkill separatedSkill) {
 
             SeparatedSkill activatingSkill = getActivatingSkill();
 
@@ -165,8 +166,8 @@ public class SkillUser {
             }
 
             // 発動中だったら追加入力
-            if (combinedSkill.isActivated()) {
-                combinedSkill.additionalInput();
+            if (separatedSkill.isActivated()) {
+                separatedSkill.additionalInput();
                 return;
             }
 
