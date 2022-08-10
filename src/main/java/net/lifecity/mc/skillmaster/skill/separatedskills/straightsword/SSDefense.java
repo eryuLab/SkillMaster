@@ -15,11 +15,6 @@ public class SSDefense extends DefenseSkill {
     }
 
     @Override
-    public void activate() {
-        super.activate();
-    }
-
-    @Override
     public void defense(double damage, Vector vector) {
         user.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
     }
