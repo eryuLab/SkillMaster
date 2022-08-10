@@ -14,7 +14,8 @@ import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
 
-    private boolean flag = false;
+    private boolean rightFlag = false;
+    private boolean leftFlag = false;
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -36,17 +37,23 @@ public class EventListener implements Listener {
         if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
 
 
-            if (event.getAction().isLeftClick()) //攻撃を入力
+            if (event.getAction().isLeftClick()) { //攻撃を入力
+                if (leftFlag) {
+                    leftFlag = false;
+                    return;
+                }
+                user.sendMessage("左クリック検知");
                 user.leftClick();
+            }
 
             else if (event.getAction() == Action.RIGHT_CLICK_AIR) {
                 user.rightClick();
             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if(!flag) {
+                if(!rightFlag) {
                     user.rightClick();
-                    flag = true;
+                    rightFlag = true;
                 } else {
-                    flag = false;
+                    rightFlag = false;
                 }
             }
         }
@@ -102,6 +109,10 @@ public class EventListener implements Listener {
             return;
 
         if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) { //Qスキル入力
+            // 空中を見ていたら(視線の先にブロックがなければ)
+            if (user.getPlayer().getTargetBlock(5) != null) {
+                leftFlag = true;
+            }
             event.setCancelled(true);
             user.drop(Weapon.fromItemStack(event.getItemDrop().getItemStack()));
         }
