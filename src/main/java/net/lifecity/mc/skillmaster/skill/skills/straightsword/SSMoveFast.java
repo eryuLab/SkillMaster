@@ -18,6 +18,10 @@ public class SSMoveFast extends Skill {
 
         Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.55);
 
+        // Yの値が+だったら
+        if (vector.getY() > 0)
+            vector.setY(0.15);
+
         user.getPlayer().setVelocity(vector);
     }
 }
