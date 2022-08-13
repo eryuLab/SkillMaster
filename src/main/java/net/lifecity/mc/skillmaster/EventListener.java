@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster;
 
+import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
@@ -10,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
@@ -116,5 +118,9 @@ public class EventListener implements Listener {
             event.setCancelled(true);
             user.drop(Weapon.fromItemStack(event.getItemDrop().getItemStack()));
         }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
     }
 }
