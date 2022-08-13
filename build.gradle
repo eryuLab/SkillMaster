@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'net.lifecity.mc'
@@ -32,17 +31,6 @@ dependencies {
 
     compileOnly "dev.jorel:commandapi-annotations:8.4.1"
     annotationProcessor "dev.jorel:commandapi-annotations:8.4.1"
-
-    implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.6'
-}
-
-shadowJar {
-    relocate 'com.github.stefvanschie.inventoryframework', 'net.lifecity.mc.skillmaster.inventoryframework'
-    dependencies {
-        exclude 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
-        exclude 'org.projectlombok:lombok:1.18.24'
-        exclude 'dev.jorel:commandapi-annotations:8.4.1'
-    }
 }
 
 def targetJavaVersion = 17
