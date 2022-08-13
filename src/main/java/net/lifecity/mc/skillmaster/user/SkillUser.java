@@ -7,6 +7,7 @@ import net.lifecity.mc.skillmaster.skill.DefenseSkill;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSDefense;
+import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSHighJump;
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSMoveFast;
 import net.lifecity.mc.skillmaster.utils.EntitySort;
@@ -67,7 +68,7 @@ public class SkillUser {
         };
         this.dropSkillSet = new Skill[] {
                 new SSDefense(this),
-                null,
+                new SSHighJump(this),
                 null
         };
     }
