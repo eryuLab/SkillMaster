@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster.inventory;
 
+import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,15 +13,23 @@ import java.util.function.Consumer;
 
 public abstract class InventoryFrame {
 
-    private final SkillUser user;
+    protected final SkillUser user;
 
-    private final Inventory inv;
+    protected final Inventory inv;
 
-    private final Map<Integer, InvItem> itemMap = new HashMap<>();
+    protected final String name;
 
-    public InventoryFrame(SkillUser user, Inventory inv) {
+    protected final Map<Integer, InvItem> itemMap = new HashMap<>();
+
+    protected InventoryFrame(SkillUser user) {
         this.user = user;
-        this.inv = inv;
+        this.inv = user.getPlayer().getInventory();
+        this.name = inv.getViewers().get(0).getOpenInventory().getTitle();
+    }
+    protected InventoryFrame(SkillUser user, int row, String name) {
+        this.user = user;
+        this.inv = Bukkit.createInventory(null, row * 9, name);
+        this.name = name;
     }
 
     /**
