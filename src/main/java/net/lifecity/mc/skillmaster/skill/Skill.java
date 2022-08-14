@@ -7,6 +7,8 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
+
 public class Skill {
 
     @Getter
@@ -17,6 +19,10 @@ public class Skill {
     @Getter
     protected final SkillType type;
 
+    protected final List<String> lore;
+
+    protected final int num;
+
     protected final int point;
 
     protected final int interval;
@@ -26,10 +32,12 @@ public class Skill {
     @Getter
     protected boolean inInterval = false;
 
-    protected Skill(String name, Weapon weapon, SkillType type, int point, int interval, SkillUser user) {
+    protected Skill(String name, Weapon weapon, SkillType type, List<String> lore, int num, int point, int interval, SkillUser user) {
         this.name = name;
         this.weapon = weapon;
         this.type = type;
+        this.lore = lore;
+        this.num = num;
         this.point = point;
         this.interval = interval;
         this.user = user;
