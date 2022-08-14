@@ -3,11 +3,14 @@ package net.lifecity.mc.skillmaster.inventory;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -21,11 +24,22 @@ public abstract class InventoryFrame {
 
     protected final Map<Integer, InvItem> itemMap = new HashMap<>();
 
+    /**
+     * ユーザーインベントリ用のインスタンスを生成します
+     * @param user
+     */
     protected InventoryFrame(SkillUser user) {
         this.user = user;
         this.inv = user.getPlayer().getInventory();
-        this.name = inv.getViewers().get(0).getOpenInventory().getTitle();
+        this.name = "";
     }
+
+    /**
+     * チェストインベントリのインスタンスを生成します
+     * @param user
+     * @param row GUIの行数
+     * @param name GUIの名前
+     */
     protected InventoryFrame(SkillUser user, int row, String name) {
         this.user = user;
         this.inv = Bukkit.createInventory(null, row * 9, name);
@@ -55,6 +69,27 @@ public abstract class InventoryFrame {
 
         if (item != null)
             item.onClick(event);
+    }
+
+    /**
+     * 簡単にItemStackを生成します
+     * @param material アイテムの種類
+     * @param name アイテムの名前
+     * @param lore アイテムの説明
+     * @return 生成されたItemStack
+     */
+    protected ItemStack createItemStack(Material material, String name, List<String> lore) {
+        ItemStack itemStack = new ItemStack(material);
+
+        ItemMeta meta = itemStack.getItemMeta();
+
+        meta.setDisplayName(name);
+
+        meta.setLore(lore);
+
+        itemStack.setItemMeta(meta);
+
+        return itemStack;
     }
 
     protected class InvItem {
