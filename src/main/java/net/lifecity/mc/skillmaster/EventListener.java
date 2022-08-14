@@ -136,10 +136,11 @@ public class EventListener implements Listener {
             InventoryType type = event.getClickedInventory().getType();
 
             if (type == InventoryType.PLAYER) { //プレイヤーインベントリの処理
+                // プレイヤーインベントリの処理を全部ここに書く
 
                 return;
             } else if (type == InventoryType.CHEST) { //チェストインベントリの処理
-
+                // オブジェクト指向で処理を分散
                 return;
             }
         }
