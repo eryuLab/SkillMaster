@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class SSLeafFlow extends SeparatedSkill {
 
     public SSLeafFlow(SkillUser user) {
-        super("リーフフロー", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, 0, 8, 15, user);
+        super("リーフフロー", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, Arrays.asList("前に進みながら斬撃します。", "1回目の入力で前に移動します。", "2回目の入力で攻撃します。"), 0, 0, 8, 15, user);
     }
 
     @Override

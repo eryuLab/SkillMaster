@@ -7,6 +7,8 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
+
 public abstract class SeparatedSkill extends Skill {
 
     protected final int activationTime;
@@ -14,8 +16,8 @@ public abstract class SeparatedSkill extends Skill {
     @Getter
     protected boolean activated = false;
 
-    protected SeparatedSkill(String name, Weapon weapon, SkillType type, int point, int activationTime, int interval, SkillUser user) {
-        super(name, weapon, type, point, interval, user);
+    protected SeparatedSkill(String name, Weapon weapon, SkillType type, List<String> lore, int num, int point, int activationTime, int interval, SkillUser user) {
+        super(name, weapon, type, lore, num, point, interval, user);
         this.activationTime = activationTime;
     }
 

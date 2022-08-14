@@ -6,10 +6,13 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class SSHighJump extends Skill {
 
     public SSHighJump(SkillUser user) {
-        super("大ジャンプ", Weapon.STRAIGHT_SWORD, SkillType.MOVE, 0, 30, user);
+        super("大ジャンプ", Weapon.STRAIGHT_SWORD, SkillType.MOVE, Arrays.asList("上に飛び上がります。"), 0, 0, 30, user);
     }
 
     @Override

@@ -9,6 +9,8 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
+
 public class SSJumpAttack extends SeparatedSkill {
 
     /**
@@ -19,7 +21,7 @@ public class SSJumpAttack extends SeparatedSkill {
     private int step = 0;
 
     public SSJumpAttack(SkillUser user) {
-        super("ジャンプアタック", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, 0, 28, 20, user);
+        super("ジャンプアタック", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, Arrays.asList("上に飛び上がり、地面に突撃します。", "1回目の入力で上に飛び上がります。", "2回目の入力で素早く落下します。", "3回目の入力で攻撃します。"), 0, 0, 28, 20, user);
     }
 
     @Override
