@@ -12,7 +12,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.DoubleChestInventory;
+import org.bukkit.inventory.PlayerInventory;
 
 public class EventListener implements Listener {
 
@@ -122,5 +125,23 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+
+        if (event.getWhoClicked() instanceof Player player) {
+
+            SkillUser user = SkillMaster.instance.getUserList().get(player);
+
+            if (user == null)
+                return;
+
+            InventoryType type = event.getClickedInventory().getType();
+
+            if (type == InventoryType.PLAYER) { //プレイヤーインベントリの処理
+
+                return;
+            } else if (type == InventoryType.CHEST) { //チェストインベントリの処理
+
+                return;
+            }
+        }
     }
 }
