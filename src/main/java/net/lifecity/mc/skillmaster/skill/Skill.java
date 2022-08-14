@@ -5,8 +5,12 @@ import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Skill {
@@ -78,5 +82,31 @@ public class Skill {
      */
     public boolean usable(Weapon weapon) {
         return this.weapon == weapon;
+    }
+
+    /**
+     * このスキルをItemStackにします
+     * @return ItemStackになったスキル
+     */
+    public ItemStack toItemStack() {
+        ItemStack item = new ItemStack(Material.ARROW);
+
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(name);
+
+        List<String> lore = new ArrayList<>();
+
+        lore.add("武器: " + weapon.getJp());
+        lore.add("タイプ: " + type);
+        lore.addAll(this.lore);
+
+        meta.setLore(lore);
+
+        meta.setCustomModelData(num);
+
+        item.setItemMeta(meta);
+
+        return item;
     }
 }
