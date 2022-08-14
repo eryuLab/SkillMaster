@@ -103,7 +103,7 @@ public class Skill {
 
         meta.setLore(lore);
 
-        meta.setCustomModelData(num);
+        meta.setCustomModelData(weapon.getNumber() * 100 + num);
 
         item.setItemMeta(meta);
 
