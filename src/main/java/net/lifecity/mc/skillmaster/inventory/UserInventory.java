@@ -30,7 +30,7 @@ public class UserInventory extends InventoryFrame {
         // スワップキー
         setItem(SkillKey.SWAP_ONE.getInvSlot() - 1, paneItem(SkillKey.SWAP_ONE));
         setItem(SkillKey.SWAP_TWO.getInvSlot() - 1, paneItem(SkillKey.SWAP_TWO));
-        setItem(SkillKey.SWAP_THREE.getInvSlot() - 1, paneItem(SkillKey.SWAP_THREE);
+        setItem(SkillKey.SWAP_THREE.getInvSlot() - 1, paneItem(SkillKey.SWAP_THREE));
 
         // 右クリック
         setItem(SkillKey.RIGHT_ONE.getInvSlot() - 1, paneItem(SkillKey.RIGHT_ONE));
