@@ -64,7 +64,6 @@ public abstract class InventoryFrame {
 
     /**
      * インベントリをクリックしたときの処理
-     * @param index クリックしたスロット
      * @param event クリックイベント
      * @return クリックイベントをキャンセルするかを返します
      */

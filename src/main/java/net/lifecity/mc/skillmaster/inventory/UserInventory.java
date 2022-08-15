@@ -19,6 +19,7 @@ public class UserInventory extends InventoryFrame {
 
     public UserInventory(SkillUser user) {
         super(user);
+        init();
     }
 
     @Override
@@ -69,11 +70,15 @@ public class UserInventory extends InventoryFrame {
                     if (user.getMode() == UserMode.LOBBY)
                         return;
                     event.setCancelled(true);
+                    event.setCurrentItem(null);
                 }
         );
     }
 
     private void setSkill(int index, Skill skill) {
+        if (skill == null)
+            return;
+
         // すでにスキルがセットされていたらセット不可
         for (Skill target : skillMap.values()) {
             if (skill.getName().equals(target.getName())) {
@@ -89,13 +94,14 @@ public class UserInventory extends InventoryFrame {
     private InvItem skillItem(Skill skill, int index) {
         return new InvItem(
                 skill.toItemStack(),
-                    event -> {
-                        if (user.getMode() == UserMode.LOBBY)
-                            return;
+                event -> {
+                    if (user.getMode() == UserMode.LOBBY)
+                        return;
 
                     // スキルメニューを開いていなかったらイベントキャンセル
                     if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
                         event.setCancelled(true);
+                        event.setCurrentItem(null);
                         return;
                     }
 
