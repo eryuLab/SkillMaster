@@ -47,6 +47,18 @@ public class UserInventory extends InventoryFrame {
         // 他メニューへ
     }
 
+    private InvItem paneItem(SkillKey key) {
+
+        return new InvItem(
+                createItemStack(
+                        key.getButton().getMaterial(),
+                        key.getButton().getJp() + ": " + key.getNum() + "→",
+                        List.of()
+                ),
+                event -> event.setCancelled(true)
+        );
+    }
+
     private void setSkill(int index, Skill skill) {
         // すでにスキルがセットされていたらセット不可
         for (Skill target : skillMap.values()) {
@@ -58,18 +70,6 @@ public class UserInventory extends InventoryFrame {
 
         setItem(index, skillItem(skill, index));
         skillMap.put(index, skill);
-    }
-
-    private InvItem paneItem(SkillKey key) {
-
-        return new InvItem(
-                createItemStack(
-                        key.getButton().getMaterial(),
-                        key.getButton().getJp() + ": " + key.getNum() + "→",
-                        List.of()
-                ),
-                event -> event.setCancelled(true)
-        );
     }
 
     private InvItem skillItem(Skill skill, int index) {
