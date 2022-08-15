@@ -1,6 +1,5 @@
 package net.lifecity.mc.skillmaster.inventory;
 
-import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -51,6 +50,11 @@ public abstract class InventoryFrame {
      */
     public abstract void init();
 
+    protected void setItem(int index, InvItem invItem) {
+        itemMap.put(index, invItem);
+        inv.setItem(index, invItem.item);
+    }
+
     /**
      * プレイヤーにインベントリを表示します
      */
@@ -60,12 +64,12 @@ public abstract class InventoryFrame {
 
     /**
      * インベントリをクリックしたときの処理
-     * @param slot クリックしたスロット
+     * @param index クリックしたスロット
      * @param event クリックイベント
      * @return クリックイベントをキャンセルするかを返します
      */
-    public final void onClick(int slot, InventoryClickEvent event) {
-        InvItem item = itemMap.get(slot);
+    public final void onClick(int index, InventoryClickEvent event) {
+        InvItem item = itemMap.get(index);
 
         if (item != null)
             item.onClick(event);
