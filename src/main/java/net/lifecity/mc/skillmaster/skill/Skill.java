@@ -109,4 +109,13 @@ public class Skill {
 
         return item;
     }
+
+    /**
+     * ItemStackがSkillであるか判定します
+     * @param itemStack 比較するアイテム
+     * @return 一致したらtrue
+     */
+    public boolean equals(ItemStack itemStack) {
+        return weapon.getNumber() * 100 + num == itemStack.getItemMeta().getCustomModelData();
+    }
 }
