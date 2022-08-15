@@ -8,6 +8,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,8 +70,9 @@ public class UserInventory extends InventoryFrame {
                 event -> {
                     if (user.getMode() == UserMode.LOBBY)
                         return;
+
                     event.setCancelled(true);
-                    event.setCurrentItem(null);
+                    event.getViewers().get(0).setItemOnCursor(null);
                 }
         );
     }
@@ -101,7 +103,6 @@ public class UserInventory extends InventoryFrame {
                     // スキルメニューを開いていなかったらイベントキャンセル
                     if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
                         event.setCancelled(true);
-                        event.setCurrentItem(null);
                         return;
                     }
 

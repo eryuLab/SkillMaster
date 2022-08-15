@@ -97,7 +97,7 @@ public abstract class InventoryFrame {
 
     protected class InvItem {
 
-        private ItemStack item;
+        protected ItemStack item;
 
         private Consumer<InventoryClickEvent> onClick;
 
