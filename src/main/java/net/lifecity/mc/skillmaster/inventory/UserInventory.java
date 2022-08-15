@@ -1,12 +1,19 @@
 package net.lifecity.mc.skillmaster.inventory;
 
+import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserInventory extends InventoryFrame {
+
+    private final Map<Integer, Skill> skillMap = new HashMap<>();
 
     public UserInventory(SkillUser user) {
         super(user);
@@ -15,36 +22,32 @@ public class UserInventory extends InventoryFrame {
     @Override
     public void init() {
         // スキル配置の説明
-        // Q0
-        InvItem item = new InvItem(
-                createItemStack(
-                        Material.ORANGE_STAINED_GLASS_PANE,
-                        "ドロップキー:0 →",
-                        List.of()
-                ),
-                event -> event.setCancelled(true)
-        );
-        itemMap.put(9, item);
         // ドロップキー
-        itemMap.put(9, paneItem(0, 0));
-        itemMap.put(18, paneItem(0, 1));
-        itemMap.put(27, paneItem(0, 2));
+        setItem(9, paneItem(0, 0));
+        setItem(18, paneItem(0, 1));
+        setItem(27, paneItem(0, 2));
         // スワップキー
-        itemMap.put(11, paneItem(1, 0));
-        itemMap.put(20, paneItem(1, 1));
-        itemMap.put(29, paneItem(1, 2));
+        setItem(11, paneItem(1, 0));
+        setItem(20, paneItem(1, 1));
+        setItem(29, paneItem(1, 2));
         // 右クリック
-        itemMap.put(13, paneItem(2, 0));
-        itemMap.put(22, paneItem(2, 1));
-        itemMap.put(31, paneItem(2, 2));
+        setItem(13, paneItem(2, 0));
+        setItem(22, paneItem(2, 1));
+        setItem(31, paneItem(2, 2));
 
         // スキル本体
         // ドロップキー
-        itemMap.put(10, skillItem(user.getDropSkillSet()[0]));
+        setSkill(10, user.getDropSkillSet()[0]);
+
         // スワップキー
         // 右クリック
 
         // 他メニューへ
+    }
+
+    private void setSkill(int index, Skill skill) {
+        setItem(index, skillItem(skill, index));
+        skillMap.put(index, skill);
     }
 
     private InvItem paneItem(int key, int number) {
@@ -68,7 +71,34 @@ public class UserInventory extends InventoryFrame {
         );
     }
 
-    private InvItem skillItem(Skill skill) {
-        return new InvItem(skill.toItemStack(), event -> event.setCancelled(true));
+    private InvItem skillItem(Skill skill, int index) {
+        return new InvItem(
+                skill.toItemStack(),
+                event -> {
+                    // スキルメニューを開いていなかったらイベントキャンセル
+                    if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    // スキルメニューを開いていたらスキル変更
+                    if (event.getView().getTopInventory().getType() == InventoryType.CHEST) {
+                        // アイテムがなければスキル除外
+                        if (event.getCurrentItem() == null) {
+                            skillMap.remove(index);
+                            itemMap.remove(index);
+                        }
+                        // アイテムがあればスキルセット
+                        else {
+                            Skill currentSkill = new SkillManager(user).fromItemStack(event.getCurrentItem());
+
+                            if (currentSkill != null) {
+                                setSkill(event.getSlot(), currentSkill);
+                                user.sendMessage("スキル『" + currentSkill.getName() + "』をセットしました。");
+                            }
+                        }
+                    }
+                }
+        );
     }
 }
