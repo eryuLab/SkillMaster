@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.user;
 
 import lombok.Getter;
+import org.bukkit.Material;
 
 public class SkillKey {
 
@@ -19,7 +20,9 @@ public class SkillKey {
     public static final SkillKey DROP_TWO = new SkillKey(SkillButton.DROP, 1, 21);
     public static final SkillKey DROP_THREE = new SkillKey(SkillButton.DROP, 2, 30);
 
+    @Getter
     private final SkillButton button;
+    @Getter
     private final int num;
     @Getter
     private final int invSlot;
@@ -30,9 +33,20 @@ public class SkillKey {
         this.invSlot = invSlot;
     }
 
-    private enum SkillButton {
-        RIGHT,
-        SWAP,
-        DROP
+    public enum SkillButton {
+        RIGHT(Material.YELLOW_STAINED_GLASS_PANE, "右クリック"),
+        SWAP(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "スワップ"),
+        DROP(Material.ORANGE_STAINED_GLASS_PANE, "ドロップ");
+
+        @Getter
+        private Material material;
+
+        @Getter
+        private String jp;
+
+        SkillButton(Material material, String jp) {
+            this.material = material;
+            this.jp = jp;
+        }
     }
 }
