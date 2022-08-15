@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.inventory;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
+import net.lifecity.mc.skillmaster.user.SkillKey;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
@@ -23,21 +24,22 @@ public class UserInventory extends InventoryFrame {
     public void init() {
         // スキル配置の説明
         // ドロップキー
-        setItem(9, paneItem(0, 0));
-        setItem(18, paneItem(0, 1));
-        setItem(27, paneItem(0, 2));
+        setItem(SkillKey.DROP_ONE.getInvSlot() - 1, paneItem(SkillKey.DROP_ONE));
+        setItem(SkillKey.DROP_TWO.getInvSlot() - 1, paneItem(SkillKey.DROP_TWO));
+        setItem(SkillKey.DROP_THREE.getInvSlot() - 1, paneItem(SkillKey.DROP_THREE));
         // スワップキー
-        setItem(11, paneItem(1, 0));
-        setItem(20, paneItem(1, 1));
-        setItem(29, paneItem(1, 2));
+        setItem(SkillKey.SWAP_ONE.getInvSlot() - 1, paneItem(SkillKey.SWAP_ONE));
+        setItem(SkillKey.SWAP_TWO.getInvSlot() - 1, paneItem(SkillKey.SWAP_TWO));
+        setItem(SkillKey.SWAP_THREE.getInvSlot() - 1, paneItem(SkillKey.SWAP_THREE);
+
         // 右クリック
-        setItem(13, paneItem(2, 0));
-        setItem(22, paneItem(2, 1));
-        setItem(31, paneItem(2, 2));
+        setItem(SkillKey.RIGHT_ONE.getInvSlot() - 1, paneItem(SkillKey.RIGHT_ONE));
+        setItem(SkillKey.RIGHT_TWO.getInvSlot() - 1, paneItem(SkillKey.RIGHT_TWO));
+        setItem(SkillKey.RIGHT_THREE.getInvSlot() - 1, paneItem(SkillKey.RIGHT_THREE));
 
         // スキル本体
         // ドロップキー
-        setSkill(10, user.getDropSkillSet()[0]);
+        setSkill(SkillKey.DROP_ONE.getInvSlot(), user.getDropSkillSet()[0]);
 
         // スワップキー
         // 右クリック
@@ -46,27 +48,26 @@ public class UserInventory extends InventoryFrame {
     }
 
     private void setSkill(int index, Skill skill) {
+        // すでにスキルがセットされていたらセット不可
+        for (Skill target : skillMap.values()) {
+            if (skill.getName().equals(target.getName())) {
+                user.sendMessage("このスキルはすでにセットされています。");
+                return;
+            }
+        }
+
         setItem(index, skillItem(skill, index));
         skillMap.put(index, skill);
     }
 
-    private InvItem paneItem(int key, int number) {
-        Material material = switch (key) {
-            case 0 -> Material.ORANGE_STAINED_GLASS_PANE;
-            case 1 -> Material.LIGHT_BLUE_STAINED_GLASS_PANE;
-            case 2 -> Material.YELLOW_STAINED_GLASS_PANE;
-            default -> null;
-        };
-
-        String name = switch (key) {
-            case 0 -> "ドロップキー";
-            case 1 -> "スワップキー";
-            case 2 -> "右クリック";
-            default -> null;
-        };
+    private InvItem paneItem(SkillKey key) {
 
         return new InvItem(
-                createItemStack(material, name + ": " + number + "→", List.of()),
+                createItemStack(
+                        key.getButton().getMaterial(),
+                        key.getButton().getJp() + ": " + key.getNum() + "→",
+                        List.of()
+                ),
                 event -> event.setCancelled(true)
         );
     }
