@@ -68,8 +68,8 @@ public abstract class InventoryFrame {
      * @param event クリックイベント
      * @return クリックイベントをキャンセルするかを返します
      */
-    public final void onClick(int index, InventoryClickEvent event) {
-        InvItem item = itemMap.get(index);
+    public final void onClick(InventoryClickEvent event) {
+        InvItem item = itemMap.get(event.getSlot());
 
         if (item != null)
             item.onClick(event);

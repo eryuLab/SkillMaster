@@ -5,6 +5,7 @@ import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.user.SkillKey;
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -40,9 +41,18 @@ public class UserInventory extends InventoryFrame {
         // スキル本体
         // ドロップキー
         setSkill(SkillKey.DROP_ONE.getInvSlot(), user.getDropSkillSet()[0]);
+        setSkill(SkillKey.DROP_TWO.getInvSlot(), user.getDropSkillSet()[1]);
+        setSkill(SkillKey.DROP_THREE.getInvSlot(), user.getDropSkillSet()[2]);
 
         // スワップキー
+        setSkill(SkillKey.SWAP_ONE.getInvSlot(), user.getSwapSkillSet()[0]);
+        setSkill(SkillKey.SWAP_TWO.getInvSlot(), user.getSwapSkillSet()[1]);
+        setSkill(SkillKey.SWAP_THREE.getInvSlot(), user.getSwapSkillSet()[2]);
+
         // 右クリック
+        setSkill(SkillKey.RIGHT_ONE.getInvSlot(), user.getRightSkillSet()[0]);
+        setSkill(SkillKey.RIGHT_TWO.getInvSlot(), user.getRightSkillSet()[1]);
+        setSkill(SkillKey.RIGHT_THREE.getInvSlot(), user.getRightSkillSet()[1]);
 
         // 他メニューへ
     }
@@ -55,7 +65,11 @@ public class UserInventory extends InventoryFrame {
                         key.getButton().getJp() + ": " + key.getNum() + "→",
                         List.of()
                 ),
-                event -> event.setCancelled(true)
+                event -> {
+                    if (user.getMode() == UserMode.LOBBY)
+                        return;
+                    event.setCancelled(true);
+                }
         );
     }
 
@@ -75,7 +89,10 @@ public class UserInventory extends InventoryFrame {
     private InvItem skillItem(Skill skill, int index) {
         return new InvItem(
                 skill.toItemStack(),
-                event -> {
+                    event -> {
+                        if (user.getMode() == UserMode.LOBBY)
+                            return;
+
                     // スキルメニューを開いていなかったらイベントキャンセル
                     if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
                         event.setCancelled(true);
