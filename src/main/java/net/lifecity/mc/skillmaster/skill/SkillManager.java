@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSLeafFlo
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSMoveFast;
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,5 +26,18 @@ public class SkillManager {
         straightSword.add(new SSJumpAttack(user));
 
         allSkill.addAll(straightSword);
+    }
+
+    /**
+     * ItemStackからSkillを特定します
+     * @param itemStack 特定の対象となるItemStack
+     * @return 一致したSkill
+     */
+    public Skill fromItemStack(ItemStack itemStack) {
+        for (Skill skill : allSkill) {
+            if (skill.is(itemStack))
+                return skill;
+        }
+        return null;
     }
 }
