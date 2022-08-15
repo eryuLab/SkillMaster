@@ -115,7 +115,7 @@ public class Skill {
      * @param itemStack 比較するアイテム
      * @return 一致したらtrue
      */
-    public boolean equals(ItemStack itemStack) {
+    public boolean is(ItemStack itemStack) {
         return weapon.getNumber() * 100 + num == itemStack.getItemMeta().getCustomModelData();
     }
 }
