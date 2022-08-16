@@ -52,7 +52,9 @@ public class UserInventory extends InventoryFrame {
         // Paneを設置
         setItem(slot - 1, paneItem(key));
         // SkillItemを設置
-        setItem(slot, skillItem(key));
+        InvItem skillItem = skillItem(key);
+        if (skillItem != null)
+            setItem(slot, skillItem);
     }
 
     /**
@@ -99,7 +101,7 @@ public class UserInventory extends InventoryFrame {
                         return;
 
                     // ほかのインベントリを開いていないときの処理
-                    if (event.getView().getTopInventory().getType() == InventoryType.PLAYER) {
+                    if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
                         event.setCancelled(true);
                         return;
                     }
