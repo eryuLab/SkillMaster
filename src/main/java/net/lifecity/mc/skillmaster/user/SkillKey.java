@@ -3,6 +3,9 @@ package net.lifecity.mc.skillmaster.user;
 import lombok.Getter;
 import org.bukkit.Material;
 
+/**
+ * スキルを入力するためのキーについて機能をまとめたクラス
+ */
 public class SkillKey {
 
     // ドロップキーの入力
@@ -33,6 +36,9 @@ public class SkillKey {
         this.invSlot = invSlot;
     }
 
+    /**
+     * スキル入力キーの列挙
+     */
     public enum SkillButton {
         RIGHT(Material.YELLOW_STAINED_GLASS_PANE, "右クリック"),
         SWAP(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "スワップ"),

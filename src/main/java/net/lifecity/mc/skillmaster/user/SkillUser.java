@@ -11,7 +11,7 @@ import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSDefense
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSHighJump;
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
 import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSMoveFast;
-import net.lifecity.mc.skillmaster.utils.EntitySort;
+import net.lifecity.mc.skillmaster.utils.EntityDistanceSort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
@@ -22,6 +22,9 @@ import org.bukkit.util.Vector;
 
 import java.util.List;
 
+/**
+ * スキル使用者としてスキルを管理、実行するクラス
+ */
 public class SkillUser {
 
     private final int SKILL_SET_SIZE = 3;
@@ -80,6 +83,7 @@ public class SkillUser {
 
     /**
      * 左クリックを入力した時の処理
+     * 発動中のスキルの解除と、自身のベクトルを0にする
      */
     public void leftClick() {
         // 左クリックでスキル解除とベクトルの大きさを0にする
@@ -93,6 +97,7 @@ public class SkillUser {
 
     /**
      * 右クリックを入力した時の処理
+     * 右クリックのスキルを発動、追加入力する
      */
     public void rightClick() {
         // Shiftが押されているか
@@ -109,6 +114,7 @@ public class SkillUser {
 
     /**
      * スワップキーを押した時の処理
+     * スワップキーのスキルを発動、追加入力する
      */
     public void swap() {
         // Shiftが押されているか
@@ -125,6 +131,7 @@ public class SkillUser {
 
     /**
      * ドロップキーを押した時の処理
+     * ドロップキーのスキルを発動、追加入力する
      */
     public void drop(Weapon weapon) {
         // Shiftば押されているか
@@ -140,8 +147,9 @@ public class SkillUser {
     }
 
     /**
-     * スキルを起動するためのメソッド
-     * @param skill 起動するスキル
+     * スキルを発動、追加入力する
+     * @param skill 操作するスキル
+     * @param weapon 手に持っている武器
      */
     private void skillInput(Skill skill, Weapon weapon) {
         // null確認
@@ -269,6 +277,13 @@ public class SkillUser {
         return true;
     }
 
+    /**
+     * このSkillUserへの攻撃を試みます
+     * ただし、防御されるかもしれません
+     * @param damage 攻撃力
+     * @param vector ノックバック
+     * @param sound 攻撃成功時の音
+     */
     private void damage(double damage, Vector vector, Sound sound) {
         // 防御スキル確認
         SeparatedSkill activatingSkill = getActivatingSkill();
@@ -291,21 +306,16 @@ public class SkillUser {
     }
 
     /**
-     * 敵からの攻撃を防御します
-     * todo 複数の攻撃を防御
-     */
-    private void defense() {}
-
-    /**
-     * このプレイヤーの位置から一番近いentityを取得します
-     * @return このプレイヤーの位置から一番近いentity
+     * このSkillUserから近いEntityを取得します
+     * @param radius 検知する範囲の半径
+     * @return 近い順にEntityのリスト
      */
     public List<Entity> getNearEntities(double radius) {
         // 半径radiusで近くのentityのリストを取得
         List<Entity> near = player.getNearbyEntities(radius, radius, radius);
 
         // Entityのリストを近い順に並べ替える
-        EntitySort.quicksort(player, near, 0, near.size() - 1);
+        EntityDistanceSort.quicksort(player, near, 0, near.size() - 1);
 
         return near;
     }
@@ -317,6 +327,11 @@ public class SkillUser {
     public ItemStack getHandItem() {
         return player.getInventory().getItemInMainHand();
     }
+
+    /**
+     * メインハンドの武器を取得します
+     * @return メインハンドの武器
+     */
     public Weapon getHandWeapon() {
         return Weapon.fromItemStack(getHandItem());
     }

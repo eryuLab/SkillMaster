@@ -9,6 +9,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
+/**
+ * 前方に突進しながら敵を攻撃するスキル
+ */
 public class SSLeafFlow extends SeparatedSkill {
 
     public SSLeafFlow(SkillUser user) {

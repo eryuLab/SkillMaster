@@ -14,13 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * SkillMasterのユーザーのインベントリを構築、操作するためのクラス
+ */
 public class UserInventory extends InventoryFrame {
 
     private final Map<Integer, Skill> skillMap = new HashMap<>();
 
     public UserInventory(SkillUser user) {
         super(user);
-        init();
     }
 
     @Override
@@ -59,6 +61,11 @@ public class UserInventory extends InventoryFrame {
         // 他メニューへ
     }
 
+    /**
+     * スキル配置を説明するためのアイテムを生成します
+     * @param key SkillKeyで生成するアイテムを選択します
+     * @return 生成されたスキル配置を説明するアイテム
+     */
     private InvItem paneItem(SkillKey key) {
 
         return new InvItem(
@@ -76,6 +83,11 @@ public class UserInventory extends InventoryFrame {
         );
     }
 
+    /**
+     * スキルをセットします
+     * @param index セットするスロット番号
+     * @param skill セットするスキル
+     */
     private void setSkill(int index, Skill skill) {
         if (skill == null)
             return;
@@ -92,6 +104,12 @@ public class UserInventory extends InventoryFrame {
         skillMap.put(index, skill);
     }
 
+    /**
+     * スキルをInvItemに変換します
+     * @param skill 変換するスキル
+     * @param index 配置するスロット番号
+     * @return 変換されたスキル
+     */
     private InvItem skillItem(Skill skill, int index) {
         return new InvItem(
                 skill.toItemStack(),

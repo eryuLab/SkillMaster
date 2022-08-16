@@ -9,6 +9,9 @@ import org.bukkit.util.Vector;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+/**
+ * 上に高く飛び上がるスキル
+ */
 public class SSHighJump extends Skill {
 
     public SSHighJump(SkillUser user) {

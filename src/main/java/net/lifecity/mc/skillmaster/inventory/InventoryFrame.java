@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * インベントリの構築と操作を行うためのフレーム
+ */
 public abstract class InventoryFrame {
 
     protected final SkillUser user;
@@ -31,6 +34,7 @@ public abstract class InventoryFrame {
         this.user = user;
         this.inv = user.getPlayer().getInventory();
         this.name = "";
+        init();
     }
 
     /**
@@ -43,6 +47,7 @@ public abstract class InventoryFrame {
         this.user = user;
         this.inv = Bukkit.createInventory(null, row * 9, name);
         this.name = name;
+        init();
     }
 
     /**
@@ -50,6 +55,11 @@ public abstract class InventoryFrame {
      */
     public abstract void init();
 
+    /**
+     * このインベントリにアイテムを設置します
+     * @param index 設置するスロット番号
+     * @param invItem 配置するアイテム
+     */
     protected void setItem(int index, InvItem invItem) {
         itemMap.put(index, invItem);
         inv.setItem(index, invItem.item);
@@ -95,6 +105,10 @@ public abstract class InventoryFrame {
         return itemStack;
     }
 
+    /**
+     * インベントリに配置するオブジェクト
+     * ItemStackとクリック時の処理を保持する
+     */
     protected class InvItem {
 
         protected ItemStack item;

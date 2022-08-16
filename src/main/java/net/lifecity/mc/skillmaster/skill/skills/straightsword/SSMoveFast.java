@@ -8,6 +8,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
+/**
+ * 上以外の方向に素早く移動するスキル
+ */
 public class SSMoveFast extends Skill {
 
     public SSMoveFast(SkillUser user) {

@@ -5,6 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+/**
+ * 武器の列挙
+ */
 public enum Weapon {
     STRAIGHT_SWORD("直剣", 1),
     DAGGER("短剣", 2),
@@ -90,6 +93,11 @@ public enum Weapon {
         return null;
     }
 
+    /**
+     * 名前から武器を取得します
+     * @param name この名前から検索します
+     * @return 一致した武器
+     */
     public static Weapon fromName(String name) {
         for (Weapon weapon : values()) {
             if (weapon.name().equalsIgnoreCase(name))
@@ -98,6 +106,11 @@ public enum Weapon {
         return null;
     }
 
+    /**
+     * 番号から武器を取得します
+     * @param number この番号で検索します
+     * @return 一致した武器
+     */
     public static Weapon fromNumber(int number) {
         for (Weapon weapon : values()) {
             if (weapon.number == number)

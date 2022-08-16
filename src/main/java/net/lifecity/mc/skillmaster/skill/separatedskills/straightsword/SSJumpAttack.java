@@ -11,6 +11,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
+/**
+ * 飛び上がり、地面に向かって突撃するスキル
+ */
 public class SSJumpAttack extends SeparatedSkill {
 
     /**

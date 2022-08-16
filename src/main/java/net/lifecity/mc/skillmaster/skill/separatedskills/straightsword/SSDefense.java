@@ -10,6 +10,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
+/**
+ * 0.5秒間だけ敵からの攻撃を完全に防御するスキル
+ */
 public class SSDefense extends DefenseSkill {
 
     public SSDefense(SkillUser user) {

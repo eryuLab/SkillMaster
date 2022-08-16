@@ -4,12 +4,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Entityのリストをプレイヤーから近い順に並べ替えるクラス
  */
-public class EntitySort {
+public class EntityDistanceSort {
 
     private static void swap(List<Entity> list, int i, int j) {
         Entity entity = list.get(i);

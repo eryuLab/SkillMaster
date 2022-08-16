@@ -9,6 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
+/**
+ * 複数の入力ができる複合スキルのスーパークラス
+ */
 public abstract class SeparatedSkill extends Skill {
 
     protected final int activationTime;
@@ -35,6 +38,9 @@ public abstract class SeparatedSkill extends Skill {
         new ActivationTimer();
     }
 
+    /**
+     * 発動している期間を計るクラス
+     */
     private class ActivationTimer extends BukkitRunnable {
 
         private int count = 0;
@@ -58,7 +64,7 @@ public abstract class SeparatedSkill extends Skill {
     }
 
     /**
-     * 呼び出し前に必ずisInActivating()がtrueになっていることを確認してください
+     * 追加入力の処理
      */
     public abstract void additionalInput();
 

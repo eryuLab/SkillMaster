@@ -9,6 +9,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
+/**
+ * 自分のベクトルの強さを攻撃力に変換して攻撃するスキル
+ */
 public class SSVectorAttack extends Skill {
 
     public SSVectorAttack(SkillUser user) {

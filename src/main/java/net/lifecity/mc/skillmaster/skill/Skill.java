@@ -13,6 +13,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * すべてのスキルのスーパークラス
+ */
 public class Skill {
 
     @Getter
@@ -85,7 +88,7 @@ public class Skill {
     }
 
     /**
-     * このスキルをItemStackにします
+     * このスキルをItemStackとして現します
      * @return ItemStackになったスキル
      */
     public ItemStack toItemStack() {
@@ -103,7 +106,7 @@ public class Skill {
 
         meta.setLore(lore);
 
-        meta.setCustomModelData(weapon.getNumber() * 100 + num);
+        meta.setCustomModelData(id());
 
         item.setItemMeta(meta);
 
@@ -116,6 +119,14 @@ public class Skill {
      * @return 一致したらtrue
      */
     public boolean is(ItemStack itemStack) {
-        return weapon.getNumber() * 100 + num == itemStack.getItemMeta().getCustomModelData();
+        return id() == itemStack.getItemMeta().getCustomModelData();
+    }
+
+    /**
+     * このスキルのIDを取得します
+     * @return スキルのID
+     */
+    private int id() {
+        return weapon.getNumber() * 100 + num;
     }
 }

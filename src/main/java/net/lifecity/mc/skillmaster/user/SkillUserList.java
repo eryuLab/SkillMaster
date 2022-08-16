@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
+/**
+ * スキルユーザーを管理するためのリストクラス
+ */
 public class SkillUserList extends ArrayList<SkillUser> {
 
     /**

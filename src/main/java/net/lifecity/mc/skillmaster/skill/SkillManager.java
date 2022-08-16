@@ -11,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * スキルを管理するクラス
+ */
 public class SkillManager {
 
     @Getter

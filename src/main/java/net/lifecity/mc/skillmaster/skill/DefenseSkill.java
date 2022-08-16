@@ -6,6 +6,9 @@ import org.bukkit.util.Vector;
 
 import java.util.List;
 
+/**
+ * 防御スキルのスーパークラス
+ */
 public abstract class DefenseSkill extends SeparatedSkill {
 
     public DefenseSkill(String name, Weapon weapon, List<String> lore, int num, int point, int activationTime, int interval, SkillUser user) {
@@ -15,5 +18,10 @@ public abstract class DefenseSkill extends SeparatedSkill {
     @Override
     public void additionalInput() {}
 
+    /**
+     * 防御するときに呼び出されます
+     * @param damage 攻撃力
+     * @param vector ノックバックの強さ
+     */
     public abstract void defense(double damage, Vector vector);
 }
