@@ -6,50 +6,18 @@ import net.lifecity.mc.skillmaster.skill.Skill;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SkillSet {
+/**
+ * スキルキーが
+ */
+public class SkillSet extends ArrayList<SkillKey> {
 
     @Getter
-    private final SkillKey[] rightSet;
+    private final SkillButton button;
 
-    @Getter
-    private final SkillKey[] swapSet;
-
-    @Getter
-    private final SkillKey[] dropSet;
-
-    public SkillSet(
-            Skill rightOne, Skill rightTwo, Skill rightThree,
-            Skill swapOne, Skill swapTwo, Skill swapThree,
-            Skill dropOne, Skill dropTwo, Skill dropThree
-    ) {
-        this.rightSet = new SkillKey[] {
-                new SkillKey(SkillButton.RIGHT, 0, rightOne),
-                new SkillKey(SkillButton.RIGHT, 1, rightTwo),
-                new SkillKey(SkillButton.RIGHT, 2, rightThree)
-        };
-        this.swapSet = new SkillKey[] {
-                new SkillKey(SkillButton.SWAP, 0, swapOne),
-                new SkillKey(SkillButton.SWAP, 1, swapTwo),
-                new SkillKey(SkillButton.SWAP, 2, swapThree)
-        };
-        this.dropSet = new SkillKey[] {
-                new SkillKey(SkillButton.DROP, 0, dropOne),
-                new SkillKey(SkillButton.DROP, 1, dropTwo),
-                new SkillKey(SkillButton.DROP, 2, dropThree)
-        };
-    }
-
-    /**
-     * すべてのスキルキーをリストとして取得します
-     * @return すべてのスキルキー
-     */
-    public List<SkillKey> getAllSkillKey() {
-        List<SkillKey> allSkillKey = new ArrayList<>();
-
-        allSkillKey.addAll(List.of(rightSet));
-        allSkillKey.addAll(List.of(swapSet));
-        allSkillKey.addAll(List.of(dropSet));
-
-        return allSkillKey;
+    public SkillSet(SkillButton button, Skill... skills) {
+        this.button = button;
+        for (int i = 0; i < skills.length; i++) {
+            add(new SkillKey(button, i, skills[i]));
+        }
     }
 }
