@@ -7,10 +7,10 @@ import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.skill.DefenseSkill;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
-import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSDefense;
-import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSHighJump;
-import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
-import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSMoveFast;
+import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
+import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
+import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
+import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -74,7 +74,7 @@ public class SkillUser {
                 null
         };
         this.dropSkillSet = new Skill[] {
-                new SSDefense(this),
+                new SSNormalDefense(this),
                 new SSHighJump(this),
                 null
         };

@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills.straightsword;
+package net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;

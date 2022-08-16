@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills.straightsword;
+package net.lifecity.mc.skillmaster.skill.separatedskills.leafflow;
 
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.SkillType;

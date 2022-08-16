@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.skills.straightsword;
+package net.lifecity.mc.skillmaster.skill.skills.movefast;
 
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillType;

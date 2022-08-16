@@ -1,10 +1,10 @@
 package net.lifecity.mc.skillmaster.skill;
 
 import lombok.Getter;
-import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSJumpAttack;
-import net.lifecity.mc.skillmaster.skill.separatedskills.straightsword.SSLeafFlow;
-import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSMoveFast;
-import net.lifecity.mc.skillmaster.skill.skills.straightsword.SSVectorAttack;
+import net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack.SSJumpAttack;
+import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
+import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
+import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.inventory.ItemStack;
 
