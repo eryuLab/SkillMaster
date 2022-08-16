@@ -1,11 +1,8 @@
 package net.lifecity.mc.skillmaster;
 
-import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
-import net.md_5.bungee.api.chat.BaseComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,14 +12,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.DoubleChestInventory;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.Base64;
 
 public class EventListener implements Listener {
 
@@ -140,13 +131,14 @@ public class EventListener implements Listener {
             if (user == null)
                 return;
 
-            InventoryType type = event.getClickedInventory().getType();
+            if (event.getClickedInventory() == null)
+                return;
 
-            if (type == InventoryType.PLAYER) { //プレイヤーインベントリの処理
-                // プレイヤーインベントリの処理を全部ここに書く
-                user.getInv().onClick(event);
-            } else if (type == InventoryType.CHEST) { //チェストインベントリの処理
-                // オブジェクト指向で処理を分散
+            if (event.getClickedInventory().getType() == InventoryType.PLAYER) { //プレイヤーインベントリの処理
+                user.getUserInventory().onClick(event);
+
+            } else if (event.getClickedInventory().getType() == InventoryType.CHEST) { //チェストインベントリの処理
+                // ユーザーインスタンスから処理を呼び出す
             }
         }
     }

@@ -34,7 +34,7 @@ public class SkillUser {
     private UserMode mode = UserMode.BATTLE;
 
     @Getter
-    private UserInventory inv;
+    private UserInventory userInventory;
 
     @Getter
     @Setter
@@ -75,7 +75,7 @@ public class SkillUser {
                 new SSHighJump(this),
                 null
         };
-        this.inv = new UserInventory(this);
+        this.userInventory = new UserInventory(this);
     }
 
     /**

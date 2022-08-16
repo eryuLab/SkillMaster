@@ -72,7 +72,6 @@ public class UserInventory extends InventoryFrame {
                         return;
 
                     event.setCancelled(true);
-                    event.getViewers().get(0).setItemOnCursor(null);
                 }
         );
     }
