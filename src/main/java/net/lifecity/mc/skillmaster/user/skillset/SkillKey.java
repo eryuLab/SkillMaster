@@ -1,8 +1,9 @@
-package net.lifecity.mc.skillmaster.user;
+package net.lifecity.mc.skillmaster.user.skillset;
 
 import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.user.skillset.SkillButton;
 
 /**
  * 入力に使うスキルキーのクラス
