@@ -11,6 +11,9 @@ import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDef
 import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
 import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
 import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
+import net.lifecity.mc.skillmaster.user.skillset.SkillButton;
+import net.lifecity.mc.skillmaster.user.skillset.SkillKey;
+import net.lifecity.mc.skillmaster.user.skillset.SkillSet;
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Sound;
@@ -44,40 +47,43 @@ public class SkillUser {
     private Weapon selectedWeapon = Weapon.STRAIGHT_SWORD;
 
     @Getter
-    private Skill[] rightSkillSet;
+    private SkillSet rightSkillSet;
 
     @Getter
     private int rightIndex = 0;
 
     @Getter
-    private Skill[] swapSkillSet;
+    private SkillSet swapSkillSet;
 
     @Getter
     private int swapIndex = 0;
 
     @Getter
-    private Skill[] dropSkillSet;
+    private SkillSet dropSkillSet;
 
     @Getter
     private int dropIndex = 0;
 
     public SkillUser(Player player) {
         this.player = player;
-        this.rightSkillSet = new Skill[] {
+        this.rightSkillSet = new SkillSet(
+                SkillButton.RIGHT,
                 new SSVectorAttack(this),
                 null,
                 null
-        };
-        this.swapSkillSet = new Skill[] {
+        );
+        this.swapSkillSet = new SkillSet(
+                SkillButton.SWAP,
                 new SSMoveFast(this),
                 null,
                 null
-        };
-        this.dropSkillSet = new Skill[] {
+        );
+        this.dropSkillSet = new SkillSet(
+                SkillButton.DROP,
                 new SSNormalDefense(this),
                 new SSHighJump(this),
                 null
-        };
+        );
         this.userInventory = new UserInventory(this);
     }
 
@@ -109,7 +115,7 @@ public class SkillUser {
             sendMessage("右クリックのスキルを" + rightIndex + "に変更しました。");
         }
         else
-            skillInput(rightSkillSet[rightIndex], getHandWeapon());
+            skillInput(rightSkillSet.get(rightIndex).getSkill(), getHandWeapon());
     }
 
     /**
@@ -126,7 +132,7 @@ public class SkillUser {
             sendMessage("スワップのスキルを" + swapIndex + "に変更しました。");
         }
         else
-            skillInput(swapSkillSet[swapIndex], getHandWeapon());
+            skillInput(swapSkillSet.get(swapIndex).getSkill(), getHandWeapon());
     }
 
     /**
@@ -143,7 +149,7 @@ public class SkillUser {
             sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
         }
         else
-            skillInput(dropSkillSet[dropIndex], weapon);
+            skillInput(dropSkillSet.get(dropIndex).getSkill(), weapon);
     }
 
     /**
@@ -196,7 +202,8 @@ public class SkillUser {
      */
     public SeparatedSkill getActivatingSkill() {
 
-        for (Skill skill : rightSkillSet) {
+        for (SkillKey skillKey : rightSkillSet) {
+            Skill skill  = skillKey.getSkill();
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -204,7 +211,8 @@ public class SkillUser {
                     return combinedSkill;
             }
         }
-        for (Skill skill : swapSkillSet) {
+        for (SkillKey skillKey : swapSkillSet) {
+            Skill skill = skillKey.getSkill();
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
@@ -212,7 +220,8 @@ public class SkillUser {
                     return combinedSkill;
             }
         }
-        for (Skill skill : dropSkillSet) {
+        for (SkillKey skillKey : dropSkillSet) {
+            Skill skill = skillKey.getSkill();
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
