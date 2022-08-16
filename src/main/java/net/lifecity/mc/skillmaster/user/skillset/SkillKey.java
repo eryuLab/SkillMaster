@@ -19,7 +19,7 @@ public class SkillKey {
     @Setter
     private Skill skill;
 
-    private SkillKey(SkillButton button, int num, Skill skill) {
+    public SkillKey(SkillButton button, int num, Skill skill) {
         this.button = button;
         this.num = num;
         this.skill = skill;
