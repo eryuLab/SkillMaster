@@ -14,10 +14,10 @@ public class SkillSet extends ArrayList<SkillKey> {
     @Getter
     private final SkillButton button;
 
-    public SkillSet(SkillButton button, Skill... skills) {
+    public SkillSet(SkillButton button, Skill zero, Skill one, Skill two) {
         this.button = button;
-        for (int i = 0; i < skills.length; i++) {
-            add(new SkillKey(button, i, skills[i]));
-        }
+        add(new SkillKey(button, 0, zero));
+        add(new SkillKey(button, 1, one));
+        add(new SkillKey(button, 2, two));
     }
 }
