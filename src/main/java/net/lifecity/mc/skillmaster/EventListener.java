@@ -134,10 +134,12 @@ public class EventListener implements Listener {
             if (event.getClickedInventory() == null)
                 return;
 
-            if (event.getClickedInventory().getType() == InventoryType.PLAYER) { //プレイヤーインベントリの処理
+            // プレイヤーインベントリの処理
+            if (event.getClickedInventory().getType() == InventoryType.PLAYER)
                 user.getUserInventory().onClick(event);
 
-            } else if (event.getClickedInventory().getType() == InventoryType.CHEST) { //チェストインベントリの処理
+            // チェストインベントリの処理
+            if (event.getClickedInventory().getType() == InventoryType.CHEST) {
                 // ユーザーインスタンスから処理を呼び出す
             }
         }
