@@ -3,6 +3,9 @@ package net.lifecity.mc.skillmaster.user.skillset;
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.skill.Skill;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SkillSet {
 
     @Getter
@@ -34,5 +37,19 @@ public class SkillSet {
                 new SkillKey(SkillButton.DROP, 1, dropTwo),
                 new SkillKey(SkillButton.DROP, 2, dropThree)
         };
+    }
+
+    /**
+     * すべてのスキルキーをリストとして取得します
+     * @return すべてのスキルキー
+     */
+    public List<SkillKey> getAllSkillKey() {
+        List<SkillKey> allSkillKey = new ArrayList<>();
+
+        allSkillKey.addAll(List.of(rightSet));
+        allSkillKey.addAll(List.of(swapSet));
+        allSkillKey.addAll(List.of(dropSet));
+
+        return allSkillKey;
     }
 }
