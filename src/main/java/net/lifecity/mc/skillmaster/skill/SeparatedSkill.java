@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.List;
 
 /**
- * 複数の入力ができる複合スキルのスーパークラス
+ * 発動中の時間を計るスキルのスーパークラス
  */
 public abstract class SeparatedSkill extends Skill {
 
