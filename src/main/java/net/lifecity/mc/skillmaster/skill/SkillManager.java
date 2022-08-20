@@ -6,12 +6,11 @@ import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
 import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
 import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
-import net.lifecity.mc.skillmaster.user.SkillUserList;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * スキルを管理するクラス
@@ -19,10 +18,10 @@ import java.util.Set;
 public class SkillManager {
 
     @Getter
-    private final Set<Skill> allSkill = new HashSet<>();
+    private final List<Skill> allSkill = new ArrayList<>();
 
     @Getter
-    private final Set<Skill> straightSword = new HashSet<>();
+    private final List<Skill> straightSword = new ArrayList<>();
 
     public SkillManager(SkillUser user) {
         straightSword.add(new SSMoveFast(user));
@@ -33,7 +32,7 @@ public class SkillManager {
         allSkill.addAll(straightSword);
     }
 
-    public Set<Skill> fromWeapon(Weapon weapon) {
+    public List<Skill> fromWeapon(Weapon weapon) {
         return switch (weapon) {
             case STRAIGHT_SWORD -> straightSword;
             default -> null;
