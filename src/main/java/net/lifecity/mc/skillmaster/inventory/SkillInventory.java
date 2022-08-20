@@ -27,6 +27,7 @@ public class SkillInventory extends InventoryFrame {
             InvItem item = new InvItem(
                     skillList.get(i).toItemStack(),
                     event -> {
+                        event.setCancelled(true);
                         user.sendMessage("current: " + event.getCurrentItem());
                         user.sendMessage("cursor: " + event.getCursor());
                     }
