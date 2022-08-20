@@ -139,10 +139,8 @@ public class EventListener implements Listener {
                 user.getUserInventory().onClick(event);
 
             // チェストインベントリの処理
-            if (event.getClickedInventory().getType() == InventoryType.CHEST) {
-                // ユーザーインスタンスから処理を呼び出す
+            if (event.getClickedInventory().getType() == InventoryType.CHEST)
                 user.getOpenedInventory().onClick(event);
-            }
         }
     }
 }
