@@ -4,6 +4,7 @@ import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.AStringArgument;
+import net.lifecity.mc.skillmaster.inventory.SkillInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
@@ -40,5 +41,23 @@ public class SkillCommand {
         user.setMode(mode);
 
         player.sendMessage("モードを" + name + "に変更しました");
+    }
+
+    @Subcommand("menu")
+    public static void menu(Player player, @AMultiLiteralArgument({"skill", "weapon"}) String menu) {
+        SkillUser user = SkillMaster.instance.getUserList().get(player);
+
+        if (menu.equalsIgnoreCase("skill")) {
+            user.setOpenedInventory(new SkillInventory(user, user.getSelectedWeapon()));
+
+            user.getOpenedInventory().open();
+
+            return;
+
+        }
+        if (menu.equalsIgnoreCase("weapon")) {
+            player.sendMessage("現在、このコマンドは使用できません。");
+            return;
+        }
     }
 }
