@@ -127,6 +127,15 @@ public class Skill {
     }
 
     /**
+     * このスキルが他のスキルと同じものであるか判定します
+     * @param other 比較するスキル
+     * @return 一致するかどうか
+     */
+    public boolean is(Skill other) {
+        return id() == other.id();
+    }
+
+    /**
      * このスキルのIDを取得します
      * @return スキルのID
      */
