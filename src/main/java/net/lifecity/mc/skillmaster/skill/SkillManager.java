@@ -6,6 +6,8 @@ import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
 import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
 import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.user.SkillUserList;
+import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
@@ -29,6 +31,13 @@ public class SkillManager {
         straightSword.add(new SSJumpAttack(user));
 
         allSkill.addAll(straightSword);
+    }
+
+    public Set<Skill> fromWeapon(Weapon weapon) {
+        return switch (weapon) {
+            case STRAIGHT_SWORD -> straightSword;
+            default -> null;
+        };
     }
 
     /**
