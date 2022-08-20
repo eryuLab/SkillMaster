@@ -245,14 +245,20 @@ public class SkillUser {
      */
     public boolean settable(Skill skill) {
         for (SkillKey set : rightSkillSet) {
+            if (set.getSkill() == null)
+                continue;
             if (set.getSkill().is(skill))
                 return false;
         }
         for (SkillKey set : swapSkillSet) {
+            if (set.getSkill() == null)
+                continue;
             if (set.getSkill().is(skill))
                 return false;
         }
         for (SkillKey set : dropSkillSet) {
+            if (set.getSkill() == null)
+                continue;
             if (set.getSkill().is(skill))
                 return false;
         }
