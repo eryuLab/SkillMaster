@@ -40,6 +40,10 @@ public class UserInventory extends InventoryFrame {
 
     }
 
+    /**
+     * スキルと説明アイテムをセットで追加します
+     * @param key 追加するSkillKey
+     */
     private void setSkillItem(SkillKey key) {
         // 配置するスロットを計算
         int slot = switch (key.getButton()) {
