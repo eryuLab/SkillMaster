@@ -47,15 +47,14 @@ public class SkillCommand {
     public static void menu(Player player, @AMultiLiteralArgument({"skill", "weapon"}) String menu) {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
 
-        if (menu.equalsIgnoreCase("skill")) {
-            user.setOpenedInventory(new SkillInventory(user, user.getSelectedWeapon()));
+        if (menu.equals("skill")) {
+            user.setOpenedInventory(new SkillInventory(user));
 
             user.getOpenedInventory().open();
 
             return;
-
         }
-        if (menu.equalsIgnoreCase("weapon")) {
+        if (menu.equals("weapon")) {
             player.sendMessage("現在、このコマンドは使用できません。");
             return;
         }
