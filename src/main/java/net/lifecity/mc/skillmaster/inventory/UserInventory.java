@@ -93,15 +93,26 @@ public class UserInventory extends InventoryFrame {
      * @return 変換されたSkillKey
      */
     private InvItem skillItem(SkillKey key) {
+
+        // アイテムがないときの処理
         if (key.getSkill() == null)
             return new InvItem(new ItemStack(Material.AIR), event -> {
-                // cursorがあればスキル変更
-                Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
 
-                if (cursorSkill == null) {
+                // モード確認
+                if (user.getMode() == UserMode.LOBBY)
+                    return;
+
+                // インベントリ確認
+                if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
                     event.setCancelled(true);
                     return;
                 }
+
+                // cursorがスキルであればスキル変更
+                Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
+
+                if (cursorSkill == null)
+                    return;
 
                 key.setSkill(cursorSkill);
                 user.sendMessage("スキル変更→" + cursorSkill.getName());
@@ -109,9 +120,9 @@ public class UserInventory extends InventoryFrame {
                 setItem(event.getSlot(), skillItem(key));
             });
 
-        return new InvItem(
-                key.getSkill().toItemStack(),
-                event -> {
+
+        // アイテムがある時の処理
+        return new InvItem(key.getSkill().toItemStack(), event -> {
                     // モード確認
                     if (user.getMode() == UserMode.LOBBY)
                         return;
@@ -126,30 +137,37 @@ public class UserInventory extends InventoryFrame {
                     if (event.getView().getTopInventory().getType() == InventoryType.CHEST) {
                         // スキルメニューを開いていた時の処理
                         if (user.getOpenedInventory() instanceof SkillInventory) {
+
                             // cursorがAIRであればスキル除外
                             if (event.getCursor().getType() == Material.AIR) {
                                 key.setSkill(null);
                                 user.sendMessage("スキルを除外しました");
 
-                                setItem(event.getSlot(), skillItem(key));
-                                return;
                             }
 
-                            // cursorがスキルアイテムであればスキル変更
-                            Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
+                            // cursorがAIRでなかった時の処理 & cursorがスキルである時の処理
+                            else {
+                                Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
+                                if (cursorSkill == null) {
+                                    event.setCancelled(true);
+                                    return;
+                                }
 
-                            if (cursorSkill == null) {
-                                event.setCancelled(true);
-                                return;
+                                // すでにスキルがセットされているか
+                                if (!user.settable(cursorSkill)) {
+                                    event.setCancelled(true);
+                                    user.sendMessage("このスキルはすでにセットされています");
+                                    return;
+                                }
+
+                                // スキルをセット
+                                key.setSkill(cursorSkill);
+                                user.sendMessage("スキル変更 →" + cursorSkill.getName());
                             }
-
-                            key.setSkill(cursorSkill);
-                            user.sendMessage("スキル変更 →" + cursorSkill.getName());
 
                             setItem(event.getSlot(), skillItem(key));
                         }
                     }
-                }
-        );
+        });
     }
 }
