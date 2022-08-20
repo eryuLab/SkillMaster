@@ -12,16 +12,13 @@ import java.util.Set;
 
 public class SkillInventory extends InventoryFrame {
 
-    private final Weapon weapon;
-
-    public SkillInventory(SkillUser user, Weapon weapon) {
-        super(user, 6, "スキルメニュー：" + weapon.getJp());
-        this.weapon = weapon;
+    public SkillInventory(SkillUser user) {
+        super(user, 6, "スキルメニュー：" + user.getSelectedWeapon().getJp());
     }
 
     @Override
     public void init() {
-        List<Skill> skillList = new SkillManager(user).fromWeapon(weapon);
+        List<Skill> skillList = new SkillManager(user).fromWeapon(user.getSelectedWeapon());
 
         for (int i = 0; i < skillList.size(); i++) {
             InvItem item = new InvItem(
