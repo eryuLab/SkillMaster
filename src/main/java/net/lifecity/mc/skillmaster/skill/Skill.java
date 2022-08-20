@@ -119,6 +119,10 @@ public class Skill {
      * @return 一致したらtrue
      */
     public boolean is(ItemStack itemStack) {
+        if (!itemStack.hasItemMeta())
+            return false;
+        if (!itemStack.getItemMeta().hasCustomModelData())
+            return false;
         return id() == itemStack.getItemMeta().getCustomModelData();
     }
 
