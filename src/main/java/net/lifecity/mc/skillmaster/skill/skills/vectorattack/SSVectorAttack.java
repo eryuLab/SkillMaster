@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class SSVectorAttack extends Skill {
 
     public SSVectorAttack(SkillUser user) {
-        super("ベクトルアタック", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, Arrays.asList("ユーザーが持つベクトルを力に変換して攻撃します。"), 0, 0, 40, user);
+        super("ベクトルアタック", Weapon.STRAIGHT_SWORD, SkillType.ATTACK, Arrays.asList("ユーザーが持つベクトルを力に変換して攻撃します。"), 3, 0, 40, user);
     }
 
     @Override

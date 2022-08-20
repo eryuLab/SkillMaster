@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class SSMoveFast extends Skill {
 
     public SSMoveFast(SkillUser user) {
-        super("高速移動", Weapon.STRAIGHT_SWORD, SkillType.MOVE, Arrays.asList("向いている方向に高速移動します。", "上方向には飛べません。"), 0, 0, 25, user);
+        super("高速移動", Weapon.STRAIGHT_SWORD, SkillType.MOVE, Arrays.asList("向いている方向に高速移動します。", "上方向には飛べません。"), 2, 0, 25, user);
     }
 
     @Override

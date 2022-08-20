@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class SSNormalDefense extends DefenseSkill {
 
     public SSNormalDefense(SkillUser user) {
-        super("通常防御", Weapon.STRAIGHT_SWORD, Arrays.asList("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"), 0, 0, 10, 35, user);
+        super("通常防御", Weapon.STRAIGHT_SWORD, Arrays.asList("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"), 5, 0, 10, 35, user);
     }
 
     @Override
