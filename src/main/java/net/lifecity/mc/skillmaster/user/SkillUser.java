@@ -239,6 +239,27 @@ public class SkillUser {
     }
 
     /**
+     * スキルがセット可能であるか確かめます
+     * @param skill セットするスキル
+     * @return スキルがセット可能であるか
+     */
+    public boolean settable(Skill skill) {
+        for (SkillKey set : rightSkillSet) {
+            if (set.getSkill().is(skill))
+                return false;
+        }
+        for (SkillKey set : swapSkillSet) {
+            if (set.getSkill().is(skill))
+                return false;
+        }
+        for (SkillKey set : dropSkillSet) {
+            if (set.getSkill().is(skill))
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * 標的を攻撃します
      * todo 位置から一番近いentityが標的
      * todo 目線から一番近いentityが標的
