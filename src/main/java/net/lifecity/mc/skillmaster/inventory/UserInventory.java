@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.inventory;
 
+import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton;
@@ -9,6 +10,7 @@ import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -111,8 +113,16 @@ public class UserInventory extends InventoryFrame {
                 // cursorがスキルであればスキル変更
                 Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
 
-                if (cursorSkill == null)
+                if (cursorSkill == null) {
+                    event.setCancelled(true);
                     return;
+                }
+
+                if (!user.settable(cursorSkill)) {
+                    event.setCancelled(true);
+                    user.sendMessage("このスキルはすでにセットされています");
+                    return;
+                }
 
                 key.setSkill(cursorSkill);
                 user.sendMessage("スキル変更→" + cursorSkill.getName());
@@ -139,10 +149,15 @@ public class UserInventory extends InventoryFrame {
                         if (user.getOpenedInventory() instanceof SkillInventory) {
 
                             // cursorがAIRであればスキル除外
-                            if (event.getCursor().getType() == Material.AIR) {
+                            if (event.getCursor().getType() == Material.AIR) { //todo アイテムを拾えない
                                 key.setSkill(null);
                                 user.sendMessage("スキルを除外しました");
-
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        setItem(event.getSlot(), skillItem(key));
+                                    }
+                                }.runTaskLater(SkillMaster.instance, 1);
                             }
 
                             // cursorがAIRでなかった時の処理 & cursorがスキルである時の処理
@@ -163,9 +178,14 @@ public class UserInventory extends InventoryFrame {
                                 // スキルをセット
                                 key.setSkill(cursorSkill);
                                 user.sendMessage("スキル変更 →" + cursorSkill.getName());
-                            }
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        setItem(event.getSlot(), skillItem(key));
+                                    }
+                                }.runTaskLater(SkillMaster.instance, 1);
 
-                            setItem(event.getSlot(), skillItem(key));
+                            }
                         }
                     }
         });
