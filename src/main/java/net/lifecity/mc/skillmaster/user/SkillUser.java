@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.user;
 import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import net.lifecity.mc.skillmaster.inventory.InventoryFrame;
 import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.skill.DefenseSkill;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
@@ -40,7 +41,11 @@ public class SkillUser {
     private UserMode mode = UserMode.BATTLE;
 
     @Getter
-    private UserInventory userInventory;
+    private final UserInventory userInventory;
+
+    @Getter
+    @Setter
+    private InventoryFrame openedInventory = null;
 
     @Getter
     @Setter
