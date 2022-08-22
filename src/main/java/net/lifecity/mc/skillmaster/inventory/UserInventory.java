@@ -9,6 +9,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -96,89 +97,80 @@ public class UserInventory extends InventoryFrame {
      */
     private InvItem skillItem(SkillKey key) {
 
-        // アイテムがないときの処理
-        if (key.getSkill() == null)
-            return new InvItem(new ItemStack(Material.AIR), event -> {
+        // スキルアイテムがない
+        if (key.getSkill() == null) {
+            return new InvItem(
+                    createItemStack(Material.IRON_BARS, "スキル未登録", List.of()),
+                    event -> {
+                        // スキルアイテムを置くとスキル変更
 
-                // モード確認
-                if (user.getMode() == UserMode.LOBBY)
-                    return;
+                        // モード確認
+                        if (user.getMode() == UserMode.LOBBY)
+                            return;
 
-                // インベントリ確認
-                if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
-                    event.setCancelled(true);
-                    return;
-                }
+                        // インベントリ確認
+                        if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
+                            event.setCancelled(true);
+                            return;
+                        }
 
-                // cursorがスキルであればスキル変更
-                Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
+                        // インベントリ特定
+                        if (event.getView().getTopInventory().getType() == InventoryType.CHEST) {
+                            if (event.getView().getTopInventory() == user.getOpenedInventory().inv) {
 
-                if (cursorSkill == null) {
-                    event.setCancelled(true);
-                    return;
-                }
-
-                if (!user.settable(cursorSkill)) {
-                    event.setCancelled(true);
-                    user.sendMessage("このスキルはすでにセットされています");
-                    return;
-                }
-
-                key.setSkill(cursorSkill);
-                user.sendMessage("スキル変更→" + cursorSkill.getName());
-
-                setItem(event.getSlot(), skillItem(key));
-            });
-
-
-        // アイテムがある時の処理
-        return new InvItem(key.getSkill().toItemStack(), event -> {
-                    // モード確認
-                    if (user.getMode() == UserMode.LOBBY)
-                        return;
-
-                    // ほかのインベントリを開いていないときの処理
-                    if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
-                        event.setCancelled(true);
-                        return;
-                    }
-
-                    // チェスト型のインベントリを開いているときの処理
-                    if (event.getView().getTopInventory().getType() == InventoryType.CHEST) {
-                        // スキルメニューを開いていた時の処理
-                        if (user.getOpenedInventory() instanceof SkillInventory) {
-
-                            // cursorがAIRであればスキル除外
-                            if (event.getCursor().getType() == Material.AIR) { //todo アイテムを拾えない
-                                key.setSkill(null);
-                                user.sendMessage("スキルを除外しました");
-                                new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        setItem(event.getSlot(), skillItem(key));
-                                    }
-                                }.runTaskLater(SkillMaster.instance, 1);
-                            }
-
-                            // cursorがAIRでなかった時の処理 & cursorがスキルである時の処理
-                            else {
+                                // カーソルがスキルであればスキルを登録
                                 Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
+
+                                // カーソルがスキルであるか
                                 if (cursorSkill == null) {
                                     event.setCancelled(true);
                                     return;
                                 }
 
-                                // すでにスキルがセットされているか
+                                // セットできるか確認
                                 if (!user.settable(cursorSkill)) {
                                     event.setCancelled(true);
-                                    user.sendMessage("このスキルはすでにセットされています");
+                                    user.sendMessage("このスキルはセットできません");
                                     return;
                                 }
 
-                                // スキルをセット
+                                // スキルセット
                                 key.setSkill(cursorSkill);
-                                user.sendMessage("スキル変更 →" + cursorSkill.getName());
+                                user.sendMessage("スキルを登録しました: " + key.getButton().getJp() + "[" + key.getNum() + "]: " + cursorSkill.getName());
+
+                                setItem(event.getSlot(), skillItem(key));
+                            }
+                        }
+                    }
+
+            );
+        }
+        // スキルアイテムがある
+        else {
+            return new InvItem(
+                    key.getSkill().toItemStack(),
+                    event -> {
+                        // スキルアイテム除外
+
+                        // モード確認
+                        if (user.getMode() == UserMode.LOBBY)
+                            return;
+
+                        if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
+                            event.setCancelled(true);
+                            return;
+                        }
+
+                        // インベントリ特定
+                        if (event.getView().getTopInventory().getType() == InventoryType.CHEST) {
+                            if (event.getView().getTopInventory() == user.getOpenedInventory().inv) {
+
+                                // スキル除外
+                                key.setSkill(null);
+                                user.sendMessage("スキルを除外しました");
+                                setItem(event.getSlot(), skillItem(key));
                                 event.setCancelled(true);
+                                /*
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
@@ -186,9 +178,11 @@ public class UserInventory extends InventoryFrame {
                                     }
                                 }.runTaskLater(SkillMaster.instance, 1);
 
+                                 */
                             }
                         }
                     }
-        });
+            );
+        }
     }
 }
