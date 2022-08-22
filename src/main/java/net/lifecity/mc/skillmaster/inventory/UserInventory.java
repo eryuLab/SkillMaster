@@ -178,6 +178,7 @@ public class UserInventory extends InventoryFrame {
                                 // スキルをセット
                                 key.setSkill(cursorSkill);
                                 user.sendMessage("スキル変更 →" + cursorSkill.getName());
+                                event.setCancelled(true);
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
