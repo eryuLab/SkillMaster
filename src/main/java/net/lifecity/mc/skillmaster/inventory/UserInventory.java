@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.annotation.Inherited;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,12 @@ public class UserInventory extends InventoryFrame {
                                 user.sendMessage("スキルを登録しました: " + key.getButton().getJp() + "[" + key.getNum() + "]: " + cursorSkill.getName());
 
                                 setItem(event.getSlot(), skillItem(key));
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        user.getUserInventory().inv.getItem(event.getSlot()).setAmount(1);
+                                    }
+                                }.runTaskLater(SkillMaster.instance, 1);
                             }
                         }
                     }
@@ -169,16 +176,13 @@ public class UserInventory extends InventoryFrame {
                                 key.setSkill(null);
                                 user.sendMessage("スキルを除外しました");
                                 setItem(event.getSlot(), skillItem(key));
-                                event.setCancelled(true);
-                                /*
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
-                                        setItem(event.getSlot(), skillItem(key));
+                                        user.getUserInventory().inv.getItem(event.getSlot()).setAmount(1);
                                     }
                                 }.runTaskLater(SkillMaster.instance, 1);
-
-                                 */
+                                event.setCancelled(true);
                             }
                         }
                     }
