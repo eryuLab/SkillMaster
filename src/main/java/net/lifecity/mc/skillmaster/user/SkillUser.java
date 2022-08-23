@@ -266,6 +266,20 @@ public class SkillUser {
     }
 
     /**
+     * 使用する武器を変更します
+     * @param weapon 変更後の武器
+     */
+    public void changeWeapon(Weapon weapon) {
+        // スキルセットをリセット
+        rightSkillSet.clear();
+        swapSkillSet.clear();
+        dropSkillSet.clear();
+
+        // 武器を変更
+        selectedWeapon = weapon;
+    }
+
+    /**
      * 標的を攻撃します
      * todo 位置から一番近いentityが標的
      * todo 目線から一番近いentityが標的
