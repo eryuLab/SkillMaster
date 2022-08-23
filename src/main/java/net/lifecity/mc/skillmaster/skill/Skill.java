@@ -100,9 +100,11 @@ public class Skill {
 
         List<String> lore = new ArrayList<>();
 
-        lore.add("武器: " + weapon.getJp());
-        lore.add("タイプ: " + type);
-        lore.addAll(this.lore);
+        lore.add(ChatColor.WHITE + "武器: " + weapon.getJp());
+        lore.add(ChatColor.WHITE + "タイプ: " + type);
+        for (String str : this.lore) {
+            lore.add(ChatColor.WHITE + str);
+        }
 
         meta.setLore(lore);
 
