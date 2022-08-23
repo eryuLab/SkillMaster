@@ -5,6 +5,7 @@ import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import net.lifecity.mc.skillmaster.inventory.SkillInventory;
+import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
@@ -55,7 +56,10 @@ public class SkillCommand {
             return;
         }
         if (menu.equals("weapon")) {
-            player.sendMessage("現在、このコマンドは使用できません。");
+            user.setOpenedInventory(new WeaponInventory(user));
+
+            user.getOpenedInventory().open();
+
             return;
         }
     }
