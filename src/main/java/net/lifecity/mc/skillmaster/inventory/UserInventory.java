@@ -131,7 +131,7 @@ public class UserInventory extends InventoryFrame {
                                 // セットできるか確認
                                 if (!user.settable(cursorSkill)) {
                                     event.setCancelled(true);
-                                    user.sendMessage("このスキルはセットできません");
+                                    user.sendMessage("このスキルはすでに登録されています");
                                     return;
                                 }
 
