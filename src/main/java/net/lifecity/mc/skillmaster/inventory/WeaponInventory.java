@@ -5,13 +5,12 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Material;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class WeaponInventory extends InventoryFrame {
 
     private final int page;
-
-    private int selectedWeaponSlot;
 
     public WeaponInventory(SkillUser user) {
         this(user, 0);
@@ -55,14 +54,24 @@ public class WeaponInventory extends InventoryFrame {
 
 
         // 武器スロット
-        for (int i = 1; i < 9; i++) {
-            Weapon weapon = Weapon.values()[i - 1];
-            // 選択用アイテム
-            setItem(i, getSelectItem(weapon));
-            // 武器アイテム
-            setItem(i + 9, getWeaponItem(weapon));
-            // スキルメニューアイテム
-            setItem(i + 18, getToSkillItem(weapon));
+        List<Weapon> weaponList = Arrays.asList(Weapon.values());
+        int start = page * 7;
+
+        for (int i = start; i < start + 7; i++) {
+            int index = i - start + 1;
+            if (Weapon.values().length <= i) {
+                setItem(index, getIronBars());
+                setItem(index + 9, getIronBars());
+                setItem(index + 18, getIronBars());
+            } else {
+                Weapon weapon = Weapon.values()[i];
+                // 選択用アイテム
+                setItem(index, getSelectItem(weapon));
+                // 武器アイテム
+                setItem(index + 9, getWeaponItem(weapon));
+                // スキルメニューアイテム
+                setItem(index + 18, getToSkillItem(weapon));
+            }
         }
     }
 
@@ -87,6 +96,7 @@ public class WeaponInventory extends InventoryFrame {
                 weapon.toItemStack(),
                 event -> {
                     // インベントリに武器を追加
+                    event.setCancelled(true);
                     user.getPlayer().getInventory().addItem(weapon.toItemStack());
                     user.sendMessage("武器を送りました");
                 }
@@ -109,21 +119,12 @@ public class WeaponInventory extends InventoryFrame {
             return new InvItem(
                     createItemStack(Material.LIME_STAINED_GLASS_PANE, "選択する", List.of()),
                     event -> {
-                        event.setCancelled(true);
-
-                        // 武器を選択する
+                        // SkillUserで武器を変更
                         user.changeWeapon(weapon);
 
-                        // 選択用のアイテムの変更
-                        setItem(event.getSlot(), getSelectItem(weapon));
-
-                        for (int i = 1; i < 7; i++) {
-                            InvItem item = itemMap.get(i);
-                            if (item.item.getType() == Material.RED_STAINED_GLASS_PANE) {
-                                setItem(event.getSlot(), getSelectItem(weapon));
-                                break;
-                            }
-                        }
+                        // インベントリを更新
+                        user.setOpenedInventory(new WeaponInventory(user));
+                        user.getOpenedInventory().open();
                     }
             );
     }
