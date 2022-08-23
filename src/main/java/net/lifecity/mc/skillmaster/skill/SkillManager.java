@@ -25,6 +25,9 @@ public class SkillManager {
     @Getter
     private final List<Skill> straightSword = new ArrayList<>();
 
+    @Getter
+    private final List<Skill> dagger = new ArrayList<>();
+
     public SkillManager(SkillUser user) {
         straightSword.add(new SSMoveFast(user));
         straightSword.add(new SSVectorAttack(user));
@@ -39,6 +42,8 @@ public class SkillManager {
     public List<Skill> fromWeapon(Weapon weapon) {
         if (weapon == Weapon.STRAIGHT_SWORD)
             return straightSword;
+        else if (weapon == Weapon.DAGGER)
+            return dagger;
         else
             return null;
     }
