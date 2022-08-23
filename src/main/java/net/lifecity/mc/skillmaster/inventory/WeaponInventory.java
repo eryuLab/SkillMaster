@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.inventory;
 
+import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Material;
@@ -12,7 +13,11 @@ public class WeaponInventory extends InventoryFrame {
 
     private int selectedWeaponSlot;
 
-    public WeaponInventory(SkillUser user, int page) {
+    public WeaponInventory(SkillUser user) {
+        this(user, 0);
+    }
+
+    private WeaponInventory(SkillUser user, int page) {
         super(user, 3, "武器メニュー: " + page);
         this.page = page;
     }
@@ -31,7 +36,8 @@ public class WeaponInventory extends InventoryFrame {
         else
             setItem(9, new InvItem(createItemStack(Material.ARROW, "前のページへ", List.of()), event -> {
                 // 前のページへ
-                event.setCancelled(true);
+                user.setOpenedInventory(new WeaponInventory(user, page - 1));
+                user.getOpenedInventory().open();
             }));
 
 
@@ -43,7 +49,8 @@ public class WeaponInventory extends InventoryFrame {
         else
             setItem(17, new InvItem(createItemStack(Material.ARROW, "次のページへ", List.of()), event -> {
                 // 次のページへ
-                event.setCancelled(true);
+                user.setOpenedInventory(new WeaponInventory(user, page + 1));
+                user.getOpenedInventory().open();
             }));
 
 
