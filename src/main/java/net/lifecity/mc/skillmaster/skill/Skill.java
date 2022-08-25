@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -76,6 +77,14 @@ public class Skill {
                 inInterval = false;
             }
         }.runTaskLater(SkillMaster.instance, interval);
+    }
+
+    /**
+     * パーティクルを表示します
+     * @param particle 表示するパーティクル
+     */
+    protected void particle(Particle particle) {
+        user.getPlayer().getWorld().spawnParticle(particle, user.getPlayer().getLocation(), 1);
     }
 
     /**
