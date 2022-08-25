@@ -80,14 +80,6 @@ public class Skill {
     }
 
     /**
-     * パーティクルを表示します
-     * @param particle 表示するパーティクル
-     */
-    protected void particle(Particle particle) {
-        user.getPlayer().getWorld().spawnParticle(particle, user.getPlayer().getLocation(), 1);
-    }
-
-    /**
      * 引数の武器が使用可能かを返します
      * @param weapon この武器が使えるか確かめます
      * @return 武器が使えるかどうか
