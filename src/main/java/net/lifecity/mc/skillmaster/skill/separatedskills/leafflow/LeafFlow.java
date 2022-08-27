@@ -40,7 +40,7 @@ public class LeafFlow extends SeparatedSkill {
      * @param attackImpact ノックバック
      * @param yImpact Y軸へのノックバック
      */
-    public LeafFlow(
+    protected LeafFlow(
             Weapon weapon,
             int num,
             int point,

@@ -21,7 +21,7 @@ public class HighJump extends Skill {
     private final double movePower;
     private final double jumpPower;
 
-    public HighJump(
+    protected HighJump(
             Weapon weapon,
             int num,
             int point,
