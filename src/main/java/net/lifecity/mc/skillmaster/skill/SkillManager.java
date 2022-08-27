@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.skill;
 
+import lombok.Getter;
 import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
 import net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack.SSJumpAttack;
 import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
@@ -11,6 +12,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,45 +23,53 @@ public class SkillManager {
 
     private final SkillUser user;
 
+    @Getter
+    private final List<Skill> all = new ArrayList<>();
+
+    @Getter
+    private final List<Skill> straightSword = new ArrayList<>();
+
     public SkillManager(SkillUser user) {
         this.user = user;
+
+        // 直剣
+        // 複合スキル
+        straightSword.add(new SSLeafFlow(user ,1));
+        straightSword.add(new SSJumpAttack(user, 2));
+        // 単発スキル
+        straightSword.add(new SSMoveFast(user, 3));
+        straightSword.add(new SSVectorAttack(user, 4));
+        straightSword.add(new SSHighJump(user, 5));
+        straightSword.add(new SSKick(user, 6));
+        // 防御スキル
+        straightSword.add(new SSNormalDefense(user, 7));
+
+        all.addAll(straightSword);
     }
 
     /**
-     * すべてのスキルのリストを取得します
-     * @return
+     * 武器からスキルリストを取得します
+     * @param weapon この武器のスキルリストを取得します
+     * @return 武器のスキルリスト
      */
-    public List<Skill> all() {
-        List<Skill> list = new ArrayList<>();
-
-        list.addAll(straightSword());
-
-        return list;
-    }
-
-    /**
-     * 直剣のスキルリストを取得します
-     * @return 直剣のスキル一覧
-     */
-    public List<Skill> straightSword() {
-        List<Skill> list = new ArrayList<>();
-
-        list.add(new SSMoveFast(user));
-        list.add(new SSVectorAttack(user));
-        list.add(new SSHighJump(user));
-        list.add(new SSLeafFlow(user));
-        list.add(new SSJumpAttack(user));
-        list.add(new SSNormalDefense(user));
-        list.add(new SSKick(user));
-
-        return list;
-    }
-
-    public List<Skill> fromWeapon(Weapon weapon) {
+    public List<Skill> from(Weapon weapon) {
         if (weapon == Weapon.STRAIGHT_SWORD)
-            return straightSword();
+            return straightSword;
         else
             return new ArrayList<>();
+    }
+
+    /**
+     * クラスからスキルインスタンスを取得します
+     * @param skillClass スキルクラス
+     * @return スキルインスタンス
+     */
+    public Skill from(Class<? extends Skill> skillClass) {
+        for (Skill skill : all) {
+            if (skillClass.isInstance(skill))
+                return skill;
+        }
+        return null;
     }
 
     /**
@@ -67,11 +77,11 @@ public class SkillManager {
      * @param itemStack 特定の対象となるItemStack
      * @return 一致したSkill
      */
-    public Skill fromItemStack(ItemStack itemStack) {
+    public Skill from(ItemStack itemStack) {
         Weapon weapon = Weapon.fromItemStack(itemStack);
 
         List<Skill> list = switch (weapon) {
-            case STRAIGHT_SWORD -> straightSword();
+            case STRAIGHT_SWORD -> straightSword;
             default -> null;
         };
         for (Skill skill : list) {

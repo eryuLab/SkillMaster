@@ -8,8 +8,11 @@ import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.skill.DefenseSkill;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
+import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
+import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
 import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
+import net.lifecity.mc.skillmaster.skill.skills.kick.SSKick;
 import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
 import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton;
@@ -24,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import javax.net.ssl.SSLEngine;
 import java.util.List;
 
 /**
@@ -71,22 +75,23 @@ public class SkillUser {
 
     public SkillUser(Player player) {
         this.player = player;
+        SkillManager sm = new SkillManager(this);
         this.rightSkillSet = new SkillSet(
                 SkillButton.RIGHT,
-                new SSVectorAttack(this),
-                null,
+                sm.from(SSVectorAttack.class),
+                sm.from(SSLeafFlow.class),
                 null
         );
         this.swapSkillSet = new SkillSet(
                 SkillButton.SWAP,
-                new SSMoveFast(this),
+                sm.from(SSMoveFast.class),
                 null,
                 null
         );
         this.dropSkillSet = new SkillSet(
                 SkillButton.DROP,
-                new SSNormalDefense(this),
-                new SSHighJump(this),
+                sm.from(SSKick.class),
+                sm.from(SSNormalDefense.class),
                 null
         );
         this.userInventory = new UserInventory(this);

@@ -1,17 +1,12 @@
 package net.lifecity.mc.skillmaster.inventory;
 
-import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.user.SkillUser;
-import net.lifecity.mc.skillmaster.weapon.Weapon;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.Set;
 
 public class SkillInventory extends InventoryFrame {
 
@@ -22,7 +17,7 @@ public class SkillInventory extends InventoryFrame {
     @Override
     public void init() {
         SkillManager skillManager = new SkillManager(user);
-        List<Skill> skillList = skillManager.fromWeapon(user.getSelectedWeapon());
+        List<Skill> skillList = skillManager.from(user.getSelectedWeapon());
 
         for (int i = 0; i < 54; i++) {
             InvItem item;
@@ -38,7 +33,7 @@ public class SkillInventory extends InventoryFrame {
 
                             } else {
                                 // カーソルがSkillItemだったらカーソルをairに変更
-                                Skill cursorSkill = skillManager.fromItemStack(event.getCursor());
+                                Skill cursorSkill = skillManager.from(event.getCursor());
 
                                 if (cursorSkill != null)
                                     event.setCursor(new ItemStack(Material.AIR));
@@ -53,7 +48,7 @@ public class SkillInventory extends InventoryFrame {
                             if (event.getCursor().getType() != Material.AIR) {
                                 event.setCancelled(true);
 
-                                Skill cursorSkill = skillManager.fromItemStack(event.getCursor());
+                                Skill cursorSkill = skillManager.from(event.getCursor());
 
                                 if (cursorSkill != null)
                                     event.setCursor(new ItemStack(Material.AIR));

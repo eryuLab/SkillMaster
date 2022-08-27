@@ -3,20 +3,14 @@ package net.lifecity.mc.skillmaster.inventory;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
-import net.lifecity.mc.skillmaster.user.skillset.SkillButton;
 import net.lifecity.mc.skillmaster.user.skillset.SkillKey;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.annotation.Inherited;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * SkillMasterのユーザーのインベントリを構築、操作するためのクラス
@@ -120,7 +114,7 @@ public class UserInventory extends InventoryFrame {
                             if (event.getView().getTopInventory() == user.getOpenedInventory().inv) {
 
                                 // カーソルがスキルであればスキルを登録
-                                Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
+                                Skill cursorSkill = new SkillManager(user).from(event.getCursor());
 
                                 // カーソルがスキルであるか
                                 if (cursorSkill == null) {
