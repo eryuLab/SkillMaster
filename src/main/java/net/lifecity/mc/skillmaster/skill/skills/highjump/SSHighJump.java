@@ -9,9 +9,10 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
  */
 public class SSHighJump extends HighJump {
 
-    public SSHighJump(SkillUser user) {
+    public SSHighJump(SkillUser user, int num) {
         super(
                 Weapon.STRAIGHT_SWORD,
+                num,
                 user,
                 0.65,
                 1

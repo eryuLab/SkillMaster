@@ -20,6 +20,7 @@ public class HighJump extends Skill {
 
     public HighJump(
             Weapon weapon,
+            int num,
             SkillUser user,
             double movePower,
             double jumpPower
@@ -29,7 +30,7 @@ public class HighJump extends Skill {
                 weapon,
                 SkillType.MOVE,
                 Arrays.asList("上に飛び上がります。"),
-                4 ,
+                num,
                 0,
                 30,
                 user
