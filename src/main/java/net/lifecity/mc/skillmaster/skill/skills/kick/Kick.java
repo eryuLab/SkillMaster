@@ -21,7 +21,7 @@ public class Kick extends Skill {
     private final double attackRadius;
     private final double impact;
 
-    public Kick(
+    protected Kick(
             Weapon weapon,
             int num,
             int point,
