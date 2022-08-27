@@ -8,7 +8,7 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
  */
 public class SSNormalDefense extends NormalDefense {
 
-    public SSNormalDefense(SkillUser user) {
-        super(Weapon.STRAIGHT_SWORD, 5, 0, 10, 35, user);
+    public SSNormalDefense(SkillUser user, int num) {
+        super(Weapon.STRAIGHT_SWORD, num, 0, 10, 35, user);
     }
 }
