@@ -14,6 +14,9 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * 敵からの攻撃を一定時間完全に防御するスキル
+ */
 public abstract class NormalDefense extends DefenseSkill {
 
     /**
