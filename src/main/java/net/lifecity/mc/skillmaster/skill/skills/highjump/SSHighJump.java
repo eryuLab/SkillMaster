@@ -69,13 +69,13 @@ public class SSHighJump extends Skill {
             int count = 0;
             @Override
             public void run() {
-                if (count >= 20)
+                if (count >= 10)
                     cancel();
                 if (user.getPlayer().getVelocity().length() < 0.3)
                     cancel();
                 particle(Particle.LAVA, user.getPlayer().getLocation());
                 count++;
             }
-        }.runTaskTimer(SkillMaster.instance, 0, 1);
+        }.runTaskTimer(SkillMaster.instance, 0, 2);
     }
 }
