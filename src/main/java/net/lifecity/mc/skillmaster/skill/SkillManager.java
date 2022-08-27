@@ -1,6 +1,5 @@
 package net.lifecity.mc.skillmaster.skill;
 
-import lombok.Getter;
 import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
 import net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack.SSJumpAttack;
 import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
@@ -20,27 +19,45 @@ import java.util.List;
  */
 public class SkillManager {
 
-    @Getter
-    private final List<Skill> allSkill = new ArrayList<>();
-
-    @Getter
-    private final List<Skill> straightSword = new ArrayList<>();
+    private final SkillUser user;
 
     public SkillManager(SkillUser user) {
-        straightSword.add(new SSMoveFast(user));
-        straightSword.add(new SSVectorAttack(user));
-        straightSword.add(new SSHighJump(user));
-        straightSword.add(new SSLeafFlow(user));
-        straightSword.add(new SSJumpAttack(user));
-        straightSword.add(new SSNormalDefense(user));
-        straightSword.add(new SSKick(user));
+        this.user = user;
+    }
 
-        allSkill.addAll(straightSword);
+    /**
+     * すべてのスキルのリストを取得します
+     * @return
+     */
+    public List<Skill> all() {
+        List<Skill> list = new ArrayList<>();
+
+        list.addAll(straightSword());
+
+        return list;
+    }
+
+    /**
+     * 直剣のスキルリストを取得します
+     * @return 直剣のスキル一覧
+     */
+    public List<Skill> straightSword() {
+        List<Skill> list = new ArrayList<>();
+
+        list.add(new SSMoveFast(user));
+        list.add(new SSVectorAttack(user));
+        list.add(new SSHighJump(user));
+        list.add(new SSLeafFlow(user));
+        list.add(new SSJumpAttack(user));
+        list.add(new SSNormalDefense(user));
+        list.add(new SSKick(user));
+
+        return list;
     }
 
     public List<Skill> fromWeapon(Weapon weapon) {
         if (weapon == Weapon.STRAIGHT_SWORD)
-            return straightSword;
+            return straightSword();
         else
             return new ArrayList<>();
     }
@@ -51,7 +68,13 @@ public class SkillManager {
      * @return 一致したSkill
      */
     public Skill fromItemStack(ItemStack itemStack) {
-        for (Skill skill : allSkill) {
+        Weapon weapon = Weapon.fromItemStack(itemStack);
+
+        List<Skill> list = switch (weapon) {
+            case STRAIGHT_SWORD -> straightSword();
+            default -> null;
+        };
+        for (Skill skill : list) {
             if (skill.is(itemStack))
                 return skill;
         }
