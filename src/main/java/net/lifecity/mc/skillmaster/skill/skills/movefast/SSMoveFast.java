@@ -15,41 +15,17 @@ import java.util.Arrays;
 /**
  * 上以外の方向に素早く移動するスキル
  */
-public class SSMoveFast extends Skill {
+public class SSMoveFast extends MoveFast {
 
-    public SSMoveFast(SkillUser user) {
-        super("高速移動", Weapon.STRAIGHT_SWORD, SkillType.MOVE, Arrays.asList("向いている方向に高速移動します。", "上方向には飛べません。"), 2, 0, 25, user);
-    }
-
-    @Override
-    public void activate() {
-        super.activate();
-
-        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.55);
-
-        // Yの値が+だったら
-        if (vector.getY() > 0)
-            vector.setY(0.15);
-
-        user.getPlayer().setVelocity(vector);
-
-        // 軌道
-        new BukkitRunnable() {
-            int count = 0;
-            @Override
-            public void run() {
-                if (count >= 7)
-                    cancel();
-                if (user.getPlayer().getVelocity().length() < 0.3)
-                    cancel();
-                if (count % 2 == 1)
-                particle(Particle.FALLING_DUST, user.getPlayer().getLocation(), Material.OXIDIZED_COPPER.createBlockData());
-                if (count %  2 == 0)
-                    particle(Particle.FALLING_DUST, user.getPlayer().getLocation(), Material.IRON_BLOCK.createBlockData());
-                if (count % 3 == 0)
-                    particle(Particle.FALLING_DUST, user.getPlayer().getLocation(), Material.ICE.createBlockData());
-                count++;
-            }
-        }.runTaskTimer(SkillMaster.instance, 0, 1);
+    public SSMoveFast(SkillUser user, int num) {
+        super(
+                Weapon.STRAIGHT_SWORD,
+                num,
+                0,
+                25,
+                user,
+                1.55,
+                0.15
+        );
     }
 }
