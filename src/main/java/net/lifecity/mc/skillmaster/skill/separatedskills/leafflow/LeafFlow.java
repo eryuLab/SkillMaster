@@ -11,6 +11,9 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+/**
+ * 前方に突進しながら敵を攻撃するスキル
+ */
 import java.util.Arrays;
 
 public class LeafFlow extends SeparatedSkill {
