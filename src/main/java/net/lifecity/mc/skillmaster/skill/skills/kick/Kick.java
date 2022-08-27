@@ -46,6 +46,7 @@ public class Kick extends Skill {
 
     @Override
     public void activate() {
+        super.activate();
 
         boolean b = user.attackNearest(
                 attackRadius,
