@@ -45,7 +45,6 @@ public class EventListener implements Listener {
                     leftFlag = false;
                     return;
                 }
-                user.sendMessage("左クリック検知");
                 user.leftClick();
             }
 
