@@ -13,6 +13,9 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * 上に高く飛び上がるスキル
+ */
 public class HighJump extends Skill {
 
     private final double movePower;
