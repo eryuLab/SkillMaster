@@ -13,6 +13,8 @@ public class SSHighJump extends HighJump {
         super(
                 Weapon.STRAIGHT_SWORD,
                 num,
+                0,
+                30,
                 user,
                 0.65,
                 1
