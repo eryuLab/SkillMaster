@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.user.skillset.SkillKey;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -77,6 +78,8 @@ public class UserInventory extends InventoryFrame {
                         List.of()
                 ),
                 event -> {
+                    if (user.getPlayer().getGameMode() == GameMode.CREATIVE)
+                        return;
                     if (user.getMode() == UserMode.LOBBY)
                         return;
 
@@ -98,6 +101,10 @@ public class UserInventory extends InventoryFrame {
                     createItemStack(Material.IRON_BARS, "スキル未登録", List.of()),
                     event -> {
                         // スキルアイテムを置くとスキル変更
+
+                        // ゲームモード確認
+                        if (user.getPlayer().getGameMode() == GameMode.CREATIVE)
+                            return;
 
                         // モード確認
                         if (user.getMode() == UserMode.LOBBY)
@@ -152,6 +159,10 @@ public class UserInventory extends InventoryFrame {
                     key.getSkill().toItemStack(),
                     event -> {
                         // スキルアイテム除外
+
+                        // ゲームモード確認
+                        if (user.getPlayer().getGameMode() == GameMode.CREATIVE)
+                            return;
 
                         // モード確認
                         if (user.getMode() == UserMode.LOBBY)
