@@ -52,7 +52,7 @@ public class SkillManager {
      * @param weapon この武器のスキルリストを取得します
      * @return 武器のスキルリスト
      */
-    public List<Skill> from(Weapon weapon) {
+    public List<Skill> fromWeapon(Weapon weapon) {
         if (weapon == Weapon.STRAIGHT_SWORD)
             return straightSword;
         else
@@ -64,7 +64,7 @@ public class SkillManager {
      * @param skillClass スキルクラス
      * @return スキルインスタンス
      */
-    public Skill from(Class<? extends Skill> skillClass) {
+    public Skill fromClass(Class<? extends Skill> skillClass) {
         for (Skill skill : all) {
             if (skillClass.isInstance(skill))
                 return skill;
@@ -77,13 +77,17 @@ public class SkillManager {
      * @param itemStack 特定の対象となるItemStack
      * @return 一致したSkill
      */
-    public Skill from(ItemStack itemStack) {
-        Weapon weapon = Weapon.fromItemStack(itemStack);
+    public Skill fromItemStack(ItemStack itemStack) {
+        if (!itemStack.hasItemMeta())
+            return null;
+        if (!itemStack.getItemMeta().hasCustomModelData())
+            return null;
 
-        List<Skill> list = switch (weapon) {
-            case STRAIGHT_SWORD -> straightSword;
-            default -> null;
-        };
+        int num = (int) (itemStack.getItemMeta().getCustomModelData() * 0.01);
+        Weapon weapon = Weapon.fromNumber(num);
+
+        List<Skill> list = fromWeapon(weapon);
+
         for (Skill skill : list) {
             if (skill.is(itemStack))
                 return skill;

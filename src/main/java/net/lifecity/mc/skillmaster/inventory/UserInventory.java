@@ -114,7 +114,7 @@ public class UserInventory extends InventoryFrame {
                             if (event.getView().getTopInventory() == user.getOpenedInventory().inv) {
 
                                 // カーソルがスキルであればスキルを登録
-                                Skill cursorSkill = new SkillManager(user).from(event.getCursor());
+                                Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
 
                                 // カーソルがスキルであるか
                                 if (cursorSkill == null) {

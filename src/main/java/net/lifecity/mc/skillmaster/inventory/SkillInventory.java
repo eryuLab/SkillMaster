@@ -17,7 +17,7 @@ public class SkillInventory extends InventoryFrame {
     @Override
     public void init() {
         SkillManager skillManager = new SkillManager(user);
-        List<Skill> skillList = skillManager.from(user.getSelectedWeapon());
+        List<Skill> skillList = skillManager.fromWeapon(user.getSelectedWeapon());
 
         for (int i = 0; i < 54; i++) {
             InvItem item;
@@ -33,7 +33,7 @@ public class SkillInventory extends InventoryFrame {
 
                             } else {
                                 // カーソルがSkillItemだったらカーソルをairに変更
-                                Skill cursorSkill = skillManager.from(event.getCursor());
+                                Skill cursorSkill = skillManager.fromItemStack(event.getCursor());
 
                                 if (cursorSkill != null)
                                     event.setCursor(new ItemStack(Material.AIR));
@@ -48,7 +48,7 @@ public class SkillInventory extends InventoryFrame {
                             if (event.getCursor().getType() != Material.AIR) {
                                 event.setCancelled(true);
 
-                                Skill cursorSkill = skillManager.from(event.getCursor());
+                                Skill cursorSkill = skillManager.fromItemStack(event.getCursor());
 
                                 if (cursorSkill != null)
                                     event.setCursor(new ItemStack(Material.AIR));

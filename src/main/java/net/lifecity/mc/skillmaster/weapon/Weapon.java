@@ -45,7 +45,7 @@ public enum Weapon {
     }
 
     /**
-     * このWeaponとItemStackが一致するか確認します
+     * このWeaponと武器としてのItemStackが一致するか確認します
      * @param itemStack 対象となるItemStack
      * @return 一致するか
      */
