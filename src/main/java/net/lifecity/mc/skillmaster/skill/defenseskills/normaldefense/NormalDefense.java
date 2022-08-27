@@ -20,7 +20,7 @@ import java.util.Random;
 public abstract class NormalDefense extends DefenseSkill {
 
     /**
-     * 通常防御のスーパーコンストラクタ
+     * 通常防御のコンストラクタ
      * @param weapon 使用する武器
      * @param num スキル番号
      * @param point 消費ポイント
