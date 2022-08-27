@@ -5,6 +5,7 @@ import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDef
 import net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack.SSJumpAttack;
 import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
 import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
+import net.lifecity.mc.skillmaster.skill.skills.kick.SSKick;
 import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
 import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -32,6 +33,7 @@ public class SkillManager {
         straightSword.add(new SSLeafFlow(user));
         straightSword.add(new SSJumpAttack(user));
         straightSword.add(new SSNormalDefense(user));
+        straightSword.add(new SSKick(user));
 
         allSkill.addAll(straightSword);
     }
