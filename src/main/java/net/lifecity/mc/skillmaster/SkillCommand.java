@@ -3,7 +3,6 @@ package net.lifecity.mc.skillmaster;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
-import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import net.lifecity.mc.skillmaster.inventory.SkillInventory;
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -52,15 +51,11 @@ public class SkillCommand {
             user.setOpenedInventory(new SkillInventory(user));
 
             user.getOpenedInventory().open();
-
-            return;
         }
-        if (menu.equals("weapon")) {
+        else if (menu.equals("weapon")) {
             user.setOpenedInventory(new WeaponInventory(user));
 
             user.getOpenedInventory().open();
-
-            return;
         }
     }
 }
