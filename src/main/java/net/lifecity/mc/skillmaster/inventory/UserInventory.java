@@ -102,10 +102,6 @@ public class UserInventory extends InventoryFrame {
                     event -> {
                         // スキルアイテムを置くとスキル変更
 
-                        // ゲームモード確認
-                        if (user.getPlayer().getGameMode() == GameMode.CREATIVE)
-                            return;
-
                         // モード確認
                         if (user.getMode() == UserMode.LOBBY)
                             return;
@@ -159,10 +155,6 @@ public class UserInventory extends InventoryFrame {
                     key.getSkill().toItemStack(),
                     event -> {
                         // スキルアイテム除外
-
-                        // ゲームモード確認
-                        if (user.getPlayer().getGameMode() == GameMode.CREATIVE)
-                            return;
 
                         // モード確認
                         if (user.getMode() == UserMode.LOBBY)
