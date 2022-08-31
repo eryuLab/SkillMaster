@@ -34,7 +34,7 @@ public class EventListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
-        if (user.getMode() == UserMode.LOBBY)
+        if (user.getMode() == UserMode.UNARMED)
             return;
 
         if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
@@ -67,7 +67,7 @@ public class EventListener implements Listener {
         if (event.getDamager() instanceof Player player) {
             SkillUser user = SkillMaster.instance.getUserList().get(player);
 
-            if (user.getMode() == UserMode.LOBBY)
+            if (user.getMode() == UserMode.UNARMED)
                 return;
 
             if (user.getHandItem().getType() == Material.WOODEN_SWORD) {
@@ -94,7 +94,7 @@ public class EventListener implements Listener {
     public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
-        if (user.getMode() == UserMode.LOBBY)
+        if (user.getMode() == UserMode.UNARMED)
             return;
 
         if (user.getHandItem().getType() == Material.WOODEN_SWORD) { //Fスキル入力
@@ -107,7 +107,7 @@ public class EventListener implements Listener {
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         SkillUser user = SkillMaster.instance.getUserList().get(event.getPlayer());
 
-        if (user.getMode() == UserMode.LOBBY)
+        if (user.getMode() == UserMode.UNARMED)
             return;
 
         if (event.getItemDrop().getItemStack().getType() == Material.WOODEN_SWORD) { //Qスキル入力
@@ -128,6 +128,9 @@ public class EventListener implements Listener {
             SkillUser user = SkillMaster.instance.getUserList().get(player);
 
             if (user == null)
+                return;
+
+            if (user.getMode() == UserMode.UNARMED)
                 return;
 
             if (event.getClickedInventory() == null)
