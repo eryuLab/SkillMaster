@@ -43,7 +43,7 @@ public class SkillUser {
     private UserMode mode;
 
     @Getter
-    private final UserInventory userInventory;
+    private UserInventory userInventory;
 
     @Getter
     @Setter
@@ -283,14 +283,25 @@ public class SkillUser {
         selectedWeapon = weapon;
     }
 
+    /**
+     * モードを変更します
+     * @param mode 変更するモード
+     */
     public void changeMode(UserMode mode) {
-        if (this.mode == UserMode.BATTLE) {
-
-            //
-            if (mode == UserMode.TRAINING) {
-                initSkills();
-            }
+        // バトルからトレーニング
+        if (this.mode == UserMode.BATTLE && mode == UserMode.TRAINING) {
+            initSkills();
         }
+        // トレーニングからバトル
+        else if (this.mode == UserMode.TRAINING && mode == UserMode.BATTLE) {
+            initSkills();
+        }
+        // 武装解除からバトル、トレーニング
+        else if (this.mode == UserMode.UNARMED && (mode == UserMode.BATTLE || mode == UserMode.TRAINING)) {
+            userInventory = new UserInventory(this);
+            // todo HPとSPを初期化
+        }
+        this.mode = mode;
     }
 
     /**
