@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,7 +40,6 @@ public class SkillUser {
     private final Player player;
 
     @Getter
-    @Setter
     private UserMode mode;
 
     @Getter
@@ -102,7 +102,7 @@ public class SkillUser {
      */
     public void leftClick() {
         // 左クリックでスキル解除とベクトルの大きさを0にする
-        SeparatedSkill activatingSkill = getActivatingSkill();
+        SeparatedSkill activatingSkill = getActivatedSkill();
         if (activatingSkill != null) {
             activatingSkill.deactivate();
         }
@@ -186,11 +186,11 @@ public class SkillUser {
         // 複合スキルの場合
         if (skill instanceof SeparatedSkill separatedSkill) {
 
-            SeparatedSkill activatingSkill = getActivatingSkill();
+            SeparatedSkill activatedSkill = getActivatedSkill();
 
-            if (activatingSkill != null) {
-                if (activatingSkill != skill) {
-                    activatingSkill.deactivate();
+            if (activatedSkill != null) {
+                if (activatedSkill != skill) {
+                    activatedSkill.deactivate();
                 }
             }
 
@@ -209,7 +209,7 @@ public class SkillUser {
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    public SeparatedSkill getActivatingSkill() {
+    public SeparatedSkill getActivatedSkill() {
 
         for (SkillKey skillKey : rightSkillSet) {
             Skill skill  = skillKey.getSkill();
@@ -281,6 +281,31 @@ public class SkillUser {
 
         // 武器を変更
         selectedWeapon = weapon;
+    }
+
+    public void changeMode(UserMode mode) {
+        if (this.mode == UserMode.BATTLE) {
+
+            //
+            if (mode == UserMode.TRAINING) {
+                initSkills();
+            }
+        }
+    }
+
+    /**
+     * 登録されているスキルを初期化
+     */
+    public void initSkills() {
+        List<SkillSet> setList = Arrays.asList(rightSkillSet, swapSkillSet, dropSkillSet);
+
+        for (SkillSet set : setList) {
+            for (SkillKey key : set) {
+                Skill skill = key.getSkill();
+                if (skill != null)
+                    skill.init();
+            }
+        }
     }
 
     /**
@@ -377,7 +402,7 @@ public class SkillUser {
      */
     private void damage(double damage, Vector vector) {
         // 防御スキル確認
-        SeparatedSkill activatingSkill = getActivatingSkill();
+        SeparatedSkill activatingSkill = getActivatedSkill();
 
         if (activatingSkill != null) {
             if (activatingSkill instanceof DefenseSkill defenseSkill) {
