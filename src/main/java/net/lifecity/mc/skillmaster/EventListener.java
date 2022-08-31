@@ -72,7 +72,7 @@ public class EventListener implements Listener {
 
             if (user.getHandItem().getType() == Material.WOODEN_SWORD) {
 
-                if (user.getActivatingSkill() != null) { //発動中のすきるがあるか
+                if (user.getActivatedSkill() != null) { //発動中のすきるがあるか
                     event.setCancelled(true);
                 } else {
                     if (user.getMode() == UserMode.TRAINING) {
