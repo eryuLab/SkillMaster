@@ -39,7 +39,7 @@ public class SkillCommand {
     public static void mode(Player player, @AMultiLiteralArgument({"battle", "training", "unarmed"}) String name) {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
 
-        UserMode mode = UserMode.valueOf(name);
+        UserMode mode = UserMode.valueOf(name.toUpperCase());
 
         user.setMode(mode);
 
