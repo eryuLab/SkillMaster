@@ -83,4 +83,11 @@ public abstract class SeparatedSkill extends Skill {
         //インターバル処理
         super.deactivate();
     }
+
+    @Override
+    public void init() {
+        super.init();
+
+        activated = false;
+    }
 }

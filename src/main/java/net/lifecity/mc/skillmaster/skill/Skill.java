@@ -74,11 +74,26 @@ public class Skill {
         inInterval = true;
 
         new BukkitRunnable() {
+            int count = 0;
             @Override
             public void run() {
-                inInterval = false;
+                if (!inInterval) {
+                    cancel();
+                }
+                if (count >= interval) {
+                    inInterval = false;
+                    cancel();
+                }
+                count++;
             }
-        }.runTaskLater(SkillMaster.instance, interval);
+        }.runTaskTimer(SkillMaster.instance, 0, 1);
+    }
+
+    /**
+     * スキルの状態を初期化します
+     */
+    public void init() {
+        inInterval = false;
     }
 
     /**
