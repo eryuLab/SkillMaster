@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.user;
 
+import lombok.Getter;
+
 /**
  * SkillUserのモードの列挙
  */
@@ -8,6 +10,7 @@ public enum UserMode {
     TRAINING("トレーニング"),
     UNARMED("武装解除");
 
+    @Getter
     private String jp;
 
     UserMode(String jp) {
