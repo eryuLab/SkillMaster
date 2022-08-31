@@ -8,6 +8,8 @@ import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
+import net.md_5.bungee.api.ChatMessageType;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -49,7 +51,11 @@ public class SkillCommand {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
 
         if (player.getGameMode() == GameMode.CREATIVE) {
-            player.sendMessage("クリエイティブ時のメニューの挙動は補償されていません。");
+            player.sendMessage(
+                    ChatColor.WHITE + "["
+                    + ChatColor.RED+ "警告"
+                    + ChatColor.WHITE + "]: クリエイティブ時のメニューの挙動は補償されていません。"
+            );
         }
 
         if (menu.equals("skill")) {
