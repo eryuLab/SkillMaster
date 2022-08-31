@@ -40,7 +40,7 @@ public class SkillUser {
 
     @Getter
     @Setter
-    private UserMode mode = UserMode.BATTLE;
+    private UserMode mode;
 
     @Getter
     private final UserInventory userInventory;
@@ -71,8 +71,9 @@ public class SkillUser {
     @Getter
     private int dropIndex = 0;
 
-    public SkillUser(Player player) {
+    public SkillUser(Player player, UserMode mode) {
         this.player = player;
+        this.mode = mode;
         SkillManager sm = new SkillManager(this);
         this.rightSkillSet = new SkillSet(
                 SkillButton.RIGHT,
