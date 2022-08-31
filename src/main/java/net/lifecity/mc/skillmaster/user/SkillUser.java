@@ -415,7 +415,7 @@ public class SkillUser {
      * @param sound 再生するSE
      */
     public void playSound(Sound sound) {
-        player.playSound(player.getLocation(), sound, 1f, 1f);
+        player.getWorld().playSound(player.getLocation(), sound, 1f, 1f);
     }
 
     /**
