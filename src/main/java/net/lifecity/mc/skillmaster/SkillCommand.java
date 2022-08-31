@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-@Command("skill")
+@Command("sm")
 public class SkillCommand {
 
     @Subcommand("weapon")
