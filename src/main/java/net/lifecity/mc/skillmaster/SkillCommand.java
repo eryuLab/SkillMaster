@@ -41,7 +41,7 @@ public class SkillCommand {
 
         UserMode mode = UserMode.valueOf(name.toUpperCase());
 
-        user.setMode(mode);
+        user.changeMode(mode);
 
         player.sendMessage("モードを" + name + "に変更しました");
     }
