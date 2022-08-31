@@ -78,11 +78,6 @@ public class UserInventory extends InventoryFrame {
                         List.of()
                 ),
                 event -> {
-                    if (user.getPlayer().getGameMode() == GameMode.CREATIVE)
-                        return;
-                    if (user.getMode() == UserMode.LOBBY)
-                        return;
-
                     event.setCancelled(true);
                 }
         );
@@ -101,10 +96,6 @@ public class UserInventory extends InventoryFrame {
                     createItemStack(Material.IRON_BARS, "スキル未登録", List.of()),
                     event -> {
                         // スキルアイテムを置くとスキル変更
-
-                        // モード確認
-                        if (user.getMode() == UserMode.LOBBY)
-                            return;
 
                         // インベントリ確認
                         if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
@@ -155,10 +146,6 @@ public class UserInventory extends InventoryFrame {
                     key.getSkill().toItemStack(),
                     event -> {
                         // スキルアイテム除外
-
-                        // モード確認
-                        if (user.getMode() == UserMode.LOBBY)
-                            return;
 
                         if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
                             event.setCancelled(true);
