@@ -75,6 +75,10 @@ public class EventListener implements Listener {
                 if (user.getActivatingSkill() != null) { //発動中のすきるがあるか
                     event.setCancelled(true);
                 } else {
+                    if (user.getMode() == UserMode.TRAINING) {
+                        event.setCancelled(true);
+                        return;
+                    }
                     event.setDamage(1.5);
                 }
             }
