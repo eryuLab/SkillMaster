@@ -289,7 +289,47 @@ public class SkillUser {
      * todo 目線から一番近いentityが標的
      * todo 複数の標的に攻撃
      */
-    public void attack() {
+
+    /**
+     * 指定したユーザーを攻撃します
+     * @param user このユーザーを攻撃します
+     * @param damage このダメージを与えます
+     * @param vector このノックバックを与えます
+     * @param sound このSEを再生します
+     */
+    public void attackUser(SkillUser user, double damage, Vector vector, Sound sound) {
+        // SE再生
+        playSound(sound);
+
+        // トレーニングモード時は攻撃不可
+        if (mode == UserMode.TRAINING)
+            user.damage(0, new Vector(0, 0, 0));
+        else
+            user.damage(damage, vector);
+    }
+
+    /**
+     * 指定したEntityを攻撃します
+     * @param entity このEntityを攻撃します
+     * @param damage このダメージを与えます
+     * @param vector このノックバックを与えます
+     * @param sound このSEを再生します
+     */
+    public void attackEntity(Entity entity, double damage, Vector vector, Sound sound) {
+        // SE再生
+        playSound(sound);
+
+        // トレーニングモード時は攻撃不可
+        if (mode == UserMode.TRAINING)
+            return;
+
+        if (entity instanceof Damageable target) {
+            // 標的にダメージを与える
+            target.damage(damage);
+
+            // 標的をノックバックさせる
+            target.setVelocity(vector);
+        }
     }
 
     /**
@@ -318,20 +358,13 @@ public class SkillUser {
                 return false;
 
             // 攻撃処理
-            user.damage(damage, vector, sound);
+            attackUser(user, damage, vector, sound);
 
-        } else {
+        }
+        // プレイヤー以外の時の処理
+        else {
             // 攻撃処理
-            if (entity instanceof Damageable target) {
-                // 標的にダメージを与える
-                target.damage(damage);
-
-                // 標的をノックバックさせる
-                target.setVelocity(vector);
-
-                // SE再生
-                playSound(sound);
-            }
+            attackEntity(entity, damage, vector, sound);
         }
         return true;
     }
@@ -341,9 +374,8 @@ public class SkillUser {
      * ただし、防御されるかもしれません
      * @param damage 攻撃力
      * @param vector ノックバック
-     * @param sound 攻撃成功時の音
      */
-    private void damage(double damage, Vector vector, Sound sound) {
+    private void damage(double damage, Vector vector) {
         // 防御スキル確認
         SeparatedSkill activatingSkill = getActivatingSkill();
 
@@ -359,9 +391,6 @@ public class SkillUser {
 
         // ノックバックさせる
         player.setVelocity(vector);
-
-        // SE再生
-        playSound(sound);
     }
 
     /**
