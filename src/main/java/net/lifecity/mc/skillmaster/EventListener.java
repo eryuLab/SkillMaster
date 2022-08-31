@@ -130,9 +130,6 @@ public class EventListener implements Listener {
             if (user == null)
                 return;
 
-            if (user.getMode() == UserMode.UNARMED)
-                return;
-
             if (event.getClickedInventory() == null)
                 return;
 
