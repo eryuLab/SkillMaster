@@ -8,6 +8,7 @@ import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 @Command("skill")
@@ -46,6 +47,10 @@ public class SkillCommand {
     @Subcommand("open-menu")
     public static void menu(Player player, @AMultiLiteralArgument({"skill", "weapon"}) String menu) {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
+
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            player.sendMessage("クリエイティブ時のメニューの挙動は補償されていません。");
+        }
 
         if (menu.equals("skill")) {
             user.setOpenedInventory(new SkillInventory(user));
