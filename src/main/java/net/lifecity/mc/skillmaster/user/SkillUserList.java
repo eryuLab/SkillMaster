@@ -37,7 +37,7 @@ public class SkillUserList extends ArrayList<SkillUser> {
      */
     public void add(Player player) {
         if (!contains(player)) {
-            add(new SkillUser(player));
+            add(new SkillUser(player, UserMode.BATTLE));
         }
     }
 
