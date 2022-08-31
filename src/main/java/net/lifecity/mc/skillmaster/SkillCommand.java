@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 @Command("skill")
 public class SkillCommand {
 
-    @Subcommand("weapon")
+    @Subcommand("generate-weapon")
     public static void weapon(Player player, @AMultiLiteralArgument({
             "直剣",
             "短剣",
@@ -32,8 +32,8 @@ public class SkillCommand {
         player.getInventory().addItem(weapon.toItemStack());
     }
     
-    @Subcommand("mode")
-    public static void mode(Player player, @AMultiLiteralArgument({"LOBBY", "BATTLE"}) String name) {
+    @Subcommand("change-mode")
+    public static void mode(Player player, @AMultiLiteralArgument({"battle", "training", "unarmed"}) String name) {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
 
         UserMode mode = UserMode.valueOf(name);
@@ -43,7 +43,7 @@ public class SkillCommand {
         player.sendMessage("モードを" + name + "に変更しました");
     }
 
-    @Subcommand("menu")
+    @Subcommand("open-menu")
     public static void menu(Player player, @AMultiLiteralArgument({"skill", "weapon"}) String menu) {
         SkillUser user = SkillMaster.instance.getUserList().get(player);
 
