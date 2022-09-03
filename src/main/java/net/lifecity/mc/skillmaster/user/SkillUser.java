@@ -293,16 +293,20 @@ public class SkillUser {
     public void changeMode(UserMode mode) {
         // バトルからトレーニング
         if (this.mode == UserMode.BATTLE && mode == UserMode.TRAINING) {
+            // 稼働中のスキルの初期化
             initSkills();
         }
         // トレーニングからバトル
         else if (this.mode == UserMode.TRAINING && mode == UserMode.BATTLE) {
+            // 稼働中のスキルの初期化
             initSkills();
         }
         // 武装解除からバトル、トレーニング
         else if (this.mode == UserMode.UNARMED && (mode == UserMode.BATTLE || mode == UserMode.TRAINING)) {
+            // インベントリ初期化
             userInventory = new UserInventory(this);
-            // todo HPとSPを初期化
+            // HPの初期化
+            player.setHealth(player.getHealthScale());
         }
         this.mode = mode;
     }
