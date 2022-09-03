@@ -88,10 +88,23 @@ public class EventListener implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
 
-        // 落下ダメージを無効化
-        if (event.getCause() == EntityDamageEvent.DamageCause.FALL)
-            if (event.getEntity() instanceof Player)
+        // EntityがPlayerだったら
+        if (event.getEntity() instanceof Player player) {
+
+            SkillUser user = SkillMaster.instance.getUserList().get(player);
+
+            // 戦闘モードじゃなかったらダメージなし
+            if (user.getMode() != UserMode.BATTLE) {
                 event.setCancelled(true);
+                return;
+            }
+
+            // 落下ダメージ無効化
+            if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                event.setCancelled(true);
+                return;
+            }
+        }
     }
 
     @EventHandler
