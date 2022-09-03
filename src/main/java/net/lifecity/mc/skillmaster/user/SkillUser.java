@@ -94,6 +94,9 @@ public class SkillUser {
                 null
         );
         this.userInventory = new UserInventory(this);
+
+        // HPを40に設定
+        this.player.setHealthScale(40);
     }
 
     /**
