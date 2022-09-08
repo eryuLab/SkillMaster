@@ -12,7 +12,9 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import net.lifecity.mc.skillmaster.SkillMaster;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,13 +29,28 @@ public class WorldEditUtils {
         }
     }
 
-    public boolean paste(Location pasteLoc, Clipboard clipboard) {
+    public boolean pasteAndAutoUndo(Location pasteLoc, Clipboard clipboard, int seconds) {
         try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(pasteLoc.getWorld()), -1)) {
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)
                     .to(BlockVector3.at(pasteLoc.getX(), pasteLoc.getY(), pasteLoc.getZ()))
                     .ignoreAirBlocks(false)
                     .build();
+
+            new BukkitRunnable() {
+                int count = 0;
+                @Override
+                public void run() {
+                    if(count > seconds) {
+                        editSession.undo(editSession);
+                        this.cancel();
+                    }
+
+                    count++;
+                }
+
+            }.runTaskTimer(SkillMaster.instance, 0, 20L);
+
             try {
                 Operations.complete(operation);
             } catch (WorldEditException e) {

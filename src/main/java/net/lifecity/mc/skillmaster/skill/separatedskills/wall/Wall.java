@@ -70,42 +70,42 @@ public class Wall extends SeparatedSkill {
             case NORTH -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/north_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime);
             }
             case NORTH_EAST -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/north_east_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip,activationTime);
             }
             case EAST -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/east_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip,activationTime);
             }
             case SOUTH_EAST -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/south_east_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip,activationTime);
             }
             case SOUTH -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/south_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip,activationTime);
             }
             case SOUTH_WEST -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/south_west_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip,activationTime);
             }
             case WEST -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/west_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip,activationTime);
             }
             case NORTH_WEST -> {
                 File schematic = new File(SkillMaster.instance.getDataFolder() + File.separator + "/schematics/north_west_wall.schem");
                 Clipboard clip = worldEditUtils.load(schematic);
-                worldEditUtils.paste(origin, clip);
+                worldEditUtils.pasteAndAutoUndo(origin, clip,activationTime);
             }
         }
     }
