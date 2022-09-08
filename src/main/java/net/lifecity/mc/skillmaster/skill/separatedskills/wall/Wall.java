@@ -28,8 +28,8 @@ public class Wall extends SeparatedSkill {
                 weapon,
                 SkillType.ATTACK,
                 Arrays.asList(
-                        "ガラスの球体を生成し、相手の攻撃から身を守る",
-                        "球体は時間経過で消える"
+                        "ガラスの壁を生成し、相手の攻撃から身を守る",
+                        "壁は時間経過で消える"
                 ),
                 num,
                 point,
