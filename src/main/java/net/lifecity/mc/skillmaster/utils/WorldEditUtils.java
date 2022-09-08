@@ -34,7 +34,7 @@ public class WorldEditUtils {
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)
                     .to(BlockVector3.at(pasteLoc.getX(), pasteLoc.getY(), pasteLoc.getZ()))
-                    .ignoreAirBlocks(false)
+                    .ignoreAirBlocks(true)
                     .build();
 
             new BukkitRunnable() {
