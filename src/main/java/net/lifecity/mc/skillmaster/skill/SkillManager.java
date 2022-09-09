@@ -4,6 +4,8 @@ import lombok.Getter;
 import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
 import net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack.SSJumpAttack;
 import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
+import net.lifecity.mc.skillmaster.skill.separatedskills.wall.SSWall;
+import net.lifecity.mc.skillmaster.skill.separatedskills.wall.Wall;
 import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
 import net.lifecity.mc.skillmaster.skill.skills.kick.SSKick;
 import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
@@ -12,7 +14,6 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,13 +37,14 @@ public class SkillManager {
         // 複合スキル
         straightSword.add(new SSLeafFlow(user ,1));
         straightSword.add(new SSJumpAttack(user, 2));
+        straightSword.add(new SSWall(user, 3));
         // 単発スキル
-        straightSword.add(new SSMoveFast(user, 3));
-        straightSword.add(new SSVectorAttack(user, 4));
-        straightSword.add(new SSHighJump(user, 5));
-        straightSword.add(new SSKick(user, 6));
+        straightSword.add(new SSMoveFast(user, 4));
+        straightSword.add(new SSVectorAttack(user, 5));
+        straightSword.add(new SSHighJump(user, 6));
+        straightSword.add(new SSKick(user, 7));
         // 防御スキル
-        straightSword.add(new SSNormalDefense(user, 7));
+        straightSword.add(new SSNormalDefense(user, 8));
 
         all.addAll(straightSword);
     }
