@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster;
 
+import net.lifecity.mc.skillmaster.inventory.InventoryFrame;
+import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
@@ -155,12 +157,27 @@ public class EventListener implements Listener {
                 if (user.getMode() == UserMode.UNARMED)
                     return;
 
+                UserInventory inv = user.getUserInventory();
+
+                if (inv == null)
+                    return;
+
                 user.getUserInventory().onClick(event);
             }
 
             // チェストインベントリの処理
-            if (event.getClickedInventory().getType() == InventoryType.CHEST)
+            if (event.getClickedInventory().getType() == InventoryType.CHEST) {
+
+                InventoryFrame inv = user.getOpenedInventory();
+
+                if (inv == null)
+                    return;
+
+                if (event.getClickedInventory() != inv.getInv())
+                    return;
+
                 user.getOpenedInventory().onClick(event);
+            }
         }
     }
 }

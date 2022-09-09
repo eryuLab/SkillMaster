@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.inventory;
 
+import lombok.Getter;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -20,6 +21,7 @@ public abstract class InventoryFrame {
 
     protected final SkillUser user;
 
+    @Getter
     protected final Inventory inv;
 
     protected final String name;
