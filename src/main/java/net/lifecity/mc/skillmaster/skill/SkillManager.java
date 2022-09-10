@@ -5,7 +5,6 @@ import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDef
 import net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack.SSJumpAttack;
 import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
 import net.lifecity.mc.skillmaster.skill.separatedskills.wall.SSWall;
-import net.lifecity.mc.skillmaster.skill.separatedskills.wall.Wall;
 import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
 import net.lifecity.mc.skillmaster.skill.skills.kick.SSKick;
 import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
@@ -44,7 +43,7 @@ public class SkillManager {
         skillList.add(new SSNormalDefense(user));
 
         for (int i = 0 ;i < skillList.size(); i++) {
-            skillList.get(i).setNum(i);
+            skillList.get(i).setId(i);
         }
     }
 
@@ -57,7 +56,7 @@ public class SkillManager {
         List<Skill> list = new ArrayList<>();
 
         for (Skill skill : skillList) {
-            if (skill.weapon == weapon)
+            if (skill.weaponList.contains(weapon))
                 list.add(skill);
         }
         return list;
