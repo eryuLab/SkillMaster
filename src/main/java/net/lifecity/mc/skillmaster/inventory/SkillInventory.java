@@ -96,8 +96,39 @@ public class SkillInventory extends InventoryFrame {
             }
         }
 
+        String lore = (page + 1) + "/" + (maxPage + 1);
         // 前のページ
+        setItem(47, new InvItem(
+                createItemStack(
+                        Material.ARROW,
+                        "前のページ",
+                        List.of(lore)
+                ),
+                event -> {
+                    event.setCancelled(true);
+
+                    if (page == 0)
+                        return;
+
+                    user.setOpenedInventory(new SkillInventory(user, page - 1));
+                }
+        ));
         // 次のページ
+        setItem(53, new InvItem(
+                createItemStack(
+                        Material.ARROW,
+                        "次のページ",
+                        List.of(lore)
+                ),
+                event -> {
+                    event.setCancelled(true);
+
+                    if (page == maxPage)
+                        return;
+
+                    user.setOpenedInventory(new SkillInventory(user, page + 1));
+                }
+        ));
 
         // スキルアイテム
         // 一行ずつ処理
