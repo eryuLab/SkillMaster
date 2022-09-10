@@ -12,8 +12,11 @@ import java.util.List;
 
 public class SkillInventory extends InventoryFrame {
 
-    public SkillInventory(SkillUser user) {
+    private int page;
+
+    public SkillInventory(SkillUser user, int page) {
         super(user, 6, "スキルメニュー：" + user.getSelectedWeapon().getJp());
+        this.page = page;
     }
 
     @Override
@@ -52,10 +55,8 @@ public class SkillInventory extends InventoryFrame {
                     event -> event.setCancelled(true)
             ));
         }
-        // 前のページ
-        // 次のページ
 
-        // 設置したかのマップ
+        // 設置したかのマップ作成
         List<SkillMap> typeMap = new ArrayList<>();
         for (SkillType type : SkillType.values()) {
 
@@ -68,9 +69,37 @@ public class SkillInventory extends InventoryFrame {
             typeMap.add(new SkillMap(type, byType));
         }
 
-        // スキルアイテム
-        int nowType = 0;
+        // ページ確認
+        // どのタイプのどの行からはじまるのかを算出する
+        int allRows = typeMap.stream().mapToInt(SkillMap::row).sum();
+        int maxPage = allRows / 5;
 
+        // 現在のページがどの行からはじまるのかを算出する
+        int nowType = 0; //現在のタイプ
+        int firstRow = 0; //始めの行数
+        final int preRow = page * 5;
+        // firstRowがpreRowを超えたらbreak
+        boolean brk = false;
+        for (SkillMap skillMap : typeMap) {
+            if (brk)
+                break;
+
+            nowType = typeMap.indexOf(skillMap);
+
+            for (int i = 0; i < skillMap.row(); i++) {
+                skillMap.set++;
+                firstRow++;
+                if (firstRow >= preRow) {
+                    brk = true;
+                    break;
+                }
+            }
+        }
+
+        // 前のページ
+        // 次のページ
+
+        // スキルアイテム
         // 一行ずつ処理
         for (int row = 0; row < 5; row++) {
 
