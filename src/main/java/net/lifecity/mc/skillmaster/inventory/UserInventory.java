@@ -48,13 +48,14 @@ public class UserInventory extends InventoryFrame {
         // 配置するスロットを計算
         int slot = switch (key.getButton()) {
             case DROP -> 10;
-            case SWAP -> 12;
-            case RIGHT -> 14;
+            case SWAP -> 13;
+            case RIGHT -> 16;
         };
         slot = slot + 9 * key.getNum();
 
         // Paneを設置
-        setItem(slot - 1, paneItem(key));
+        setItem(slot - 1, paneItem(key, true));
+        setItem(slot + 1, paneItem(key, false));
         // SkillItemを設置
         setItem(slot, skillItem(key));
     }
@@ -64,22 +65,26 @@ public class UserInventory extends InventoryFrame {
      * @param key SkillKeyで生成するアイテムを選択します
      * @return 生成されたスキル配置を説明するアイテム
      */
-    private InvItem paneItem(SkillKey key) {
+    private InvItem paneItem(SkillKey key, boolean isLeft) {
         Material material = switch (key.getButton()) {
             case RIGHT -> Material.YELLOW_STAINED_GLASS_PANE;
             case SWAP -> Material.LIGHT_BLUE_STAINED_GLASS_PANE;
-            case DROP -> Material.ORANGE_STAINED_GLASS_PANE;
+            case DROP -> Material.PINK_STAINED_GLASS_PANE;
         };
+
+        String name;
+        if (isLeft)
+            name = key.getButton().getJp() + ": " + key.getNum() + "→";
+        else
+            name = "←" + key.getButton().getJp() + ": " + key.getNum();
 
         return new InvItem(
                 createItemStack(
                         material,
-                        key.getButton().getJp() + ": " + key.getNum() + "→",
+                        name,
                         List.of()
                 ),
-                event -> {
-                    event.setCancelled(true);
-                }
+                event -> event.setCancelled(true)
         );
     }
 
