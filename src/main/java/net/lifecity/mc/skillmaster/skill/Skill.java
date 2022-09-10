@@ -25,7 +25,7 @@ public class Skill {
     @Getter
     protected final String name;
 
-    protected final Weapon weapon;
+    protected List<Weapon> weaponList;
 
     @Getter
     protected final SkillType type;
@@ -33,7 +33,7 @@ public class Skill {
     protected final List<String> lore;
 
     @Setter
-    protected int num;
+    protected int id;
 
     protected final int point;
 
@@ -44,12 +44,12 @@ public class Skill {
     @Getter
     protected boolean inInterval = false;
 
-    protected Skill(String name, Weapon weapon, SkillType type, List<String> lore, int point, int interval, SkillUser user) {
+    protected Skill(String name, List<Weapon> weaponList, SkillType type, List<String> lore, int point, int interval, SkillUser user) {
         this.name = name;
-        this.weapon = weapon;
+        this.weaponList = weaponList;
         this.type = type;
         this.lore = lore;
-        this.num = 0;
+        this.id = 0;
         this.point = point;
         this.interval = interval;
         this.user = user;
@@ -123,7 +123,7 @@ public class Skill {
      * @return 武器が使えるかどうか
      */
     public boolean usable(Weapon weapon) {
-        return this.weapon == weapon;
+        return this.weaponList.contains(weapon);
     }
 
     /**
@@ -139,7 +139,10 @@ public class Skill {
 
         List<String> lore = new ArrayList<>();
 
-        lore.add(ChatColor.WHITE + "武器: " + weapon.getJp());
+        lore.add(ChatColor.WHITE + "武器: ");
+        for (Weapon weapon : weaponList) {
+            lore.add(ChatColor.WHITE + weapon.getJp());
+        }
         lore.add(ChatColor.WHITE + "タイプ: " + type);
         for (String str : this.lore) {
             lore.add(ChatColor.WHITE + str);
@@ -147,7 +150,7 @@ public class Skill {
 
         meta.setLore(lore);
 
-        meta.setCustomModelData(id());
+        meta.setCustomModelData(id);
 
         item.setItemMeta(meta);
 
@@ -164,7 +167,7 @@ public class Skill {
             return false;
         if (!itemStack.getItemMeta().hasCustomModelData())
             return false;
-        return id() == itemStack.getItemMeta().getCustomModelData();
+        return id == itemStack.getItemMeta().getCustomModelData();
     }
 
     /**
@@ -173,14 +176,16 @@ public class Skill {
      * @return 一致するかどうか
      */
     public boolean is(Skill other) {
-        return id() == other.id();
+        return id == other.id;
     }
 
-    /**
-     * このスキルのIDを取得します
-     * @return スキルのID
+    /*
+      このスキルのIDを取得します
+      @return スキルのID
      */
+    /*
     private int id() {
         return weapon.getNumber() * 100 + num;
     }
+     */
 }
