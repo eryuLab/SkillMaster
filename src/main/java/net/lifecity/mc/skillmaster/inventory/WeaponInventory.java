@@ -140,7 +140,7 @@ public class WeaponInventory extends InventoryFrame {
                     createItemStack(Material.CAULDRON, "スキルメニューへ", List.of()),
                     event -> {
                         // スキルメニューへ移動
-                        user.setOpenedInventory(new SkillInventory(user));
+                        user.setOpenedInventory(new SkillInventory(user, 0));
                         user.getOpenedInventory().open();
                     }
             );
