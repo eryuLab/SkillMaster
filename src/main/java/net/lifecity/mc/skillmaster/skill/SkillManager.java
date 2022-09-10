@@ -25,28 +25,23 @@ public class SkillManager {
     private final SkillUser user;
 
     @Getter
-    private final List<Skill> all = new ArrayList<>();
-
-    @Getter
-    private final List<Skill> straightSword = new ArrayList<>();
+    private final List<Skill> skillList = new ArrayList<>();
 
     public SkillManager(SkillUser user) {
         this.user = user;
 
         // 直剣
         // 複合スキル
-        straightSword.add(new SSLeafFlow(user ,1));
-        straightSword.add(new SSJumpAttack(user, 2));
-        straightSword.add(new SSWall(user, 3));
+        skillList.add(new SSLeafFlow(user ,1));
+        skillList.add(new SSJumpAttack(user, 2));
+        skillList.add(new SSWall(user, 3));
         // 単発スキル
-        straightSword.add(new SSMoveFast(user, 4));
-        straightSword.add(new SSVectorAttack(user, 5));
-        straightSword.add(new SSHighJump(user, 6));
-        straightSword.add(new SSKick(user, 7));
+        skillList.add(new SSMoveFast(user, 4));
+        skillList.add(new SSVectorAttack(user, 5));
+        skillList.add(new SSHighJump(user, 6));
+        skillList.add(new SSKick(user, 7));
         // 防御スキル
-        straightSword.add(new SSNormalDefense(user, 8));
-
-        all.addAll(straightSword);
+        skillList.add(new SSNormalDefense(user, 8));
     }
 
     /**
@@ -55,10 +50,13 @@ public class SkillManager {
      * @return 武器のスキルリスト
      */
     public List<Skill> fromWeapon(Weapon weapon) {
-        if (weapon == Weapon.STRAIGHT_SWORD)
-            return straightSword;
-        else
-            return new ArrayList<>();
+        List<Skill> list = new ArrayList<>();
+
+        for (Skill skill : skillList) {
+            if (skill.weapon == weapon)
+                list.add(skill);
+        }
+        return list;
     }
 
     /**
@@ -67,7 +65,7 @@ public class SkillManager {
      * @return スキルインスタンス
      */
     public Skill fromClass(Class<? extends Skill> skillClass) {
-        for (Skill skill : all) {
+        for (Skill skill : skillList) {
             if (skillClass.isInstance(skill))
                 return skill;
         }
