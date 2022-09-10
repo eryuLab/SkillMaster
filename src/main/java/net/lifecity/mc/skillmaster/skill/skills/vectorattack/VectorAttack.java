@@ -25,7 +25,6 @@ public class VectorAttack extends Skill {
 
     protected VectorAttack(
             Weapon weapon,
-            int num,
             int point,
             int interval,
             SkillUser user,
@@ -41,7 +40,6 @@ public class VectorAttack extends Skill {
                 weapon,
                 SkillType.ATTACK,
                 Arrays.asList("ユーザーが持つベクトルを力に変換して攻撃します。"),
-                num,
                 point,
                 interval,
                 user

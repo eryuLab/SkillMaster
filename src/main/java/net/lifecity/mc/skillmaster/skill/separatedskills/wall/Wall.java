@@ -17,7 +17,6 @@ import java.util.Arrays;
 
 public class Wall extends SeparatedSkill {
     public Wall(Weapon weapon,
-                   int num,
                    int point,
                    int activationTime,
                    int interval,
@@ -31,7 +30,6 @@ public class Wall extends SeparatedSkill {
                         "ガラスの壁を生成し、相手の攻撃から身を守る",
                         "壁は時間経過で消える"
                 ),
-                num,
                 point,
                 activationTime,
                 interval,

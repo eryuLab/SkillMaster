@@ -22,18 +22,16 @@ public abstract class NormalDefense extends DefenseSkill {
     /**
      * 通常防御のコンストラクタ
      * @param weapon 使用する武器
-     * @param num スキル番号
      * @param point 消費ポイント
      * @param activationTime 発動時間
      * @param interval インターバル
      * @param user 使用するユーザー
      */
-    protected NormalDefense(Weapon weapon, int num, int point, int activationTime, int interval, SkillUser user) {
+    protected NormalDefense(Weapon weapon, int point, int activationTime, int interval, SkillUser user) {
         super(
                 "通常防御",
                 weapon,
                 Arrays.asList("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"),
-                num,
                 point,
                 activationTime,
                 interval,

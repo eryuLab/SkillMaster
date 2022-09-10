@@ -23,7 +23,6 @@ public class Kick extends Skill {
 
     protected Kick(
             Weapon weapon,
-            int num,
             int point,
             int interval,
             SkillUser user,
@@ -35,7 +34,6 @@ public class Kick extends Skill {
                 weapon,
                 SkillType.ATTACK,
                 Arrays.asList("相手を蹴り飛ばして、相手と距離を作ります。", "一番近い敵を攻撃します。"),
-                num,
                 point,
                 interval,
                 user

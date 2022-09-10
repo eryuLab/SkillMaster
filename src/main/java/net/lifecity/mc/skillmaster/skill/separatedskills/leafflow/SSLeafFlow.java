@@ -23,7 +23,6 @@ public class SSLeafFlow extends LeafFlow {
     public SSLeafFlow(SkillUser user, int num) {
         super(
                 Weapon.STRAIGHT_SWORD,
-                num,
                 0,
                 8,
                 15,

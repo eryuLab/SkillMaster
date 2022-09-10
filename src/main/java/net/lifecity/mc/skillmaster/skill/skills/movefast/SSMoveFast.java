@@ -20,7 +20,6 @@ public class SSMoveFast extends MoveFast {
     public SSMoveFast(SkillUser user, int num) {
         super(
                 Weapon.STRAIGHT_SWORD,
-                num,
                 0,
                 25,
                 user,

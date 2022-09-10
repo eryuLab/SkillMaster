@@ -23,7 +23,6 @@ public class HighJump extends Skill {
 
     protected HighJump(
             Weapon weapon,
-            int num,
             int point,
             int interval,
             SkillUser user,
@@ -35,7 +34,6 @@ public class HighJump extends Skill {
                 weapon,
                 SkillType.MOVE,
                 Arrays.asList("上に飛び上がります。"),
-                num,
                 point,
                 interval,
                 user

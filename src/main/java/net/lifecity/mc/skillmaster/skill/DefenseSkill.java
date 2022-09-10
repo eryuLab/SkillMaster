@@ -11,8 +11,8 @@ import java.util.List;
  */
 public abstract class DefenseSkill extends SeparatedSkill {
 
-    public DefenseSkill(String name, Weapon weapon, List<String> lore, int num, int point, int activationTime, int interval, SkillUser user) {
-        super(name, weapon, SkillType.DEFENSE, lore, num, point, activationTime, interval, user);
+    public DefenseSkill(String name, Weapon weapon, List<String> lore, int point, int activationTime, int interval, SkillUser user) {
+        super(name, weapon, SkillType.DEFENSE, lore, point, activationTime, interval, user);
     }
 
     @Override

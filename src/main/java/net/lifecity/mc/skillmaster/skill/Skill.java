@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.skill;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
@@ -31,6 +32,7 @@ public class Skill {
 
     protected final List<String> lore;
 
+    @Setter
     protected final int num;
 
     protected final int point;
@@ -42,12 +44,12 @@ public class Skill {
     @Getter
     protected boolean inInterval = false;
 
-    protected Skill(String name, Weapon weapon, SkillType type, List<String> lore, int num, int point, int interval, SkillUser user) {
+    protected Skill(String name, Weapon weapon, SkillType type, List<String> lore, int point, int interval, SkillUser user) {
         this.name = name;
         this.weapon = weapon;
         this.type = type;
         this.lore = lore;
-        this.num = num;
+        this.num = 0;
         this.point = point;
         this.interval = interval;
         this.user = user;

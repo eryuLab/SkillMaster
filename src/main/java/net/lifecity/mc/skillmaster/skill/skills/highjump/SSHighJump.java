@@ -12,7 +12,6 @@ public class SSHighJump extends HighJump {
     public SSHighJump(SkillUser user, int num) {
         super(
                 Weapon.STRAIGHT_SWORD,
-                num,
                 0,
                 30,
                 user,

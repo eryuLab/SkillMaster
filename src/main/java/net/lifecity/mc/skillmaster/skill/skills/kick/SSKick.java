@@ -11,7 +11,6 @@ public class SSKick extends Kick {
     public SSKick(SkillUser user, int num) {
         super(
                 Weapon.STRAIGHT_SWORD,
-                num,
                 0,
                 5,
                 user,

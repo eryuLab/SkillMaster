@@ -39,7 +39,6 @@ public abstract class JumpAttack extends SeparatedSkill {
     /**
      * ジャンプアタックのコンストラクタ
      * @param weapon 使用する武器
-     * @param num スキルの番号
      * @param point 消費ポイント
      * @param activationTime 発動時間
      * @param interval インターバル
@@ -55,7 +54,6 @@ public abstract class JumpAttack extends SeparatedSkill {
      */
     protected JumpAttack(
             Weapon weapon,
-            int num,
             int point,
             int activationTime,
             int interval,
@@ -78,7 +76,6 @@ public abstract class JumpAttack extends SeparatedSkill {
                         "2回目の入力で素早く落下します。",
                         "3回目の入力で攻撃します。"
                 ),
-                num,
                 point,
                 activationTime,
                 interval,

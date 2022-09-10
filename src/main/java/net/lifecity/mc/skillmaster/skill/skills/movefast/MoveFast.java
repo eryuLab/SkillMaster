@@ -19,7 +19,6 @@ public class MoveFast extends Skill {
 
     protected MoveFast(
             Weapon weapon,
-            int num,
             int point,
             int interval,
             SkillUser user,
@@ -31,7 +30,6 @@ public class MoveFast extends Skill {
                 weapon,
                 SkillType.MOVE,
                 Arrays.asList("向いている方向に高速移動します。", "上方向には飛べません。"),
-                num,
                 point,
                 interval,
                 user

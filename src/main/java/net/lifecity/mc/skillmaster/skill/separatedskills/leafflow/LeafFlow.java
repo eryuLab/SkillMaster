@@ -28,7 +28,6 @@ public class LeafFlow extends SeparatedSkill {
     /**
      * リーフフローのコンストラクタ
      * @param weapon 使用する武器
-     * @param num スキルの番号
      * @param point 消費ポイント
      * @param activationTime 発動時間
      * @param interval インターバル
@@ -42,7 +41,6 @@ public class LeafFlow extends SeparatedSkill {
      */
     protected LeafFlow(
             Weapon weapon,
-            int num,
             int point,
             int activationTime,
             int interval,
@@ -63,7 +61,6 @@ public class LeafFlow extends SeparatedSkill {
                         "1回目の入力で前に移動します。",
                         "2回目の入力で攻撃します。"
                 ),
-                num,
                 point,
                 activationTime,
                 interval,
