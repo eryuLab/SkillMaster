@@ -105,7 +105,15 @@ public class UserInventory extends InventoryFrame {
 
                         // インベントリ特定
                         if (event.getView().getTopInventory().getType() == InventoryType.CHEST) {
-                            if (event.getView().getTopInventory() == user.getOpenedInventory().inv) {
+
+                            InventoryFrame openedInv = user.getOpenedInventory();
+
+                            if (openedInv == null) {
+                                event.setCancelled(true);
+                                return;
+                            }
+
+                            if (event.getView().getTopInventory() == openedInv.inv) {
 
                                 // カーソルがスキルであればスキルを登録
                                 Skill cursorSkill = new SkillManager(user).fromItemStack(event.getCursor());
@@ -154,7 +162,14 @@ public class UserInventory extends InventoryFrame {
 
                         // インベントリ特定
                         if (event.getView().getTopInventory().getType() == InventoryType.CHEST) {
-                            if (event.getView().getTopInventory() == user.getOpenedInventory().inv) {
+                            InventoryFrame openedInv = user.getOpenedInventory();
+
+                            if (openedInv == null) {
+                                event.setCancelled(true);
+                                return;
+                            }
+
+                            if (event.getView().getTopInventory() == openedInv.inv) {
 
                                 // スキル除外
                                 key.setSkill(null);
