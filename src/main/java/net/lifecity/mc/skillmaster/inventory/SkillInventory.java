@@ -12,10 +12,12 @@ import java.util.List;
 
 public class SkillInventory extends InventoryFrame {
 
-    private int page;
+    private SkillManager sm;
+    private final int page;
 
     public SkillInventory(SkillUser user, int page) {
         super(user, 6, "スキルメニュー：" + user.getSelectedWeapon().getJp());
+        this.sm = new SkillManager(user);
         this.page = page;
     }
 
@@ -35,6 +37,7 @@ public class SkillInventory extends InventoryFrame {
                     event -> event.setCancelled(true)
             ));
         }
+
         // 武器メニューに戻る
         setItem(45, new InvItem(
                 user.getSelectedWeapon().toItemStack(),
@@ -44,6 +47,7 @@ public class SkillInventory extends InventoryFrame {
                     user.getOpenedInventory().open();
                 }
         ));
+
         // 下辺
         for (int i = 48; i <= 52; i++) {
             setItem(i, new InvItem(
@@ -56,45 +60,67 @@ public class SkillInventory extends InventoryFrame {
             ));
         }
 
-        // 設置したかのマップ作成
-        List<SkillMap> typeMap = new ArrayList<>();
+        // スキルアイテム
+        // すべての行を生成
+        List<TypeRow> rowList = new ArrayList<>();
         for (SkillType type : SkillType.values()) {
 
-            List<Skill> byType = new ArrayList<>();
-
+            // 種類分けされたスキルリストを生成
+            List<Skill> skillListByType = new ArrayList<>();
             for (Skill skill : skillList) {
                 if (skill.getType() == type)
-                    byType.add(skill);
+                    skillListByType.add(skill);
             }
-            typeMap.add(new SkillMap(type, byType));
+            // 行数を計算
+            int maxRowNum = skillListByType.size() / 7;
+            if (skillListByType.size() % 7 != 0)
+                maxRowNum++;
+
+            // 行数だけリストに行を追加
+            for (int rowNum = 0; rowNum < maxRowNum; rowNum++) {
+                rowList.add(new TypeRow(type, skillListByType, rowNum));
+            }
         }
+        List<SkillType> setIcon = new ArrayList<>();
+        // 行数だけ繰り返す
+        for (int row = 0; row < 5; row++) {
 
-        // ページ確認
-        // どのタイプのどの行からはじまるのかを算出する
-        int allRows = typeMap.stream().mapToInt(SkillMap::row).sum();
-        int maxPage = allRows / 5;
+            int rowIndex = row + page * 5;
+            int first = row * 9 + 2;
 
-        // 現在のページがどの行からはじまるのかを算出する
-        int nowType = 0; //現在のタイプ
-        int firstRow = 0; //始めの行数
-        final int preRow = page * 5;
-        // firstRowがpreRowを超えたらbreak
-        boolean brk = false;
-        for (SkillMap skillMap : typeMap) {
-            if (brk)
-                break;
-
-            nowType = typeMap.indexOf(skillMap);
-
-            for (int i = 0; i < skillMap.row(); i++) {
-                skillMap.set++;
-                firstRow++;
-                if (firstRow >= preRow) {
-                    brk = true;
-                    break;
+            // 行が存在しなかったら空白行設置
+            if (rowList.size() < rowIndex) {
+                for (int slot = first; slot < first + 7; slot++) {
+                    setItem(slot, getAirItem());
                 }
+                continue;
+            }
+            // 行が存在したらスキルアイテム行設置
+            TypeRow typeRow = rowList.get(rowIndex);
+            int num = 0;
+            for (int slot = first; slot < first + 7; slot++) {
+                // アイコン設置
+                SkillType type = typeRow.type;
+                if (!setIcon.contains(type)) {
+                    setItem(first - 2, new InvItem(
+                            createItemStack(
+                                    type.getMaterial(),
+                                    "タイプ: " + type.getJp(),
+                                    List.of()
+                            ),
+                            event -> event.setCancelled(true)
+                    ));
+                    setIcon.add(type);
+                }
+
+                // スキルアイテム設置
+                setItem(slot, typeRow.getSkillItem(num));
+                num++;
             }
         }
+
+        // ページ
+        int maxPage = rowList.size() / 5;
 
         String lore = (page + 1) + "/" + (maxPage + 1);
         // 前のページ
@@ -105,15 +131,16 @@ public class SkillInventory extends InventoryFrame {
                         List.of(lore)
                 ),
                 event -> {
-                    event.setCancelled(true);
-
                     if (page == 0)
                         return;
 
+                    // ページ移動
                     user.setOpenedInventory(new SkillInventory(user, page - 1));
+                    user.getOpenedInventory().open();
                 }
         ));
         // 次のページ
+        int finalMaxPage = maxPage;
         setItem(53, new InvItem(
                 createItemStack(
                         Material.ARROW,
@@ -121,137 +148,75 @@ public class SkillInventory extends InventoryFrame {
                         List.of(lore)
                 ),
                 event -> {
-                    event.setCancelled(true);
-
-                    if (page == maxPage)
+                    if (page == finalMaxPage)
                         return;
+                    user.sendMessage("次のページ");
 
+                    // ページ移動
                     user.setOpenedInventory(new SkillInventory(user, page + 1));
+                    user.getOpenedInventory().open();
                 }
         ));
-
-        // スキルアイテム
-        // 一行ずつ処理
-        for (int row = 0; row < 5; row++) {
-
-            // 種類がなければ処理終了
-            if (nowType >= typeMap.size())
-                break;
-
-            // nowSkillMap
-            SkillMap map = typeMap.get(nowType);
-
-            // アイコンが設置されていないとき
-            if (!map.setIcon) {
-                // アイコン設置
-                setItem(row * 9, new InvItem(
-                        createItemStack(
-                                map.type.getMaterial(),
-                                map.type.getJp(),
-                                List.of()
-                        ),
-                        event -> event.setCancelled(true)
-                ));
-                map.setIcon = true;
-            }
-
-            // 一行の処理
-            for (int slot = row * 9 + 2; slot < row * 9 + 9; slot++) {
-
-                // 種類に何も入っていないとき
-                if (map.skillList.size() == 0) {
-                    // 行を変えないで次の処理へ移行
-                    row--;
-                    break;
-                }
-
-                // スキル設置
-                InvItem item;
-                // スキルアイテムがある場合
-                if (!map.setAll()) {
-                    ItemStack skillItem = map.get().toItemStack();
-                    item = new InvItem(
-                            skillItem,
-                            event -> {
-                                event.setCancelled(true);
-                                if (event.getCursor().getType() == Material.AIR) {
-                                    // カーソルがairだったらスキルアイテム取得
-                                    event.setCursor(skillItem);
-
-                                } else {
-                                    // カーソルがSkillItemだったらカーソルをairに変更
-                                    Skill cursorSkill = skillManager.fromItemStack(event.getCursor());
-
-                                    if (cursorSkill != null)
-                                        event.setCursor(new ItemStack(Material.AIR));
-                                }
-                            }
-                    );
-                } else { //スキルアイテムがない場合
-                    item = new InvItem(
-                            new ItemStack(Material.AIR),
-                            event -> {
-                                //カーソルがairじゃなかったらカーソルをairに変更
-                                if (event.getCursor().getType() != Material.AIR) {
-                                    event.setCancelled(true);
-
-                                    Skill cursorSkill = skillManager.fromItemStack(event.getCursor());
-
-                                    if (cursorSkill != null)
-                                        event.setCursor(new ItemStack(Material.AIR));
-                                }
-                            }
-                    );
-                }
-                setItem(slot, item);
-            }
-
-            // タイプ確認
-            if (map.setAll())
-                nowType++;
-        }
     }
 
-    /**
-     * スキルアイテムがどこまで設置されているかを表すデータ
-     */
-    private class SkillMap {
+    private InvItem getAirItem() {
+        return new InvItem(
+                new ItemStack(Material.AIR),
+                event -> {
+                    //カーソルがairじゃなかったらカーソルをairに変更
+                    if (event.getCursor().getType() != Material.AIR) {
+                        event.setCancelled(true);
 
-        private final SkillType type;
+                        Skill cursorSkill = sm.fromItemStack(event.getCursor());
 
-        private final List<Skill> skillList;
+                        if (cursorSkill != null)
+                            event.setCursor(new ItemStack(Material.AIR));
+                    }
+                }
+        );
+    }
 
-        private int set = -1;
+    private class TypeRow {
 
-        private boolean setIcon = false;
+        private SkillType type;
+        private List<Skill> skillList;
+        private int rowNum;
 
-        private SkillMap(SkillType type, List<Skill> skillList) {
+        private TypeRow(SkillType type, List<Skill> skillList, int rowNum) {
             this.type = type;
             this.skillList = skillList;
-        }
-
-        private Skill get() {
-            set++;
-            return skillList.get(set);
-        }
-        /**
-         * すべてのスキルを設置したかを返します
-         * @return 全てのスキルを設置していたらtrue
-         */
-        private boolean setAll() {
-            return skillList.size() <= set + 1;
+            this.rowNum = rowNum;
         }
 
         /**
-         * 使用する行数を返します
-         * @return 使用する行数
+         * 指定番号のアイテムを生成して返します
+         * @param num この番号のアイテムを生成します
+         * @return 生成されたSkillItem
          */
-        private int row() {
-            int row = skillList.size() / 7;
-            if (skillList.size() % 7 != 0)
-                row++;
+        private InvItem getSkillItem(int num) {
+            int index = rowNum * 7 + num;
+            if (index < skillList.size()) {
+                Skill skill = skillList.get(index);
+                return new InvItem(
+                        skill.toItemStack(),
+                        event -> {
+                            event.setCancelled(true);
+                            if (event.getCursor().getType() == Material.AIR) {
+                                // カーソルがairだったらスキルアイテム取得
+                                event.setCursor(skill.toItemStack());
 
-            return row;
+                            } else {
+                                // カーソルがSkillItemだったらカーソルをairに変更
+                                Skill cursorSkill = sm.fromItemStack(event.getCursor());
+
+                                if (cursorSkill != null)
+                                    event.setCursor(new ItemStack(Material.AIR));
+                            }
+                        }
+                );
+            } else {
+                return getAirItem();
+            }
         }
     }
 }
