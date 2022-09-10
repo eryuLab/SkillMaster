@@ -279,8 +279,16 @@ public class SkillUser {
     public void changeWeapon(Weapon weapon) {
         // スキルセットをリセット
         rightSkillSet.clear();
+        for (int i = 0; i < 3; i++)
+            rightSkillSet.add(null);
+
         swapSkillSet.clear();
+        for (int i = 0; i < 3; i++)
+            swapSkillSet.add(null);
+
         dropSkillSet.clear();
+        for (int i = 0; i < 3; i++)
+            dropSkillSet.add(null);
 
         // 武器を変更
         selectedWeapon = weapon;
