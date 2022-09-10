@@ -86,12 +86,7 @@ public class SkillManager {
         if (!itemStack.getItemMeta().hasCustomModelData())
             return null;
 
-        int num = (int) (itemStack.getItemMeta().getCustomModelData() * 0.01);
-        Weapon weapon = Weapon.fromNumber(num);
-
-        List<Skill> list = fromWeapon(weapon);
-
-        for (Skill skill : list) {
+        for (Skill skill : skillList) {
             if (skill.is(itemStack))
                 return skill;
         }
