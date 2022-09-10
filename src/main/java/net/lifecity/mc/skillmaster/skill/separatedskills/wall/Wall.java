@@ -14,17 +14,20 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 public class Wall extends SeparatedSkill {
-    public Wall(Weapon weapon,
-                   int point,
-                   int activationTime,
-                   int interval,
-                   SkillUser user
+
+    public Wall(
+            List<Weapon> weaponList,
+            int point,
+            int activationTime,
+            int interval,
+            SkillUser user
     ) {
         super(
                 "ウォール",
-                weapon,
+                weaponList,
                 SkillType.ATTACK,
                 Arrays.asList(
                         "ガラスの壁を生成し、相手の攻撃から身を守る",

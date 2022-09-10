@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,7 +23,7 @@ public class HighJump extends Skill {
     private final double jumpPower;
 
     protected HighJump(
-            Weapon weapon,
+            List<Weapon> weaponList,
             int point,
             int interval,
             SkillUser user,
@@ -31,7 +32,7 @@ public class HighJump extends Skill {
     ) {
         super(
                 "大ジャンプ",
-                weapon,
+                weaponList,
                 SkillType.MOVE,
                 Arrays.asList("上に飛び上がります。"),
                 point,

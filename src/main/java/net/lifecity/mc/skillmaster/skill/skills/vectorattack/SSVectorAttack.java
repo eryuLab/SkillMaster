@@ -21,7 +21,7 @@ public class SSVectorAttack extends VectorAttack {
 
     public SSVectorAttack(SkillUser user) {
         super(
-                Weapon.STRAIGHT_SWORD,
+                Arrays.asList(Weapon.STRAIGHT_SWORD),
                 0,
                 40,
                 user,

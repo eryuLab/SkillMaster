@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
  * 前方に突進しながら敵を攻撃するスキル
  */
 import java.util.Arrays;
+import java.util.List;
 
 public class LeafFlow extends SeparatedSkill {
 
@@ -27,7 +28,7 @@ public class LeafFlow extends SeparatedSkill {
 
     /**
      * リーフフローのコンストラクタ
-     * @param weapon 使用する武器
+     * @param weaponList 使用する武器
      * @param point 消費ポイント
      * @param activationTime 発動時間
      * @param interval インターバル
@@ -40,7 +41,7 @@ public class LeafFlow extends SeparatedSkill {
      * @param yImpact Y軸へのノックバック
      */
     protected LeafFlow(
-            Weapon weapon,
+            List<Weapon> weaponList,
             int point,
             int activationTime,
             int interval,
@@ -54,7 +55,7 @@ public class LeafFlow extends SeparatedSkill {
     ) {
         super(
                 "リーフフロー",
-                weapon,
+                weaponList,
                 SkillType.ATTACK,
                 Arrays.asList(
                         "前に進みながら斬撃します。",

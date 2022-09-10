@@ -3,6 +3,8 @@ package net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 
+import java.util.Arrays;
+
 /**
  * 飛び上がり、地面に向かって突撃するスキル
  */
@@ -10,7 +12,7 @@ public class SSJumpAttack extends JumpAttack {
 
     public SSJumpAttack(SkillUser user) {
         super(
-                Weapon.STRAIGHT_SWORD,
+                Arrays.asList(Weapon.STRAIGHT_SWORD),
                 0,
                 28,
                 20,

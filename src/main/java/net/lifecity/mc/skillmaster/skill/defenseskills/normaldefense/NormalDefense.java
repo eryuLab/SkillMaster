@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,16 +22,16 @@ public abstract class NormalDefense extends DefenseSkill {
 
     /**
      * 通常防御のコンストラクタ
-     * @param weapon 使用する武器
+     * @param weaponList 使用する武器
      * @param point 消費ポイント
      * @param activationTime 発動時間
      * @param interval インターバル
      * @param user 使用するユーザー
      */
-    protected NormalDefense(Weapon weapon, int point, int activationTime, int interval, SkillUser user) {
+    protected NormalDefense(List<Weapon> weaponList, int point, int activationTime, int interval, SkillUser user) {
         super(
                 "通常防御",
-                weapon,
+                weaponList,
                 Arrays.asList("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"),
                 point,
                 activationTime,

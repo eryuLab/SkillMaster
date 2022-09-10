@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MoveFast extends Skill {
 
@@ -18,7 +19,7 @@ public class MoveFast extends Skill {
     private final double yPower;
 
     protected MoveFast(
-            Weapon weapon,
+            List<Weapon> weaponList,
             int point,
             int interval,
             SkillUser user,
@@ -27,7 +28,7 @@ public class MoveFast extends Skill {
     ) {
         super(
                 "高速移動",
-                weapon,
+                weaponList,
                 SkillType.MOVE,
                 Arrays.asList("向いている方向に高速移動します。", "上方向には飛べません。"),
                 point,

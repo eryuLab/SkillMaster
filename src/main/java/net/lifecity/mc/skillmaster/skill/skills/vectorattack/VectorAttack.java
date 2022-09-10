@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class VectorAttack extends Skill {
 
@@ -24,7 +25,7 @@ public class VectorAttack extends Skill {
     private final double maxDamageColor;
 
     protected VectorAttack(
-            Weapon weapon,
+            List<Weapon> weaponList,
             int point,
             int interval,
             SkillUser user,
@@ -37,7 +38,7 @@ public class VectorAttack extends Skill {
     ) {
         super(
                 "ベクトルアタック",
-                weapon,
+                weaponList,
                 SkillType.ATTACK,
                 Arrays.asList("ユーザーが持つベクトルを力に変換して攻撃します。"),
                 point,

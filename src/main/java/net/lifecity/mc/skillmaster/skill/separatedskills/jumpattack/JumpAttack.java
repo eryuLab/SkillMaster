@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -38,7 +39,7 @@ public abstract class JumpAttack extends SeparatedSkill {
 
     /**
      * ジャンプアタックのコンストラクタ
-     * @param weapon 使用する武器
+     * @param weaponList 使用する武器
      * @param point 消費ポイント
      * @param activationTime 発動時間
      * @param interval インターバル
@@ -53,7 +54,7 @@ public abstract class JumpAttack extends SeparatedSkill {
      * @param yImpact Y軸へのノックバック
      */
     protected JumpAttack(
-            Weapon weapon,
+            List<Weapon> weaponList,
             int point,
             int activationTime,
             int interval,
@@ -69,7 +70,8 @@ public abstract class JumpAttack extends SeparatedSkill {
     ) {
         super(
                 "ジャンプアタック",
-                weapon, SkillType.ATTACK,
+                weaponList,
+                SkillType.ATTACK,
                 Arrays.asList(
                         "上に飛び上がり、地面に突撃します。",
                         "1回目の入力で上に飛び上がります。",

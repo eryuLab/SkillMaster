@@ -19,7 +19,7 @@ public class SSMoveFast extends MoveFast {
 
     public SSMoveFast(SkillUser user) {
         super(
-                Weapon.STRAIGHT_SWORD,
+                Arrays.asList(Weapon.STRAIGHT_SWORD),
                 0,
                 25,
                 user,

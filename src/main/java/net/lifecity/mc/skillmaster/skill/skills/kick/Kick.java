@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 敵を蹴り飛ばすスキル
@@ -22,7 +23,7 @@ public class Kick extends Skill {
     private final double impact;
 
     protected Kick(
-            Weapon weapon,
+            List<Weapon> weaponList,
             int point,
             int interval,
             SkillUser user,
@@ -31,7 +32,7 @@ public class Kick extends Skill {
     ) {
         super(
                 "蹴り",
-                weapon,
+                weaponList,
                 SkillType.ATTACK,
                 Arrays.asList("相手を蹴り飛ばして、相手と距離を作ります。", "一番近い敵を攻撃します。"),
                 point,
