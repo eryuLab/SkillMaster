@@ -58,7 +58,7 @@ public class SkillCommand {
         }
 
         if (menu.equals("skill")) {
-            user.setOpenedInventory(new SkillInventory(user));
+            user.setOpenedInventory(new SkillInventory(user, 0));
 
             user.getOpenedInventory().open();
         }
