@@ -19,6 +19,7 @@ public class SkillInventory extends InventoryFrame {
         super(user, 6, "スキルメニュー：" + user.getSelectedWeapon().getJp());
         this.sm = new SkillManager(user);
         this.page = page;
+        init();
     }
 
     @Override
@@ -85,11 +86,11 @@ public class SkillInventory extends InventoryFrame {
         // 行数だけ繰り返す
         for (int row = 0; row < 5; row++) {
 
-            int rowIndex = row + page * 5;
+            int rowIndex = page * 5 + row;
             int first = row * 9 + 2;
 
             // 行が存在しなかったら空白行設置
-            if (rowList.size() < rowIndex) {
+            if (rowList.size() <= rowIndex) {
                 for (int slot = first; slot < first + 7; slot++) {
                     setItem(slot, getAirItem());
                 }
@@ -131,6 +132,8 @@ public class SkillInventory extends InventoryFrame {
                         List.of(lore)
                 ),
                 event -> {
+                    event.setCancelled(true);
+
                     if (page == 0)
                         return;
 
@@ -148,6 +151,8 @@ public class SkillInventory extends InventoryFrame {
                         List.of(lore)
                 ),
                 event -> {
+                    event.setCancelled(true);
+
                     if (page == finalMaxPage)
                         return;
                     user.sendMessage("次のページ");
