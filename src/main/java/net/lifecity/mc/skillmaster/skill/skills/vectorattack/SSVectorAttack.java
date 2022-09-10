@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public class SSVectorAttack extends VectorAttack {
 
-    public SSVectorAttack(SkillUser user, int num) {
+    public SSVectorAttack(SkillUser user) {
         super(
                 Weapon.STRAIGHT_SWORD,
                 0,

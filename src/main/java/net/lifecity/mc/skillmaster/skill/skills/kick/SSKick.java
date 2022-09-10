@@ -8,7 +8,7 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
  */
 public class SSKick extends Kick {
 
-    public SSKick(SkillUser user, int num) {
+    public SSKick(SkillUser user) {
         super(
                 Weapon.STRAIGHT_SWORD,
                 0,

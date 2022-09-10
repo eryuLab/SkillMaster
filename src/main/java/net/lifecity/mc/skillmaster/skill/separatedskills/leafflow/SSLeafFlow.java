@@ -20,7 +20,7 @@ import java.util.Random;
  */
 public class SSLeafFlow extends LeafFlow {
 
-    public SSLeafFlow(SkillUser user, int num) {
+    public SSLeafFlow(SkillUser user) {
         super(
                 Weapon.STRAIGHT_SWORD,
                 0,

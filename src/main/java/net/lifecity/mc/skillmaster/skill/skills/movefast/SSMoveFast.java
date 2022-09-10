@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class SSMoveFast extends MoveFast {
 
-    public SSMoveFast(SkillUser user, int num) {
+    public SSMoveFast(SkillUser user) {
         super(
                 Weapon.STRAIGHT_SWORD,
                 0,

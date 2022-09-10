@@ -8,7 +8,7 @@ import net.lifecity.mc.skillmaster.weapon.Weapon;
  */
 public class SSJumpAttack extends JumpAttack {
 
-    public SSJumpAttack(SkillUser user, int num) {
+    public SSJumpAttack(SkillUser user) {
         super(
                 Weapon.STRAIGHT_SWORD,
                 0,
