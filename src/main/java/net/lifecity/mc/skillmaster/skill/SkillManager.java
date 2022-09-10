@@ -32,16 +32,20 @@ public class SkillManager {
 
         // 直剣
         // 複合スキル
-        skillList.add(new SSLeafFlow(user ,1));
-        skillList.add(new SSJumpAttack(user, 2));
-        skillList.add(new SSWall(user, 3));
+        skillList.add(new SSLeafFlow(user));
+        skillList.add(new SSJumpAttack(user));
+        skillList.add(new SSWall(user));
         // 単発スキル
-        skillList.add(new SSMoveFast(user, 4));
-        skillList.add(new SSVectorAttack(user, 5));
-        skillList.add(new SSHighJump(user, 6));
-        skillList.add(new SSKick(user, 7));
+        skillList.add(new SSMoveFast(user));
+        skillList.add(new SSVectorAttack(user));
+        skillList.add(new SSHighJump(user));
+        skillList.add(new SSKick(user));
         // 防御スキル
-        skillList.add(new SSNormalDefense(user, 8));
+        skillList.add(new SSNormalDefense(user));
+
+        for (int i = 0 ;i < skillList.size(); i++) {
+            skillList.get(i).setNum(i);
+        }
     }
 
     /**
