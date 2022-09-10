@@ -33,7 +33,7 @@ public class Skill {
     protected final List<String> lore;
 
     @Setter
-    protected final int num;
+    protected int num;
 
     protected final int point;
 
