@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills.wall;
+package net.lifecity.mc.skillmaster.skill.separatedskills;
 
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import net.lifecity.mc.skillmaster.SkillMaster;
@@ -18,24 +18,18 @@ import java.util.List;
 
 public class Wall extends SeparatedSkill {
 
-    public Wall(
-            List<Weapon> weaponList,
-            int point,
-            int activationTime,
-            int interval,
-            SkillUser user
-    ) {
+    public Wall(SkillUser user) {
         super(
                 "ウォール",
-                weaponList,
+                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.GREAT_SWORD, Weapon.LONG_SWORD, Weapon.RAPIER, Weapon.MACE),
                 SkillType.ATTACK,
                 Arrays.asList(
                         "ガラスの壁を生成し、相手の攻撃から身を守る",
                         "壁は時間経過で消える"
                 ),
-                point,
-                activationTime,
-                interval,
+                0,
+                10,
+                20,
                 user
         );
     }
