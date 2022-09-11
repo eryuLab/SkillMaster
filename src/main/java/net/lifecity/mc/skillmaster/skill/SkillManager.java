@@ -1,14 +1,14 @@
 package net.lifecity.mc.skillmaster.skill;
 
 import lombok.Getter;
-import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
+import net.lifecity.mc.skillmaster.skill.defenseskills.NormalDefense;
 import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttackSlash;
-import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
-import net.lifecity.mc.skillmaster.skill.separatedskills.wall.SSWall;
-import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
-import net.lifecity.mc.skillmaster.skill.skills.kick.SSKick;
-import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
-import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
+import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow;
+import net.lifecity.mc.skillmaster.skill.separatedskills.Wall;
+import net.lifecity.mc.skillmaster.skill.skills.HighJump;
+import net.lifecity.mc.skillmaster.skill.skills.Kick;
+import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
+import net.lifecity.mc.skillmaster.skill.skills.VectorAttack;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.inventory.ItemStack;
@@ -30,16 +30,16 @@ public class SkillManager {
         this.user = user;
 
         // 複合スキル
-        skillList.add(new SSLeafFlow(user));
+        skillList.add(new LeafFlow(user));
         skillList.add(new JumpAttackSlash(user));
-        skillList.add(new SSWall(user));
+        skillList.add(new Wall(user));
         // 単発スキル
-        skillList.add(new SSMoveFast(user));
-        skillList.add(new SSVectorAttack(user));
-        skillList.add(new SSHighJump(user));
-        skillList.add(new SSKick(user));
+        skillList.add(new MoveFast(user));
+        skillList.add(new VectorAttack(user));
+        skillList.add(new HighJump(user));
+        skillList.add(new Kick(user));
         // 防御スキル
-        skillList.add(new SSNormalDefense(user));
+        skillList.add(new NormalDefense(user));
 
         for (int i = 0 ;i < skillList.size(); i++) {
             skillList.get(i).setId(i);

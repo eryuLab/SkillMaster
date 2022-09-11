@@ -9,11 +9,11 @@ import net.lifecity.mc.skillmaster.skill.DefenseSkill;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
-import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
-import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
-import net.lifecity.mc.skillmaster.skill.skills.kick.SSKick;
-import net.lifecity.mc.skillmaster.skill.skills.vectorattack.SSVectorAttack;
-import net.lifecity.mc.skillmaster.skill.skills.movefast.SSMoveFast;
+import net.lifecity.mc.skillmaster.skill.defenseskills.NormalDefense;
+import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow;
+import net.lifecity.mc.skillmaster.skill.skills.Kick;
+import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
+import net.lifecity.mc.skillmaster.skill.skills.VectorAttack;
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton;
 import net.lifecity.mc.skillmaster.user.skillset.SkillKey;
 import net.lifecity.mc.skillmaster.user.skillset.SkillSet;
@@ -77,20 +77,20 @@ public class SkillUser {
         SkillManager sm = new SkillManager(this);
         this.rightSkillSet = new SkillSet(
                 SkillButton.RIGHT,
-                sm.fromClass(SSVectorAttack.class),
-                sm.fromClass(SSLeafFlow.class),
+                sm.fromClass(VectorAttack.class),
+                sm.fromClass(LeafFlow.class),
                 null
         );
         this.swapSkillSet = new SkillSet(
                 SkillButton.SWAP,
-                sm.fromClass(SSMoveFast.class),
+                sm.fromClass(MoveFast.class),
                 null,
                 null
         );
         this.dropSkillSet = new SkillSet(
                 SkillButton.DROP,
-                sm.fromClass(SSKick.class),
-                sm.fromClass(SSNormalDefense.class),
+                sm.fromClass(Kick.class),
+                sm.fromClass(NormalDefense.class),
                 null
         );
         this.userInventory = new UserInventory(this);
