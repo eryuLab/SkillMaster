@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.skills.highjump;
+package net.lifecity.mc.skillmaster.skill.skills;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
@@ -11,7 +11,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,28 +18,16 @@ import java.util.Random;
  */
 public class HighJump extends Skill {
 
-    private final double movePower;
-    private final double jumpPower;
-
-    protected HighJump(
-            List<Weapon> weaponList,
-            int point,
-            int interval,
-            SkillUser user,
-            double movePower,
-            double jumpPower
-    ) {
+    public HighJump(SkillUser user) {
         super(
                 "大ジャンプ",
-                weaponList,
+                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
                 SkillType.MOVE,
                 Arrays.asList("上に飛び上がります。"),
-                point,
-                interval,
+                0,
+                30,
                 user
         );
-        this.movePower = movePower;
-        this.jumpPower = jumpPower;
     }
 
     @Override
@@ -50,11 +37,11 @@ public class HighJump extends Skill {
         Vector vector = user.getPlayer().getEyeLocation().getDirection();
 
         // x方向を制限
-        vector.setX(vector.getX() * movePower);
+        vector.setX(vector.getX() * 0.65);
         // z方向を制限
-        vector.setZ(vector.getZ() * movePower);
+        vector.setZ(vector.getZ() * 0.65);
         // y方向を拡大
-        vector.setY(jumpPower);
+        vector.setY(1);
 
         user.getPlayer().setVelocity(vector);
 
