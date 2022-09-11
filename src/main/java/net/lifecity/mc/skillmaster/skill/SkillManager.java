@@ -2,7 +2,7 @@ package net.lifecity.mc.skillmaster.skill;
 
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense.SSNormalDefense;
-import net.lifecity.mc.skillmaster.skill.separatedskills.jumpattack.SSJumpAttack;
+import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttackSlash;
 import net.lifecity.mc.skillmaster.skill.separatedskills.leafflow.SSLeafFlow;
 import net.lifecity.mc.skillmaster.skill.separatedskills.wall.SSWall;
 import net.lifecity.mc.skillmaster.skill.skills.highjump.SSHighJump;
@@ -29,10 +29,9 @@ public class SkillManager {
     public SkillManager(SkillUser user) {
         this.user = user;
 
-        // 直剣
         // 複合スキル
         skillList.add(new SSLeafFlow(user));
-        skillList.add(new SSJumpAttack(user));
+        skillList.add(new JumpAttackSlash(user));
         skillList.add(new SSWall(user));
         // 単発スキル
         skillList.add(new SSMoveFast(user));
