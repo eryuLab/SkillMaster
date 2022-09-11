@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.skills.movefast;
+package net.lifecity.mc.skillmaster.skill.skills;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
@@ -11,43 +11,30 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class MoveFast extends Skill {
 
-    private final double movePower;
-    private final double yPower;
-
-    protected MoveFast(
-            List<Weapon> weaponList,
-            int point,
-            int interval,
-            SkillUser user,
-            double movePower,
-            double yPower
-    ) {
+    public MoveFast(SkillUser user) {
         super(
                 "高速移動",
-                weaponList,
+                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
                 SkillType.MOVE,
                 Arrays.asList("向いている方向に高速移動します。", "上方向には飛べません。"),
-                point,
-                interval,
+                0,
+                25,
                 user
         );
-        this.movePower = movePower;
-        this.yPower = yPower;
     }
 
     @Override
     public void activate() {
         super.activate();
 
-        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(movePower);
+        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.55);
 
         // Yの値が+だったら
         if (vector.getY() > 0)
-            vector.setY(yPower);
+            vector.setY(0.15);
 
         user.getPlayer().setVelocity(vector);
 

@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.defenseskills.normaldefense;
+package net.lifecity.mc.skillmaster.skill.defenseskills;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.DefenseSkill;
@@ -22,20 +22,16 @@ public abstract class NormalDefense extends DefenseSkill {
 
     /**
      * 通常防御のコンストラクタ
-     * @param weaponList 使用する武器
-     * @param point 消費ポイント
-     * @param activationTime 発動時間
-     * @param interval インターバル
      * @param user 使用するユーザー
      */
-    protected NormalDefense(List<Weapon> weaponList, int point, int activationTime, int interval, SkillUser user) {
+    public NormalDefense(SkillUser user) {
         super(
                 "通常防御",
-                weaponList,
+                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD),
                 Arrays.asList("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"),
-                point,
-                activationTime,
-                interval,
+                0,
+                10,
+                35,
                 user
         );
     }

@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.skills.vectorattack;
+package net.lifecity.mc.skillmaster.skill.skills;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
@@ -13,61 +13,36 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class VectorAttack extends Skill {
 
-    private final double movePower;
-    private final double damage;
-    private final double attackRadius;
-    private final double impact;
-    private final double yImpact;
-    private final double maxDamageColor;
-
-    protected VectorAttack(
-            List<Weapon> weaponList,
-            int point,
-            int interval,
-            SkillUser user,
-            double movePower,
-            double damage,
-            double attackRadius,
-            double impact,
-            double yImpact,
-            double maxDamageColor
-    ) {
+    public VectorAttack(SkillUser user) {
         super(
                 "ベクトルアタック",
-                weaponList,
+                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD, Weapon.MACE),
                 SkillType.ATTACK,
                 Arrays.asList("ユーザーが持つベクトルを力に変換して攻撃します。"),
-                point,
-                interval,
+                0,
+                40,
                 user
         );
-        this.movePower = movePower;
-        this.damage = damage;
-        this.attackRadius = attackRadius;
-        this.impact = impact;
-        this.yImpact = yImpact;
-        this.maxDamageColor = maxDamageColor;
     }
 
     @Override
     public void activate() {
         super.activate();
 
-        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(movePower);
+        Vector vector = user.getPlayer().getEyeLocation().getDirection().multiply(1.2);
 
         user.getPlayer().setVelocity(user.getPlayer().getVelocity().add(vector));
 
         double damage = user.getPlayer().getVelocity().length();
-        damage *= this.damage;
+        damage *= 2;
 
         boolean b = user.attackNearest(
-                attackRadius,
+                1.8,
                 damage,
-                user.getPlayer().getVelocity().multiply(impact).setY(yImpact),
+                user.getPlayer().getVelocity().multiply(0.25).setY(0.15),
                 Sound.ENTITY_PLAYER_ATTACK_CRIT
         );
 
@@ -77,13 +52,13 @@ public class VectorAttack extends Skill {
         // 軌道
         double finalDamage = damage;
         BlockData data;
-        if (finalDamage > maxDamageColor)
+        if (finalDamage > 5)
             data = Material.RED_CONCRETE_POWDER.createBlockData();
-        else if (finalDamage > maxDamageColor - 1)
+        else if (finalDamage > 4)
             data = Material.PURPLE_CONCRETE_POWDER.createBlockData();
-        else if (finalDamage > maxDamageColor - 2)
+        else if (finalDamage > 3)
             data = Material.MAGENTA_CONCRETE_POWDER.createBlockData();
-        else if (finalDamage > maxDamageColor - 3)
+        else if (finalDamage > 2)
             data = Material.PINK_CONCRETE_POWDER.createBlockData();
         else
             data = Material.WHITE_CONCRETE_POWDER.createBlockData();

@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.skills.kick;
+package net.lifecity.mc.skillmaster.skill.skills;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
@@ -19,28 +19,16 @@ import java.util.List;
  */
 public class Kick extends Skill {
 
-    private final double attackRadius;
-    private final double impact;
-
-    protected Kick(
-            List<Weapon> weaponList,
-            int point,
-            int interval,
-            SkillUser user,
-            double attackRadius,
-            double impact
-    ) {
+    public Kick(SkillUser user) {
         super(
                 "蹴り",
-                weaponList,
+                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
                 SkillType.ATTACK,
                 Arrays.asList("相手を蹴り飛ばして、相手と距離を作ります。", "一番近い敵を攻撃します。"),
-                point,
-                interval,
+                0,
+                5,
                 user
         );
-        this.attackRadius = attackRadius;
-        this.impact = impact;
     }
 
     @Override
@@ -48,14 +36,14 @@ public class Kick extends Skill {
         super.activate();
 
         boolean b = user.attackNearest(
-                attackRadius,
+                1.7,
                 1,
-                user.getPlayer().getEyeLocation().getDirection().multiply(impact),
+                user.getPlayer().getEyeLocation().getDirection().multiply(1.8),
                 Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK
         );
 
         if (b) {
-            Entity entity = user.getNearEntities(attackRadius).get(0);
+            Entity entity = user.getNearEntities(1.7).get(0);
             new BukkitRunnable() {
                 int count = 0;
                 @Override
