@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills.leafflow;
+package net.lifecity.mc.skillmaster.skill.separatedskills;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill;
@@ -15,64 +15,24 @@ import org.bukkit.util.Vector;
  * 前方に突進しながら敵を攻撃するスキル
  */
 import java.util.Arrays;
-import java.util.List;
 
 public class LeafFlow extends SeparatedSkill {
 
-    private final double movePower;
-    private final double yPower;
-    private final double attackRadius;
-    private final double damage;
-    private final double attackImpact;
-    private final double yImpact;
-
-    /**
-     * リーフフローのコンストラクタ
-     * @param weaponList 使用する武器
-     * @param point 消費ポイント
-     * @param activationTime 発動時間
-     * @param interval インターバル
-     * @param user 使用するユーザー
-     * @param movePower 突進の強さ
-     * @param yPower 突進のY軸への強さ
-     * @param attackRadius 攻撃範囲
-     * @param damage ダメージ
-     * @param attackImpact ノックバック
-     * @param yImpact Y軸へのノックバック
-     */
-    protected LeafFlow(
-            List<Weapon> weaponList,
-            int point,
-            int activationTime,
-            int interval,
-            SkillUser user,
-            double movePower,
-            double yPower,
-            double attackRadius,
-            double damage,
-            double attackImpact,
-            double yImpact
-    ) {
+    protected LeafFlow(SkillUser user) {
         super(
                 "リーフフロー",
-                weaponList,
+                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
                 SkillType.ATTACK,
                 Arrays.asList(
                         "前に進みながら斬撃します。",
                         "1回目の入力で前に移動します。",
                         "2回目の入力で攻撃します。"
                 ),
-                point,
-                activationTime,
-                interval,
+                0,
+                8,
+                15,
                 user
         );
-        this.movePower = movePower;//1
-        this.yPower = yPower;//0.15
-        this.attackRadius = attackRadius;//1.8
-        this.damage = damage;//3
-        this.attackImpact = attackImpact;//1
-        this.yImpact = yImpact;//0.15
     }
 
     @Override
@@ -81,8 +41,8 @@ public class LeafFlow extends SeparatedSkill {
 
         Vector vector = user.getPlayer().getEyeLocation().getDirection()
                 .normalize()
-                .multiply(movePower)
-                .setY(yPower);
+                .multiply(1)
+                .setY(0.15);
 
         user.getPlayer().setVelocity(vector);
 
@@ -111,15 +71,15 @@ public class LeafFlow extends SeparatedSkill {
 
         // 一番近いEntityを攻撃
         boolean b = user.attackNearest(
-                attackRadius,
-                damage,
-                user.getPlayer().getVelocity().normalize().multiply(attackImpact).setY(yImpact),
+                1.8,
+                3,
+                user.getPlayer().getVelocity().normalize().multiply(1).setY(0.15),
                 Sound.ENTITY_PLAYER_ATTACK_SWEEP
         );
 
         // LE
         if (b) {
-            particle(Particle.EXPLOSION_LARGE, user.getNearEntities(attackRadius).get(0).getLocation().add(0, 2, 0));
+            particle(Particle.EXPLOSION_LARGE, user.getNearEntities(1.8).get(0).getLocation().add(0, 2, 0));
             for (int i = 0; i < 6; i++) {
                 particle(Particle.FLAME, user.getPlayer().getLocation());
             }
