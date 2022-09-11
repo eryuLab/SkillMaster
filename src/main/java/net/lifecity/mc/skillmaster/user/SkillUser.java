@@ -96,7 +96,8 @@ public class SkillUser {
         this.userInventory = new UserInventory(this);
 
         // HPを40に設定
-        this.player.setHealthScale(40);
+        this.player.setMaxHealth(40);
+        this.player.setHealth(40);
     }
 
     /**
@@ -314,7 +315,8 @@ public class SkillUser {
             // インベントリ初期化
             userInventory = new UserInventory(this);
             // HPの初期化
-            player.setHealth(player.getHealthScale());
+            player.setMaxHealth(40);
+            player.setHealth(40);
         }
         this.mode = mode;
     }
