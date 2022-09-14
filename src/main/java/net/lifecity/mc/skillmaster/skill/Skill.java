@@ -33,7 +33,7 @@ public class Skill {
     protected final List<String> lore;
 
     @Setter
-    protected int id;
+    protected int id = 0;
 
     protected final int point;
 
@@ -49,7 +49,6 @@ public class Skill {
         this.weaponList = weaponList;
         this.type = type;
         this.lore = lore;
-        this.id = 0;
         this.point = point;
         this.interval = interval;
         this.user = user;

@@ -1,13 +1,16 @@
 package net.lifecity.mc.skillmaster.weapon;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 武器の列挙
  */
+@AllArgsConstructor
 public enum Weapon {
     STRAIGHT_SWORD("直剣", 1),
     DAGGER("短剣", 2),
@@ -17,21 +20,16 @@ public enum Weapon {
     MACE("槌矛", 6);
 
     @Getter
-    private String jp;
+    private final String jp;
 
     @Getter
-    private int number;
-
-    Weapon(String jp, int number) {
-        this.jp = jp;
-        this.number = number;
-    }
+    private final int number;
 
     /**
      * プレイヤーが武器として使えるItemStackを返します
      * @return 武器として使えるItemStack
      */
-    public ItemStack toItemStack() {
+    public @NotNull ItemStack toItemStack() {
         ItemStack itemStack = new ItemStack(Material.WOODEN_SWORD);
         ItemMeta meta = itemStack.getItemMeta();
 
