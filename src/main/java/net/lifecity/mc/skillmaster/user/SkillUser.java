@@ -54,19 +54,19 @@ public class SkillUser {
     private Weapon selectedWeapon = Weapon.STRAIGHT_SWORD;
 
     @Getter
-    private SkillSet rightSkillSet;
+    private final SkillSet rightSkillSet;
 
     @Getter
     private int rightIndex = 0;
 
     @Getter
-    private SkillSet swapSkillSet;
+    private final SkillSet swapSkillSet;
 
     @Getter
     private int swapIndex = 0;
 
     @Getter
-    private SkillSet dropSkillSet;
+    private final SkillSet dropSkillSet;
 
     @Getter
     private int dropIndex = 0;
