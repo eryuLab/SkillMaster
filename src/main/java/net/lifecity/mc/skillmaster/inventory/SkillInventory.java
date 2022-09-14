@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.inventory;
 
+import lombok.AllArgsConstructor;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.skill.SkillType;
@@ -181,17 +182,12 @@ public class SkillInventory extends InventoryFrame {
         );
     }
 
+    @AllArgsConstructor
     private class TypeRow {
 
-        private SkillType type;
-        private List<Skill> skillList;
-        private int rowNum;
-
-        private TypeRow(SkillType type, List<Skill> skillList, int rowNum) {
-            this.type = type;
-            this.skillList = skillList;
-            this.rowNum = rowNum;
-        }
+        private final SkillType type;
+        private final List<Skill> skillList;
+        private final int rowNum;
 
         /**
          * 指定番号のアイテムを生成して返します
