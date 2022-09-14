@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.user.skillset;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.skill.Skill;
@@ -8,6 +9,7 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillButton;
 /**
  * 入力に使うスキルキーのクラス
  */
+@AllArgsConstructor
 public class SkillKey {
 
     @Getter
@@ -18,10 +20,4 @@ public class SkillKey {
     @Getter
     @Setter
     private Skill skill;
-
-    public SkillKey(SkillButton button, int num, Skill skill) {
-        this.button = button;
-        this.num = num;
-        this.skill = skill;
-    }
 }
