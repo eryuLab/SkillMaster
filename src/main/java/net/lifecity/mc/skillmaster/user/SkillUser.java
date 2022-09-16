@@ -494,6 +494,15 @@ public class SkillUser {
     }
 
     /**
+     * プレイヤーにタイトルを送信します
+     * @param title 送信するタイトル
+     * @param sub 送信するサブタイトル
+     */
+    public void sendTitle(String title, String sub) {
+        player.sendTitle(title, sub);
+    }
+
+    /**
      * このプレイヤーの位置でSEを再生します
      * @param sound 再生するSE
      */
