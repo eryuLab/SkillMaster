@@ -3,6 +3,9 @@ package net.lifecity.mc.skillmaster;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
+import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
+import net.lifecity.mc.skillmaster.game.Duel;
+import net.lifecity.mc.skillmaster.game.DuelField;
 import net.lifecity.mc.skillmaster.inventory.SkillInventory;
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -67,5 +70,30 @@ public class SkillCommand {
 
             user.getOpenedInventory().open();
         }
+    }
+
+    @Subcommand("duel")
+    public static void duel(Player player, @APlayerArgument Player player1, @APlayerArgument Player player2) {
+        // プレイヤー引数確認
+        if (player1 == player2) {
+            player.sendMessage("一人で戦うことはできません");
+            return;
+        }
+
+        // ユーザー取得
+        SkillUser user1 = SkillMaster.instance.getUserList().get(player1);
+        SkillUser user2 = SkillMaster.instance.getUserList().get(player2);
+
+        // ゲームがないか確認
+        if (SkillMaster.instance.getDuelList().inGamingUser(user1)) {
+            player.sendMessage(player1.getName() + "はすでにゲーム中です");
+        }
+        if (SkillMaster.instance.getDuelList().inGamingUser(user2)) {
+            player.sendMessage(player2.getName() + "はすでにゲーム中です");
+        }
+
+        // ゲーム開始
+        Duel duel = new Duel(new DuelField("ヌルカモ闘技場", null, null), user1, user2, 3600);
+        duel.start();
     }
 }
