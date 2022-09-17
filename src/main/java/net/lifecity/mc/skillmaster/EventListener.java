@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster;
 
+import net.lifecity.mc.skillmaster.game.Duel;
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame;
 import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -82,6 +83,12 @@ public class EventListener implements Listener {
                         return;
                     }
                     event.setDamage(1.5);
+
+                    // todo ゲームシステムに対応
+                    // ゲーム中ならonAttack()呼び出し
+                    Duel duel = SkillMaster.instance.getDuelList().getFromUser(user);
+                    if (duel != null)
+                        duel.onAttack(user);
                 }
             }
         }
