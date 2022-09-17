@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.user;
 import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import net.lifecity.mc.skillmaster.game.Duel;
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame;
 import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.skill.DefenseSkill;
@@ -357,8 +358,13 @@ public class SkillUser {
         // トレーニングモード時は攻撃不可
         if (mode == UserMode.TRAINING)
             user.damage(0, new Vector(0, 0, 0));
-        else
+        else {
             user.damage(damage, vector);
+            // ゲーム中のときonAttack()を呼び出す
+            Duel duel = SkillMaster.instance.getDuelList().getFromUser(this);
+            if (duel != null)
+                duel.onAttack(this);
+        }
     }
 
     /**
