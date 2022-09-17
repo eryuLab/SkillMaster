@@ -126,7 +126,8 @@ public class SkillUser {
             if (rightIndex == SKILL_SET_SIZE)
                 rightIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-            sendMessage("右クリックのスキルを" + rightIndex + "に変更しました。");
+            // 右クリック[1]を「LeafFlow」に変更しました。
+            sendMessage("右クリック[" + rightIndex + "]を「" + rightSkillSet.get(rightIndex).getSkill().getName() + "」に変更しました。");
         }
         else
             skillInput(rightSkillSet.get(rightIndex).getSkill(), getHandWeapon());
@@ -143,7 +144,7 @@ public class SkillUser {
             if (swapIndex == SKILL_SET_SIZE)
                 swapIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-            sendMessage("スワップのスキルを" + swapIndex + "に変更しました。");
+            sendMessage("スワップキー[" + swapIndex + "]を「" + swapSkillSet.get(swapIndex).getSkill().getName() + "」に変更しました。");
         }
         else
             skillInput(swapSkillSet.get(swapIndex).getSkill(), getHandWeapon());
@@ -160,7 +161,7 @@ public class SkillUser {
             if (dropIndex == SKILL_SET_SIZE)
                 dropIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-            sendMessage("ドロップのスキルを" + dropIndex + "に変更しました。");
+            sendMessage("ドロップキー[" + dropIndex + "]を「" + dropSkillSet.get(dropIndex).getSkill().getName() + "」に変更しました。");
         }
         else
             skillInput(dropSkillSet.get(dropIndex).getSkill(), weapon);
