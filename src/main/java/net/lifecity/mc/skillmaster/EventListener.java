@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -143,6 +144,18 @@ public class EventListener implements Listener {
             }
             event.setCancelled(true);
             user.drop(Weapon.fromItemStack(event.getItemDrop().getItemStack()));
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        SkillUser dead = SkillMaster.instance.getUserList().get(event.getPlayer());
+
+        // ゲーム中なら
+        if (SkillMaster.instance.getDuelList().inGamingUser(dead)) {
+            Duel duel = SkillMaster.instance.getDuelList().getFromUser(dead);
+            event.setCancelled(true);
+            duel.stopByLoser(dead);
         }
     }
 

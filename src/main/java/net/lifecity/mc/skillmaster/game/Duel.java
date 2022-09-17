@@ -3,8 +3,10 @@ package net.lifecity.mc.skillmaster.game;
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -46,6 +48,10 @@ public class Duel {
         // 開始地点へテレポート
         userA.sendMessage("テレポートしました(嘘だよ)");
         userB.sendMessage("テレポートしました(嘘だよ)");
+
+        // ゲームモードを変える
+        userA.changeMode(UserMode.BATTLE);
+        userB.changeMode(UserMode.BATTLE);
 
         // カウントダウン
         // 3..2..1..battle start!!
@@ -95,7 +101,7 @@ public class Duel {
         }.runTaskTimer(SkillMaster.instance, 80, 1);
     }
 
-    public void stop(SkillUser winner) {
+    public void stopByWinner(SkillUser winner) {
         // 勝敗表示
         String win = ChatColor.YELLOW + "Win";
         String lose = ChatColor.BLUE + "Lose";
@@ -109,6 +115,9 @@ public class Duel {
             userB.sendTitle(win, "");
         }
 
+        // ゲームモードをスペクテイターにする
+        userB.getPlayer().setGameMode(GameMode.SPECTATOR);
+
         // ロビーへテレポート
         userA.sendMessage("3秒後に強制テレポートします...");
         userB.sendMessage("3秒後に強制テレポートします...");
@@ -118,10 +127,19 @@ public class Duel {
             public void run() {
                 userA.sendMessage("テレポートしました(嘘だよ)");
                 userB.sendMessage("テレポートしました(嘘だよ)");
+
+                userB.getPlayer().setGameMode(GameMode.ADVENTURE);
             }
         }.runTaskLater(SkillMaster.instance, 60);
 
         SkillMaster.instance.getDuelList().remove(this);
+    }
+    public void stopByLoser(SkillUser user) {
+        if (user.match(userA)) {
+            stopByWinner(userB);
+        } else if (user.match(userB)) {
+            stopByWinner(userA);
+        }
     }
 
     /**
@@ -136,20 +154,9 @@ public class Duel {
         if (!(attacker.match(userA) || attacker.match(userB)))
             return;
 
-        // プレイヤーが死んでいたら終了
-        if (userA.getPlayer().isDead() || userB.getPlayer().isDead()) {
-            Bukkit.getPlayer("Koryu25").sendMessage("isDead()");
-            stop(attacker);
-            return;
-        }
-        if (userA.getPlayer().getHealth() == 0 || userB.getPlayer().getHealth() == 0) {
-            Bukkit.getPlayer("Koryu25").sendMessage("health == 0");
-            stop(attacker);
-        }
-
-        // 制限時間が過ぎていたら終了
-        if (finished)
-            stop(attacker);
+        // サドンデスなら
+        if (suddenDeath)
+            stopByWinner(attacker);
     }
 
     public boolean joined(SkillUser user) {
