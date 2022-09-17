@@ -87,9 +87,11 @@ public class SkillCommand {
         // ゲームがないか確認
         if (SkillMaster.instance.getDuelList().inGamingUser(user1)) {
             player.sendMessage(player1.getName() + "はすでにゲーム中です");
+            return;
         }
         if (SkillMaster.instance.getDuelList().inGamingUser(user2)) {
             player.sendMessage(player2.getName() + "はすでにゲーム中です");
+            return;
         }
 
         // ゲーム開始
