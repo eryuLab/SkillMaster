@@ -512,10 +512,19 @@ public class SkillUser {
 
     /**
      * UUIDが一致しているかを確認します
-     * @param target 比較するPlayer
+     * @param other 比較するPlayer
      * @return UUIDが一致するか
      */
-    public boolean match(Player target) {
-        return player.getUniqueId().toString().equals(target.getUniqueId().toString());
+    public boolean match(Player other) {
+        return player.getUniqueId().toString().equals(other.getUniqueId().toString());
+    }
+
+    /**
+     * UUIDが一致しているかを確認します
+     * @param other 比較するSkillUser
+     * @return UUIDが一致するか
+     */
+    public boolean match(SkillUser other) {
+        return match(other.player);
     }
 }
