@@ -20,6 +20,7 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillKey;
 import net.lifecity.mc.skillmaster.user.skillset.SkillSet;
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -127,7 +128,11 @@ public class SkillUser {
                 rightIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
             // 右クリック[1]を「LeafFlow」に変更しました。
-            sendMessage("右クリック[" + rightIndex + "]を「" + rightSkillSet.get(rightIndex).getSkill().getName() + "」に変更しました。");
+            Skill skill = rightSkillSet.get(rightIndex).getSkill();
+            if (skill == null)
+                sendMessage("右クリック[" + rightIndex + "]:" + "スキルがセットされていません");
+            else
+                sendMessage("右クリック[" + rightIndex + "]を「" + skill.getName() + "」に変更しました。");
         }
         else
             skillInput(rightSkillSet.get(rightIndex).getSkill(), getHandWeapon());
@@ -144,7 +149,11 @@ public class SkillUser {
             if (swapIndex == SKILL_SET_SIZE)
                 swapIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-            sendMessage("スワップキー[" + swapIndex + "]を「" + swapSkillSet.get(swapIndex).getSkill().getName() + "」に変更しました。");
+            Skill skill = swapSkillSet.get(swapIndex).getSkill();
+            if (skill == null)
+                sendMessage("右クリック[" + swapIndex + "]:" + "スキルがセットされていません");
+            else
+                sendMessage("右クリック[" + swapIndex + "]を「" + skill.getName() + "」に変更しました。");
         }
         else
             skillInput(swapSkillSet.get(swapIndex).getSkill(), getHandWeapon());
@@ -161,7 +170,11 @@ public class SkillUser {
             if (dropIndex == SKILL_SET_SIZE)
                 dropIndex = 0;
             playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-            sendMessage("ドロップキー[" + dropIndex + "]を「" + dropSkillSet.get(dropIndex).getSkill().getName() + "」に変更しました。");
+            Skill skill = dropSkillSet.get(dropIndex).getSkill();
+            if (skill == null)
+                sendMessage("右クリック[" + dropIndex + "]:" + "スキルがセットされていません");
+            else
+                sendMessage("右クリック[" + dropIndex + "]を「" + skill.getName() + "」に変更しました。");
         }
         else
             skillInput(dropSkillSet.get(dropIndex).getSkill(), weapon);
