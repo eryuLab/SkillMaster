@@ -1,7 +1,6 @@
 package net.lifecity.mc.skillmaster.game;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -123,16 +122,6 @@ public abstract class Game {
     }
 
     /**
-     * 指定チームのユーザーモードを変更します
-     * @param team 指定チーム
-     * @param mode モード
-     */
-    public void changeModeTeam(GameTeam team, UserMode mode) {
-        if (hasTeam(team))
-            team.changeMode(mode);
-    }
-
-    /**
      * ゲーム内のすべてのプレイヤーにメッセージを送信します
      */
     public void sendMessageAll(String msg) {
@@ -178,11 +167,6 @@ public abstract class Game {
      * チームごとにプレイヤーを初期地点にテレポートします
      */
     public abstract void teleportTeam(GameTeam team);
-
-    /**
-     * ゲーム内の特定のプレイヤーを初期地点にテレポートします
-     */
-    public abstract void teleportOne(SkillUser target);
 
     private class CountDownTimer extends BukkitRunnable {
 
