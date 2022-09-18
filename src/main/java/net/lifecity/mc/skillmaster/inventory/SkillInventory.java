@@ -212,6 +212,8 @@ public class SkillInventory extends InventoryFrame {
 
                                 if (cursorSkill != null)
                                     event.setCursor(new ItemStack(Material.AIR));
+
+                                event.getCurrentItem().setAmount(1);
                             }
                         }
                 );
