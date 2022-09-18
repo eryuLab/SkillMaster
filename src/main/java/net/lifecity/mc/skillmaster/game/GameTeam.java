@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.game;
 
 import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
@@ -17,13 +18,33 @@ public class GameTeam {
     }
 
     /**
+     * このチーム全員のユーザーモードを変更します
+     * @param mode このモードに変更します
+     */
+    public void changeMode(UserMode mode) {
+        for (SkillUser user : userArray) {
+            user.changeMode(mode);
+        }
+    }
+
+    /**
+     * このチーム全員にメッセージを送信します
+     * @param msg メッセージ
+     */
+    public void sendMessage(String msg) {
+        for (SkillUser user : userArray) {
+            user.sendMessage(msg);
+        }
+    }
+
+    /**
      * このチーム全員にタイトルを送信します
-     * @param msg メインタイトル
+     * @param title メインタイトル
      * @param sub サブタイトル
      */
-    public void sendTitle(String msg, String sub) {
+    public void sendTitle(String title, String sub) {
         for (SkillUser user : userArray) {
-            user.sendTitle(msg, sub);
+            user.sendTitle(title, sub);
         }
     }
 
