@@ -37,6 +37,8 @@ public enum Weapon {
 
         meta.setDisplayName(jp);
 
+        meta.setUnbreakable(true);
+
         itemStack.setItemMeta(meta);
 
         return itemStack;
