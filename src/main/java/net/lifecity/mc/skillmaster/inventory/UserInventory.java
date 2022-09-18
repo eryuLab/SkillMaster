@@ -101,7 +101,7 @@ public class UserInventory extends InventoryFrame {
                         // スキルアイテムを置くとスキル変更
 
                         // インベントリ確認
-                        if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
+                        if (event.getView().getTopInventory().getType() != InventoryType.CHEST) {
                             event.setCancelled(true);
                             return;
                         }
@@ -158,7 +158,7 @@ public class UserInventory extends InventoryFrame {
                     event -> {
                         // スキルアイテム除外
 
-                        if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
+                        if (event.getView().getTopInventory().getType() != InventoryType.CHEST) {
                             event.setCancelled(true);
                             return;
                         }
