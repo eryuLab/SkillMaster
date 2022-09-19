@@ -5,7 +5,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 
 import java.util.ArrayList;
 
-public class FieldList extends ArrayList<GameField> {
+public class GameFieldList extends ArrayList<GameField> {
 
     /**
      * ユーザーが参加しているゲームのフィールドを取得します
