@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public abstract class GameField {
 
+    @Getter
     protected final String name;
     protected final Set<GameType> typeList = new HashSet<>();
 
@@ -32,5 +33,13 @@ public abstract class GameField {
      */
     public boolean usableAs(GameType type) {
         return typeList.contains(type);
+    }
+
+    /**
+     * 現在このフィールドが使用されているか判定します
+     * @return 使われていたらtrue
+     */
+    public boolean isUsed() {
+        return nowGame != null;
     }
 }
