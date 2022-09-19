@@ -1,6 +1,8 @@
-package net.lifecity.mc.skillmaster.game;
+package net.lifecity.mc.skillmaster.game.field;
 
 import lombok.Getter;
+import net.lifecity.mc.skillmaster.game.GameField;
+import net.lifecity.mc.skillmaster.game.GameType;
 import org.bukkit.Location;
 
 public class TwoPointField extends GameField {

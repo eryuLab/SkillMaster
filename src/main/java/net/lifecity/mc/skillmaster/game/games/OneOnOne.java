@@ -1,20 +1,18 @@
-package net.lifecity.mc.skillmaster.game.duel;
+package net.lifecity.mc.skillmaster.game.games;
 
-import net.lifecity.mc.skillmaster.game.Game;
-import net.lifecity.mc.skillmaster.game.GameTeam;
-import net.lifecity.mc.skillmaster.game.GameType;
-import net.lifecity.mc.skillmaster.game.TwoPointField;
+import net.lifecity.mc.skillmaster.game.*;
+import net.lifecity.mc.skillmaster.game.field.TwoPointField;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.ChatColor;
 
-public class Duel extends Game {
+public class OneOnOne extends Game {
 
     private final TwoPointField field;
 
     private final GameTeam teamA;
     private final GameTeam teamB;
 
-    protected Duel(TwoPointField field, SkillUser userA, SkillUser userB) {
+    protected OneOnOne(TwoPointField field, SkillUser userA, SkillUser userB) {
         super(GameType.ONE_ON_ONE, 240, 6);
         this.field = field;
         this.teamA = new GameTeam("Alpha", ChatColor.RED, new SkillUser[]{userA});
@@ -23,7 +21,15 @@ public class Duel extends Game {
 
     @Override
     public void sendResult() {
+        // 結果集計
+        String sub = "A:33 --- B:4";
 
+        GameTeam winner = teamA;
+        GameTeam loser = teamB;
+
+        // タイトル送信
+        winner.sendTitle(GameResult.WIN.getEn(), sub);
+        loser.sendTitle(GameResult.LOSE.getEn(), sub);
     }
 
     @Override
