@@ -3,7 +3,8 @@ package net.lifecity.mc.skillmaster.user;
 import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.game.Duel;
+import net.lifecity.mc.skillmaster.game.Game;
+import net.lifecity.mc.skillmaster.game.function.OnAttack;
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame;
 import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.skill.DefenseSkill;
@@ -20,7 +21,6 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillKey;
 import net.lifecity.mc.skillmaster.user.skillset.SkillSet;
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -375,9 +375,9 @@ public class SkillUser {
         else {
             user.damage(damage, vector);
             // ゲーム中のときonAttack()を呼び出す
-            Duel duel = SkillMaster.instance.getDuelList().getFromUser(this);
-            if (duel != null)
-                duel.onAttack(this);
+            Game game = SkillMaster.instance.getGameList().getFromUser(this);
+            if (game instanceof OnAttack onAttack)
+                onAttack.onAttack(this);
         }
     }
 
