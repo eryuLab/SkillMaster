@@ -1,20 +1,22 @@
 package net.lifecity.mc.skillmaster.game;
 
+import net.lifecity.mc.skillmaster.game.prototype.Duel;
+import net.lifecity.mc.skillmaster.game.prototype.DuelField;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 
 import java.util.ArrayList;
 
-public class DuelList extends ArrayList<Duel> {
+public class GameList extends ArrayList<Game> {
 
     /**
      * ユーザーが参加しているゲームを取得します
      * @param user このユーザーを使います
      * @return 参加していたらtrue
      */
-    public Duel getFromUser(SkillUser user) {
-        for (Duel duel : this) {
-            if (duel.joined(user))
-                return duel;
+    public Game getFromUser(SkillUser user) {
+        for (Game game : this) {
+            if (game.joined(user))
+                return game;
         }
         return null;
     }
@@ -24,12 +26,8 @@ public class DuelList extends ArrayList<Duel> {
      * @param field このFieldを使います
      * @return Fieldを使っているゲーム
      */
-    public Duel getFromField(DuelField field) {
-        for (Duel duel : this) {
-            if (duel.getField() == field)
-                return duel;
-        }
-        return null;
+    public Game getFromField(GameField field) {
+        return field.nowGame;
     }
 
     // ユーザーがゲームに参加しているか
@@ -40,8 +38,8 @@ public class DuelList extends ArrayList<Duel> {
      * @return 参加していたらtrueを返します
      */
     public boolean inGamingUser(SkillUser user) {
-        Duel duel = getFromUser(user);
-        return duel != null;
+        Game game = getFromUser(user);
+        return game != null;
     }
 
     /**
@@ -49,8 +47,8 @@ public class DuelList extends ArrayList<Duel> {
      * @param field このフィールドを使います
      * @return 使われていたらtrueを返します
      */
-    public boolean inGamingField(DuelField field) {
-        Duel duel = getFromField(field);
-        return duel != null;
+    public boolean inGamingField(GameField field) {
+        Game game = getFromField(field);
+        return game != null;
     }
 }
