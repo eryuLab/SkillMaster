@@ -10,6 +10,19 @@ import java.util.ArrayList;
 public class GameStageList extends ArrayList<GameStage> {
 
     /**
+     * ステージを追加
+     * @param target
+     */
+    public void addStage(GameStage target) {
+        // 名前がかぶっていないか確認
+        for (GameStage stage : this) {
+            if (stage.getName().equals(target.getName()))
+                return;
+        }
+        add(target);
+    }
+
+    /**
      * 名前からステージを取得します
      * @param name 名前
      * @return ステージ
