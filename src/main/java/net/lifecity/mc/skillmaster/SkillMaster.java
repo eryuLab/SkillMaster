@@ -2,10 +2,11 @@ package net.lifecity.mc.skillmaster;
 
 import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
-import net.lifecity.mc.skillmaster.game.GameFieldList;
+import net.lifecity.mc.skillmaster.game.stage.GameStage;
+import net.lifecity.mc.skillmaster.game.stage.GameStageList;
 import net.lifecity.mc.skillmaster.game.GameList;
 import net.lifecity.mc.skillmaster.game.GameType;
-import net.lifecity.mc.skillmaster.game.field.TwoPointField;
+import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
 import net.lifecity.mc.skillmaster.user.SkillUserList;
 import net.lifecity.mc.skillmaster.utils.FileUtil;
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ public final class SkillMaster extends JavaPlugin {
     private SkillUserList userList;
 
     @Getter
-    private GameFieldList gameFieldList;
+    private GameStageList stageList;
 
     @Getter
     private GameList gameList;
@@ -35,13 +36,14 @@ public final class SkillMaster extends JavaPlugin {
 
         userList = new SkillUserList();
 
-        gameFieldList = new GameFieldList();
-        gameFieldList.add(new TwoPointField(
-                "闘技場",
-                new GameType[]{GameType.DUEL, GameType.ONE_ON_ONE},
+        stageList = new GameStageList();
+        GameStage stage = new GameStage("闘技場");
+        stage.addField(new TwoPoint(
+                stage,
                 new Location(Bukkit.getWorlds().get(0), 123, -25, -18),
-                new Location(Bukkit.getWorlds().get(0), 123, -25, -18))
-        );
+                new Location(Bukkit.getWorlds().get(0), 123, -25, -18)
+        ));
+        stageList.addStage(stage);
 
         gameList = new GameList();
 
