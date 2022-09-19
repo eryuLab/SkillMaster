@@ -4,6 +4,7 @@ import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -56,7 +57,7 @@ public abstract class Game {
     /**
      * ゲームを終了します
      */
-    public void stop() {
+    public void stop(GameTeam winners) {
         // タイマーの停止
         if (state == GameState.COUNT_DOWN)
             countDownTimer.cancel();
@@ -66,6 +67,9 @@ public abstract class Game {
 
         // ゲーム状態移行
         state = GameState.WAITING_FOR_FINISH;
+
+        // 勝利チーム以外のゲームモードをスペクテイターにする
+        setGameModeElseTeam(winners, GameMode.SPECTATOR);
 
         // 勝敗表示
         sendResult();
@@ -84,11 +88,13 @@ public abstract class Game {
                 }
 
                 // 残り時間表示
-                sendMessageAll(6 - count + "..");
+                sendMessageAll("テレポートまで→" + (6 - count) + "..");
 
                 count++;
             }
         }.runTaskTimer(SkillMaster.instance, 0, 20);
+
+        // ゲームリストからこのゲームを削除
     }
 
     /**
@@ -109,9 +115,6 @@ public abstract class Game {
      */
     public abstract void sendResult();
 
-    // ゲームに指定チームが所属しているか確認するメソッド
-    // チームのリストを取得するメソッド
-
     /**
      * このゲームに指定チームが存在するか返します
      * @param team 指定チーム
@@ -124,6 +127,17 @@ public abstract class Game {
      * @return 全てのチーム
      */
     public abstract GameTeam[] getTeams();
+
+    /**
+     * 対象以外のチームのゲームモードを変更します
+     * @param elseTeam 対象チーム
+     */
+    public void setGameModeElseTeam(GameTeam elseTeam, GameMode mode) {
+        for (GameTeam team : getTeams()) {
+            if (team != elseTeam)
+                team.setGameMode(mode);
+        }
+    }
 
     /**
      * ゲーム内すべてのプレイヤーのユーザーモードを変更します
