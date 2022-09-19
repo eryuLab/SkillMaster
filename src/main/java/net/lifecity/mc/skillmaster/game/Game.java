@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.game;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
+import net.lifecity.mc.skillmaster.game.stage.FieldType;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
@@ -13,8 +14,9 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public abstract class Game {
 
-    protected final GameType type; //ゲームのタイプ
-    protected final int gameTime; //ゲーム時間
+    protected final GameType gameType;
+    protected final FieldType fieldType;
+    protected final int gameTime;
     protected final int countDownTime;
 
     protected CountDownTimer countDownTimer = new CountDownTimer();
@@ -24,12 +26,14 @@ public abstract class Game {
 
     /**
      * ゲームのインスタンスを生成します
-     * @param type ゲームのタイプ
+     * @param gameType ゲームのタイプ
+     * @param fieldType フィールドのタイプ
      * @param gameTime ゲームの時間(秒)
      * @param countDownTime ゲーム開始前のカウントダウンの時間(秒)
      */
-    protected Game(GameType type, int gameTime, int countDownTime) {
-        this.type = type;
+    protected Game(GameType gameType, FieldType fieldType, int gameTime, int countDownTime) {
+        this.gameType = gameType;
+        this.fieldType = fieldType;
         this.gameTime = gameTime;
         this.countDownTime = countDownTime;
 
