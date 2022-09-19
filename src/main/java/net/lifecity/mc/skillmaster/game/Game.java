@@ -99,6 +99,16 @@ public abstract class Game {
     }
 
     /**
+     * ゲームタイマーが終了したときの処理
+     */
+    public abstract void afterGameTimer();
+
+    /**
+     * 勝敗の結果を表示します
+     */
+    public abstract void sendResult();
+
+    /**
      * ユーザーがこのゲームに参加しているかを返します
      * @param user ユーザー
      * @return 参加しているときtrue
@@ -110,11 +120,6 @@ public abstract class Game {
         }
         return false;
     }
-
-    /**
-     * 勝敗の結果を表示します
-     */
-    public abstract void sendResult();
 
     /**
      * このゲームに指定チームが存在するか返します
@@ -223,7 +228,13 @@ public abstract class Game {
             if (state != GameState.IN_GAMING)
                 cancel();
 
-            // ボスバー編集
+            // 終了処理
+            if (elapsedTime >= gameTime) {
+                afterGameTimer();
+                cancel();
+            }
+
+            // todo ボスバー編集
 
             elapsedTime++;
         }
