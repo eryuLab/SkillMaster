@@ -95,6 +95,7 @@ public abstract class Game {
         }.runTaskTimer(SkillMaster.instance, 0, 20);
 
         // ゲームリストからこのゲームを削除
+        SkillMaster.instance.getGameList().remove(this);
     }
 
     /**
