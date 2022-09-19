@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster;
 
-import net.lifecity.mc.skillmaster.game.Duel;
+import net.lifecity.mc.skillmaster.game.Game;
+import net.lifecity.mc.skillmaster.game.function.OnAttack;
+import net.lifecity.mc.skillmaster.game.function.OnDie;
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame;
 import net.lifecity.mc.skillmaster.inventory.UserInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -87,9 +89,9 @@ public class EventListener implements Listener {
 
                     // todo ゲームシステムに対応
                     // ゲーム中ならonAttack()呼び出し
-                    Duel duel = SkillMaster.instance.getDuelList().getFromUser(user);
-                    if (duel != null)
-                        duel.onAttack(user);
+                    Game game = SkillMaster.instance.getGameList().getFromUser(user);
+                    if (game instanceof OnAttack onAttack)
+                        onAttack.onAttack(user);
                 }
             }
         }
@@ -152,10 +154,11 @@ public class EventListener implements Listener {
         SkillUser dead = SkillMaster.instance.getUserList().get(event.getPlayer());
 
         // ゲーム中なら
-        if (SkillMaster.instance.getDuelList().inGamingUser(dead)) {
-            Duel duel = SkillMaster.instance.getDuelList().getFromUser(dead);
+        if (SkillMaster.instance.getGameList().inGamingUser(dead)) {
+            Game game = SkillMaster.instance.getGameList().getFromUser(dead);
             event.setCancelled(true);
-            duel.stopByLoser(dead);
+            if (game instanceof OnDie onDie)
+                onDie.onDie(dead);
         }
     }
 
