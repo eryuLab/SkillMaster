@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -51,13 +52,11 @@ public abstract class Game {
         changeModeAll(UserMode.BATTLE);
 
         // カウントダウン
+        state = GameState.COUNT_DOWN;
         countDownTimer.runTaskTimer(SkillMaster.instance, 0, 20);
 
-        // ゲーム状態移行
-        state = GameState.IN_GAMING;
-
         // タイマースタート
-        gameTimer.runTaskTimer(SkillMaster.instance, countDownTime * 20L, gameTime);
+        gameTimer.runTaskTimer(SkillMaster.instance, countDownTime * 20L, 20);
     }
 
     /**
@@ -86,9 +85,11 @@ public abstract class Game {
             @Override
             public void run() {
                 // 時間が経過していたら終了処理
-                if (count >= 6) {
+                if (count >= 5) {
                     // todo ロビーへ接続
                     sendMessageAll("ロビーへ接続できた気持ちになってください");
+
+                    setGameModeElseTeam(winners, GameMode.SURVIVAL);
 
                     cancel();
                 }
@@ -198,6 +199,28 @@ public abstract class Game {
             team.sendTitle(title, sub);
     }
 
+    public void sendActionbarAll(String msg) {
+        for (GameTeam team : getTeams()) {
+            team.sendActionbar(msg);
+        }
+    }
+
+    public void sendActionbarTeam(GameTeam team, String msg) {
+        if (hasTeam(team))
+            team.sendActionbar(msg);
+    }
+
+    public void playSoundAll(Sound sound) {
+        for (GameTeam team : getTeams()) {
+            team.playSound(sound);
+        }
+    }
+
+    public void playSoundTeam(GameTeam team, Sound sound) {
+        if (hasTeam(team))
+            team.playSound(sound);
+    }
+
     /**
      * ゲーム内すべてのプレイヤーを初期地点にテレポートします
      */
@@ -218,9 +241,16 @@ public abstract class Game {
             if (state != GameState.COUNT_DOWN)
                 cancel();
 
+            // カウント確認
+            if (count >= countDownTime - 1) {
+                state = GameState.IN_GAMING;
+                cancel();
+            }
+
             // タイトル表示
             String title = ChatColor.GREEN + "" + (countDownTime - count) + "..";
             sendTitleAll(title, "");
+            playSoundAll(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
 
             count++;
         }
@@ -230,6 +260,14 @@ public abstract class Game {
 
         @Override
         public void run() {
+            // 戦闘開始
+            if (elapsedTime == 0) {
+                // タイトル
+                sendTitleAll(ChatColor.YELLOW + "Start!!" , "");
+                // 爆発音
+                playSoundAll(Sound.ENTITY_GENERIC_EXPLODE);
+            }
+
             // ゲームの状態がゲーム中でなかったらタスクキャンセル
             if (state != GameState.IN_GAMING)
                 cancel();
@@ -239,6 +277,8 @@ public abstract class Game {
                 afterGameTimer();
                 cancel();
             }
+
+            sendActionbarAll("count: " + elapsedTime);
 
             // todo ボスバー編集
 
