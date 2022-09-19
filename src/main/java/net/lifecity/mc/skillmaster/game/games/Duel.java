@@ -1,15 +1,19 @@
 package net.lifecity.mc.skillmaster.game.games;
 
 import net.lifecity.mc.skillmaster.game.*;
-import net.lifecity.mc.skillmaster.game.field.TwoPointField;
 import net.lifecity.mc.skillmaster.game.function.OnAttack;
 import net.lifecity.mc.skillmaster.game.function.OnDie;
+import net.lifecity.mc.skillmaster.game.stage.FieldType;
+import net.lifecity.mc.skillmaster.game.stage.GameField;
+import net.lifecity.mc.skillmaster.game.stage.GameStage;
+import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.ChatColor;
 
 public class Duel extends Game implements OnAttack, OnDie {
 
-    private final TwoPointField field;
+    private final GameStage stage;
+    private final TwoPoint field;
 
     private final GameTeam teamA;
     private final GameTeam teamB;
@@ -18,9 +22,10 @@ public class Duel extends Game implements OnAttack, OnDie {
 
     private GameTeam winner = null;
 
-    public Duel(TwoPointField field, SkillUser userA, SkillUser userB) {
-        super(GameType.ONE_ON_ONE, 240, 6);
-        this.field = field;
+    public Duel(GameStage stage, SkillUser userA, SkillUser userB) {
+        super(GameType.ONE_ON_ONE, FieldType.TWO_POINT, 240, 6);
+        this.stage = stage;
+        this.field = (TwoPoint) stage.getField(FieldType.TWO_POINT);
         this.teamA = new GameTeam("Alpha", ChatColor.RED, new SkillUser[]{userA});
         this.teamB = new GameTeam("Beta", ChatColor.BLUE, new SkillUser[]{userB});
     }
