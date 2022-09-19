@@ -23,7 +23,7 @@ public class Duel extends Game implements OnAttack, OnDie {
     private GameTeam winner = null;
 
     public Duel(GameStage stage, SkillUser userA, SkillUser userB) {
-        super(GameType.ONE_ON_ONE, FieldType.TWO_POINT, 240, 6);
+        super(GameType.ONE_ON_ONE, FieldType.TWO_POINT, 15, 6);
         this.stage = stage;
         this.field = (TwoPoint) stage.getField(FieldType.TWO_POINT);
         this.teamA = new GameTeam("Alpha", ChatColor.RED, new SkillUser[]{userA});
@@ -53,17 +53,21 @@ public class Duel extends Game implements OnAttack, OnDie {
     public void onDie(SkillUser dead) {
         // 勝利チームを取得し、終了
         if (teamA.belongs(dead)) {
-            winner = teamA;
-            stop(teamA);
-        } else if (teamB.belongs(dead)) {
             winner = teamB;
             stop(teamB);
+        } else if (teamB.belongs(dead)) {
+            winner = teamA;
+            stop(teamA);
         }
     }
 
     @Override
     public void afterGameTimer() {
+        // サドンデスに変更
         suddenDeath = true;
+
+        // サドンデス告知
+        sendMessageAll(ChatColor.GRAY + "サドンデスに突入...");
     }
 
     @Override
