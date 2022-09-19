@@ -1,7 +1,5 @@
 package net.lifecity.mc.skillmaster.game;
 
-import net.lifecity.mc.skillmaster.game.prototype.Duel;
-import net.lifecity.mc.skillmaster.game.prototype.DuelField;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 
 import java.util.ArrayList;
