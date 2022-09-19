@@ -5,6 +5,7 @@ import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 
 public class GameTeam {
 
@@ -56,6 +57,18 @@ public class GameTeam {
     public void sendTitle(String title, String sub) {
         for (SkillUser user : userArray) {
             user.sendTitle(title, sub);
+        }
+    }
+
+    public void sendActionbar(String msg) {
+        for (SkillUser user : userArray) {
+            user.sendActionBar(msg);
+        }
+    }
+
+    public void playSound(Sound sound) {
+        for (SkillUser user : userArray) {
+            user.playSound(sound);
         }
     }
 
