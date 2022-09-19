@@ -4,7 +4,9 @@ import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
-import net.lifecity.mc.skillmaster.game.field.TwoPointField;
+import dev.jorel.commandapi.annotations.arguments.AStringArgument;
+import net.lifecity.mc.skillmaster.game.stage.GameStage;
+import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
 import net.lifecity.mc.skillmaster.game.games.Duel;
 import net.lifecity.mc.skillmaster.inventory.SkillInventory;
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
@@ -73,7 +75,7 @@ public class SkillCommand {
     }
 
     @Subcommand("duel")
-    public static void duel(Player player, @APlayerArgument Player player1, @APlayerArgument Player player2) {
+    public static void duel(Player player, @AMultiLiteralArgument({"闘技場"}) String stageName, @APlayerArgument Player player1, @APlayerArgument Player player2) {
         // プレイヤー引数確認
         if (player1 == player2) {
             player.sendMessage("一人で戦うことはできません");
@@ -94,8 +96,22 @@ public class SkillCommand {
             return;
         }
 
+        // ステージ取得
+        GameStage stage = SkillMaster.instance.getStageList().getFromName(stageName);
+
+        if (stage == null) {
+            player.sendMessage(stageName + "は登録されていません");
+            return;
+        }
+
+        // ステージが使用中であるか確認
+        if (stage.inUsing()) {
+            player.sendMessage(stageName + "は使用中です");
+            return;
+        }
+
         // ゲーム開始
-        Duel duel = new Duel((TwoPointField) SkillMaster.instance.getGameFieldList().get(0), user1, user2);
+        Duel duel = new Duel(stage, user1, user2);
         duel.start();
     }
 }
