@@ -1,18 +1,22 @@
 package net.lifecity.mc.skillmaster.game.games;
 
-import net.lifecity.mc.skillmaster.game.Game;
-import net.lifecity.mc.skillmaster.game.GameTeam;
-import net.lifecity.mc.skillmaster.game.GameType;
+import net.lifecity.mc.skillmaster.game.*;
 import net.lifecity.mc.skillmaster.game.field.TwoPointField;
+import net.lifecity.mc.skillmaster.game.function.OnAttack;
+import net.lifecity.mc.skillmaster.game.function.OnDie;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.ChatColor;
 
-public class Duel extends Game {
+public class Duel extends Game implements OnAttack, OnDie {
 
     private final TwoPointField field;
 
     private final GameTeam teamA;
     private final GameTeam teamB;
+
+    private boolean suddenDeath = false;
+
+    private GameTeam winner = null;
 
     protected Duel(TwoPointField field, SkillUser userA, SkillUser userB) {
         super(GameType.ONE_ON_ONE, 240, 6);
@@ -22,8 +26,55 @@ public class Duel extends Game {
     }
 
     @Override
-    public void sendResult() {
+    public void onAttack(SkillUser attacker) {
+        // 引数がこのゲームのプレイヤーじゃなかったらreturn
+        if (!joined(attacker))
+            return;
 
+        // サドンデスなら終了
+        if (suddenDeath) {
+            // 勝利チームを取得し、終了
+            if (teamA.belongs(attacker)) {
+                winner = teamA;
+                stop(teamA);
+            } else if (teamB.belongs(attacker)) {
+                winner = teamB;
+                stop(teamB);
+            }
+        }
+    }
+
+    @Override
+    public void onDie(SkillUser dead) {
+        // 勝利チームを取得し、終了
+        if (teamA.belongs(dead)) {
+            winner = teamA;
+            stop(teamA);
+        } else if (teamB.belongs(dead)) {
+            winner = teamB;
+            stop(teamB);
+        }
+    }
+
+    @Override
+    public void afterGameTimer() {
+        suddenDeath = true;
+    }
+
+    @Override
+    public void sendResult() {
+        String detail;
+        if (suddenDeath)
+            detail = ChatColor.RED + "一撃決め";
+        else
+            detail = ChatColor.BLUE + "ノックダウン";
+        if (winner == teamA) {
+            teamA.sendTitle(GameResult.WIN.getEn(), detail);
+            teamB.sendTitle(GameResult.LOSE.getEn(), detail);
+        } else if (winner == teamB) {
+            teamA.sendTitle(GameResult.LOSE.getEn(), detail);
+            teamB.sendTitle(GameResult.WIN.getEn(), detail);
+        }
     }
 
     @Override
