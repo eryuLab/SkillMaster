@@ -20,33 +20,12 @@ public class GameList extends ArrayList<Game> {
     }
 
     /**
-     * Fieldからゲームを取得します
-     * @param field このFieldを使います
-     * @return Fieldを使っているゲーム
-     */
-    public Game getFromField(GameField field) {
-        return field.nowGame;
-    }
-
-    // ユーザーがゲームに参加しているか
-
-    /**
      * ユーザーがなんらかのゲームに参加しているかを返します
      * @param user このユーザーを使います
      * @return 参加していたらtrueを返します
      */
     public boolean inGamingUser(SkillUser user) {
         Game game = getFromUser(user);
-        return game != null;
-    }
-
-    /**
-     * フィールドがゲームに使われているかを返します
-     * @param field このフィールドを使います
-     * @return 使われていたらtrueを返します
-     */
-    public boolean inGamingField(GameField field) {
-        Game game = getFromField(field);
         return game != null;
     }
 }
