@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.game;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -88,6 +89,19 @@ public abstract class Game {
                 count++;
             }
         }.runTaskTimer(SkillMaster.instance, 0, 20);
+    }
+
+    /**
+     * ユーザーがこのゲームに参加しているかを返します
+     * @param user ユーザー
+     * @return 参加しているときtrue
+     */
+    public boolean joined(SkillUser user) {
+        for (GameTeam team : getTeams()) {
+            if (team.belongs(user))
+                return true;
+        }
+        return false;
     }
 
     /**
