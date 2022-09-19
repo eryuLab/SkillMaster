@@ -18,7 +18,7 @@ public class Duel extends Game implements OnAttack, OnDie {
 
     private GameTeam winner = null;
 
-    protected Duel(TwoPointField field, SkillUser userA, SkillUser userB) {
+    public Duel(TwoPointField field, SkillUser userA, SkillUser userB) {
         super(GameType.ONE_ON_ONE, 240, 6);
         this.field = field;
         this.teamA = new GameTeam("Alpha", ChatColor.RED, new SkillUser[]{userA});
