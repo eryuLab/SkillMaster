@@ -32,6 +32,8 @@ public abstract class Game {
         this.type = type;
         this.gameTime = gameTime;
         this.countDownTime = countDownTime;
+
+        SkillMaster.instance.getGameList().add(this);
     }
 
     /**
