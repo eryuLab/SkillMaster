@@ -6,13 +6,13 @@ import org.bukkit.Location;
 public class TwoPointField extends GameField {
 
     @Getter
-    protected final Location spawnPointA;
+    protected final Location pointA;
     @Getter
-    protected final Location spawnPointB;
+    protected final Location pointB;
 
-    public TwoPointField(String name, GameType type, Location spawnPointA, Location spawnPointB) {
+    public TwoPointField(String name, GameType type, Location pointA, Location pointB) {
         super(name, type);
-        this.spawnPointA = spawnPointA;
-        this.spawnPointB = spawnPointB;
+        this.pointA = pointA;
+        this.pointB = pointB;
     }
 }

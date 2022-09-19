@@ -45,8 +45,8 @@ public class Duel extends Game {
     @Override
     public void teleportTeam(GameTeam team) {
         if (team == teamA)
-            team.teleportAll(field.getSpawnPointA());
+            team.teleportAll(field.getPointA());
         else if (team == teamB)
-            team.teleportAll(field.getSpawnPointB());
+            team.teleportAll(field.getPointB());
     }
 }
