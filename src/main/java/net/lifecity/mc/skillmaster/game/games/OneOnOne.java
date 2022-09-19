@@ -12,12 +12,15 @@ public class OneOnOne extends Game {
     private final GameTeam teamA;
     private final GameTeam teamB;
 
-    protected OneOnOne(TwoPointField field, SkillUser userA, SkillUser userB) {
+    public OneOnOne(TwoPointField field, SkillUser userA, SkillUser userB) {
         super(GameType.ONE_ON_ONE, 240, 6);
         this.field = field;
         this.teamA = new GameTeam("Alpha", ChatColor.RED, new SkillUser[]{userA});
         this.teamB = new GameTeam("Beta", ChatColor.BLUE, new SkillUser[]{userB});
     }
+
+    @Override
+    public void afterGameTimer() {}
 
     @Override
     public void sendResult() {
