@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.game;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 
 public class GameTeam {
@@ -15,6 +16,16 @@ public class GameTeam {
         this.name = name;
         this.color = color;
         this.userArray = userArray;
+    }
+
+    /**
+     * このチーム全員のゲームモードを変更します
+     * @param mode このモードに変更します
+     */
+    public void setGameMode(GameMode mode) {
+        for (SkillUser user : userArray) {
+            user.getPlayer().setGameMode(mode);
+        }
     }
 
     /**
