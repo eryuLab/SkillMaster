@@ -2,7 +2,6 @@ package net.lifecity.mc.skillmaster.game.stage;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.game.Game;
-import net.lifecity.mc.skillmaster.game.stage.GameStage;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 
 import java.util.ArrayList;

@@ -32,7 +32,7 @@ open class Skill protected constructor(
      */
     open fun activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA.toString() + "スキル『" + name + "』発動")
+        user.player.sendActionBar(ChatColor.DARK_AQUA.toString() + "スキル『" + name + "』発動")
         deactivate()
     }
 

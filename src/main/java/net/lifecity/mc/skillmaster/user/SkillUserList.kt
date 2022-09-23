@@ -11,7 +11,7 @@ class SkillUserList : ArrayList<SkillUser>() {
      * @param player このプレイヤーのUUIDを使用します
      * @return UUIDが一致したSkillUserまたはnull
      */
-    operator fun get(player: Player?): SkillUser? {
+    operator fun get(player: Player): SkillUser? {
         for (user in this) {
             if (user.match(player)) return user
         }

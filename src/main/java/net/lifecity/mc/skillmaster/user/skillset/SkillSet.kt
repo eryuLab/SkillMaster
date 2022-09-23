@@ -1,12 +1,11 @@
 package net.lifecity.mc.skillmaster.user.skillset
 
-import lombok.Getter
 import net.lifecity.mc.skillmaster.skill.Skill
 
 /**
  * スキルキーが
  */
-class SkillSet(val button: SkillButton, zero: Skill, one: Skill, two: Skill) :
+class SkillSet(val button: SkillButton, zero: Skill? = null, one: Skill? = null, two: Skill? = null) :
     ArrayList<SkillKey>() {
     init {
         add(SkillKey(button, 0, zero))

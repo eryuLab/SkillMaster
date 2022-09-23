@@ -4,7 +4,6 @@ import net.lifecity.mc.skillmaster.game.*;
 import net.lifecity.mc.skillmaster.game.function.OnAttack;
 import net.lifecity.mc.skillmaster.game.function.OnDie;
 import net.lifecity.mc.skillmaster.game.stage.FieldType;
-import net.lifecity.mc.skillmaster.game.stage.GameField;
 import net.lifecity.mc.skillmaster.game.stage.GameStage;
 import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
 import net.lifecity.mc.skillmaster.user.SkillUser;

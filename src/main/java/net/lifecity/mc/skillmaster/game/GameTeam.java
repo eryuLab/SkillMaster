@@ -45,7 +45,7 @@ public class GameTeam {
      */
     public void sendMessage(String msg) {
         for (SkillUser user : userArray) {
-            user.sendMessage(msg);
+            user.getPlayer().sendMessage(msg);
         }
     }
 
@@ -56,19 +56,19 @@ public class GameTeam {
      */
     public void sendTitle(String title, String sub) {
         for (SkillUser user : userArray) {
-            user.sendTitle(title, sub);
+            user.getPlayer().sendTitle(title, sub);
         }
     }
 
     public void sendActionbar(String msg) {
         for (SkillUser user : userArray) {
-            user.sendActionBar(msg);
+            user.getPlayer().sendActionBar(msg);
         }
     }
 
     public void playSound(Sound sound) {
         for (SkillUser user : userArray) {
-            user.playSound(sound);
+            user.getPlayer().getWorld().playSound(user.getPlayer().getLocation(), sound, 1f, 1f);
         }
     }
 

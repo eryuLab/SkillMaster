@@ -130,13 +130,13 @@ public class UserInventory extends InventoryFrame {
                                 // セットできるか確認
                                 if (!user.settable(cursorSkill)) {
                                     event.setCancelled(true);
-                                    user.sendMessage("このスキルはすでに登録されています");
+                                    user.getPlayer().sendMessage("このスキルはすでに登録されています");
                                     return;
                                 }
 
                                 // スキルセット
                                 key.setSkill(cursorSkill);
-                                user.sendMessage("スキルを登録しました: " + key.getButton().getJp() + "[" + key.getNum() + "]: " + cursorSkill.getName());
+                                user.getPlayer().sendMessage("スキルを登録しました: " + key.getButton().getJp() + "[" + key.getNum() + "]: " + cursorSkill.getName());
 
                                 setItem(event.getSlot(), skillItem(key));
                                 new BukkitRunnable() {
@@ -176,7 +176,7 @@ public class UserInventory extends InventoryFrame {
 
                                 // スキル除外
                                 key.setSkill(null);
-                                user.sendMessage("スキルを除外しました");
+                                user.getPlayer().sendMessage("スキルを除外しました");
                                 setItem(event.getSlot(), skillItem(key));
                                 new BukkitRunnable() {
                                     @Override

@@ -55,7 +55,7 @@ class SkillManager(user: SkillUser) {
      * @param skillClass スキルクラス
      * @return スキルインスタンス
      */
-    fun fromClass(skillClass: Class<out Skill?>): Skill? {
+    fun fromClass(skillClass: Class<out Skill>): Skill? {
         for (skill in skillList) {
             if (skillClass.isInstance(skill)) return skill
         }

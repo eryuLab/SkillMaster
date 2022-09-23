@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.skill.separatedskills
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskLater
 import com.github.syari.spigot.api.scheduler.runTaskTimer
+import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
@@ -66,7 +67,7 @@ class JumpAttackSlash(user: SkillUser) : SeparatedSkill(
         SkillMaster.instance.runTaskLater(7) {
 
             step = 1
-            user.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
+            user.player.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
         }
     }
 

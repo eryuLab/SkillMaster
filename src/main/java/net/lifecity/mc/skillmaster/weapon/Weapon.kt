@@ -35,7 +35,7 @@ enum class Weapon(val jp : String = "", val number : Int = 0) {
         if (itemStack.type != Material.WOODEN_SWORD) return false
 
         // カスタムモデルデータを確認
-        return if(itemStack.hasItemMeta()) {
+        return if (itemStack.hasItemMeta()) {
             !(itemStack.customModelData!! < number * 100 || itemStack.customModelData!! > number * 100 + 99)
         } else {
             false

@@ -36,7 +36,7 @@ class VectorAttack(user: SkillUser) : Skill(
             user.player.velocity.multiply(0.25).setY(0.15),
             Sound.ENTITY_PLAYER_ATTACK_CRIT
         )
-        if (b) user.sendMessage("damage: $damage")
+        if (b) user.player.sendMessage("damage: $damage")
 
         // 軌道
         val data: BlockData =

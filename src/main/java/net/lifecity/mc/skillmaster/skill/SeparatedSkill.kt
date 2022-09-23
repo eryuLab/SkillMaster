@@ -28,7 +28,7 @@ abstract class SeparatedSkill protected constructor(
      */
     override fun activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA.toString() + "複合スキル『" + name + "』発動")
+        user.player.sendActionBar(ChatColor.DARK_AQUA.toString() + "複合スキル『" + name + "』発動")
 
         // 発動中にする
         activated = true
@@ -72,7 +72,7 @@ abstract class SeparatedSkill protected constructor(
         activated = false //非発動化する
 
         // ログ
-        user.sendActionBar(ChatColor.RED.toString() + "複合スキル『" + name + "』終了")
+        user.player.sendActionBar(ChatColor.RED.toString() + "複合スキル『" + name + "』終了")
 
         //インターバル処理
         super.deactivate()
