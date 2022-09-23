@@ -1,62 +1,50 @@
-package net.lifecity.mc.skillmaster.utils;
+package net.lifecity.mc.skillmaster.utils
 
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.session.ClipboardHolder;
-import net.lifecity.mc.skillmaster.SkillMaster;
-import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.sk89q.worldedit.WorldEdit
+import com.sk89q.worldedit.WorldEditException
+import com.sk89q.worldedit.bukkit.BukkitWorld
+import com.sk89q.worldedit.extent.clipboard.Clipboard
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats
+import com.sk89q.worldedit.function.operation.Operations
+import com.sk89q.worldedit.math.BlockVector3
+import com.sk89q.worldedit.session.ClipboardHolder
+import net.lifecity.mc.skillmaster.SkillMaster
+import org.bukkit.Location
+import org.bukkit.scheduler.BukkitRunnable
+import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-public class WorldEditUtils {
-
-    public Clipboard load(File file) throws IOException {
-        ClipboardFormat format = ClipboardFormats.findByFile(file);
-        try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
-            return reader.read();
-        }
+class WorldEditUtils {
+    @Throws(IOException::class)
+    fun load(file: File?): Clipboard {
+        val format = ClipboardFormats.findByFile(file)
+        format!!.getReader(FileInputStream(file)).use { reader -> return reader.read() }
     }
 
-    public boolean pasteAndAutoUndo(Location pasteLoc, Clipboard clipboard, int seconds) {
-        try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(pasteLoc.getWorld()), -1)) {
-            Operation operation = new ClipboardHolder(clipboard)
-                    .createPaste(editSession)
-                    .to(BlockVector3.at(pasteLoc.getX(), pasteLoc.getY(), pasteLoc.getZ()))
-                    .ignoreAirBlocks(true)
-                    .build();
-
-            new BukkitRunnable() {
-                int count = 0;
-                @Override
-                public void run() {
-                    if(count > seconds) {
-                        editSession.undo(editSession);
-                        this.cancel();
+    fun pasteAndAutoUndo(pasteLoc: Location, clipboard: Clipboard?, seconds: Int): Boolean {
+        WorldEdit.getInstance().editSessionFactory.getEditSession(BukkitWorld(pasteLoc.world), -1).use { editSession ->
+            val operation = ClipboardHolder(clipboard)
+                .createPaste(editSession)
+                .to(BlockVector3.at(pasteLoc.x, pasteLoc.y, pasteLoc.z))
+                .ignoreAirBlocks(true)
+                .build()
+            object : BukkitRunnable() {
+                var count = 0
+                override fun run() {
+                    if (count > seconds) {
+                        editSession.undo(editSession)
+                        cancel()
                     }
-
-                    count++;
+                    count++
                 }
-
-            }.runTaskTimer(SkillMaster.instance, 0, 20L);
-
+            }.runTaskTimer(SkillMaster.instance, 0, 20L)
             try {
-                Operations.complete(operation);
-            } catch (WorldEditException e) {
-                throw new RuntimeException(e);
+                Operations.complete(operation)
+            } catch (e: WorldEditException) {
+                throw RuntimeException(e)
             }
-            return true;
+            return true
         }
     }
 }
