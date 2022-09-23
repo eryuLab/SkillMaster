@@ -60,7 +60,7 @@ abstract class InventoryFrame {
     /**
      * プレイヤーにインベントリを表示します
      */
-    fun open() {
+    open fun open() {
         user.player.openInventory(inv)
     }
 
