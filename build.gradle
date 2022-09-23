@@ -1,4 +1,7 @@
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version "1.6.20"
+    id 'org.jetbrains.kotlin.plugin.lombok' version '1.6.20'
+    id 'io.freefair.lombok' version '5.3.0'
     id 'java'
 }
 
@@ -22,9 +25,13 @@ repositories {
         name = "enginehub-maven"
         url = "https://maven.enginehub.org/repo/"
     }
+    maven {
+        url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-wasm:1.6.20"
     compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
 
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT'
@@ -39,6 +46,15 @@ dependencies {
     annotationProcessor "dev.jorel:commandapi-annotations:8.4.1"
 
     implementation 'commons-io:commons-io:2.11.0'
+
+    api('com.github.sya-ri:EasySpigotAPI:2.3.2') {
+        exclude group: 'org.spigotmc', module: 'spigot-api'
+    }
+
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
 }
 
 def targetJavaVersion = 17

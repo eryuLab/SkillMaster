@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -106,15 +105,6 @@ public class Skill {
         user.getPlayer().getWorld().spawnParticle(particle, location, 1);
     }
 
-    /**
-     * パーティクルを表示します
-     * @param particle 表示するパーティクル
-     * @param location 表示する位置
-     * @param blockData パーティクルのデータ
-     */
-    protected void particle(Particle particle, Location location, BlockData blockData) {
-        user.getPlayer().getWorld().spawnParticle(particle, location, 1, blockData);
-    }
 
     /**
      * 引数の武器が使用可能かを返します
