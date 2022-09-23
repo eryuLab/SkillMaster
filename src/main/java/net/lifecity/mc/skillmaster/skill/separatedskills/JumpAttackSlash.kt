@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.skill.separatedskills
 
 import com.github.syari.spigot.api.particle.spawnParticle
+import com.github.syari.spigot.api.scheduler.runTaskLater
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
@@ -62,7 +63,8 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         }
 
         // 指定時間経過後に攻撃入力可能になる
-        SkillMaster.instance.runTaskTimer(7) {
+        SkillMaster.instance.runTaskLater(7) {
+
             step = 1
             user.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
         }
