@@ -1,87 +1,64 @@
-package net.lifecity.mc.skillmaster.skill.skills;
+package net.lifecity.mc.skillmaster.skill.skills
 
-import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.skill.Skill;
-import net.lifecity.mc.skillmaster.skill.SkillType;
-import net.lifecity.mc.skillmaster.user.SkillUser;
-import net.lifecity.mc.skillmaster.weapon.Weapon;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
-import java.util.Arrays;
-import java.util.Random;
+import com.github.syari.spigot.api.particle.spawnParticle
+import com.github.syari.spigot.api.scheduler.runTaskTimer
+import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.Skill
+import net.lifecity.mc.skillmaster.skill.SkillType
+import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Particle
+import java.util.*
 
 /**
  * 上に高く飛び上がるスキル
  */
-public class HighJump extends Skill {
+class HighJump(user: SkillUser?) : Skill(
+    "大ジャンプ",
+    listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
+    SkillType.MOVE,
+    listOf("上に飛び上がります。"),
+    0,
+    30,
+    user
+) {
 
-    public HighJump(SkillUser user) {
-        super(
-                "大ジャンプ",
-                Arrays.asList(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
-                SkillType.MOVE,
-                Arrays.asList("上に飛び上がります。"),
-                0,
-                30,
-                user
-        );
-    }
-
-    @Override
-    public void activate() {
-        super.activate();
-
-        Vector vector = user.getPlayer().getEyeLocation().getDirection();
+    override fun activate() {
+        super.activate()
+        val vector = user.player.eyeLocation.direction
 
         // x方向を制限
-        vector.setX(vector.getX() * 0.65);
+        vector.x = vector.x * 0.65
         // z方向を制限
-        vector.setZ(vector.getZ() * 0.65);
+        vector.z = vector.z * 0.65
         // y方向を拡大
-        vector.setY(1);
-
-        user.getPlayer().setVelocity(vector);
+        vector.setY(1)
+        user.player.velocity = vector
 
         // パーティクル
 
         // 煙
-        for (int i = 0; i < 20; i++) {
+        for (i in 0..19) {
             // 座標を生成
-            double max = 0.5;
-            Random random = new Random();
-
-            double x = max * random.nextDouble();
-            if (random.nextBoolean())
-                x *= -1;
-
-            double y = max * random.nextDouble();
-            if (random.nextBoolean())
-                y *= -1;
-
-            double z = max * random.nextDouble();
-            if (random.nextBoolean())
-                z *= -1;
-
-            Location loc = user.getPlayer().getLocation().add(x, y, z);
-
-            particle(Particle.CAMPFIRE_COSY_SMOKE, loc);
+            val max = 0.5
+            val random = Random()
+            var x = max * random.nextDouble()
+            if (random.nextBoolean()) x *= -1.0
+            var y = max * random.nextDouble()
+            if (random.nextBoolean()) y *= -1.0
+            var z = max * random.nextDouble()
+            if (random.nextBoolean()) z *= -1.0
+            user.player.location.add(x, y, z).spawnParticle(Particle.CAMPFIRE_COSY_SMOKE)
         }
 
         // 軌道
-        new BukkitRunnable() {
-            int count = 0;
-            @Override
-            public void run() {
-                if (count >= 10)
-                    cancel();
-                if (user.getPlayer().getVelocity().length() < 0.3)
-                    cancel();
-                particle(Particle.LAVA, user.getPlayer().getLocation());
-                count++;
-            }
-        }.runTaskTimer(SkillMaster.instance, 0, 2);
+        var count = 0
+        SkillMaster.instance.runTaskTimer(2) {
+            if (count >= 10) cancel()
+            if (user.player.velocity.length() < 0.3) cancel()
+            particle(Particle.LAVA, user.player.location)
+            count++
+        }
+
     }
 }
