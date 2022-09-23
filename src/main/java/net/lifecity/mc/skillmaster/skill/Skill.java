@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,14 +21,17 @@ import java.util.List;
  */
 public class Skill {
 
+    @Getter
     protected final String name;
 
     protected List<Weapon> weaponList;
 
+    @Getter
     protected final SkillType type;
 
     protected final List<String> lore;
 
+    @Setter
     protected int id = 0;
 
     protected final int point;
@@ -38,6 +40,7 @@ public class Skill {
 
     protected final SkillUser user;
 
+    @Getter
     protected boolean inInterval = false;
 
     protected Skill(String name, List<Weapon> weaponList, SkillType type, List<String> lore, int point, int interval, SkillUser user) {
@@ -102,6 +105,7 @@ public class Skill {
         user.getPlayer().getWorld().spawnParticle(particle, location, 1);
     }
 
+
     /**
      * 引数の武器が使用可能かを返します
      * @param weapon この武器が使えるか確かめます
@@ -162,26 +166,6 @@ public class Skill {
      */
     public boolean is(Skill other) {
         return id == other.id;
-    }
-
-    public boolean isInInterval() {
-        return inInterval;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public SkillType getType() {
-        return type;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     /*

@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.user;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.game.Game;
 import net.lifecity.mc.skillmaster.game.function.OnAttack;
@@ -36,26 +38,39 @@ public class SkillUser {
 
     private final int SKILL_SET_SIZE = 3;
 
+    @Getter
     private final Player player;
 
+    @Getter
     private UserMode mode;
 
+    @Getter
     private UserInventory userInventory;
 
+    @Getter
+    @Setter
     private InventoryFrame openedInventory = null;
 
+    @Getter
+    @Setter
     private Weapon selectedWeapon = Weapon.STRAIGHT_SWORD;
 
+    @Getter
     private final SkillSet rightSkillSet;
 
+    @Getter
     private int rightIndex = 0;
 
+    @Getter
     private final SkillSet swapSkillSet;
 
+    @Getter
     private int swapIndex = 0;
 
+    @Getter
     private final SkillSet dropSkillSet;
 
+    @Getter
     private int dropIndex = 0;
 
     public SkillUser(Player player, UserMode mode) {
@@ -531,57 +546,5 @@ public class SkillUser {
      */
     public boolean match(SkillUser other) {
         return match(other.player);
-    }
-
-    public void setOpenedInventory(InventoryFrame openedInventory) {
-        this.openedInventory = openedInventory;
-    }
-
-    public void setSelectedWeapon(Weapon selectedWeapon) {
-        this.selectedWeapon = selectedWeapon;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public UserMode getMode() {
-        return mode;
-    }
-
-    public UserInventory getUserInventory() {
-        return userInventory;
-    }
-
-    public InventoryFrame getOpenedInventory() {
-        return openedInventory;
-    }
-
-    public Weapon getSelectedWeapon() {
-        return selectedWeapon;
-    }
-
-    public SkillSet getRightSkillSet() {
-        return rightSkillSet;
-    }
-
-    public int getRightIndex() {
-        return rightIndex;
-    }
-
-    public SkillSet getSwapSkillSet() {
-        return swapSkillSet;
-    }
-
-    public int getSwapIndex() {
-        return swapIndex;
-    }
-
-    public SkillSet getDropSkillSet() {
-        return dropSkillSet;
-    }
-
-    public int getDropIndex() {
-        return dropIndex;
     }
 }
