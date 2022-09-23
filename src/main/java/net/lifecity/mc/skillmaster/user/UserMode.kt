@@ -1,7 +1,5 @@
 package net.lifecity.mc.skillmaster.user
 
-import lombok.Getter
-
 /**
  * SkillUserのモードの列挙
  */
