@@ -1,42 +1,32 @@
-package net.lifecity.mc.skillmaster.inventory;
+package net.lifecity.mc.skillmaster.inventory
 
-import lombok.Getter;
-import net.lifecity.mc.skillmaster.user.SkillUser;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
+import net.lifecity.mc.skillmaster.user.SkillUser
+import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
+import java.util.function.Consumer
 
 /**
  * インベントリの構築と操作を行うためのフレーム
  */
-public abstract class InventoryFrame {
+abstract class InventoryFrame {
+    protected val user: SkillUser
 
-    protected final SkillUser user;
-
-    @Getter
-    protected final Inventory inv;
-
-    protected final String name;
-
-    protected final Map<Integer, InvItem> itemMap = new HashMap<>();
+    val inv: Inventory
+    protected val name: String
+    protected val itemMap: MutableMap<Int, InvItem> = HashMap()
 
     /**
      * ユーザーインベントリ用のインスタンスを生成します
      * @param user
      */
-    protected InventoryFrame(SkillUser user) {
-        this.user = user;
-        this.inv = user.getPlayer().getInventory();
-        this.name = "";
-        init();
+    protected constructor(user: SkillUser) {
+        this.user = user
+        inv = user.player.inventory
+        name = ""
+        init()
     }
 
     /**
@@ -45,33 +35,33 @@ public abstract class InventoryFrame {
      * @param row GUIの行数
      * @param name GUIの名前
      */
-    protected InventoryFrame(SkillUser user, int row, String name) {
-        this.user = user;
-        this.inv = Bukkit.createInventory(null, row * 9, name);
-        this.name = name;
-        init();
+    protected constructor(user: SkillUser, row: Int, name: String) {
+        this.user = user
+        inv = Bukkit.createInventory(null, row * 9, name)
+        this.name = name
+        init()
     }
 
     /**
      * インベントリを初期化します
      */
-    public abstract void init();
+    abstract fun init()
 
     /**
      * このインベントリにアイテムを設置します
      * @param index 設置するスロット番号
      * @param invItem 配置するアイテム
      */
-    protected void setItem(int index, InvItem invItem) {
-        itemMap.put(index, invItem);
-        inv.setItem(index, invItem.item);
+    protected fun setItem(index: Int, invItem: InvItem) {
+        itemMap[index] = invItem
+        inv.setItem(index, invItem.item)
     }
 
     /**
      * プレイヤーにインベントリを表示します
      */
-     public final void open() {
-        user.getPlayer().openInventory(inv);
+    fun open() {
+        user.player.openInventory(inv)
     }
 
     /**
@@ -79,11 +69,9 @@ public abstract class InventoryFrame {
      * @param event クリックイベント
      * @return クリックイベントをキャンセルするかを返します
      */
-    public final void onClick(InventoryClickEvent event) {
-        InvItem item = itemMap.get(event.getSlot());
-
-        if (item != null)
-            item.onClick(event);
+    fun onClick(event: InventoryClickEvent) {
+        val item = itemMap[event.slot]
+        item?.onClick(event)
     }
 
     /**
@@ -93,37 +81,22 @@ public abstract class InventoryFrame {
      * @param lore アイテムの説明
      * @return 生成されたItemStack
      */
-    protected ItemStack createItemStack(Material material, String name, List<String> lore) {
-        ItemStack itemStack = new ItemStack(material);
-
-        ItemMeta meta = itemStack.getItemMeta();
-
-        meta.setDisplayName(name);
-
-        meta.setLore(lore);
-
-        itemStack.setItemMeta(meta);
-
-        return itemStack;
+    protected fun createItemStack(material: Material?, name: String?, lore: List<String?>?): ItemStack {
+        val itemStack = ItemStack(material!!)
+        val meta = itemStack.itemMeta
+        meta.setDisplayName(name)
+        meta.lore = lore
+        itemStack.itemMeta = meta
+        return itemStack
     }
 
     /**
      * インベントリに配置するオブジェクト
      * ItemStackとクリック時の処理を保持する
      */
-    protected class InvItem {
-
-        protected ItemStack item;
-
-        private Consumer<InventoryClickEvent> onClick;
-
-        public InvItem(ItemStack item, Consumer<InventoryClickEvent> onClick) {
-            this.item = item;
-            this.onClick = onClick;
-        }
-
-        protected void onClick(InventoryClickEvent event) {
-            onClick.accept(event);
+    protected inner class InvItem(var item: ItemStack, private val onClick: Consumer<InventoryClickEvent>) {
+        fun onClick(event: InventoryClickEvent) {
+            onClick.accept(event)
         }
     }
 }
