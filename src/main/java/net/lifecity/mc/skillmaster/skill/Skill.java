@@ -22,17 +22,14 @@ import java.util.List;
  */
 public class Skill {
 
-    @Getter
     protected final String name;
 
     protected List<Weapon> weaponList;
 
-    @Getter
     protected final SkillType type;
 
     protected final List<String> lore;
 
-    @Setter
     protected int id = 0;
 
     protected final int point;
@@ -41,7 +38,6 @@ public class Skill {
 
     protected final SkillUser user;
 
-    @Getter
     protected boolean inInterval = false;
 
     protected Skill(String name, List<Weapon> weaponList, SkillType type, List<String> lore, int point, int interval, SkillUser user) {
@@ -166,6 +162,26 @@ public class Skill {
      */
     public boolean is(Skill other) {
         return id == other.id;
+    }
+
+    public boolean isInInterval() {
+        return inInterval;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SkillType getType() {
+        return type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /*
