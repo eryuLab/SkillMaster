@@ -1,4 +1,5 @@
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version "1.6.20"
     id 'java'
 }
 
@@ -25,6 +26,7 @@ repositories {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-wasm:1.6.20"
     compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
 
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT'
@@ -39,6 +41,10 @@ dependencies {
     annotationProcessor "dev.jorel:commandapi-annotations:8.4.1"
 
     implementation 'commons-io:commons-io:2.11.0'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
 }
 
 def targetJavaVersion = 17
