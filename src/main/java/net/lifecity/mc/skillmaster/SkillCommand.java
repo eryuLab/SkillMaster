@@ -1,13 +1,12 @@
 package net.lifecity.mc.skillmaster;
 
 import dev.jorel.commandapi.annotations.Command;
+import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
-import dev.jorel.commandapi.annotations.arguments.AStringArgument;
-import net.lifecity.mc.skillmaster.game.stage.GameStage;
-import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
 import net.lifecity.mc.skillmaster.game.games.Duel;
+import net.lifecity.mc.skillmaster.game.stage.GameStage;
 import net.lifecity.mc.skillmaster.inventory.SkillInventory;
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
 import net.lifecity.mc.skillmaster.user.SkillUser;
@@ -15,10 +14,28 @@ import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @Command("skill")
 public class SkillCommand {
+
+    private static final String[] helpMsgList = {
+            "======== " + ChatColor.RED + "Skill" + ChatColor.WHITE + "-" + ChatColor.YELLOW + "Command" + ChatColor.WHITE + "-" + ChatColor.BLUE + "Help" + ChatColor.WHITE + " ========",
+            "/skill weapon [武器] -> 武器を取得します。",
+            "/skill mode [モード] -> 自身のモードを変更します。",
+            "/skill menu [メニュー] -> メニューを開きます。",
+            "/skill duel [マップ] [プレイヤー1] [プレイヤー2] -> マップと2人のプレイヤーを指定してデュエルゲームを開始します。",
+            "すべてプレイヤー用のコマンドです。コンソールからは入力しないでください。",
+            "================"
+    };
+
+    @Default
+    public static void skill(CommandSender sender) {
+        for (String msg : helpMsgList) {
+            sender.sendMessage(msg);
+        }
+    }
 
     @Subcommand("weapon")
     public static void weapon(Player player, @AMultiLiteralArgument({
