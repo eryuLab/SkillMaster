@@ -1,5 +1,10 @@
 package net.lifecity.mc.skillmaster.skill
 
+import com.github.syari.spigot.api.item.customModelData
+import com.github.syari.spigot.api.item.displayName
+import com.github.syari.spigot.api.item.editLore
+import com.github.syari.spigot.api.item.hasLore
+import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -41,19 +46,17 @@ open class Skill protected constructor(
 
         // インターバル中にする
         inInterval = true
-        object : BukkitRunnable() {
-            var count = 0
-            override fun run() {
-                if (!inInterval) {
-                    cancel()
-                }
-                if (count >= interval) {
-                    inInterval = false
-                    cancel()
-                }
-                count++
+        var count = 0
+        SkillMaster.instance.runTaskTimer(1) {
+            if (!inInterval) {
+                cancel()
             }
-        }.runTaskTimer(SkillMaster.instance, 0, 1)
+            if (count >= interval) {
+                inInterval = false
+                cancel()
+            }
+            count++
+        }
     }
 
     /**
@@ -76,20 +79,19 @@ open class Skill protected constructor(
      */
     fun toItemStack(): ItemStack {
         val item = ItemStack(Material.ARROW)
-        val meta = item.itemMeta
-        meta.setDisplayName(name)
-        val lore: MutableList<String> = ArrayList()
-        lore.add(ChatColor.WHITE.toString() + "武器: ")
-        for (weapon in weaponList) {
-            lore.add(ChatColor.WHITE.toString() + weapon.jp)
+        item.displayName = name
+        item.editLore {
+            add(ChatColor.WHITE.toString() + "武器: ")
+            for (weapon in weaponList) {
+                add(ChatColor.WHITE.toString() + weapon.jp)
+            }
+            add(ChatColor.WHITE.toString() + "タイプ: " + type)
+            for (str in this) {
+                add(ChatColor.WHITE.toString() + str)
+            }
         }
-        lore.add(ChatColor.WHITE.toString() + "タイプ: " + type)
-        for (str in this.lore) {
-            lore.add(ChatColor.WHITE.toString() + str)
-        }
-        meta.lore = lore
-        meta.setCustomModelData(id)
-        item.itemMeta = meta
+        item.customModelData = id
+
         return item
     }
 
