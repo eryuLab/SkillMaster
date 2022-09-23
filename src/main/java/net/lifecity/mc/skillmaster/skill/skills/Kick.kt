@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.skill.skills
 
+import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.Skill
@@ -36,7 +37,9 @@ class Kick(user: SkillUser?) : Skill(
             SkillMaster.instance.runTaskTimer(1) {
                 if (count >= 12) cancel()
                 if (entity.velocity.length() <= 0.4) cancel()
-                particle(Particle.FALLING_DUST, entity.location.add(0.0, 1.0, 0.0), Material.ICE.createBlockData())
+
+                val loc = entity.location.add(0.0, 1.0, 0.0)
+                loc.spawnParticle(Particle.FALLING_DUST, data = Material.ICE.createBlockData())
                 count++
             }
         }

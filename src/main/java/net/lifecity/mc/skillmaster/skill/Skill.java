@@ -107,16 +107,6 @@ public class Skill {
     }
 
     /**
-     * パーティクルを表示します
-     * @param particle 表示するパーティクル
-     * @param location 表示する位置
-     * @param blockData パーティクルのデータ
-     */
-    protected void particle(Particle particle, Location location, BlockData blockData) {
-        user.getPlayer().getWorld().spawnParticle(particle, location, 1, blockData);
-    }
-
-    /**
      * 引数の武器が使用可能かを返します
      * @param weapon この武器が使えるか確かめます
      * @return 武器が使えるかどうか
