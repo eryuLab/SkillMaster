@@ -9,8 +9,6 @@ import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.scheduler.BukkitRunnable
-import java.util.*
 
 /**
  * 敵を蹴り飛ばすスキル
