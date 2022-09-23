@@ -1,59 +1,55 @@
-package net.lifecity.mc.skillmaster.utils;
+package net.lifecity.mc.skillmaster.utils
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-
-import java.util.List;
+import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 
 /**
  * Entityのリストをプレイヤーから近い順に並べ替えるクラス
  */
-public class EntityDistanceSort {
-
-    private static void swap(List<Entity> list, int i, int j) {
-        Entity entity = list.get(i);
-        list.set(i, list.get(j));
-        list.set(j, entity);
+object EntityDistanceSort {
+    private fun swap(list: MutableList<Entity>, i: Int, j: Int) {
+        val entity = list[i]
+        list[i] = list[j]
+        list[j] = entity
     }
 
-    private static int partition(Player player, List<Entity> list, int start, int end) {
+    private fun partition(player: Player, list: MutableList<Entity>, start: Int, end: Int): Int {
         //アレイからピボットとして右端の要素を選択します
-        Entity pivot = list.get(end);
+        val pivot = list[end]
 
         //ピボットよりも小さい要素は`pIndex`の左側にプッシュされます
         //ピボットよりも多くの要素が`pIndex`の右側にプッシュされます
         //等しい要素はどちらの方向にも進むことができます
-        int pIndex = start;
+        var pIndex = start
 
         //ピボット以下の要素が見つかるたびに、
         // `pIndex`がインクリメントされ、その要素が配置されます
         //ピボットの前。
-        for (int i = start; i < end; i++) {
-            if (player.getLocation().distance(list.get(i).getLocation()) <= player.getLocation().distance(pivot.getLocation())) {
-                swap(list, i, pIndex);
-                pIndex++;
+        for (i in start until end) {
+            if (player.location.distance(list[i].location) <= player.location.distance(pivot.location)) {
+                swap(list, i, pIndex)
+                pIndex++
             }
         }
 
         //`pIndex`をピボットと交換します
-        swap(list, end, pIndex);
+        swap(list, end, pIndex)
 
         // `pIndex`(ピボット要素のインデックス)を返します
-        return pIndex;
+        return pIndex
     }
 
-    public static void quicksort(Player player, List<Entity> list, int start, int end) {
+    fun quicksort(player: Player, list: MutableList<Entity>, start: Int, end: Int) {
         //基本条件
-        if (start >= end)
-            return;
+        if (start >= end) return
 
         //ピボット全体で要素を再配置します
-        int pivot = partition(player, list, start, end);
+        val pivot = partition(player, list, start, end)
 
         //ピボットよりも小さい要素を含むサブアレイで繰り返します
-        quicksort(player, list, start, pivot - 1);
+        quicksort(player, list, start, pivot - 1)
 
         //ピボット以外の要素を含むサブアレイで繰り返します
-        quicksort(player, list, pivot + 1, end);
+        quicksort(player, list, pivot + 1, end)
     }
 }
