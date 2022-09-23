@@ -1,25 +1,21 @@
-package net.lifecity.mc.skillmaster.user;
+package net.lifecity.mc.skillmaster.user
 
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
+import org.bukkit.entity.Player
 
 /**
  * スキルユーザーを管理するためのリストクラス
  */
-public class SkillUserList extends ArrayList<SkillUser> {
-
+class SkillUserList : ArrayList<SkillUser>() {
     /**
      * PlayerのUUIDが一致するSkillUserを取得します
      * @param player このプレイヤーのUUIDを使用します
      * @return UUIDが一致したSkillUserまたはnull
      */
-    public SkillUser get(Player player) {
-        for (SkillUser user : this) {
-            if (user.match(player))
-                return user;
+    operator fun get(player: Player?): SkillUser? {
+        for (user in this) {
+            if (user.match(player)) return user
         }
-        return null;
+        return null
     }
 
     /**
@@ -27,17 +23,17 @@ public class SkillUserList extends ArrayList<SkillUser> {
      * @param player 対象となるPlayer
      * @return リストにPlayerが入っているか
      */
-    public boolean contains(Player player) {
-        return get(player) != null;
+    operator fun contains(player: Player): Boolean {
+        return get(player) != null
     }
 
     /**
      * プレイヤーをSkillUserとしてリストに追加します
      * @param player 追加するPlayer
      */
-    public void add(Player player) {
+    fun add(player: Player) {
         if (!contains(player)) {
-            add(new SkillUser(player, UserMode.BATTLE));
+            add(SkillUser(player, UserMode.BATTLE))
         }
     }
 
@@ -45,8 +41,8 @@ public class SkillUserList extends ArrayList<SkillUser> {
      * Playerが一致するSkillUserを削除します
      * @param player 対象となるPlayer
      */
-    public void remove(Player player) {
-        SkillUser user = get(player);
-        if (user != null) remove(user);
+    fun remove(player: Player) {
+        val user = get(player)
+        user?.let { remove(it) }
     }
 }
