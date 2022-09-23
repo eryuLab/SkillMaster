@@ -13,7 +13,7 @@ import java.util.*
 /**
  * 上に高く飛び上がるスキル
  */
-class HighJump(user: SkillUser?) : Skill(
+class HighJump(user: SkillUser) : Skill(
     "大ジャンプ",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
     SkillType.MOVE,

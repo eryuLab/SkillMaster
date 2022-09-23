@@ -10,7 +10,7 @@ import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
 
-class MoveFast(user: SkillUser?) : Skill(
+class MoveFast(user: SkillUser) : Skill(
     "高速移動",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
     SkillType.MOVE,

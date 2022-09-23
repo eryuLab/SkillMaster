@@ -16,7 +16,7 @@ import java.util.*
 /**
  * 前方に突進しながら敵を攻撃するスキル
  */
-class LeafFlow(user: SkillUser?) : SeparatedSkill(
+class LeafFlow(user: SkillUser) : SeparatedSkill(
     "リーフフロー",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
     SkillType.ATTACK,

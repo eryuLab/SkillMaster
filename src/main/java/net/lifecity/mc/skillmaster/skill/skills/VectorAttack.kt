@@ -12,7 +12,7 @@ import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.block.data.BlockData
 
-class VectorAttack(user: SkillUser?) : Skill(
+class VectorAttack(user: SkillUser) : Skill(
     "ベクトルアタック",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD, Weapon.MACE),
     SkillType.ATTACK,

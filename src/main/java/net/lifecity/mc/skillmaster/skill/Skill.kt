@@ -1,99 +1,72 @@
-package net.lifecity.mc.skillmaster.skill;
+package net.lifecity.mc.skillmaster.skill
 
-import lombok.Getter;
-import lombok.Setter;
-import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.user.SkillUser;
-import net.lifecity.mc.skillmaster.weapon.Weapon;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter
+import lombok.Setter
+import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.ChatColor
+import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.Particle
+import org.bukkit.inventory.ItemStack
+import org.bukkit.scheduler.BukkitRunnable
 
 /**
  * すべてのスキルのスーパークラス
  */
-public class Skill {
-
-    @Getter
-    protected final String name;
-
-    protected List<Weapon> weaponList;
-
-    @Getter
-    protected final SkillType type;
-
-    protected final List<String> lore;
-
+open class Skill protected constructor(
+    @field:Getter protected val name: String,
+    var weaponList: List<Weapon>,
+    @field:Getter protected val type: SkillType,
+    protected val lore: List<String>,
+    protected val point: Int,
+    protected val interval: Int,
+    protected val user: SkillUser
+) {
     @Setter
-    protected int id = 0;
-
-    protected final int point;
-
-    protected final int interval;
-
-    protected final SkillUser user;
+    protected var id = 0
 
     @Getter
-    protected boolean inInterval = false;
-
-    protected Skill(String name, List<Weapon> weaponList, SkillType type, List<String> lore, int point, int interval, SkillUser user) {
-        this.name = name;
-        this.weaponList = weaponList;
-        this.type = type;
-        this.lore = lore;
-        this.point = point;
-        this.interval = interval;
-        this.user = user;
-    }
+    protected var inInterval = false
 
     /**
      * スキルを発動します
      */
-    public void activate() {
+    open fun activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
-
-        deactivate();
+        user.sendActionBar(ChatColor.DARK_AQUA.toString() + "スキル『" + name + "』発動")
+        deactivate()
     }
 
     /**
      * スキルを終了し、インターバルタイマーを起動します
      */
-    public void deactivate() {
-        if (inInterval)
-            return;
+    open fun deactivate() {
+        if (inInterval) return
 
         // インターバル中にする
-        inInterval = true;
-
-        new BukkitRunnable() {
-            int count = 0;
-            @Override
-            public void run() {
+        inInterval = true
+        object : BukkitRunnable() {
+            var count = 0
+            override fun run() {
                 if (!inInterval) {
-                    cancel();
+                    cancel()
                 }
                 if (count >= interval) {
-                    inInterval = false;
-                    cancel();
+                    inInterval = false
+                    cancel()
                 }
-                count++;
+                count++
             }
-        }.runTaskTimer(SkillMaster.instance, 0, 1);
+        }.runTaskTimer(SkillMaster.instance, 0, 1)
     }
 
     /**
      * スキルの状態を初期化します
      */
-    public void init() {
-        inInterval = false;
+    open fun init() {
+        inInterval = false
     }
 
     /**
@@ -101,49 +74,40 @@ public class Skill {
      * @param particle 表示するパーティクル
      * @param location 表示する位置
      */
-    protected void particle(Particle particle, Location location) {
-        user.getPlayer().getWorld().spawnParticle(particle, location, 1);
+    protected fun particle(particle: Particle?, location: Location?) {
+        user.player.world.spawnParticle(particle!!, location!!, 1)
     }
-
 
     /**
      * 引数の武器が使用可能かを返します
      * @param weapon この武器が使えるか確かめます
      * @return 武器が使えるかどうか
      */
-    public boolean usable(Weapon weapon) {
-        return this.weaponList.contains(weapon);
+    fun usable(weapon: Weapon): Boolean {
+        return weaponList.contains(weapon)
     }
 
     /**
      * このスキルをItemStackとして現します
      * @return ItemStackになったスキル
      */
-    public ItemStack toItemStack() {
-        ItemStack item = new ItemStack(Material.ARROW);
-
-        ItemMeta meta = item.getItemMeta();
-
-        meta.setDisplayName(name);
-
-        List<String> lore = new ArrayList<>();
-
-        lore.add(ChatColor.WHITE + "武器: ");
-        for (Weapon weapon : weaponList) {
-            lore.add(ChatColor.WHITE + weapon.getJp());
+    fun toItemStack(): ItemStack {
+        val item = ItemStack(Material.ARROW)
+        val meta = item.itemMeta
+        meta.setDisplayName(name)
+        val lore: MutableList<String> = ArrayList()
+        lore.add(ChatColor.WHITE.toString() + "武器: ")
+        for (weapon in weaponList) {
+            lore.add(ChatColor.WHITE.toString() + weapon.jp)
         }
-        lore.add(ChatColor.WHITE + "タイプ: " + type);
-        for (String str : this.lore) {
-            lore.add(ChatColor.WHITE + str);
+        lore.add(ChatColor.WHITE.toString() + "タイプ: " + type)
+        for (str in this.lore) {
+            lore.add(ChatColor.WHITE.toString() + str)
         }
-
-        meta.setLore(lore);
-
-        meta.setCustomModelData(id);
-
-        item.setItemMeta(meta);
-
-        return item;
+        meta.lore = lore
+        meta.setCustomModelData(id)
+        item.itemMeta = meta
+        return item
     }
 
     /**
@@ -151,12 +115,9 @@ public class Skill {
      * @param itemStack 比較するアイテム
      * @return 一致したらtrue
      */
-    public boolean is(ItemStack itemStack) {
-        if (!itemStack.hasItemMeta())
-            return false;
-        if (!itemStack.getItemMeta().hasCustomModelData())
-            return false;
-        return id == itemStack.getItemMeta().getCustomModelData();
+    fun `is`(itemStack: ItemStack): Boolean {
+        if (!itemStack.hasItemMeta()) return false
+        return if (!itemStack.itemMeta.hasCustomModelData()) false else id == itemStack.itemMeta.customModelData
     }
 
     /**
@@ -164,11 +125,9 @@ public class Skill {
      * @param other 比較するスキル
      * @return 一致するかどうか
      */
-    public boolean is(Skill other) {
-        return id == other.id;
-    }
-
-    /*
+    fun `is`(other: Skill): Boolean {
+        return id == other.id
+    } /*
       このスキルのIDを取得します
       @return スキルのID
      */

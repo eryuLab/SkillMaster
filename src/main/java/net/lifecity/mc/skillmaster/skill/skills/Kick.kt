@@ -14,7 +14,7 @@ import org.bukkit.Sound
 /**
  * 敵を蹴り飛ばすスキル
  */
-class Kick(user: SkillUser?) : Skill(
+class Kick(user: SkillUser) : Skill(
     "蹴り",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
     SkillType.ATTACK,

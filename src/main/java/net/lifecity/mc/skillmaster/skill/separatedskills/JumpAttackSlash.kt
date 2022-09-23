@@ -16,7 +16,7 @@ import java.util.*
 /**
  * 飛び上がり、地面に向かって突撃するスキル
  */
-class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
+class JumpAttackSlash(user: SkillUser) : SeparatedSkill(
     "ジャンプアタック",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.LONG_SWORD),
     SkillType.ATTACK,

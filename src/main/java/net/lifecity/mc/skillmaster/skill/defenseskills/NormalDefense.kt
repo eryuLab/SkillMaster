@@ -15,7 +15,7 @@ import java.util.*
 /**
  * 敵からの攻撃を一定時間完全に防御するスキル
  */
-class NormalDefense(user: SkillUser?) : DefenseSkill(
+class NormalDefense(user: SkillUser) : DefenseSkill(
     "通常防御",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD),
     listOf("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"),

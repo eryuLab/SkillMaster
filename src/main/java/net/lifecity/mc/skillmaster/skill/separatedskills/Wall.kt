@@ -13,7 +13,7 @@ import java.io.File
 import java.io.IOException
 import kotlin.math.roundToInt
 
-class Wall(user: SkillUser?) : SeparatedSkill(
+class Wall(user: SkillUser) : SeparatedSkill(
     "ウォール",
     listOf(
         Weapon.STRAIGHT_SWORD,
