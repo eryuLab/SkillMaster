@@ -95,10 +95,12 @@ class LeafFlow(user: SkillUser) : SeparatedSkill(
         // エフェクト
         if (b) {
             for (i in 0..2) {
-                particle(Particle.SWEEP_ATTACK, user.getNearEntities(1.8)[0].location.add(0.0, 2.0, 0.0))
+                val loc =  user.getNearEntities(1.8)[0].location.add(0.0, 2.0, 0.0)
+                loc.spawnParticle(Particle.SWEEP_ATTACK)
             }
             for (i in 0..5) {
-                particle(Particle.FLAME, user.player.location.add(randomLocation(0.3)))
+                val loc = user.player.location.add(randomLocation(0.3))
+                loc.spawnParticle(Particle.FLAME)
             }
         }
 
