@@ -99,8 +99,8 @@ open class Skill protected constructor(
      * @return 一致したらtrue
      */
     fun `is`(itemStack: ItemStack): Boolean {
-        if (!itemStack.hasItemMeta()) return false
-        return if (!itemStack.itemMeta.hasCustomModelData()) false else id == itemStack.itemMeta.customModelData
+        val customModelData = itemStack.customModelData ?: return false
+        return id == customModelData
     }
 
     /**
@@ -108,9 +108,8 @@ open class Skill protected constructor(
      * @param other 比較するスキル
      * @return 一致するかどうか
      */
-    fun `is`(other: Skill): Boolean {
-        return id == other.id
-    } /*
+    fun `is`(other: Skill): Boolean = id == other.id
+     /*
       このスキルのIDを取得します
       @return スキルのID
      */
