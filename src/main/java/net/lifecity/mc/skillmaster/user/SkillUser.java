@@ -199,7 +199,7 @@ public class SkillUser {
         }
 
         // インターバル確認
-        if (skill.isInInterval())
+        if (skill.getInInterval())
             return;
 
         // 複合スキルの場合
@@ -214,7 +214,7 @@ public class SkillUser {
             }
 
             // 発動中だったら追加入力
-            if (separatedSkill.isActivated()) {
+            if (separatedSkill.getActivated()) {
                 separatedSkill.additionalInput();
                 return;
             }
@@ -235,7 +235,7 @@ public class SkillUser {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
-                if (combinedSkill.isActivated())
+                if (combinedSkill.getActivated())
                     return combinedSkill;
             }
         }
@@ -244,7 +244,7 @@ public class SkillUser {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
-                if (combinedSkill.isActivated())
+                if (combinedSkill.getActivated())
                     return combinedSkill;
             }
         }
@@ -253,7 +253,7 @@ public class SkillUser {
             if (skill == null)
                 continue;
             if (skill instanceof SeparatedSkill combinedSkill) {
-                if (combinedSkill.isActivated())
+                if (combinedSkill.getActivated())
                     return combinedSkill;
             }
         }

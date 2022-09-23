@@ -55,7 +55,7 @@ public class SkillManager {
         List<Skill> list = new ArrayList<>();
 
         for (Skill skill : skillList) {
-            if (skill.weaponList.contains(weapon))
+            if (skill.getWeaponList().contains(weapon))
                 list.add(skill);
         }
         return list;

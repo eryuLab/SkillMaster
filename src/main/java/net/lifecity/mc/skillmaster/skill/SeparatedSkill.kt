@@ -1,93 +1,85 @@
-package net.lifecity.mc.skillmaster.skill;
+package net.lifecity.mc.skillmaster.skill
 
-import lombok.Getter;
-import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.user.SkillUser;
-import net.lifecity.mc.skillmaster.weapon.Weapon;
-import org.bukkit.ChatColor;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
+import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.ChatColor
+import org.bukkit.scheduler.BukkitRunnable
 
 /**
  * 発動中の時間を計るスキルのスーパークラス
  */
-public abstract class SeparatedSkill extends Skill {
-
-    protected final int activationTime;
-
-    @Getter
-    protected boolean activated = false;
-
-    protected SeparatedSkill(String name, List<Weapon> weaponList, SkillType type, List<String> lore, int point, int activationTime, int interval, SkillUser user) {
-        super(name, weaponList, type, lore, point, interval, user);
-        this.activationTime = activationTime;
-    }
+abstract class SeparatedSkill protected constructor(
+    name: String,
+    weaponList: List<Weapon>,
+    type: SkillType,
+    lore: List<String>,
+    point: Int,
+    protected val activationTime: Int,
+    interval: Int,
+    user: SkillUser
+) : Skill(
+    name, weaponList, type, lore, point, interval, user
+) {
+    var activated = false
 
     /**
      * スキルを発動します
      */
-    public void activate() {
+    override fun activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動");
+        user.sendActionBar(ChatColor.DARK_AQUA.toString() + "複合スキル『" + name + "』発動")
 
         // 発動中にする
-        activated = true;
+        activated = true
 
         // 終了処理
-        new ActivationTimer();
+        ActivationTimer()
     }
 
     /**
      * 発動している期間を計るクラス
      */
-    private class ActivationTimer extends BukkitRunnable {
+    private inner class ActivationTimer : BukkitRunnable() {
+        private var count = 0
 
-        private int count = 0;
-
-        public ActivationTimer() {
-            runTaskTimer(SkillMaster.instance, 0, 1);
+        init {
+            runTaskTimer(SkillMaster.instance, 0, 1)
         }
 
-        @Override
-        public void run() {
+        override fun run() {
             if (!activated) //発動中か確認
-                cancel();
-
+                cancel()
             if (count >= activationTime) { //カウント確認
-                deactivate();
-                cancel();
+                deactivate()
+                cancel()
             }
-
-            count++;
+            count++
         }
     }
 
     /**
      * 追加入力の処理
      */
-    public abstract void additionalInput();
+    abstract fun additionalInput()
 
     /**
      * スキルを終了します
      */
-    public void deactivate() {
+    override fun deactivate() {
         if (!activated) //発動していなかったら戻る
-            return;
-
-        activated = false; //非発動化する
+            return
+        activated = false //非発動化する
 
         // ログ
-        user.sendActionBar(ChatColor.RED + "複合スキル『" + name + "』終了");
+        user.sendActionBar(ChatColor.RED.toString() + "複合スキル『" + name + "』終了")
 
         //インターバル処理
-        super.deactivate();
+        super.deactivate()
     }
 
-    @Override
-    public void init() {
-        super.init();
-
-        activated = false;
+    override fun init() {
+        super.init()
+        activated = false
     }
 }

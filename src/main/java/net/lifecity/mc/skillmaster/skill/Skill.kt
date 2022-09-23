@@ -3,7 +3,6 @@ package net.lifecity.mc.skillmaster.skill
 import com.github.syari.spigot.api.item.customModelData
 import com.github.syari.spigot.api.item.displayName
 import com.github.syari.spigot.api.item.editLore
-import com.github.syari.spigot.api.item.hasLore
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -11,7 +10,6 @@ import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import org.bukkit.scheduler.BukkitRunnable
 
 /**
  * すべてのスキルのスーパークラス
