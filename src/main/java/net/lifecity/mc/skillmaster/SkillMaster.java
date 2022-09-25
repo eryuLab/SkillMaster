@@ -32,7 +32,7 @@ public final class SkillMaster extends JavaPlugin {
 
         CommandAPI.registerCommand(SkillCommand.class);
 
-        getServer().getPluginManager().registerEvents(new EventListener(), this);
+        EventListener.INSTANCE.register();
 
         userList = new SkillUserList();
 
