@@ -1,12 +1,10 @@
 package net.lifecity.mc.skillmaster.skill.separatedskills
 
-import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskLater
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
-import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
