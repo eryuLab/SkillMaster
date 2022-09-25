@@ -9,7 +9,6 @@ import net.lifecity.mc.skillmaster.skill.skills.HighJump;
 import net.lifecity.mc.skillmaster.skill.skills.Kick;
 import net.lifecity.mc.skillmaster.skill.skills.MoveFast;
 import net.lifecity.mc.skillmaster.skill.skills.VectorAttack;
-import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.inventory.ItemStack;
 

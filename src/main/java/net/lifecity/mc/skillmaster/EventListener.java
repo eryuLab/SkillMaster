@@ -5,7 +5,6 @@ import net.lifecity.mc.skillmaster.game.function.OnAttack;
 import net.lifecity.mc.skillmaster.game.function.OnDie;
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame;
 import net.lifecity.mc.skillmaster.inventory.UserInventory;
-import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Material;

@@ -2,7 +2,6 @@ package net.lifecity.mc.skillmaster.skill;
 
 import lombok.Getter;
 import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
