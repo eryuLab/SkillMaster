@@ -16,6 +16,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
 class SkillUser(
@@ -307,5 +308,13 @@ class SkillUser(
         EntityDistanceSort.quicksort(player, near, 0, near.size - 1)
 
         return near
+    }
+
+    /**
+     * メインハンドのアイテムを取得します
+     * @return メインハンドのアイテム
+     */
+    fun getHandItem(): ItemStack {
+        return player.inventory.itemInMainHand
     }
 }
