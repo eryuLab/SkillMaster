@@ -17,11 +17,19 @@ class SkillUser(
     var mode: UserMode = UserMode.TRAINING,
     var userInventory: UserInventory,
     var openedInventory: InventoryFrame? = null,
-    var selectedWeapon: Weapon = Weapon.STRAIGHT_SWORD,
     val rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
+    var selectedWeapon: Weapon = Weapon.STRAIGHT_SWORD
+    set(value) {
+        // スキルセットをリセット
+        val skillSetArray: Array<SkillSet> = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+        for (skillSet in skillSetArray)
+            skillSet.clean()
+
+        field = value
+    }
     init {
         //userInventory = UserInventory(this)
 
