@@ -96,4 +96,43 @@ class SkillUser(
                 player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
         }
     }
+
+    private fun skillInput(skill: Skill?, weapon: Weapon) {
+        // スキルが存在するか
+        if (skill == null) {
+            player.sendMessage("スキルがセットされていません")
+            return
+        }
+
+        // 持っている武器を確認
+        if (!skill.usable(weapon)) {
+            player.sendMessage("この武器ではこのスキルを使用できません")
+            return
+        }
+
+        // インターバル確認
+        if (!skill.isInInterval)
+            return
+
+        // 複合スキルのとき
+        if (skill is SeparatedSkill) {
+
+            // 現在の発動中スキルを取得
+            val activatedSkill: SeparatedSkill? = getActivatedSkill()
+
+            // 発動中スキルが発動しようとしてるスキルと同一でなければスキル解除
+            if (activatedSkill != null) {
+                if (activatedSkill != skill)
+                    activatedSkill.deactivate()
+            }
+
+            // 発動中だったら追加入力
+            if (skill.isActivated) {
+                skill.additionalInput()
+                return
+            }
+        }
+
+        skill.activate()
+    }
 }
