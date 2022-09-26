@@ -9,8 +9,11 @@ import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.user.skillset.SkillSet
+import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Sound
+import org.bukkit.entity.Damageable
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -213,6 +216,23 @@ class SkillUser(
             //val game = SkillMaster.instance.gameList.getFromUser(this)
             //if (game is OnAttack)
                 //game.onAttack(this)
+        }
+    }
+
+    fun attackEntity(entity: Entity, damage: Double, vector: Vector, sound: Sound) {
+        // SE再生
+        player.playSound(sound)
+
+        // トレーニングモード時は攻撃不可
+        if (mode == UserMode.TRAINING)
+            return
+
+        if (entity is Damageable) {
+            // 標的にダメージを与える
+            entity.damage(damage)
+
+            // 標的をノックバックさせる
+            entity.velocity.add(vector)
         }
     }
 }
