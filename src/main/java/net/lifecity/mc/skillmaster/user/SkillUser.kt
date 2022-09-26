@@ -50,10 +50,10 @@ class SkillUser(
         }
         field = value
     }
-    var selectedWeapon: Weapon = Weapon.STRAIGHT_SWORD
+    var selectedWeapon = Weapon.STRAIGHT_SWORD
     set(value) {
         // スキルセットをリセット
-        val skillSetArray: Array<SkillSet> = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
         for (skillSet in skillSetArray)
             skillSet.clean()
 
@@ -85,7 +85,7 @@ class SkillUser(
      */
     fun getActivatedSkill(): SeparatedSkill? {
         // スキルセットの配列を作成
-        val skillSetArray: Array<SkillSet> = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
         // 配列で繰り返し
         for (skillSet in skillSetArray) {
@@ -183,7 +183,7 @@ class SkillUser(
      * セット内のスキルを初期化
      */
     fun initSkills() {
-        val skillSetArray: Array<SkillSet> = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
         for (skillSet in skillSetArray) {
             for (skillKey in skillSet.keyList) {
