@@ -1,22 +1,19 @@
 package net.lifecity.mc.skillmaster.user
 
+import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
-import net.lifecity.mc.skillmaster.inventory.UserInventory
-import net.lifecity.mc.skillmaster.playSound
 import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
-import net.lifecity.mc.skillmaster.user.skillset.SkillSet
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Sound
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
 class SkillUser(
@@ -127,7 +124,7 @@ class SkillUser(
             card.index++
 
             // SE再生
-            player.playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW)
+            player.location.playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW)
 
             // ログ出力
             val skill: Skill? = card.now()
@@ -227,7 +224,7 @@ class SkillUser(
      */
     private fun attackUser(user: SkillUser, damage: Double, vector: Vector, sound: Sound) {
         // SE再生
-        player.playSound(sound)
+        player.location.playSound(sound)
 
         // トレーニングモード時は攻撃不可
         if (mode == UserMode.TRAINING)
@@ -252,7 +249,7 @@ class SkillUser(
      */
     private fun attackEntity(entity: Entity, damage: Double, vector: Vector, sound: Sound) {
         // SE再生
-        player.playSound(sound)
+        player.location.playSound(sound)
 
         // トレーニングモード時は攻撃不可
         if (mode == UserMode.TRAINING)
