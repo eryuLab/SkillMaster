@@ -7,4 +7,13 @@ data class SkillSet(
         SkillKey(button, 1, null),
         SkillKey(button, 2, null)
     )
-)
+) {
+    /**
+     * セットされているスキルをリセットします
+     */
+    fun clean() {
+        for (skillKey in keyList) {
+            skillKey.skill = null
+        }
+    }
+}
