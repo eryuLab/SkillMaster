@@ -8,6 +8,7 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillSet
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.entity.Player
+import org.bukkit.util.Vector
 
 class SkillUser(
     val player: Player,
@@ -35,7 +36,11 @@ class SkillUser(
      * 発動中のスキルの解除と、自身のベクトルを0にする
      */
     fun leftClick() {
+        // 発動中のスキルを解除
+        getActivatedSkill()?.deactivate()
 
+        // プレイヤーのベクトルを0にする
+        player.velocity = Vector(0.0, player.velocity.y, 0.0)
     }
 
     /**
