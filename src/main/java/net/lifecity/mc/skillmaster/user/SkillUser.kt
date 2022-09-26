@@ -5,6 +5,7 @@ import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
+import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.user.skillset.SkillSet
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.entity.Player
@@ -16,12 +17,9 @@ class SkillUser(
     var userInventory: UserInventory,
     var openedInventory: InventoryFrame? = null,
     var selectedWeapon: Weapon = Weapon.STRAIGHT_SWORD,
-    val rightSkillSet: SkillSet = SkillSet(SkillButton.RIGHT),
-    val swapSkillSet: SkillSet = SkillSet(SkillButton.SWAP),
-    val dropSkillSet: SkillSet = SkillSet(SkillButton.DROP),
-    var rightIndex: Int = 0,
-    var swapIndex: Int = 0,
-    var dropIndex: Int = 0
+    val rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
+    val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
+    val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
     init {
         //userInventory = UserInventory(this)
@@ -49,7 +47,7 @@ class SkillUser(
      */
     fun getActivatedSkill(): SeparatedSkill? {
         // スキルセットの配列を作成
-        val skillSetArray: Array<SkillSet> = arrayOf(rightSkillSet, swapSkillSet, dropSkillSet)
+        val skillSetArray: Array<SkillSet> = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
         // 配列で繰り返し
         for (skillSet in skillSetArray) {
@@ -67,5 +65,13 @@ class SkillUser(
             }
         }
         return null
+    }
+
+    /**
+     * 右クリックを入力した時の処理
+     * 右クリックスキルの発動、追加入力、またはスキルセット番号の変更
+     */
+    fun rightClick() {
+
     }
 }
