@@ -8,6 +8,7 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.user.skillset.SkillSet
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -68,10 +69,31 @@ class SkillUser(
     }
 
     /**
-     * 右クリックを入力した時の処理
-     * 右クリックスキルの発動、追加入力、またはスキルセット番号の変更
+     * スキルボタンを入力した時の処理
+     * スキルの発動、追加入力、またはスキルセット番号の変更
      */
-    fun rightClick() {
+    fun buttonInput(button: SkillButton) {
+        // スキルカード特定
+        val card: SkillCard = when(button) {
+            SkillButton.RIGHT -> rightCard
+            SkillButton.SWAP -> swapCard
+            SkillButton.DROP -> dropCard
+        }
 
+        // シフトが押されているときスキルセット番号変更
+        if (player.isSneaking) {
+            // セット番号の変更
+            card.index++
+
+            // SE再生
+            //playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW)
+
+            // ログ出力
+            val skill: Skill? = card.now()
+            if (skill == null)
+                player.sendMessage("${card.button.jp}[${card.index}]はスキルがセットされていません")
+            else
+                player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
+        }
     }
 }
