@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.user
 
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
+import net.lifecity.mc.skillmaster.playSound
 import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
@@ -117,7 +118,7 @@ class SkillUser(
             card.index++
 
             // SE再生
-            //playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW)
+            player.playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW)
 
             // ログ出力
             val skill: Skill? = card.now()
@@ -199,7 +200,7 @@ class SkillUser(
 
     fun attackUser(user: SkillUser, damage: Double, vector: Vector, sound: Sound) {
         // SE再生
-        //player.playSound(sound)
+        player.playSound(sound)
 
         // トレーニングモード時は攻撃不可
         if (mode == UserMode.TRAINING)
