@@ -28,37 +28,38 @@ class SkillUser(
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
     var mode: UserMode = UserMode.TRAINING
-    set(value) {
-        // バトルからトレーニング
-        if (mode == UserMode.BATTLE && value == UserMode.TRAINING) {
-            // 稼働中のスキルの初期化
-            initSkills()
-        }
-        // トレーニングからバトル
-        else if (mode == UserMode.TRAINING && value == UserMode.BATTLE) {
-            // 稼働中のスキルの初期化
+        set(value) {
+            // バトルからトレーニング
+            if (mode == UserMode.BATTLE && value == UserMode.TRAINING) {
+                // 稼働中のスキルの初期化
                 initSkills()
-        }
-        // 武装解除からバトル、トレーニング
-        else if (mode == UserMode.UNARMED && (value == UserMode.BATTLE || value == UserMode.TRAINING)) {
-            // インベントリの初期化
-            //userInventory = UserInventory(this)
+            }
+            // トレーニングからバトル
+            else if (mode == UserMode.TRAINING && value == UserMode.BATTLE) {
+                // 稼働中のスキルの初期化
+                initSkills()
+            }
+            // 武装解除からバトル、トレーニング
+            else if (mode == UserMode.UNARMED && (value == UserMode.BATTLE || value == UserMode.TRAINING)) {
+                // インベントリの初期化
+                //userInventory = UserInventory(this)
 
-            // HPの初期化
-            player.maxHealth = 40.0
-            player.health = 40.0
+                // HPの初期化
+                player.maxHealth = 40.0
+                player.health = 40.0
+            }
+            field = value
         }
-        field = value
-    }
     var selectedWeapon = Weapon.STRAIGHT_SWORD
-    set(value) {
-        // スキルセットをリセット
-        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
-        for (skillSet in skillSetArray)
-            skillSet.clean()
+        set(value) {
+            // スキルセットをリセット
+            val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+            for (skillSet in skillSetArray)
+                skillSet.clean()
 
-        field = value
-    }
+            field = value
+        }
+
     init {
         //userInventory = UserInventory(this)
 
@@ -91,7 +92,7 @@ class SkillUser(
         for (skillSet in skillSetArray) {
 
             // スキルセットのスキルリストで繰り返し
-            keyList@for (skillKey in skillSet.keyList) {
+            keyList@ for (skillKey in skillSet.keyList) {
                 // スキルがnullだったらcontinue
                 val skill: Skill = skillKey.skill ?: continue@keyList
 
@@ -112,7 +113,7 @@ class SkillUser(
      */
     fun buttonInput(button: SkillButton) {
         // スキルカード特定
-        val card: SkillCard = when(button) {
+        val card: SkillCard = when (button) {
             SkillButton.RIGHT -> rightCard
             SkillButton.SWAP -> swapCard
             SkillButton.DROP -> dropCard
@@ -236,7 +237,7 @@ class SkillUser(
             // ゲーム中のときGameのonAttack()を呼び出す
             //val game = SkillMaster.instance.gameList.getFromUser(this)
             //if (game is OnAttack)
-                //game.onAttack(this)
+            //game.onAttack(this)
         }
     }
 
