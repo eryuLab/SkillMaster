@@ -196,4 +196,22 @@ class SkillUser(
         player.damage(damage)
         player.velocity.add(vector)
     }
+
+    fun attackUser(user: SkillUser, damage: Double, vector: Vector, sound: Sound) {
+        // SE再生
+        //player.playSound(sound)
+
+        // トレーニングモード時は攻撃不可
+        if (mode == UserMode.TRAINING)
+            user.damage(0.0, Vector(0.0, 0.0, 0.0))
+        else {
+            // ダメージを与える
+            user.damage(damage, vector)
+
+            // ゲーム中のときGameのonAttack()を呼び出す
+            //val game = SkillMaster.instance.gameList.getFromUser(this)
+            //if (game is OnAttack)
+                //game.onAttack(this)
+        }
+    }
 }
