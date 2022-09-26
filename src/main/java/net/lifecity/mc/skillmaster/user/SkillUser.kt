@@ -14,13 +14,19 @@ import org.bukkit.util.Vector
 
 class SkillUser(
     val player: Player,
-    var mode: UserMode = UserMode.TRAINING,
     var userInventory: UserInventory,
     var openedInventory: InventoryFrame? = null,
     val rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
+    var mode: UserMode = UserMode.TRAINING
+    set(value) {
+        // バトルからトレーニング
+        if (mode == UserMode.BATTLE && mode == UserMode.TRAINING) {
+            // 稼働中のスキルの初期化
+        }
+    }
     var selectedWeapon: Weapon = Weapon.STRAIGHT_SWORD
     set(value) {
         // スキルセットをリセット
@@ -142,5 +148,18 @@ class SkillUser(
         }
 
         skill.activate()
+    }
+
+    /**
+     * セット内のスキルを初期化
+     */
+    fun initSkills() {
+        val skillSetArray: Array<SkillSet> = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+
+        for (skillSet in skillSetArray) {
+            for (skillKey in skillSet.keyList) {
+                skillKey.skill?.init()
+            }
+        }
     }
 }
