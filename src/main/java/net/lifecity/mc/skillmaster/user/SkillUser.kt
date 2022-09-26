@@ -314,15 +314,11 @@ class SkillUser(
      * メインハンドのアイテムを取得します
      * @return メインハンドのアイテム
      */
-    fun getHandItem(): ItemStack {
-        return player.inventory.itemInMainHand
-    }
+    fun getHandItem() = player.inventory.itemInMainHand
 
     /**
      * メインハンドの武器を取得します
      * @return メインハンドの武器
      */
-    fun getHandWeapon(): Weapon? {
-        return Weapon.fromItemStack(getHandItem())
-    }
+    fun getHandWeapon() = Weapon.fromItemStack(getHandItem())
 }
