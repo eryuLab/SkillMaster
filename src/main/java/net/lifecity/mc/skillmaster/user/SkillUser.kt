@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.user
 
+import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.playSound
@@ -236,7 +237,30 @@ class SkillUser(
         }
     }
 
-    fun nearEntities(radius: Double): List<Entity> {
+    fun attackNearest(radius: Double, damage: Double, vector: Vector, sound: Sound): Boolean {
+        // 一番近くのエンティティを取得
+        val entities = getNearEntities(radius)
+
+        if (entities.isEmpty())
+            return false
+
+        val entity = entities[0]
+
+        // プレイヤーだった時の処理
+        if (entity is Player) {
+            val user = SkillMaster.instance.userList[entity] ?: return false
+
+            // 攻撃
+            attackUser(user, damage, vector, sound)
+        }
+        // プレイヤー以外の時の処理
+        else {
+            attackEntity(entity, damage, vector, sound)
+        }
+        return true
+    }
+
+    fun getNearEntities(radius: Double): List<Entity> {
         // 半径radiusで近くのentityのリストを取得
         val near = player.getNearbyEntities(radius, radius, radius)
 
