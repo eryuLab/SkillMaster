@@ -235,4 +235,14 @@ class SkillUser(
             entity.velocity.add(vector)
         }
     }
+
+    fun nearEntities(radius: Double): List<Entity> {
+        // 半径radiusで近くのentityのリストを取得
+        val near = player.getNearbyEntities(radius, radius, radius)
+
+        // リストを近い順に並べる
+        EntityDistanceSort.quicksort(player, near, 0, near.size - 1)
+
+        return near
+    }
 }
