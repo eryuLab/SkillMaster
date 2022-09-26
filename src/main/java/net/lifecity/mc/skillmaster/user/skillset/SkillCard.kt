@@ -7,11 +7,11 @@ data class SkillCard(
     val skillSet: SkillSet = SkillSet(button)
 ) {
     var index: Int = 0
-    set(value) {
-        if (value == skillSet.keyList.size)
-            field = 0
-        field = value
-    }
+        set(value) {
+            if (value == skillSet.keyList.size)
+                field = 0
+            field = value
+        }
 
     fun now(): Skill? {
         return skillSet.keyList[index].skill
