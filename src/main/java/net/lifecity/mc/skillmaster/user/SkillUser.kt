@@ -107,6 +107,7 @@ class SkillUser(
     /**
      * スキルボタンを入力した時の処理
      * スキルの発動、追加入力、またはスキルセット番号の変更
+     * @param button スキルボタン
      */
     fun buttonInput(button: SkillButton) {
         // スキルカード特定
@@ -133,6 +134,11 @@ class SkillUser(
         }
     }
 
+    /**
+     * スキルを発動、または追加入力する
+     * @param skill スキル
+     * @param weapon 手に持っている武器
+     */
     private fun skillInput(skill: Skill?, weapon: Weapon) {
         // スキルが存在するか
         if (skill == null) {
@@ -185,6 +191,12 @@ class SkillUser(
         }
     }
 
+    /**
+     * このSkillUserへの攻撃を試みます
+     * ただし、防御されるかもしれません
+     * @param damage 攻撃の威力
+     * @param vector ノックバックの力
+     */
     private fun damage(damage: Double, vector: Vector) {
         // 防御スキル取得
         val activatedSkill: SeparatedSkill? = getActivatedSkill()
@@ -202,7 +214,14 @@ class SkillUser(
         player.velocity.add(vector)
     }
 
-    fun attackUser(user: SkillUser, damage: Double, vector: Vector, sound: Sound) {
+    /**
+     * 指定したユーザーを攻撃します
+     * @param user 指定したユーザー
+     * @param damage ダメージ
+     * @param vector ノックバック
+     * @param sound SE
+     */
+    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, sound: Sound) {
         // SE再生
         player.playSound(sound)
 
@@ -220,7 +239,14 @@ class SkillUser(
         }
     }
 
-    fun attackEntity(entity: Entity, damage: Double, vector: Vector, sound: Sound) {
+    /**
+     * 指定したエンティティを攻撃します
+     * @param entity 指定したエンティティ
+     * @param damage ダメージ
+     * @param vector ノックバック
+     * @param sound SE
+     */
+    private fun attackEntity(entity: Entity, damage: Double, vector: Vector, sound: Sound) {
         // SE再生
         player.playSound(sound)
 
@@ -237,6 +263,14 @@ class SkillUser(
         }
     }
 
+    /**
+     * 一番近いEntityを攻撃します
+     * @param radius この半径以内のエンティティに攻撃します
+     * @param damage ダメージ
+     * @param vector ノックバック
+     * @param sound SE
+     * @return 攻撃が成功するとtrueを返します
+     */
     fun attackNearest(radius: Double, damage: Double, vector: Vector, sound: Sound): Boolean {
         // 一番近くのエンティティを取得
         val entities = getNearEntities(radius)
@@ -260,6 +294,11 @@ class SkillUser(
         return true
     }
 
+    /**
+     * このユーザーから近いエンティティを取得します
+     * @param radius 検知する範囲の半径
+     * @return 近い順のエンティティのリスト
+     */
     fun getNearEntities(radius: Double): List<Entity> {
         // 半径radiusで近くのentityのリストを取得
         val near = player.getNearbyEntities(radius, radius, radius)
