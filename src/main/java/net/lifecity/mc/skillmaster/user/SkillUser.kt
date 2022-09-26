@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.user
 
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
+import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
@@ -23,9 +24,25 @@ class SkillUser(
     var mode: UserMode = UserMode.TRAINING
     set(value) {
         // バトルからトレーニング
-        if (mode == UserMode.BATTLE && mode == UserMode.TRAINING) {
+        if (mode == UserMode.BATTLE && value == UserMode.TRAINING) {
             // 稼働中のスキルの初期化
+            initSkills()
         }
+        // トレーニングからバトル
+        else if (mode == UserMode.TRAINING && value == UserMode.BATTLE) {
+            // 稼働中のスキルの初期化
+                initSkills()
+        }
+        // 武装解除からバトル、トレーニング
+        else if (mode == UserMode.UNARMED && (value == UserMode.BATTLE || value == UserMode.TRAINING)) {
+            // インベントリの初期化
+            //userInventory = UserInventory(this)
+
+            // HPの初期化
+            player.maxHealth = 40.0
+            player.health = 40.0
+        }
+        field = value
     }
     var selectedWeapon: Weapon = Weapon.STRAIGHT_SWORD
     set(value) {
@@ -161,5 +178,22 @@ class SkillUser(
                 skillKey.skill?.init()
             }
         }
+    }
+
+    private fun damage(damage: Double, vector: Vector) {
+        // 防御スキル取得
+        val activatedSkill: SeparatedSkill? = getActivatedSkill()
+
+        // 防御スキルがあれば防御
+        if (activatedSkill != null) {
+            if (activatedSkill is DefenseSkill) {
+                activatedSkill.defense(damage, vector)
+                return
+            }
+        }
+
+        // ダメージとノックバックを与える
+        player.damage(damage)
+        player.velocity.add(vector)
     }
 }
