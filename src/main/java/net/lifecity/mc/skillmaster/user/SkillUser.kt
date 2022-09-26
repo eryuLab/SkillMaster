@@ -21,12 +21,12 @@ import org.bukkit.util.Vector
 
 class SkillUser(
     val player: Player,
-    var userInventory: UserInventory,
     var openedInventory: InventoryFrame? = null,
     val rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
+    //var userInventory: UserInventory
     var mode: UserMode = UserMode.TRAINING
         set(value) {
             // バトルからトレーニング
@@ -59,6 +59,8 @@ class SkillUser(
 
             field = value
         }
+    val handItem = player.inventory.itemInMainHand
+    val handWeapon = Weapon.fromItemStack(handItem)
 
     init {
         //userInventory = UserInventory(this)
@@ -310,16 +312,4 @@ class SkillUser(
 
         return near
     }
-
-    /**
-     * メインハンドのアイテムを取得します
-     * @return メインハンドのアイテム
-     */
-    fun getHandItem() = player.inventory.itemInMainHand
-
-    /**
-     * メインハンドの武器を取得します
-     * @return メインハンドの武器
-     */
-    fun getHandWeapon() = Weapon.fromItemStack(getHandItem())
 }
