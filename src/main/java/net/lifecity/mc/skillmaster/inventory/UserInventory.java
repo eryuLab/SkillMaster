@@ -3,7 +3,6 @@ package net.lifecity.mc.skillmaster.inventory;
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
-import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.skillset.SkillKey;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
