@@ -105,6 +105,21 @@ class SkillUser(
         return null
     }
 
+    fun settable(skill: Skill): Boolean {
+        // スキルセットの配列を作成
+        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+
+        for (skillSet in skillSetArray) {
+            keyList@for (skillKey in skillSet.keyList) {
+                if (skillKey.skill == null)
+                   continue@keyList
+                if (skillKey.skill!!.`is`(skill))
+                    return false
+            }
+        }
+        return true
+    }
+
     /**
      * スキルボタンを入力した時の処理
      * スキルの発動、追加入力、またはスキルセット番号の変更
@@ -283,7 +298,7 @@ class SkillUser(
 
         // プレイヤーだった時の処理
         if (entity is Player) {
-            val user = SkillMaster.instance.userList[entity] ?: return false
+            val user = SkillMaster.instance.userList.get(entity) ?: return false
 
             // 攻撃
             attackUser(user, damage, vector, sound)
