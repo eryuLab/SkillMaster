@@ -2,7 +2,9 @@ package net.lifecity.mc.skillmaster.user
 
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
+import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
@@ -23,7 +25,7 @@ class SkillUser(
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
-    //var userInventory: UserInventory
+    var userInventory = UserInventory(this)
     var mode: UserMode = UserMode.TRAINING
         set(value) {
             // バトルからトレーニング
@@ -39,7 +41,7 @@ class SkillUser(
             // 武装解除からバトル、トレーニング
             else if (mode == UserMode.UNARMED && (value == UserMode.BATTLE || value == UserMode.TRAINING)) {
                 // インベントリの初期化
-                //userInventory = UserInventory(this)
+                userInventory = UserInventory(this)
 
                 // HPの初期化
                 player.maxHealth = 40.0
@@ -60,8 +62,6 @@ class SkillUser(
     val handWeapon = Weapon.fromItemStack(handItem)
 
     init {
-        //userInventory = UserInventory(this)
-
         // HPを設定
         player.maxHealth = 40.0
         player.health = 40.0
@@ -125,7 +125,7 @@ class SkillUser(
      * スキルの発動、追加入力、またはスキルセット番号の変更
      * @param button スキルボタン
      */
-    fun buttonInput(button: SkillButton) {
+    fun buttonInput(button: SkillButton, weapon: Weapon?) {
         // スキルカード特定
         val card: SkillCard = when (button) {
             SkillButton.RIGHT -> rightCard
@@ -148,6 +148,8 @@ class SkillUser(
             else
                 player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
         }
+        else
+            skillInput(card.now(), weapon)
     }
 
     /**
@@ -155,7 +157,7 @@ class SkillUser(
      * @param skill スキル
      * @param weapon 手に持っている武器
      */
-    private fun skillInput(skill: Skill?, weapon: Weapon) {
+    private fun skillInput(skill: Skill?, weapon: Weapon?) {
         // スキルが存在するか
         if (skill == null) {
             player.sendMessage("スキルがセットされていません")
@@ -249,9 +251,9 @@ class SkillUser(
             user.damage(damage, vector)
 
             // ゲーム中のときGameのonAttack()を呼び出す
-            //val game = SkillMaster.instance.gameList.getFromUser(this)
-            //if (game is OnAttack)
-            //game.onAttack(this)
+            val game = SkillMaster.instance.gameList.getFromUser(this)
+            if (game is OnAttack)
+                game.onAttack(this)
         }
     }
 
