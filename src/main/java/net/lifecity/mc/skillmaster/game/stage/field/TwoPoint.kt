@@ -6,7 +6,7 @@ import net.lifecity.mc.skillmaster.game.stage.GameStage
 import org.bukkit.Location
 
 class TwoPoint(
-    stage: GameStage?,
+    stage: GameStage,
     val pointA: Location,
     val pointB: Location
 ) : GameField(stage, FieldType.TWO_POINT)
