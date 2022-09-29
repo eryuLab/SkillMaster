@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.skill.SkillType;
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -155,7 +156,7 @@ public class SkillInventory extends InventoryFrame {
 
                     if (page == finalMaxPage)
                         return;
-                    user.sendMessage("次のページ");
+                    user.getPlayer().sendMessage("次のページ");
 
                     // ページ移動
                     user.setOpenedInventory(new SkillInventory(user, page + 1));

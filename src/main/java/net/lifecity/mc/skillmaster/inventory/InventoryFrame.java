@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.inventory;
 
 import lombok.Getter;
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;

@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.game.function.OnDie;
 import net.lifecity.mc.skillmaster.game.stage.FieldType;
 import net.lifecity.mc.skillmaster.game.stage.GameStage;
 import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.ChatColor;
 
 public class Duel extends Game implements OnAttack, OnDie {

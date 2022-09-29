@@ -5,7 +5,6 @@ import lombok.Getter;
 import net.lifecity.mc.skillmaster.game.stage.GameStage;
 import net.lifecity.mc.skillmaster.game.stage.GameStageList;
 import net.lifecity.mc.skillmaster.game.GameList;
-import net.lifecity.mc.skillmaster.game.GameType;
 import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
 import net.lifecity.mc.skillmaster.user.SkillUserList;
 import net.lifecity.mc.skillmaster.utils.FileUtil;

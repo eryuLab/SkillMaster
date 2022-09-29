@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.skill;
 import lombok.Getter;
 import lombok.Setter;
 import net.lifecity.mc.skillmaster.SkillMaster;
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -57,7 +58,7 @@ public class Skill {
      */
     public void activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
+        user.getPlayer().sendMessage(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
 
         deactivate();
     }

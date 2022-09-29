@@ -9,6 +9,7 @@ import net.lifecity.mc.skillmaster.game.games.Duel;
 import net.lifecity.mc.skillmaster.game.stage.GameStage;
 import net.lifecity.mc.skillmaster.inventory.SkillInventory;
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.ChatColor;
@@ -61,7 +62,7 @@ public class SkillCommand {
 
         UserMode mode = UserMode.valueOf(name.toUpperCase());
 
-        user.changeMode(mode);
+        user.setMode(mode);
 
         player.sendMessage("モードを" + mode.getJp() + "に変更しました");
     }

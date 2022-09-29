@@ -125,7 +125,7 @@ class SkillUser(
      * スキルの発動、追加入力、またはスキルセット番号の変更
      * @param button スキルボタン
      */
-    fun buttonInput(button: SkillButton, weapon: Weapon?) {
+    fun buttonInput(button: SkillButton, weapon: Weapon? = handWeapon) {
         // スキルカード特定
         val card: SkillCard = when (button) {
             SkillButton.RIGHT -> rightCard

@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.game;
 
 import net.lifecity.mc.skillmaster.SkillMaster;
 import net.lifecity.mc.skillmaster.game.stage.FieldType;
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;

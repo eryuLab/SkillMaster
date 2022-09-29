@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.game;
 
+import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -34,7 +35,7 @@ public class GameTeam {
      */
     public void changeMode(UserMode mode) {
         for (SkillUser user : userArray) {
-            user.changeMode(mode);
+            user.setMode(mode);
         }
     }
 
@@ -44,7 +45,7 @@ public class GameTeam {
      */
     public void sendMessage(String msg) {
         for (SkillUser user : userArray) {
-            user.sendMessage(msg);
+            user.getPlayer().sendMessage(msg);
         }
     }
 
@@ -55,19 +56,20 @@ public class GameTeam {
      */
     public void sendTitle(String title, String sub) {
         for (SkillUser user : userArray) {
-            user.sendTitle(title, sub);
+            user.getPlayer().sendTitle(title, sub);
         }
     }
 
     public void sendActionbar(String msg) {
         for (SkillUser user : userArray) {
-            user.sendActionBar(msg);
+            user.getPlayer().sendActionBar(msg);
         }
     }
 
     public void playSound(Sound sound) {
         for (SkillUser user : userArray) {
-            user.playSound(sound);
+            //user.getPlayer().getLocation().playSound(sound);
+            user.getPlayer().sendMessage("SE: " + sound.name());
         }
     }
 

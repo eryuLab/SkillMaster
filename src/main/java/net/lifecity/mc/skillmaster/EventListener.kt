@@ -4,6 +4,7 @@ import com.github.syari.spigot.api.event.events
 import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.game.function.OnDie
 import net.lifecity.mc.skillmaster.user.UserMode
+import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -48,10 +49,10 @@ object EventListener {
                         }
                         user.leftClick()
                     } else if (it.action == Action.RIGHT_CLICK_AIR) {
-                        user.rightClick()
+                        user.buttonInput(SkillButton.RIGHT)
                     } else if (it.action == Action.RIGHT_CLICK_BLOCK) {
                         rightFlag = if (!rightFlag) {
-                            user.rightClick()
+                            user.buttonInput(SkillButton.RIGHT)
                             true
                         } else {
                             false
@@ -69,7 +70,7 @@ object EventListener {
                     if(user.mode == UserMode.UNARMED) return@event
 
                     if(user.handItem.type == Material.WOODEN_SWORD) {
-                        if(user.activatedSkill != null) {
+                        if(user.getActivatedSkill() != null) {
                             it.isCancelled = true
                         } else {
                             if(user.mode == UserMode.TRAINING) {
@@ -113,7 +114,7 @@ object EventListener {
 
                 if(user.handItem.type == Material.WOODEN_SWORD) {
                     it.isCancelled = true
-                    user.swap()
+                    user.buttonInput(SkillButton.SWAP)
                 }
             }
 
@@ -129,7 +130,7 @@ object EventListener {
                     }
 
                     it.isCancelled = true
-                    user.drop(Weapon.fromItemStack(it.itemDrop.itemStack))
+                    user.buttonInput(SkillButton.DROP, Weapon.fromItemStack(it.itemDrop.itemStack))
                 }
             }
 

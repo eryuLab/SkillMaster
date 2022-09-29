@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.game;
 
+import net.lifecity.mc.skillmaster.user.SkillUser;
+
 import java.util.ArrayList;
 
 public class GameList extends ArrayList<Game> {
