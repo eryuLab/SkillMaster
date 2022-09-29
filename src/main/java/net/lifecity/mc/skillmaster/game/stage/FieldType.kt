@@ -1,5 +1,5 @@
-package net.lifecity.mc.skillmaster.game.stage;
+package net.lifecity.mc.skillmaster.game.stage
 
-public enum FieldType {
+enum class FieldType {
     TWO_POINT
 }
