@@ -8,9 +8,7 @@ data class SkillCard(
 ) {
     var index: Int = 0
         set(value) {
-            if (value == skillSet.keyList.size)
-                field = 0
-            field = value
+            field = if (value >= skillSet.keyList.size) 0 else value
         }
 
     fun now(): Skill? {

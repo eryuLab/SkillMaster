@@ -16,6 +16,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
 class SkillUser(
@@ -58,8 +59,7 @@ class SkillUser(
 
             field = value
         }
-    val handItem = player.inventory.itemInMainHand
-    val handWeapon = Weapon.fromItemStack(handItem)
+    private val handWeapon = Weapon.fromItemStack(handItem())
 
     init {
         // HPを設定
@@ -171,7 +171,7 @@ class SkillUser(
         }
 
         // インターバル確認
-        if (!skill.isInInterval)
+        if (skill.isInInterval)
             return
 
         // 複合スキルのとき
@@ -326,4 +326,6 @@ class SkillUser(
 
         return near
     }
+
+    fun handItem() = player.inventory.itemInMainHand
 }
