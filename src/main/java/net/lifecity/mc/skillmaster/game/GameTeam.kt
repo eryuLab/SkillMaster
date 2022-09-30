@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.game
 
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.ChatColor
@@ -45,13 +47,20 @@ class GameTeam(private val name: String, private val color: ChatColor, private v
      */
     fun sendTitle(title: String, sub: String) {
         for (user in userArray) {
-            user.player.sendTitle(title, sub)
+            user.player.showTitle(
+                Title.title(
+                    PlainTextComponentSerializer.plainText().deserialize(title),
+                    PlainTextComponentSerializer.plainText().deserialize(sub)
+                )
+            )
         }
     }
 
     fun sendActionbar(msg: String) {
         for (user in userArray) {
-            user.player.sendActionBar(msg)
+            user.player.sendActionBar(
+                PlainTextComponentSerializer.plainText().deserialize(msg)
+            )
         }
     }
 
