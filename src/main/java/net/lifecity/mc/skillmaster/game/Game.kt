@@ -1,131 +1,109 @@
-package net.lifecity.mc.skillmaster.game;
+package net.lifecity.mc.skillmaster.game
 
-import net.lifecity.mc.skillmaster.SkillMaster;
-import net.lifecity.mc.skillmaster.game.stage.FieldType;
-import net.lifecity.mc.skillmaster.user.SkillUser;
-import net.lifecity.mc.skillmaster.user.UserMode;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Sound;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.github.syari.spigot.api.scheduler.runTaskTimer
+import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.game.stage.FieldType
+import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.user.UserMode
+import org.bukkit.ChatColor
+import org.bukkit.GameMode
+import org.bukkit.Sound
+import org.bukkit.scheduler.BukkitRunnable
 
 /**
  * ひとつのゲームを管理します
  * フィールドとチームは継承先で実装してください
  */
-public abstract class Game {
+abstract class Game protected constructor(
+    protected val gameType: GameType, //ゲームのタイプ
+    protected val fieldType: FieldType, //フィールドのタイプ
+    protected val gameTime: Int, //ゲームの時間(秒)
+    protected val countDownTime: Int //ゲーム開始前のカウントダウンの時間(秒)
+) {
+    protected var countDownTimer = CountDownTimer()
+    protected var gameTimer = GameTimer()
+    protected var elapsedTime = 0 //経過時間
+    protected var state = GameState.WAITING_FOR_STARTING //ゲームの状態
 
-    protected final GameType gameType;
-    protected final FieldType fieldType;
-    protected final int gameTime;
-    protected final int countDownTime;
-
-    protected CountDownTimer countDownTimer = new CountDownTimer();
-    protected GameTimer gameTimer = new GameTimer();
-    protected int elapsedTime = 0; //経過時間
-    protected GameState state = GameState.WAITING_FOR_STARTING; //ゲームの状態
-
-    /**
-     * ゲームのインスタンスを生成します
-     * @param gameType ゲームのタイプ
-     * @param fieldType フィールドのタイプ
-     * @param gameTime ゲームの時間(秒)
-     * @param countDownTime ゲーム開始前のカウントダウンの時間(秒)
-     */
-    protected Game(GameType gameType, FieldType fieldType, int gameTime, int countDownTime) {
-        this.gameType = gameType;
-        this.fieldType = fieldType;
-        this.gameTime = gameTime;
-        this.countDownTime = countDownTime;
-
-        SkillMaster.instance.getGameList().add(this);
+    init {
+        SkillMaster.instance.gameList.list.add(this)
     }
 
     /**
      * ゲームをスタートします
      */
-    public void start() {
+    fun start() {
         // テレポート
-        teleportAll();
+        teleportAll()
 
         // ユーザーモード変更
-        changeModeAll(UserMode.BATTLE);
+        changeModeAll(UserMode.BATTLE)
 
         // カウントダウン
-        state = GameState.COUNT_DOWN;
-        countDownTimer.runTaskTimer(SkillMaster.instance, 0, 20);
+        state = GameState.COUNT_DOWN
+        countDownTimer.runTaskTimer(SkillMaster.instance, 0, 20)
 
         // タイマースタート
-        gameTimer.runTaskTimer(SkillMaster.instance, countDownTime * 20L, 20);
+        gameTimer.runTaskTimer(SkillMaster.instance, countDownTime * 20L, 20)
     }
 
     /**
      * ゲームを終了します
      */
-    public void stop(GameTeam winners) {
+    fun stop(winners: GameTeam) {
         // タイマーの停止
-        if (state == GameState.COUNT_DOWN)
-            countDownTimer.cancel();
-
-        if (state == GameState.IN_GAMING)
-            gameTimer.cancel();
+        if (state === GameState.COUNT_DOWN) countDownTimer.cancel()
+        if (state === GameState.IN_GAMING) gameTimer.cancel()
 
         // ゲーム状態移行
-        state = GameState.WAITING_FOR_FINISH;
+        state = GameState.WAITING_FOR_FINISH
 
         // 勝利チーム以外のゲームモードをスペクテイターにする
-        setGameModeElseTeam(winners, GameMode.SPECTATOR);
+        setGameModeElseTeam(winners, GameMode.SPECTATOR)
 
         // 勝敗表示
-        sendResult();
+        sendResult()
 
         // ロビーへ接続
-        new BukkitRunnable() {
-            private int count = 0;
-            @Override
-            public void run() {
-                // 時間が経過していたら終了処理
-                if (count >= 5) {
-                    // todo ロビーへ接続
-                    sendMessageAll("ロビーへ接続できた気持ちになってください");
-
-                    setGameModeElseTeam(winners, GameMode.SURVIVAL);
-
-                    cancel();
-                }
-
-                // 残り時間表示
-                sendMessageAll("テレポートまで→" + (6 - count) + "..");
-
-                count++;
+        var count = 0
+        val remainTime = 6
+        SkillMaster.instance.runTaskTimer(20) {
+            if (count >= remainTime-1) {
+                // todo ロビーへ接続
+                sendMessageAll("ロビーへ接続できた気持ちになってください")
+                setGameModeElseTeam(winners, GameMode.SURVIVAL)
+                cancel()
             }
-        }.runTaskTimer(SkillMaster.instance, 0, 20);
+
+            // 残り時間表示
+            sendMessageAll("テレポートまで→${remainTime - count}..")
+            count++
+        }
 
         // ゲームリストからこのゲームを削除
-        SkillMaster.instance.getGameList().remove(this);
+        SkillMaster.instance.gameList.list.remove(this)
     }
 
     /**
      * ゲームタイマーが終了したときの処理
      */
-    public abstract void afterGameTimer();
+    abstract fun afterGameTimer()
 
     /**
      * 勝敗の結果を表示します
      */
-    public abstract void sendResult();
+    abstract fun sendResult()
 
     /**
      * ユーザーがこのゲームに参加しているかを返します
      * @param user ユーザー
      * @return 参加しているときtrue
      */
-    public boolean joined(SkillUser user) {
-        for (GameTeam team : getTeams()) {
-            if (team.belongs(user))
-                return true;
+    fun joined(user: SkillUser): Boolean {
+        for (team in teams) {
+            if (team.belongs(user)) return true
         }
-        return false;
+        return false
     }
 
     /**
@@ -133,22 +111,21 @@ public abstract class Game {
      * @param team 指定チーム
      * @return 存在したらtrue
      */
-    public abstract boolean hasTeam(GameTeam team);
+    abstract fun hasTeam(team: GameTeam): Boolean
 
     /**
      * このゲームのすべてチームの配列を取得します
      * @return 全てのチーム
      */
-    public abstract GameTeam[] getTeams();
+    abstract val teams: Array<GameTeam>
 
     /**
      * 対象以外のチームのゲームモードを変更します
      * @param elseTeam 対象チーム
      */
-    public void setGameModeElseTeam(GameTeam elseTeam, GameMode mode) {
-        for (GameTeam team : getTeams()) {
-            if (team != elseTeam)
-                team.setGameMode(mode);
+    fun setGameModeElseTeam(elseTeam: GameTeam, mode: GameMode?) {
+        for (team in teams) {
+            if (team !== elseTeam) team.setGameMode(mode)
         }
     }
 
@@ -156,18 +133,18 @@ public abstract class Game {
      * ゲーム内すべてのプレイヤーのユーザーモードを変更します
      * @param mode このモードに変更します
      */
-    public void changeModeAll(UserMode mode) {
-        for (GameTeam team : getTeams()) {
-            team.changeMode(mode);
+    fun changeModeAll(mode: UserMode) {
+        for (team in teams) {
+            team.changeMode(mode)
         }
     }
 
     /**
      * ゲーム内のすべてのプレイヤーにメッセージを送信します
      */
-    public void sendMessageAll(String msg) {
-        for (GameTeam team : getTeams()) {
-            team.sendMessage(msg);
+    fun sendMessageAll(msg: String) {
+        for (team in teams) {
+            team.sendMessage(msg)
         }
     }
 
@@ -176,17 +153,16 @@ public abstract class Game {
      * @param team 指定チーム
      * @param msg メッセージ
      */
-    public void sendMessageTeam(GameTeam team, String msg) {
-        if (hasTeam(team))
-            team.sendMessage(msg);
+    fun sendMessageTeam(team: GameTeam, msg: String) {
+        if (hasTeam(team)) team.sendMessage(msg)
     }
 
     /**
      * ゲーム内のすべてのプレイヤーにタイトルを送信します
      */
-    public void sendTitleAll(String title, String sub) {
-        for (GameTeam team : getTeams()) {
-            team.sendTitle(title, sub);
+    fun sendTitleAll(title: String, sub: String) {
+        for (team in teams) {
+            team.sendTitle(title, sub)
         }
     }
 
@@ -194,95 +170,83 @@ public abstract class Game {
      * 指定チームにタイトルを送信します
      * @param team 指定チーム
      */
-    public void sendTitleTeam(GameTeam team, String title, String sub) {
-        if (hasTeam(team))
-            team.sendTitle(title, sub);
+    fun sendTitleTeam(team: GameTeam, title: String, sub: String) {
+        if (hasTeam(team)) team.sendTitle(title, sub)
     }
 
-    public void sendActionbarAll(String msg) {
-        for (GameTeam team : getTeams()) {
-            team.sendActionbar(msg);
+    fun sendActionbarAll(msg: String) {
+        for (team in teams) {
+            team.sendActionbar(msg)
         }
     }
 
-    public void sendActionbarTeam(GameTeam team, String msg) {
-        if (hasTeam(team))
-            team.sendActionbar(msg);
+    fun sendActionbarTeam(team: GameTeam, msg: String) {
+        if (hasTeam(team)) team.sendActionbar(msg)
     }
 
-    public void playSoundAll(Sound sound) {
-        for (GameTeam team : getTeams()) {
-            team.playSound(sound);
+    fun playSoundAll(sound: Sound) {
+        for (team in teams) {
+            team.playSound(sound)
         }
     }
 
-    public void playSoundTeam(GameTeam team, Sound sound) {
-        if (hasTeam(team))
-            team.playSound(sound);
+    fun playSoundTeam(team: GameTeam, sound: Sound) {
+        if (hasTeam(team)) team.playSound(sound)
     }
 
     /**
      * ゲーム内すべてのプレイヤーを初期地点にテレポートします
      */
-    public abstract void teleportAll();
+    abstract fun teleportAll()
 
     /**
      * チームごとにプレイヤーを初期地点にテレポートします
      */
-    public abstract void teleportTeam(GameTeam team);
+    abstract fun teleportTeam(team: GameTeam)
 
-    private class CountDownTimer extends BukkitRunnable {
 
-        private int count = 0;
-
-        @Override
-        public void run() {
+    inner class CountDownTimer : BukkitRunnable() {
+        private var count = 0
+        override fun run() {
             // ゲームの状態がカウントダウン中でなかったらタスクキャンセル
-            if (state != GameState.COUNT_DOWN)
-                cancel();
+            if (state !== GameState.COUNT_DOWN) cancel()
 
             // カウント確認
             if (count >= countDownTime - 1) {
-                state = GameState.IN_GAMING;
-                cancel();
+                state = GameState.IN_GAMING
+                cancel()
             }
 
             // タイトル表示
-            String title = ChatColor.GREEN + "" + (countDownTime - count) + "..";
-            sendTitleAll(title, "");
-            playSoundAll(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-
-            count++;
+            val title = "${ChatColor.GREEN}${countDownTime - count}.."
+            sendTitleAll(title, "")
+            playSoundAll(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
+            count++
         }
     }
 
-    private class GameTimer extends BukkitRunnable {
-
-        @Override
-        public void run() {
+    inner class GameTimer : BukkitRunnable() {
+        override fun run() {
             // 戦闘開始
             if (elapsedTime == 0) {
                 // タイトル
-                sendTitleAll(ChatColor.YELLOW + "Start!!" , "");
+                sendTitleAll("${ChatColor.YELLOW}Start!!", "")
                 // 爆発音
-                playSoundAll(Sound.ENTITY_GENERIC_EXPLODE);
+                playSoundAll(Sound.ENTITY_GENERIC_EXPLODE)
             }
 
             // ゲームの状態がゲーム中でなかったらタスクキャンセル
-            if (state != GameState.IN_GAMING)
-                cancel();
+            if (state !== GameState.IN_GAMING) cancel()
 
             // 終了処理
             if (elapsedTime >= gameTime) {
-                afterGameTimer();
-                cancel();
+                afterGameTimer()
+                cancel()
             }
-
-            sendActionbarAll("count: " + elapsedTime);
+            sendActionbarAll("count: $elapsedTime")
 
             // todo ボスバー編集
-
-            elapsedTime++;
+            elapsedTime++
         }
     }
 }
