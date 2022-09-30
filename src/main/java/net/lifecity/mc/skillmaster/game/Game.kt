@@ -25,6 +25,13 @@ abstract class Game protected constructor(
     protected var elapsedTime = 0 //経過時間
     protected var state = GameState.WAITING_FOR_STARTING //ゲームの状態
 
+    /**
+     * このゲームのすべてチームの配列を取得します
+     * @return 全てのチーム
+     */
+    abstract val teams: Array<GameTeam>
+
+
     init {
         SkillMaster.instance.gameList.list.add(this)
     }
@@ -100,7 +107,7 @@ abstract class Game protected constructor(
      * @return 参加しているときtrue
      */
     fun joined(user: SkillUser): Boolean {
-        for (team in getTeams()) {
+        for (team in teams) {
             if (team.belongs(user)) return true
         }
         return false
@@ -113,18 +120,13 @@ abstract class Game protected constructor(
      */
     abstract fun hasTeam(team: GameTeam): Boolean
 
-    /**
-     * このゲームのすべてチームの配列を取得します
-     * @return 全てのチーム
-     */
-    abstract fun getTeams(): Array<GameTeam>
 
     /**
      * 対象以外のチームのゲームモードを変更します
      * @param elseTeam 対象チーム
      */
     fun setGameModeElseTeam(elseTeam: GameTeam, mode: GameMode) {
-        for (team in getTeams()) {
+        for (team in teams) {
             if (team !== elseTeam) team.setGameMode(mode)
         }
     }
@@ -134,7 +136,7 @@ abstract class Game protected constructor(
      * @param mode このモードに変更します
      */
     fun changeModeAll(mode: UserMode) {
-        for (team in getTeams()) {
+        for (team in teams) {
             team.changeMode(mode)
         }
     }
@@ -143,7 +145,7 @@ abstract class Game protected constructor(
      * ゲーム内のすべてのプレイヤーにメッセージを送信します
      */
     fun sendMessageAll(msg: String) {
-        for (team in getTeams()) {
+        for (team in teams) {
             team.sendMessage(msg)
         }
     }
@@ -161,7 +163,7 @@ abstract class Game protected constructor(
      * ゲーム内のすべてのプレイヤーにタイトルを送信します
      */
     fun sendTitleAll(title: String, sub: String) {
-        for (team in getTeams()) {
+        for (team in teams) {
             team.sendTitle(title, sub)
         }
     }
@@ -175,7 +177,7 @@ abstract class Game protected constructor(
     }
 
     fun sendActionbarAll(msg: String) {
-        for (team in getTeams()) {
+        for (team in teams) {
             team.sendActionbar(msg)
         }
     }
@@ -185,7 +187,7 @@ abstract class Game protected constructor(
     }
 
     fun playSoundAll(sound: Sound) {
-        for (team in getTeams()) {
+        for (team in teams) {
             team.playSound(sound)
         }
     }

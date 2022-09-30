@@ -16,7 +16,6 @@ class Duel(private val stage: GameStage, userA: SkillUser, userB: SkillUser) :
     Game(GameType.ONE_ON_ONE, FieldType.TWO_POINT, 15, 6), OnAttack, OnDie {
 
     private val field: TwoPoint = stage.getField(FieldType.TWO_POINT) as TwoPoint
-
     private val teamA: GameTeam
     private val teamB: GameTeam
 
@@ -27,6 +26,9 @@ class Duel(private val stage: GameStage, userA: SkillUser, userB: SkillUser) :
         teamA = GameTeam("Alpha", ChatColor.RED, arrayOf(userA))
         teamB = GameTeam("Beta", ChatColor.BLUE, arrayOf(userB))
     }
+
+    override val teams: Array<GameTeam>
+        get() = arrayOf(teamA, teamB)
 
     override fun onAttack(attacker: SkillUser) {
         // 引数がこのゲームのプレイヤーじゃなかったらreturn
@@ -76,9 +78,6 @@ class Duel(private val stage: GameStage, userA: SkillUser, userB: SkillUser) :
     }
 
     override fun hasTeam(team: GameTeam) = team === teamA || team === teamB
-
-
-    override fun getTeams() = arrayOf(teamA, teamB)
 
 
     override fun teleportAll() {
