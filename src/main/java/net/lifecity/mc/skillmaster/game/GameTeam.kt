@@ -1,31 +1,20 @@
-package net.lifecity.mc.skillmaster.game;
+package net.lifecity.mc.skillmaster.game
 
-import net.lifecity.mc.skillmaster.user.SkillUser;
-import net.lifecity.mc.skillmaster.user.UserMode;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.user.UserMode
+import org.bukkit.ChatColor
+import org.bukkit.GameMode
+import org.bukkit.Location
+import org.bukkit.Sound
 
-public class GameTeam {
-
-    private final String name;
-    private final ChatColor color;
-    private final SkillUser[] userArray;
-
-    public GameTeam(String name, ChatColor color, SkillUser[] userArray) {
-        this.name = name;
-        this.color = color;
-        this.userArray = userArray;
-    }
-
+class GameTeam(private val name: String, private val color: ChatColor, private val userArray: Array<SkillUser>) {
     /**
      * このチーム全員のゲームモードを変更します
      * @param mode このモードに変更します
      */
-    public void setGameMode(GameMode mode) {
-        for (SkillUser user : userArray) {
-            user.getPlayer().setGameMode(mode);
+    fun setGameMode(mode: GameMode) {
+        for (user in userArray) {
+            user.player.gameMode = mode
         }
     }
 
@@ -33,9 +22,9 @@ public class GameTeam {
      * このチーム全員のユーザーモードを変更します
      * @param mode このモードに変更します
      */
-    public void changeMode(UserMode mode) {
-        for (SkillUser user : userArray) {
-            user.setMode(mode);
+    fun changeMode(mode: UserMode) {
+        for (user in userArray) {
+            user.mode = mode
         }
     }
 
@@ -43,9 +32,9 @@ public class GameTeam {
      * このチーム全員にメッセージを送信します
      * @param msg メッセージ
      */
-    public void sendMessage(String msg) {
-        for (SkillUser user : userArray) {
-            user.getPlayer().sendMessage(msg);
+    fun sendMessage(msg: String) {
+        for (user in userArray) {
+            user.player.sendMessage(msg)
         }
     }
 
@@ -54,22 +43,22 @@ public class GameTeam {
      * @param title メインタイトル
      * @param sub サブタイトル
      */
-    public void sendTitle(String title, String sub) {
-        for (SkillUser user : userArray) {
-            user.getPlayer().sendTitle(title, sub);
+    fun sendTitle(title: String, sub: String) {
+        for (user in userArray) {
+            user.player.sendTitle(title, sub)
         }
     }
 
-    public void sendActionbar(String msg) {
-        for (SkillUser user : userArray) {
-            user.getPlayer().sendActionBar(msg);
+    fun sendActionbar(msg: String) {
+        for (user in userArray) {
+            user.player.sendActionBar(msg)
         }
     }
 
-    public void playSound(Sound sound) {
-        for (SkillUser user : userArray) {
+    fun playSound(sound: Sound) {
+        for (user in userArray) {
             //user.getPlayer().getLocation().playSound(sound);
-            user.getPlayer().sendMessage("SE: " + sound.name());
+            user.player.sendMessage("SE: ${sound.name}")
         }
     }
 
@@ -77,9 +66,9 @@ public class GameTeam {
      * チーム内すべてのプレイヤーを指定地点へテレポートします
      * @param location 指定地点
      */
-    public void teleportAll(Location location) {
-        for (SkillUser user : userArray) {
-            user.getPlayer().teleport(location);
+    fun teleportAll(location: Location) {
+        for (user in userArray) {
+            user.player.teleport(location)
         }
     }
 
@@ -88,11 +77,10 @@ public class GameTeam {
      * @param target 指定ユーザー
      * @return 所属していたらtrue
      */
-    public boolean belongs(SkillUser target) {
-        for (SkillUser user : userArray) {
-            if (user == target)
-                return true;
+    fun belongs(target: SkillUser): Boolean {
+        for (user in userArray) {
+            if (user == target) return true
         }
-        return false;
+        return false
     }
 }
