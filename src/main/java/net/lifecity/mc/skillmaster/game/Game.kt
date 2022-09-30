@@ -123,7 +123,7 @@ abstract class Game protected constructor(
      * 対象以外のチームのゲームモードを変更します
      * @param elseTeam 対象チーム
      */
-    fun setGameModeElseTeam(elseTeam: GameTeam, mode: GameMode?) {
+    fun setGameModeElseTeam(elseTeam: GameTeam, mode: GameMode) {
         for (team in getTeams()) {
             if (team !== elseTeam) team.setGameMode(mode)
         }
