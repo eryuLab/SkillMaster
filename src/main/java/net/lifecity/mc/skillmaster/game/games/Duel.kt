@@ -1,111 +1,95 @@
-package net.lifecity.mc.skillmaster.game.games;
+package net.lifecity.mc.skillmaster.game.games
 
-import net.lifecity.mc.skillmaster.game.*;
-import net.lifecity.mc.skillmaster.game.function.OnAttack;
-import net.lifecity.mc.skillmaster.game.function.OnDie;
-import net.lifecity.mc.skillmaster.game.stage.FieldType;
-import net.lifecity.mc.skillmaster.game.stage.GameStage;
-import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint;
-import net.lifecity.mc.skillmaster.user.SkillUser;
-import org.bukkit.ChatColor;
+import net.lifecity.mc.skillmaster.game.Game
+import net.lifecity.mc.skillmaster.game.GameResult
+import net.lifecity.mc.skillmaster.game.GameTeam
+import net.lifecity.mc.skillmaster.game.GameType
+import net.lifecity.mc.skillmaster.game.function.OnAttack
+import net.lifecity.mc.skillmaster.game.function.OnDie
+import net.lifecity.mc.skillmaster.game.stage.FieldType
+import net.lifecity.mc.skillmaster.game.stage.GameStage
+import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint
+import net.lifecity.mc.skillmaster.user.SkillUser
+import org.bukkit.ChatColor
 
-public class Duel extends Game implements OnAttack, OnDie {
+class Duel(private val stage: GameStage, userA: SkillUser, userB: SkillUser) :
+    Game(GameType.ONE_ON_ONE, FieldType.TWO_POINT, 15, 6), OnAttack, OnDie {
 
-    private final GameStage stage;
-    private final TwoPoint field;
+    private val field: TwoPoint = stage.getField(FieldType.TWO_POINT) as TwoPoint
 
-    private final GameTeam teamA;
-    private final GameTeam teamB;
+    private val teamA: GameTeam
+    private val teamB: GameTeam
 
-    private boolean suddenDeath = false;
+    private var suddenDeath = false
+    private var winner: GameTeam? = null
 
-    private GameTeam winner = null;
-
-    public Duel(GameStage stage, SkillUser userA, SkillUser userB) {
-        super(GameType.ONE_ON_ONE, FieldType.TWO_POINT, 15, 6);
-        this.stage = stage;
-        this.field = (TwoPoint) stage.getField(FieldType.TWO_POINT);
-        this.teamA = new GameTeam("Alpha", ChatColor.RED, new SkillUser[]{userA});
-        this.teamB = new GameTeam("Beta", ChatColor.BLUE, new SkillUser[]{userB});
+    init {
+        teamA = GameTeam("Alpha", ChatColor.RED, arrayOf(userA))
+        teamB = GameTeam("Beta", ChatColor.BLUE, arrayOf(userB))
     }
 
-    @Override
-    public void onAttack(SkillUser attacker) {
+    override fun onAttack(attacker: SkillUser) {
         // 引数がこのゲームのプレイヤーじゃなかったらreturn
-        if (!joined(attacker))
-            return;
+        if (!joined(attacker)) return
 
         // サドンデスなら終了
         if (suddenDeath) {
             // 勝利チームを取得し、終了
             if (teamA.belongs(attacker)) {
-                winner = teamA;
-                stop(teamA);
+                winner = teamA
+                stop(teamA)
             } else if (teamB.belongs(attacker)) {
-                winner = teamB;
-                stop(teamB);
+                winner = teamB
+                stop(teamB)
             }
         }
     }
 
-    @Override
-    public void onDie(SkillUser dead) {
+    override fun onDie(dead: SkillUser) {
         // 勝利チームを取得し、終了
         if (teamA.belongs(dead)) {
-            winner = teamB;
-            stop(teamB);
+            winner = teamB
+            stop(teamB)
         } else if (teamB.belongs(dead)) {
-            winner = teamA;
-            stop(teamA);
+            winner = teamA
+            stop(teamA)
         }
     }
 
-    @Override
-    public void afterGameTimer() {
+    override fun afterGameTimer() {
         // サドンデスに変更
-        suddenDeath = true;
+        suddenDeath = true
 
         // サドンデス告知
-        sendMessageAll(ChatColor.GRAY + "サドンデスに突入...");
+        sendMessageAll("${ChatColor.GRAY}サドンデスに突入...")
     }
 
-    @Override
-    public void sendResult() {
-        String detail;
-        if (suddenDeath)
-            detail = ChatColor.RED + "一撃決め";
-        else
-            detail = ChatColor.BLUE + "ノックダウン";
-        if (winner == teamA) {
-            teamA.sendTitle(GameResult.WIN.getEn(), detail);
-            teamB.sendTitle(GameResult.LOSE.getEn(), detail);
-        } else if (winner == teamB) {
-            teamA.sendTitle(GameResult.LOSE.getEn(), detail);
-            teamB.sendTitle(GameResult.WIN.getEn(), detail);
+    override fun sendResult() {
+        val detail: String = if (suddenDeath)  "${ChatColor.RED}一撃決め" else "${ChatColor.BLUE}ノックダウン"
+        if (winner === teamA) {
+            teamA.sendTitle(GameResult.WIN.en, detail)
+            teamB.sendTitle(GameResult.LOSE.en, detail)
+        } else if (winner === teamB) {
+            teamA.sendTitle(GameResult.LOSE.en, detail)
+            teamB.sendTitle(GameResult.WIN.en, detail)
         }
     }
 
-    @Override
-    public boolean hasTeam(GameTeam team) {
-        return team == teamA || team == teamB;
+    override fun hasTeam(team: GameTeam) = team === teamA || team === teamB
+
+
+    override fun getTeams() = arrayOf(teamA, teamB)
+
+
+    override fun teleportAll() {
+        teleportTeam(teamA)
+        teleportTeam(teamB)
     }
 
-    @Override
-    public GameTeam[] getTeams() {
-        return new GameTeam[]{teamA, teamB};
-    }
-
-    @Override
-    public void teleportAll() {
-        teleportTeam(teamA);
-        teleportTeam(teamB);
-    }
-
-    @Override
-    public void teleportTeam(GameTeam team) {
-        if (team == teamA)
-            team.teleportAll(field.getPointA());
-        else if (team == teamB)
-            team.teleportAll(field.getPointB());
+    override fun teleportTeam(team: GameTeam) {
+        if (team === teamA)
+            team.teleportAll(field.pointA)
+        else if (team === teamB)
+            team.teleportAll(field.pointB)
     }
 }
