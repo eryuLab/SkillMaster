@@ -100,7 +100,7 @@ abstract class Game protected constructor(
      * @return 参加しているときtrue
      */
     fun joined(user: SkillUser): Boolean {
-        for (team in teams) {
+        for (team in getTeams()) {
             if (team.belongs(user)) return true
         }
         return false
@@ -117,14 +117,14 @@ abstract class Game protected constructor(
      * このゲームのすべてチームの配列を取得します
      * @return 全てのチーム
      */
-    abstract val teams: Array<GameTeam>
+    abstract fun getTeams(): Array<GameTeam>
 
     /**
      * 対象以外のチームのゲームモードを変更します
      * @param elseTeam 対象チーム
      */
     fun setGameModeElseTeam(elseTeam: GameTeam, mode: GameMode?) {
-        for (team in teams) {
+        for (team in getTeams()) {
             if (team !== elseTeam) team.setGameMode(mode)
         }
     }
@@ -134,7 +134,7 @@ abstract class Game protected constructor(
      * @param mode このモードに変更します
      */
     fun changeModeAll(mode: UserMode) {
-        for (team in teams) {
+        for (team in getTeams()) {
             team.changeMode(mode)
         }
     }
@@ -143,7 +143,7 @@ abstract class Game protected constructor(
      * ゲーム内のすべてのプレイヤーにメッセージを送信します
      */
     fun sendMessageAll(msg: String) {
-        for (team in teams) {
+        for (team in getTeams()) {
             team.sendMessage(msg)
         }
     }
@@ -161,7 +161,7 @@ abstract class Game protected constructor(
      * ゲーム内のすべてのプレイヤーにタイトルを送信します
      */
     fun sendTitleAll(title: String, sub: String) {
-        for (team in teams) {
+        for (team in getTeams()) {
             team.sendTitle(title, sub)
         }
     }
@@ -175,7 +175,7 @@ abstract class Game protected constructor(
     }
 
     fun sendActionbarAll(msg: String) {
-        for (team in teams) {
+        for (team in getTeams()) {
             team.sendActionbar(msg)
         }
     }
@@ -185,7 +185,7 @@ abstract class Game protected constructor(
     }
 
     fun playSoundAll(sound: Sound) {
-        for (team in teams) {
+        for (team in getTeams()) {
             team.playSound(sound)
         }
     }
