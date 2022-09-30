@@ -1,22 +1,21 @@
-package net.lifecity.mc.skillmaster.game;
+package net.lifecity.mc.skillmaster.game
 
-import net.lifecity.mc.skillmaster.user.SkillUser;
+import net.lifecity.mc.skillmaster.user.SkillUser
 
-import java.util.ArrayList;
+class GameList {
 
-public class GameList extends ArrayList<Game> {
+    val list = mutableListOf<Game>()
 
     /**
      * ユーザーが参加しているゲームを取得します
      * @param user このユーザーを使います
      * @return 参加していたらtrue
      */
-    public Game getFromUser(SkillUser user) {
-        for (Game game : this) {
-            if (game.joined(user))
-                return game;
+    fun getFromUser(user: SkillUser): Game? {
+        for (game in list) {
+            if (game.joined(user)) return game
         }
-        return null;
+        return null
     }
 
     /**
@@ -24,8 +23,6 @@ public class GameList extends ArrayList<Game> {
      * @param user このユーザーを使います
      * @return 参加していたらtrueを返します
      */
-    public boolean inGamingUser(SkillUser user) {
-        Game game = getFromUser(user);
-        return game != null;
-    }
+    fun inGamingUser(user: SkillUser) = getFromUser(user) != null
+
 }
