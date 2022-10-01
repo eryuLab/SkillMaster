@@ -59,7 +59,10 @@ class SkillUser(
 
             field = value
         }
-    private val handWeapon = Weapon.fromItemStack(handItem())
+    val handItem
+        get() = player.inventory.itemInMainHand
+    private val handWeapon
+        get() = Weapon.fromItemStack(handItem)
 
     init {
         // HPを設定
@@ -326,6 +329,4 @@ class SkillUser(
 
         return near
     }
-
-    fun handItem() = player.inventory.itemInMainHand
 }
