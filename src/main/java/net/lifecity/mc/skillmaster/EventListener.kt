@@ -12,14 +12,9 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
-import org.bukkit.event.player.PlayerDropItemEvent
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.event.player.PlayerSwapHandItemsEvent
+import org.bukkit.event.player.*
 
 object EventListener {
 
@@ -104,6 +99,19 @@ object EventListener {
                         it.isCancelled = true
                         return@event
                     }
+
+                    if(pl.health < 1) { //HPが１より小さい＝＞死んだとき
+                        val dead = SkillMaster.instance.userList.get(pl) ?: return@event
+
+                        //ゲーム中なら
+                        if(SkillMaster.instance.gameList.inGamingUser(dead)) {
+                            val game = SkillMaster.instance.gameList.getFromUser(dead) ?: return@event
+                            it.isCancelled = true
+
+                            val onDie = game as? OnDie
+                            onDie?.onDie(dead)
+                        }
+                    }
                 }
             }
 
@@ -134,19 +142,6 @@ object EventListener {
                 }
             }
 
-            event<PlayerDeathEvent> {
-                val dead = SkillMaster.instance.userList.get(it.player) ?: return@event
-
-                //ゲーム中なら
-                if(SkillMaster.instance.gameList.inGamingUser(dead)) {
-                    val game = SkillMaster.instance.gameList.getFromUser(dead) ?: return@event
-                    it.isCancelled = true
-
-                    val onDie = game as? OnDie
-                    onDie?.onDie(dead)
-                }
-            }
-
             event<InventoryClickEvent>(priority = EventPriority.HIGHEST) {
                 val player = it.whoClicked as? Player
                 player?.let { pl ->
@@ -158,7 +153,7 @@ object EventListener {
                     if(it.clickedInventory?.type == InventoryType.PLAYER) {
                         if(user.mode == UserMode.UNARMED) return@event
 
-                        val inv = user.userInventory ?: return@event
+                        val inv = user.userInventory
 
                         inv.onClick(it)
                     }
