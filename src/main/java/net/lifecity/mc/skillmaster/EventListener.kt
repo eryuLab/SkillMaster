@@ -36,7 +36,7 @@ object EventListener {
 
                 if (user.mode == UserMode.UNARMED) return@event
 
-                if (user.handItem().type == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
+                if (user.handItem.type == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
                     if (it.action.isLeftClick) { //攻撃を入力
                         if (leftFlag) {
                             leftFlag = false
@@ -64,7 +64,7 @@ object EventListener {
 
                     if(user.mode == UserMode.UNARMED) return@event
 
-                    if(user.handItem().type == Material.WOODEN_SWORD) {
+                    if(user.handItem.type == Material.WOODEN_SWORD) {
                         if(user.getActivatedSkill() != null) {
                             it.isCancelled = true
                         } else {
@@ -120,7 +120,7 @@ object EventListener {
 
                 if(user.mode == UserMode.UNARMED) return@event
 
-                if(user.handItem().type == Material.WOODEN_SWORD) {
+                if(user.handItem.type == Material.WOODEN_SWORD) {
                     it.isCancelled = true
                     user.buttonInput(SkillButton.SWAP)
                 }
