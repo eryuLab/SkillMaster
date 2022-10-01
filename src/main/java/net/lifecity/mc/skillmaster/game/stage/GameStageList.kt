@@ -38,7 +38,7 @@ class GameStageList {
      */
     fun getFromUser(user: SkillUser) : GameStage? {
         val game = SkillMaster.instance.gameList.getFromUser(user)
-        return getFromGame(game)
+        return game?.let { getFromGame(it) }
     }
 
     /**
