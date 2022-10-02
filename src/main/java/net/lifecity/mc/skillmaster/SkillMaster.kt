@@ -1,8 +1,6 @@
 package net.lifecity.mc.skillmaster
 
 import dev.jorel.commandapi.CommandAPI
-import lombok.Getter
-import net.lifecity.mc.skillmaster.EventListener.register
 import net.lifecity.mc.skillmaster.game.GameList
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.game.stage.GameStageList
@@ -13,22 +11,22 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.plugin.java.JavaPlugin
 
-class SkillMaster : JavaPlugin() {
-    @Getter
-    private var userList: SkillUserList? = null
+object SkillMaster : JavaPlugin() {
 
-    @Getter
-    private var stageList: GameStageList? = null
+    lateinit var userList: SkillUserList
 
-    @Getter
-    private var gameList: GameList? = null
+    lateinit var stageList: GameStageList
+
+    lateinit var gameList: GameList
 
     override fun onEnable() {
-        instance = this
         CommandAPI.registerCommand(SkillCommand::class.java)
-        register()
+
+        EventListener.register()
+
         userList = SkillUserList()
         stageList = GameStageList()
+
         val stage = GameStage("闘技場")
         stage.addField(
             TwoPoint(
@@ -37,18 +35,15 @@ class SkillMaster : JavaPlugin() {
                 Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0)
             )
         )
-        stageList!!.addStage(stage)
+
+        stageList.addStage(stage)
         gameList = GameList()
+
         val fileUtils = FileUtil()
         fileUtils.init()
     }
 
     override fun onDisable() {
         // Plugin shutdown logic
-    }
-
-    companion object {
-        @JvmField
-        var instance: SkillMaster? = null
     }
 }
