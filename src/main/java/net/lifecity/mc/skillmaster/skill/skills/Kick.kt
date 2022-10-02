@@ -34,7 +34,7 @@ class Kick(user: SkillUser?) : Skill(
         if (b) {
             val entity = user.getNearEntities(1.7)[0]
             var count = 0
-            SkillMaster.instance.runTaskTimer(1) {
+            SkillMaster.runTaskTimer(1) {
                 if (count >= 12) cancel()
                 if (entity.velocity.length() <= 0.4) cancel()
 

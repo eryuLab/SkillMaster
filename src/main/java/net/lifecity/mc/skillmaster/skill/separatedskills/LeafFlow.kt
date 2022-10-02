@@ -47,7 +47,7 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
 
         // エフェクト葉の流れ
         var count = 0
-        SkillMaster.instance.runTaskTimer(1) {
+        SkillMaster.runTaskTimer(1) {
             if (!activated) cancel()
             if (count >= 10) cancel()
             if (user.player.velocity.length() <= 0.3) cancel()

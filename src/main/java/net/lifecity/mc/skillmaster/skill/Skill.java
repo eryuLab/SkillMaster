@@ -86,7 +86,7 @@ public class Skill {
                 }
                 count++;
             }
-        }.runTaskTimer(SkillMaster.instance, 0, 1);
+        }.runTaskTimer(SkillMaster.INSTANCE, 0, 1);
     }
 
     /**

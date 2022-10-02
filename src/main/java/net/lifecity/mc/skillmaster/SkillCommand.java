@@ -58,7 +58,7 @@ public class SkillCommand {
     
     @Subcommand("mode")
     public static void mode(Player player, @AMultiLiteralArgument({"battle", "training", "unarmed"}) String name) {
-        SkillUser user = SkillMaster.instance.getUserList().get(player);
+        SkillUser user = SkillMaster.INSTANCE.getUserList().get(player);
 
         UserMode mode = UserMode.valueOf(name.toUpperCase());
 
@@ -69,7 +69,7 @@ public class SkillCommand {
 
     @Subcommand("menu")
     public static void menu(Player player, @AMultiLiteralArgument({"skill", "weapon"}) String menu) {
-        SkillUser user = SkillMaster.instance.getUserList().get(player);
+        SkillUser user = SkillMaster.INSTANCE.getUserList().get(player);
 
         if (player.getGameMode() == GameMode.CREATIVE) {
             player.sendMessage(
@@ -100,21 +100,21 @@ public class SkillCommand {
         }
 
         // ユーザー取得
-        SkillUser user1 = SkillMaster.instance.getUserList().get(player1);
-        SkillUser user2 = SkillMaster.instance.getUserList().get(player2);
+        SkillUser user1 = SkillMaster.INSTANCE.getUserList().get(player1);
+        SkillUser user2 = SkillMaster.INSTANCE.getUserList().get(player2);
 
         // ゲームがないか確認
-        if (SkillMaster.instance.getGameList().inGamingUser(user1)) {
+        if (SkillMaster.INSTANCE.getGameList().inGamingUser(user1)) {
             player.sendMessage(player1.getName() + "はすでにゲーム中です");
             return;
         }
-        if (SkillMaster.instance.getGameList().inGamingUser(user2)) {
+        if (SkillMaster.INSTANCE.getGameList().inGamingUser(user2)) {
             player.sendMessage(player2.getName() + "はすでにゲーム中です");
             return;
         }
 
         // ステージ取得
-        GameStage stage = SkillMaster.instance.getStageList().getFromName(stageName);
+        GameStage stage = SkillMaster.INSTANCE.getStageList().getFromName(stageName);
 
         if (stage == null) {
             player.sendMessage(stageName + "は登録されていません");
