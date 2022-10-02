@@ -20,13 +20,15 @@ class NormalDefense(user: SkillUser?) : DefenseSkill(
     "通常防御",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD),
     listOf("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"),
-    0,
     10,
     35,
     user
 ) {
 
     override fun defense(damage: Double, vector: Vector) {
+        if (user == null)
+            return
+
         user.player.location.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
 
         // ガードエフェクト
@@ -54,4 +56,6 @@ class NormalDefense(user: SkillUser?) : DefenseSkill(
             count++
         }
     }
+
+    override fun additionalInput() {}
 }

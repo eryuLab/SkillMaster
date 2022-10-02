@@ -9,6 +9,7 @@ import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
@@ -101,7 +102,7 @@ class SkillUser(
 
                 // スキルが複合スキルのとき発動中か確認
                 if (skill is SeparatedSkill) {
-                    if (skill.isActivated)
+                    if (skill.activated)
                         return skill
                 }
             }
@@ -175,7 +176,7 @@ class SkillUser(
         }
 
         // インターバル確認
-        if (skill.isInInterval)
+        if (skill.inInterval)
             return
 
         // 複合スキルのとき
@@ -191,7 +192,7 @@ class SkillUser(
             }
 
             // 発動中だったら追加入力
-            if (skill.isActivated) {
+            if (skill.activated) {
                 skill.additionalInput()
                 return
             }

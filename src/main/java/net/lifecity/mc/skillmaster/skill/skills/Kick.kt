@@ -24,6 +24,9 @@ class Kick(user: SkillUser?) : Skill(
     user
 ) {
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val b = user.attackNearest(
             1.7,

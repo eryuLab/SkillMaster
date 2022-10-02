@@ -20,6 +20,9 @@ class MoveFast(user: SkillUser?) : Skill(
     user
 ) {
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val vector = user.player.eyeLocation.direction.multiply(1.55)
 

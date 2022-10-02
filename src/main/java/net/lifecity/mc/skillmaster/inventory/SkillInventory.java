@@ -1,8 +1,6 @@
 package net.lifecity.mc.skillmaster.inventory;
 
 import lombok.AllArgsConstructor;
-import net.lifecity.mc.skillmaster.skill.Skill;
-import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.skill.SkillType;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import org.bukkit.Material;

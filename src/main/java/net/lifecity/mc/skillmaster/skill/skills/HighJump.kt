@@ -24,6 +24,9 @@ class HighJump(user: SkillUser?) : Skill(
 ) {
 
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val vector = user.player.eyeLocation.direction
 

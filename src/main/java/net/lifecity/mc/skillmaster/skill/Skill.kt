@@ -73,7 +73,7 @@ open class Skill(
      * @param weapon この武器が使えるか確かめます
      * @return 武器が使えるかどうか
      */
-    fun usable(weapon: Weapon): Boolean {
+    fun usable(weapon: Weapon?): Boolean {
         return weaponList.contains(weapon)
     }
 

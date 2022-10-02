@@ -28,12 +28,14 @@ class Wall(user: SkillUser?) : SeparatedSkill(
         "ガラスの壁を生成し、相手の攻撃から身を守る",
         "壁は時間経過で消える"
     ),
-    0,
     10,
     20,
     user
 ) {
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val player = user.player
         val loc = player.location

@@ -27,7 +27,6 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         "2回目の入力で素早く落下します。",
         "3回目の入力で攻撃します。"
     ),
-    0,
     28,
     20,
     user
@@ -40,6 +39,9 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
      */
     private var step = 0
     override fun activate() { //上方向に高く飛びあがる
+        if (user == null)
+            return
+
         super.activate()
 
         // 上方向に高く飛びあがる
@@ -72,6 +74,9 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
     }
 
     override fun additionalInput() { //向いている方向(下)に突っ込み、攻撃する
+        if (user == null)
+            return
+
         if (step == 1) { //突っ込みの入力
             val vector = user.player.eyeLocation.direction
                 .normalize()
