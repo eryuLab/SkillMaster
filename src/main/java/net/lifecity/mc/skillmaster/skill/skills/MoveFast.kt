@@ -29,7 +29,7 @@ class MoveFast(user: SkillUser?) : Skill(
 
         // 軌道
         var count = 0
-        SkillMaster.runTaskTimer(1) {
+        SkillMaster.INSTANCE.runTaskTimer(1) {
             if (count >= 7) cancel()
             if (user.player.velocity.length() < 0.3) cancel()
 

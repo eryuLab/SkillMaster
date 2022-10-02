@@ -47,7 +47,7 @@ class VectorAttack(user: SkillUser?) : Skill(
             else Material.WHITE_CONCRETE_POWDER.createBlockData()
 
         var count = 0
-        SkillMaster.runTaskTimer(1) {
+        SkillMaster.INSTANCE.runTaskTimer(1) {
             if (count >= 8) cancel()
             if (user.player.velocity.length() < 0.47) cancel()
 

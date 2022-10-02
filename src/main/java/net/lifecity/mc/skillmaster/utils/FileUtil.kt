@@ -19,9 +19,9 @@ class FileUtil {
 
     fun init() {
         for (fileName in files) {
-            val stream = SkillMaster.getResource("schematics/$fileName")
+            val stream = SkillMaster.INSTANCE.getResource("schematics/$fileName")
             if (stream != null) {
-                val file = File(SkillMaster.dataFolder, "schematics/$fileName")
+                val file = File(SkillMaster.INSTANCE.dataFolder, "schematics/$fileName")
                 try {
                     FileUtils.copyInputStreamToFile(stream, file)
                 } catch (e: IOException) {
