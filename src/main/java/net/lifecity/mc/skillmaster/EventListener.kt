@@ -22,17 +22,17 @@ object EventListener {
     private var leftFlag = true
 
     fun register() {
-        SkillMaster.instance.events {
+        SkillMaster.events {
             event<PlayerJoinEvent> {
-                SkillMaster.instance.userList.add(it.player)
+                SkillMaster.userList.add(it.player)
             }
 
             event<PlayerQuitEvent> {
-                SkillMaster.instance.userList.remove(it.player)
+                SkillMaster.userList.remove(it.player)
             }
 
             event<PlayerInteractEvent> {
-                val user = SkillMaster.instance.userList.get(it.player) ?: return@event
+                val user = SkillMaster.userList.get(it.player) ?: return@event
 
                 if (user.mode == UserMode.UNARMED) return@event
 
@@ -60,7 +60,7 @@ object EventListener {
                 // プレイヤーが木の剣で攻撃したらイベントキャンセル
                 val player = it.damager as? Player
                 player?.let { pl ->
-                    val user = SkillMaster.instance.userList.get(pl) ?: return@event
+                    val user = SkillMaster.userList.get(pl) ?: return@event
 
                     if(user.mode == UserMode.UNARMED) return@event
 
@@ -76,7 +76,7 @@ object EventListener {
                             it.damage = 1.5
 
                             // ゲーム中ならonAttack()呼び出し
-                            val game = SkillMaster.instance.gameList.getFromUser(user) ?: return@event
+                            val game = SkillMaster.gameList.getFromUser(user) ?: return@event
                             val onAttack = game as? OnAttack
                             onAttack?.onAttack(user)
                         }
@@ -87,7 +87,7 @@ object EventListener {
             event<EntityDamageEvent> {
                 val player = it.entity as? Player
                 player?.let { pl ->
-                    val user = SkillMaster.instance.userList.get(pl) ?: return@event
+                    val user = SkillMaster.userList.get(pl) ?: return@event
 
                     // 戦闘モードじゃなかったらダメージなし
                     if(user.mode != UserMode.BATTLE) {
@@ -101,11 +101,11 @@ object EventListener {
                     }
 
                     if(pl.health < 1) { //HPが１より小さい＝＞死んだとき
-                        val dead = SkillMaster.instance.userList.get(pl) ?: return@event
+                        val dead = SkillMaster.userList.get(pl) ?: return@event
 
                         //ゲーム中なら
-                        if(SkillMaster.instance.gameList.inGamingUser(dead)) {
-                            val game = SkillMaster.instance.gameList.getFromUser(dead) ?: return@event
+                        if(SkillMaster.gameList.inGamingUser(dead)) {
+                            val game = SkillMaster.gameList.getFromUser(dead) ?: return@event
                             it.isCancelled = true
 
                             val onDie = game as? OnDie
@@ -116,7 +116,7 @@ object EventListener {
             }
 
             event<PlayerSwapHandItemsEvent> {
-                val user = SkillMaster.instance.userList.get(it.player) ?: return@event
+                val user = SkillMaster.userList.get(it.player) ?: return@event
 
                 if(user.mode == UserMode.UNARMED) return@event
 
@@ -127,7 +127,7 @@ object EventListener {
             }
 
             event<PlayerDropItemEvent> {
-                val user = SkillMaster.instance.userList.get(it.player) ?: return@event
+                val user = SkillMaster.userList.get(it.player) ?: return@event
 
                 if(user.mode == UserMode.UNARMED) return@event
 
@@ -145,7 +145,7 @@ object EventListener {
             event<InventoryClickEvent>(priority = EventPriority.HIGHEST) {
                 val player = it.whoClicked as? Player
                 player?.let { pl ->
-                    val user = SkillMaster.instance.userList.get(pl) ?: return@event
+                    val user = SkillMaster.userList.get(pl) ?: return@event
 
                     if(it.clickedInventory == null) return@event
 
