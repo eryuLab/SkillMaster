@@ -156,7 +156,7 @@ public class SkillInventory extends InventoryFrame {
 
                     if (page == finalMaxPage)
                         return;
-                    user.sendMessage("次のページ");
+                    user.getPlayer().sendMessage("次のページ");
 
                     // ページ移動
                     user.setOpenedInventory(new SkillInventory(user, page + 1));

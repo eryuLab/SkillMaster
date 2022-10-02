@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,19 +24,16 @@ public class UserInventory extends InventoryFrame {
     @Override
     public void init() {
         // アイテムを設置
-        // 右クリック
-        for (SkillKey key : user.getRightSkillSet()) {
-            setSkillItem(key);
+        List<List<SkillKey>> keyLists = List.of(
+                user.getRightCard().getSkillSet().getKeyList(),
+                user.getSwapCard().getSkillSet().getKeyList(),
+                user.getDropCard().getSkillSet().getKeyList()
+        );
+        for (List<SkillKey> keyList : keyLists) {
+            for (SkillKey key : keyList) {
+                setSkillItem(key);
+            }
         }
-        // スワップキー
-        for (SkillKey key : user.getSwapSkillSet()) {
-            setSkillItem(key);
-        }
-        // ドロップキー
-        for (SkillKey key : user.getDropSkillSet()) {
-            setSkillItem(key);
-        }
-
     }
 
     /**
@@ -49,7 +47,7 @@ public class UserInventory extends InventoryFrame {
             case SWAP -> 13;
             case RIGHT -> 16;
         };
-        slot = slot + 9 * key.getNum();
+        slot = slot + 9 * key.getNumber();
 
         // Paneを設置
         setItem(slot - 1, paneItem(key, true));
@@ -72,9 +70,9 @@ public class UserInventory extends InventoryFrame {
 
         String name;
         if (isLeft)
-            name = key.getButton().getJp() + ": " + key.getNum() + "→";
+            name = key.getButton().getJp() + ": " + key.getNumber() + "→";
         else
-            name = "←" + key.getButton().getJp() + ": " + key.getNum();
+            name = "←" + key.getButton().getJp() + ": " + key.getNumber();
 
         return new InvItem(
                 createItemStack(
@@ -130,18 +128,19 @@ public class UserInventory extends InventoryFrame {
                                 // セットできるか確認
                                 if (!user.settable(cursorSkill)) {
                                     event.setCancelled(true);
-                                    user.sendMessage("このスキルはすでに登録されています");
+                                    user.getPlayer().sendMessage("このスキルはすでに登録されています");
                                     return;
                                 }
 
                                 // スキルセット
                                 key.setSkill(cursorSkill);
-                                user.sendMessage("スキルを登録しました: " + key.getButton().getJp() + "[" + key.getNum() + "]: " + cursorSkill.getName());
+                                user.getPlayer().sendMessage("スキルを登録しました: " + key.getButton().getJp() + "[" + key.getNumber() + "]: " + cursorSkill.getName());
 
                                 setItem(event.getSlot(), skillItem(key));
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
+
                                         user.getUserInventory().inv.getItem(event.getSlot()).setAmount(1);
                                     }
                                 }.runTaskLater(SkillMaster.instance, 1);
@@ -176,7 +175,7 @@ public class UserInventory extends InventoryFrame {
 
                                 // スキル除外
                                 key.setSkill(null);
-                                user.sendMessage("スキルを除外しました");
+                                user.getPlayer().sendMessage("スキルを除外しました");
                                 setItem(event.getSlot(), skillItem(key));
                                 new BukkitRunnable() {
                                     @Override

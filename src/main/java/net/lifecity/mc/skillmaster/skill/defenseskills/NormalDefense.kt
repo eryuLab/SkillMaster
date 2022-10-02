@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.skill.defenseskills
 
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
+import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -26,7 +27,7 @@ class NormalDefense(user: SkillUser?) : DefenseSkill(
 ) {
 
     override fun defense(damage: Double, vector: Vector) {
-        user.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
+        user.player.location.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
 
         // ガードエフェクト
         var count = 0

@@ -29,7 +29,7 @@ public abstract class SeparatedSkill extends Skill {
      */
     public void activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動");
+        user.getPlayer().sendActionBar(ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動");
 
         // 発動中にする
         activated = true;
@@ -78,7 +78,7 @@ public abstract class SeparatedSkill extends Skill {
         activated = false; //非発動化する
 
         // ログ
-        user.sendActionBar(ChatColor.RED + "複合スキル『" + name + "』終了");
+        user.getPlayer().sendActionBar(ChatColor.RED + "複合スキル『" + name + "』終了");
 
         //インターバル処理
         super.deactivate();

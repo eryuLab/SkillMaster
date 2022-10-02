@@ -1,6 +1,5 @@
 package net.lifecity.mc.skillmaster.inventory;
 
-import net.lifecity.mc.skillmaster.skill.Skill;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
 import org.bukkit.Material;
@@ -98,7 +97,7 @@ public class WeaponInventory extends InventoryFrame {
                     // インベントリに武器を追加
                     event.setCancelled(true);
                     user.getPlayer().getInventory().addItem(weapon.toItemStack());
-                    user.sendMessage("武器を送りました");
+                    user.getPlayer().sendMessage("武器を送りました");
                 }
         );
     }
@@ -120,7 +119,7 @@ public class WeaponInventory extends InventoryFrame {
                     createItemStack(Material.LIME_STAINED_GLASS_PANE, "選択する", List.of()),
                     event -> {
                         // SkillUserで武器を変更
-                        user.changeWeapon(weapon);
+                        user.setSelectedWeapon(weapon);
 
                         // インベントリを更新
                         user.setOpenedInventory(new WeaponInventory(user));

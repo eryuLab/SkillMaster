@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.skill.separatedskills
 
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
+import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
@@ -65,7 +66,8 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
                 loc.spawnParticle(Particle.ELECTRIC_SPARK)
             }
 
-            if (count % 2 == 0) user.playSound(Sound.BLOCK_WET_GRASS_BREAK)
+            if (count % 2 == 0)
+                user.player.location.playSound(Sound.BLOCK_WET_GRASS_BREAK)
             count++
         }
 

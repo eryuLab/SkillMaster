@@ -58,7 +58,7 @@ public class Skill {
      */
     public void activate() {
         // ログ
-        user.sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
+        user.getPlayer().sendActionBar(ChatColor.DARK_AQUA + "スキル『" + name + "』発動");
 
         deactivate();
     }
