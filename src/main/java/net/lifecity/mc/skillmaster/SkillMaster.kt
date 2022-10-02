@@ -11,7 +11,12 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.plugin.java.JavaPlugin
 
-object SkillMaster : JavaPlugin() {
+class SkillMaster : JavaPlugin() {
+
+    companion object {
+        @JvmField
+        var INSTANCE : SkillMaster? = null
+    }
 
     lateinit var userList: SkillUserList
 
@@ -20,6 +25,8 @@ object SkillMaster : JavaPlugin() {
     lateinit var gameList: GameList
 
     override fun onEnable() {
+        INSTANCE = this
+
         CommandAPI.registerCommand(SkillCommand::class.java)
 
         EventListener.register()
@@ -46,4 +53,6 @@ object SkillMaster : JavaPlugin() {
     override fun onDisable() {
         // Plugin shutdown logic
     }
+
+
 }
