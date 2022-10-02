@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster.user
 
 import com.github.syari.spigot.api.sound.playSound
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
@@ -11,6 +13,7 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
@@ -329,7 +332,13 @@ class SkillUser(
     }
 
     fun sendMessage(msg: String) = player.sendMessage(msg)
-    fun sendActionbar(msg: String) = player.sendActionBar(msg)
-    fun sendTitle(title: String, sub: String?) = player.sendTitle(title, sub)
+    fun sendActionBar(msg: String) = player.sendActionBar(PlainTextComponentSerializer.plainText().deserialize(msg))
+    fun sendTitle(title: String, sub: String) = player.showTitle(
+        Title.title(
+            PlainTextComponentSerializer.plainText().deserialize(title),
+            PlainTextComponentSerializer.plainText().deserialize(sub)
+        )
+    )
     fun playSound(sound: Sound) = player.location.playSound(sound)
+    fun teleport(location: Location) = player.teleport(location)
 }
