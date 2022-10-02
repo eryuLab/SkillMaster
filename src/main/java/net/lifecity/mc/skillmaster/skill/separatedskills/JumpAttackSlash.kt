@@ -64,7 +64,7 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         }
 
         // 指定時間経過後に攻撃入力可能になる
-        SkillMaster.instance.runTaskLater(7) {
+        SkillMaster.INSTANCE.runTaskLater(7) {
 
             step = 1
             user.player.location.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
@@ -85,7 +85,7 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
 
             // 軌道
             var count = 0
-            SkillMaster.instance.runTaskTimer(1) {
+            SkillMaster.INSTANCE.runTaskTimer(1) {
                 if (step == 0) cancel()
                 if (count >= 10) cancel()
                 if (user.player.velocity.length() < 0.3) cancel()

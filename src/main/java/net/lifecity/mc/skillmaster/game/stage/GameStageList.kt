@@ -37,7 +37,7 @@ class GameStageList {
      * @return ユーザーが参加しているゲームのフィールド
      */
     fun getFromUser(user: SkillUser) : GameStage? {
-        val game = SkillMaster.instance.gameList.getFromUser(user)
+        val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
         return game?.let { getFromGame(it) }
     }
 

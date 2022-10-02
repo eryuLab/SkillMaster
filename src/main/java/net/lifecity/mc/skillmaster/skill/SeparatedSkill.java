@@ -46,7 +46,7 @@ public abstract class SeparatedSkill extends Skill {
         private int count = 0;
 
         public ActivationTimer() {
-            runTaskTimer(SkillMaster.instance, 0, 1);
+            runTaskTimer(SkillMaster.INSTANCE, 0, 1);
         }
 
         @Override

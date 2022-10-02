@@ -53,7 +53,7 @@ class HighJump(user: SkillUser?) : Skill(
 
         // 軌道
         var count = 0
-        SkillMaster.instance.runTaskTimer(2) {
+        SkillMaster.INSTANCE.runTaskTimer(2) {
             if (count >= 10) cancel()
             if (user.player.velocity.length() < 0.3) cancel()
             particle(Particle.LAVA, user.player.location)

@@ -31,7 +31,7 @@ class NormalDefense(user: SkillUser?) : DefenseSkill(
 
         // ガードエフェクト
         var count = 0
-        SkillMaster.instance.runTaskTimer(0,4) {
+        SkillMaster.INSTANCE.runTaskTimer(0,4) {
             for (j in 0..3) {
                 // 座標を生成
                 val max = 1.5

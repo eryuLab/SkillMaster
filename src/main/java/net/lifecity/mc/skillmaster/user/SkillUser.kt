@@ -254,7 +254,7 @@ class SkillUser(
             user.damage(damage, vector)
 
             // ゲーム中のときGameのonAttack()を呼び出す
-            val game = SkillMaster.instance.gameList.getFromUser(this)
+            val game = SkillMaster.INSTANCE.gameList.getFromUser(this)
             if (game is OnAttack)
                 game.onAttack(this)
         }
@@ -303,7 +303,7 @@ class SkillUser(
 
         // プレイヤーだった時の処理
         if (entity is Player) {
-            val user = SkillMaster.instance.userList.get(entity) ?: return false
+            val user = SkillMaster.INSTANCE.userList.get(entity) ?: return false
 
             // 攻撃
             attackUser(user, damage, vector, sound)

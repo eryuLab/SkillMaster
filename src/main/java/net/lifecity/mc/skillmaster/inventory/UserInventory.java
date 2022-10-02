@@ -143,7 +143,7 @@ public class UserInventory extends InventoryFrame {
 
                                         user.getUserInventory().inv.getItem(event.getSlot()).setAmount(1);
                                     }
-                                }.runTaskLater(SkillMaster.instance, 1);
+                                }.runTaskLater(SkillMaster.INSTANCE, 1);
                             }
                         }
                     }
@@ -182,7 +182,7 @@ public class UserInventory extends InventoryFrame {
                                     public void run() {
                                         user.getUserInventory().inv.getItem(event.getSlot()).setAmount(1);
                                     }
-                                }.runTaskLater(SkillMaster.instance, 1);
+                                }.runTaskLater(SkillMaster.INSTANCE, 1);
                                 event.setCancelled(true);
                             }
                         }
