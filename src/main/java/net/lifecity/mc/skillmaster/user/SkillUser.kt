@@ -7,7 +7,6 @@ import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
@@ -16,7 +15,6 @@ import org.bukkit.Sound
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
 class SkillUser(
@@ -329,4 +327,9 @@ class SkillUser(
 
         return near
     }
+
+    fun sendMessage(msg: String) = player.sendMessage(msg)
+    fun sendActionbar(msg: String) = player.sendActionBar(msg)
+    fun sendTitle(title: String, sub: String?) = player.sendTitle(title, sub)
+    fun playSound(sound: Sound) = player.location.playSound(sound)
 }
