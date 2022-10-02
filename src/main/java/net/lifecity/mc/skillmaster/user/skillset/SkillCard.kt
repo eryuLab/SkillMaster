@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.user.skillset
 
+import net.lifecity.mc.skillmaster.skill.Skill
+
 data class SkillCard(
     val button: SkillButton,
     val skillSet: SkillSet = SkillSet(button)
