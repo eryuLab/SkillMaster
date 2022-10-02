@@ -36,7 +36,7 @@ class GameTeam(private val name: String, private val color: ChatColor, private v
      */
     fun sendMessage(msg: String) {
         for (user in userArray) {
-            user.player.sendMessage(msg)
+            user.sendMessage(msg)
         }
     }
 
@@ -47,27 +47,20 @@ class GameTeam(private val name: String, private val color: ChatColor, private v
      */
     fun sendTitle(title: String, sub: String) {
         for (user in userArray) {
-            user.player.showTitle(
-                Title.title(
-                    PlainTextComponentSerializer.plainText().deserialize(title),
-                    PlainTextComponentSerializer.plainText().deserialize(sub)
-                )
-            )
+            user.sendTitle(title, sub)
         }
     }
 
     fun sendActionbar(msg: String) {
         for (user in userArray) {
-            user.player.sendActionBar(
-                PlainTextComponentSerializer.plainText().deserialize(msg)
-            )
+            user.sendActionBar(msg)
         }
     }
 
     fun playSound(sound: Sound) {
         for (user in userArray) {
             //user.getPlayer().getLocation().playSound(sound);
-            user.player.sendMessage("SE: ${sound.name}")
+            user.playSound(sound)
         }
     }
 
@@ -77,7 +70,7 @@ class GameTeam(private val name: String, private val color: ChatColor, private v
      */
     fun teleportAll(location: Location) {
         for (user in userArray) {
-            user.player.teleport(location)
+            user.teleport(location)
         }
     }
 
