@@ -10,7 +10,7 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.inventory.ItemStack
 
-class Skill(
+open class Skill(
     val name: String,
     val weaponList: List<Weapon>,
     val type: SkillType,
@@ -24,7 +24,7 @@ class Skill(
     /**
      * スキルを発動します
      */
-    fun activate() {
+    open fun activate() {
         user?.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
 
         deactivate()
@@ -33,7 +33,7 @@ class Skill(
     /**
      * スキルを終了し、インターバルタイマーを起動します
      */
-    fun deactivate() {
+    open fun deactivate() {
         // インターバル中だったらreturn
         if (inInterval)
             return
@@ -57,7 +57,7 @@ class Skill(
     /**
      * スキルの状態を初期化します
      */
-    fun init() { inInterval = false }
+    open fun init() { inInterval = false }
 
     /**
      * パーティクルを表示します
