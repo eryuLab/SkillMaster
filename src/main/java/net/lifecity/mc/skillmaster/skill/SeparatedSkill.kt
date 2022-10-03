@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.skill
 
+import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -24,16 +25,10 @@ abstract class SeparatedSkill(
 
         // 発動中にする
         activated = true
-    }
 
-    inner class ActivationTimer: BukkitRunnable() {
+        //終了処理：ActivationTimer起動
         var count = 0
-
-        init {
-            runTaskTimer(SkillMaster.INSTANCE, 0, 1)
-        }
-
-        override fun run() {
+        SkillMaster.INSTANCE.runTaskTimer(1) {
             if (!this@SeparatedSkill.activated) //発動中か確認
                 cancel()
 
