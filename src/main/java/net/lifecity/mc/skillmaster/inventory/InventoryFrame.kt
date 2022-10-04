@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
-abstract class InventoryFrame(val user: SkillUser, val inv: Inventory, val name: String = "") {
+abstract class InventoryFrame(val user: SkillUser, val inv: Inventory = user.player.inventory, val name: String = "") {
     constructor(user: SkillUser, row: Int, name: String = "") : this(
         user,
         Bukkit.createInventory(null, row * 9, name),
