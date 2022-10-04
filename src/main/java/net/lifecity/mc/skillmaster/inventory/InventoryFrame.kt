@@ -55,7 +55,7 @@ abstract class InventoryFrame(val user: SkillUser, val inv: Inventory, val name:
      * @param lore アイテムの説明
      * @return 生成されたItemStack
      */
-    fun createItemStack(material: Material, name: String, lore: List<String> = listOf()): ItemStack {
+    fun createItemStack(material: Material, name: String = " ", lore: List<String> = listOf()): ItemStack {
         val itemStack = ItemStack(material)
         itemStack.displayName = name
         itemStack.lore = lore
