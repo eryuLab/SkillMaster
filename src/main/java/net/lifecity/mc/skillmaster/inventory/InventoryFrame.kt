@@ -17,6 +17,10 @@ abstract class InventoryFrame(val user: SkillUser, val inv: Inventory = user.pla
 
     val itemMap = mutableMapOf<Int, InvItem>()
 
+    init {
+        this.init()
+    }
+
     inner class InvItem(val item: ItemStack, val onClick: InventoryClickEvent.() -> Unit = {})
 
     abstract fun init()
@@ -45,7 +49,7 @@ abstract class InventoryFrame(val user: SkillUser, val inv: Inventory = user.pla
      */
     fun onClick(event: InventoryClickEvent) {
         val item = itemMap[event.slot]
-        item?.onClick?.let { event }
+        item?.onClick?.invoke(event)
     }
 
     /**

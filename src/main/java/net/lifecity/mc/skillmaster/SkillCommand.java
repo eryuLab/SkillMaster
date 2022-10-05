@@ -9,6 +9,7 @@ import net.lifecity.mc.skillmaster.game.games.Duel;
 import net.lifecity.mc.skillmaster.game.stage.GameStage;
 import net.lifecity.mc.skillmaster.inventory.SkillInventory;
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory;
+import net.lifecity.mc.skillmaster.skill.SkillManager;
 import net.lifecity.mc.skillmaster.user.SkillUser;
 import net.lifecity.mc.skillmaster.user.UserMode;
 import net.lifecity.mc.skillmaster.weapon.Weapon;
@@ -79,13 +80,15 @@ public class SkillCommand {
             );
         }
 
+        if(user == null) return;
+
         if (menu.equals("skill")) {
-            user.setOpenedInventory(new SkillInventory(user, 0));
+            user.setOpenedInventory(new SkillInventory(user, new SkillManager(user), 0));
 
             user.getOpenedInventory().open();
         }
         else if (menu.equals("weapon")) {
-            user.setOpenedInventory(new WeaponInventory(user));
+            user.setOpenedInventory(new WeaponInventory(user, 0));
 
             user.getOpenedInventory().open();
         }
