@@ -30,7 +30,7 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
         val skillList = skillManager.fromWeapon(user.selectedWeapon)
 
         // 仕切り
-        for (i in 1..54 step 9) {
+        for (i in 1..53 step 9) {
             setItem(i, InvItem(createItemStack(Material.BLACK_STAINED_GLASS_PANE)) {
                 this.isCancelled = true
             })
@@ -76,25 +76,24 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
             val first = row * 9 + 2
 
             //行が存在したらスキルアイテム行設置
-            if (rowList.size > rowIndex) {
-                val typeRow = rowList[rowIndex]
+            val typeRow = rowList[rowIndex]
 
-                for ((num, slot) in (first..first + 7).withIndex()) {
-                    //アイコン設置
-                    val type = typeRow.type
-                    if (!setIcon.contains(type)) {
-                        setItem(
-                            first - 2,
-                            InvItem(createItemStack(type.material, "タイプ： ${type.jp}")) {
-                                this.isCancelled = true
-                            })
-                        setIcon.add(type)
-                    }
-
-                    //スキルアイテム設置
-                    setItem(slot, typeRow.getSkillItem(num))
+            for ((num, slot) in (first..first + 6).withIndex()) {
+                //アイコン設置
+                val type = typeRow.type
+                if (!setIcon.contains(type)) {
+                    setItem(
+                        first - 2,
+                        InvItem(createItemStack(type.material, "タイプ： ${type.jp}")) {
+                            this.isCancelled = true
+                        })
+                    setIcon.add(type)
                 }
+
+                //スキルアイテム設置
+                setItem(slot, typeRow.getSkillItem(num))
             }
+
         }
     }
 
