@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import kotlin.math.max
 
 class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user), val page: Int) :
     InventoryFrame(user, 6, "スキルメニュー:${user.selectedWeapon.jp}") {
@@ -94,6 +95,32 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
                 setItem(slot, typeRow.getSkillItem(num))
             }
 
+            val maxPage = rowList.size / 5
+            val lore = "${page + 1}/${maxPage + 1}"
+            //前のページ
+            setItem(47, InvItem(createItemStack(Material.ARROW, "前のページ", listOf(lore))) {
+                this.isCancelled = true
+
+                if(page == 0) return@InvItem
+
+                //ページ移動
+                user.openedInventory = SkillInventory(user, page = page - 1)
+                user.openedInventory?.open()
+            })
+
+            //次のページ
+            val finalMaxPage = maxPage
+            setItem(53, InvItem(createItemStack(Material.ARROW, "次のページ", listOf(lore))) {
+                this.isCancelled = true
+
+                if(page == finalMaxPage) return@InvItem
+
+                user.player.sendMessage("次のページ")
+
+                //ページ移動
+                user.openedInventory = SkillInventory(user, page = page + 1)
+                user.openedInventory?.open()
+            })
         }
     }
 
