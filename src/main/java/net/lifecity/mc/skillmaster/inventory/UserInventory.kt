@@ -11,6 +11,9 @@ import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryType
 
 class UserInventory(user: SkillUser) : InventoryFrame(user) {
+
+    private val ironBars : InvItem
+        get() = InvItem(createItemStack(Material.IRON_BARS)) { this.isCancelled = true }
     override fun init() {
         //アイテムを設置
         val keyLists = listOf(
@@ -42,7 +45,8 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
         setItem(slot - 1, paneItem(key, true))
         setItem(slot + 1, paneItem(key, false))
         //SkillItemを設置
-        setItem(slot, skillItem(key))
+
+        setItem(slot, if(skillItem(key) == null) ironBars else skillItem(key)!!)
     }
 
     /**
@@ -71,7 +75,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
      * @param key 変換するSkillKey
      * @return 変換されたSkillKey
      */
-    private fun skillItem(key: SkillKey) : InvItem{
+    private fun skillItem(key: SkillKey) : InvItem? {
         //スキルアイテムがない時のアイテム
         val isNullItem =
             InvItem(
@@ -114,7 +118,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
                         key.skill = cursorSkill
                         user.player.sendMessage("スキルを登録しました： ${key.button.jp}[${key.number}]: ${cursorSkill.name}")
 
-                        setItem(this.slot, skillItem(key))
+                        setItem(this.slot, if(skillItem(key) == null) ironBars else skillItem(key)!!)
 
                         SkillMaster.INSTANCE.runTaskLater(1) {
                             user.userInventory.inv.getItem(this@InvItem.slot)?.amount = 1
@@ -125,35 +129,37 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
 
         //スキルアイテムがある時のアイテム
         val nonNullItem =
-            InvItem(
-                key.skill!!.toItemStack()
-            ) {
-                //スキルアイテム除外
-                if(this.view.topInventory.type != InventoryType.CHEST) {
-                    this.isCancelled = true
-                    return@InvItem
-                }
-
-                //インベントリ特定
-                if(this.view.topInventory.type == InventoryType.CHEST) {
-                    val openInv = user.openedInventory
-
-                    if(openInv == null) {
+            key.skill?.toItemStack()?.let {
+                InvItem(
+                    it
+                ) {
+                    //スキルアイテム除外
+                    if(this.view.topInventory.type != InventoryType.CHEST) {
                         this.isCancelled = true
                         return@InvItem
                     }
 
-                    if(this.view.topInventory == openInv.inv) {
-                        //スキル除外
-                        key.skill = null
-                        user.player.sendMessage("スキルを除外しました")
-                        setItem(this.slot, skillItem(key))
+                    //インベントリ特定
+                    if(this.view.topInventory.type == InventoryType.CHEST) {
+                        val openInv = user.openedInventory
 
-                        SkillMaster.INSTANCE.runTaskLater(1) {
-                            user.userInventory.inv.getItem(this@InvItem.slot)?.amount = 1
+                        if(openInv == null) {
+                            this.isCancelled = true
+                            return@InvItem
                         }
 
-                        this.isCancelled = true
+                        if(this.view.topInventory == openInv.inv) {
+                            //スキル除外
+                            key.skill = null
+                            user.player.sendMessage("スキルを除外しました")
+                            setItem(this.slot, if(skillItem(key) == null) ironBars else skillItem(key)!!)
+
+                            SkillMaster.INSTANCE.runTaskLater(1) {
+                                user.userInventory.inv.getItem(this@InvItem.slot)?.amount = 1
+                            }
+
+                            this.isCancelled = true
+                        }
                     }
                 }
             }
