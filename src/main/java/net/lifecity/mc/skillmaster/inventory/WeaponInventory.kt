@@ -69,14 +69,14 @@ class WeaponInventory(user: SkillUser, private val page: Int = 0) : InventoryFra
      * @return
      */
     private fun getToSkillItem(weapon: Weapon): InventoryFrame.InvItem {
-        if(weapon == user.selectedWeapon) {
-            return InvItem(createItemStack(Material.CAULDRON, "スキルメニューへ")) {
+        return if(weapon == user.selectedWeapon) {
+            InvItem(createItemStack(Material.CAULDRON, "スキルメニューへ")) {
                 //スキルメニューへ移動
                 user.openedInventory = SkillInventory(user, page = 0)
                 user.openedInventory?.open()
             }
         } else {
-            return InvItem(createItemStack(Material.CAULDRON, "武器を選択してください")) {
+            InvItem(createItemStack(Material.CAULDRON, "武器を選択してください")) {
                 this.isCancelled = true
             }
         }
