@@ -57,7 +57,9 @@ open class Skill(
     /**
      * スキルの状態を初期化します
      */
-    open fun init() { inInterval = false }
+    open fun init() {
+        inInterval = false
+    }
 
     /**
      * パーティクルを表示します

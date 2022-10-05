@@ -77,11 +77,14 @@ class SkillUser(
      * 発動中のスキルの解除と、自身のベクトルを0にする
      */
     fun leftClick() {
-        // 発動中のスキルを解除
-        getActivatedSkill()?.deactivate()
+        getActivatedSkill()?.let {
+            if(it.canCancelRelieve) { //もしスキル解除キャンセル可能だったら
+                it.deactivate() // 発動中のスキルを解除
 
-        // プレイヤーのベクトルを0にする
-        player.velocity = Vector(0.0, player.velocity.y, 0.0)
+                // プレイヤーのベクトルを0にする
+                player.velocity = Vector(0.0, player.velocity.y, 0.0)
+            }
+        }
     }
 
     /**
