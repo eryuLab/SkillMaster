@@ -42,7 +42,7 @@ class WeaponInventory(user: SkillUser, private val page: Int = 0) : InventoryFra
         val weaponList = Weapon.values().asList()
         val start = page * 7
 
-        for(i in start..start+7) {
+        for(i in start..start+6) {
             val index = i - start + 1
             if(Weapon.values().size <= i) {
                 setItem(index, ironBars)
