@@ -7,7 +7,7 @@ body:
     id: minecraft-version
     attributes:
       label: マイクラのバージョン
-      description: 使用しているまいくらのバージョンを選択して下さい
+      description: 使用しているマイクラのバージョンを選択して下さい
       multiple: false
       options:
         - "1.18.2"
