@@ -66,20 +66,28 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
             if (skillListByType.size % rightPaneRow != 0) maxRowNum++
 
             //行数だけリストに行を追加
-            for (rowNum in 0..maxRowNum) {
+            for (rowNum in 0 until maxRowNum) {
                 rowList.add(TypeRow(type, skillListByType, rowNum))
             }
         }
 
         val setIcon = mutableListOf<SkillType>()
-        for (row in 0..5) {
+        for (row in 0 until 5) {
             val rowIndex = page * 5 + row
             val first = row * 9 + 2
+
+            //行が存在しなかったら空白行設置
+            if(rowList.size <= rowIndex) {
+                for(slot in first until first+7) {
+                    setItem(slot, airItem)
+                }
+                continue
+            }
 
             //行が存在したらスキルアイテム行設置
             val typeRow = rowList[rowIndex]
 
-            for ((num, slot) in (first..first + 6).withIndex()) {
+            for ((num, slot) in (first until first + 7).withIndex()) {
                 //アイコン設置
                 val type = typeRow.type
                 if (!setIcon.contains(type)) {
