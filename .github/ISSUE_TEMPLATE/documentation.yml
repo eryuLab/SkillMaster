@@ -1,0 +1,28 @@
+name: 📄 品質向上
+description: 現在のシステムを改善する
+title: "[品質向上]: "
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 改善案の具体的な内容
+      placeholder: 具体的な内容をここに記載してください
+    validations:
+      required: true
+  - type: textarea
+    id: expected-code
+    attributes:
+      label: 想定されるコード
+      placeholder: |
+        （可能であれば）想定されるコードをここに記載してください。
+        もし、想定されるコードがわからなかったり書けない場合は N/A と記載してください。
+    validations:
+      required: false
+  - type: textarea
+    id: other
+    attributes:
+      label: 補足事項
+      placeholder: 説明する補足事項があればここに記載してください。
+    validations:
+      required: false
