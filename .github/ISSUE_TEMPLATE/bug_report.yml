@@ -1,0 +1,50 @@
+name: 🐜 バグ報告
+description: バグを発見した時のレポート
+title: "[バグ]: "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: minecraft-version
+    attributes:
+      label: マイクラのバージョン
+      description: 使用しているマイクラのバージョンを選択して下さい
+      multiple: false
+      options:
+        - "1.18.2"
+        - "1.18"
+        - "1.17"
+        - "1.16.5"
+        - "1.16"
+        - "1.15"
+        - "1.14"
+        - "1.13"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: バグ内容の説明
+      description: バグ内容を簡潔に記載してください
+      placeholder: バク内容をここに記載してください
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: バグを再現するための手順
+      description: 実際にバグが発生した時の行動手順を記載してください
+      placeholder:  |
+        以下の手順を踏むとバグが発生します
+        1. 手順１
+        2. 手順２
+        3. 手順３
+        4. 手順４
+    validations:
+      required: false
+  - type: textarea
+    id: other
+    attributes:
+      label: 補足事項
+      placeholder: バグを説明するために必要な補足事項等あれば記載して下さい
+    validations:
+      required: false

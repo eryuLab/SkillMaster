@@ -1,0 +1,12 @@
+name: ❓ 現行システムへの質問
+description: 現行のシステムに関しての疑問
+title: "[質問]: "
+labels: ["question"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 質問内容
+      placeholder: 具体的な内容をここに記載してください
+    validations:
+      required: true
