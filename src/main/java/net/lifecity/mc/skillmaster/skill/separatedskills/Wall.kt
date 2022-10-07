@@ -28,12 +28,14 @@ class Wall(user: SkillUser?) : SeparatedSkill(
         "ガラスの壁を生成し、相手の攻撃から身を守る",
         "壁は時間経過で消える"
     ),
-    0,
     10,
     20,
     user
 ) {
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val player = user.player
         val loc = player.location
@@ -55,49 +57,49 @@ class Wall(user: SkillUser?) : SeparatedSkill(
         when (face) {
             NORTH -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/north_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/north_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
             NORTH_EAST -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/north_east_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/north_east_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
             EAST -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/east_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/east_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
             SOUTH_EAST -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/south_east_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/south_east_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
             SOUTH -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/south_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/south_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
             SOUTH_WEST -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/south_west_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/south_west_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
             WEST -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/west_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/west_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
             NORTH_WEST -> {
                 val schematic =
-                    File(SkillMaster.instance.dataFolder.toString() + File.separator + "/schematics/north_west_wall.schem")
+                    File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/north_west_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }

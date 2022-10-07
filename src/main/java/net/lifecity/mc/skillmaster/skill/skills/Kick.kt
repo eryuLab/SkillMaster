@@ -24,6 +24,9 @@ class Kick(user: SkillUser?) : Skill(
     user
 ) {
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val b = user.attackNearest(
             1.7,
@@ -34,7 +37,7 @@ class Kick(user: SkillUser?) : Skill(
         if (b) {
             val entity = user.getNearEntities(1.7)[0]
             var count = 0
-            SkillMaster.instance.runTaskTimer(1) {
+            SkillMaster.INSTANCE.runTaskTimer(1) {
                 if (count >= 12) cancel()
                 if (entity.velocity.length() <= 0.4) cancel()
 

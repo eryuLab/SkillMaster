@@ -27,10 +27,10 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         "2回目の入力で素早く落下します。",
         "3回目の入力で攻撃します。"
     ),
-    0,
     28,
     20,
-    user
+    user,
+    false
 ) {
 
     /**
@@ -40,6 +40,9 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
      */
     private var step = 0
     override fun activate() { //上方向に高く飛びあがる
+        if (user == null)
+            return
+
         super.activate()
 
         // 上方向に高く飛びあがる
@@ -64,7 +67,7 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         }
 
         // 指定時間経過後に攻撃入力可能になる
-        SkillMaster.instance.runTaskLater(7) {
+        SkillMaster.INSTANCE.runTaskLater(7) {
 
             step = 1
             user.player.location.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
@@ -72,6 +75,9 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
     }
 
     override fun additionalInput() { //向いている方向(下)に突っ込み、攻撃する
+        if (user == null)
+            return
+
         if (step == 1) { //突っ込みの入力
             val vector = user.player.eyeLocation.direction
                 .normalize()
@@ -85,7 +91,7 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
 
             // 軌道
             var count = 0
-            SkillMaster.instance.runTaskTimer(1) {
+            SkillMaster.INSTANCE.runTaskTimer(1) {
                 if (step == 0) cancel()
                 if (count >= 10) cancel()
                 if (user.player.velocity.length() < 0.3) cancel()

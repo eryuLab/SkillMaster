@@ -42,8 +42,8 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    compileOnly "dev.jorel:commandapi-annotations:8.4.1"
-    annotationProcessor "dev.jorel:commandapi-annotations:8.4.1"
+    compileOnly 'dev.jorel:commandapi-annotations:8.5.1'
+    annotationProcessor "dev.jorel:commandapi-annotations:8.5.1"
 
     implementation 'commons-io:commons-io:2.11.0'
 

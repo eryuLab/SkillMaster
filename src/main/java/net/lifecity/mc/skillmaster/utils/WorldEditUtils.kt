@@ -38,7 +38,7 @@ class WorldEditUtils {
                 .build()
 
             var count = 0
-            SkillMaster.instance.runTaskTimer(20L) {
+            SkillMaster.INSTANCE.runTaskTimer(20L) {
                 if (count > seconds) {
                     editSession?.undo(editSession)
                     editSession?.close()

@@ -33,7 +33,7 @@ abstract class Game protected constructor(
 
 
     init {
-        SkillMaster.instance.gameList.list.add(this)
+        SkillMaster.INSTANCE.gameList.list.add(this)
     }
 
     /**
@@ -48,10 +48,10 @@ abstract class Game protected constructor(
 
         // カウントダウン
         state = GameState.COUNT_DOWN
-        countDownTimer.runTaskTimer(SkillMaster.instance, 0, 20)
+        countDownTimer.runTaskTimer(SkillMaster.INSTANCE, 0, 20)
 
         // タイマースタート
-        gameTimer.runTaskTimer(SkillMaster.instance, countDownTime * 20L, 20)
+        gameTimer.runTaskTimer(SkillMaster.INSTANCE, countDownTime * 20L, 20)
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class Game protected constructor(
         // ロビーへ接続
         var count = 0
         val remainTime = 6
-        SkillMaster.instance.runTaskTimer(20) {
+        SkillMaster.INSTANCE.runTaskTimer(20) {
             if (count >= remainTime-1) {
                 // todo ロビーへ接続
                 sendMessageAll("ロビーへ接続できた気持ちになってください")
@@ -88,7 +88,7 @@ abstract class Game protected constructor(
         }
 
         // ゲームリストからこのゲームを削除
-        SkillMaster.instance.gameList.list.remove(this)
+        SkillMaster.INSTANCE.gameList.list.remove(this)
     }
 
     /**

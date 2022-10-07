@@ -20,6 +20,9 @@ class MoveFast(user: SkillUser?) : Skill(
     user
 ) {
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val vector = user.player.eyeLocation.direction.multiply(1.55)
 
@@ -29,7 +32,7 @@ class MoveFast(user: SkillUser?) : Skill(
 
         // 軌道
         var count = 0
-        SkillMaster.instance.runTaskTimer(1) {
+        SkillMaster.INSTANCE.runTaskTimer(1) {
             if (count >= 7) cancel()
             if (user.player.velocity.length() < 0.3) cancel()
 

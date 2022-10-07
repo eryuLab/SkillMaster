@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster.user
 
 import com.github.syari.spigot.api.sound.playSound
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
@@ -12,11 +14,11 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
 class SkillUser(
@@ -75,11 +77,14 @@ class SkillUser(
      * 発動中のスキルの解除と、自身のベクトルを0にする
      */
     fun leftClick() {
-        // 発動中のスキルを解除
-        getActivatedSkill()?.deactivate()
+        getActivatedSkill()?.let {
+            if(it.canCancel) { //もしスキル解除可能だったら
+                it.deactivate() // 発動中のスキルを解除
 
-        // プレイヤーのベクトルを0にする
-        player.velocity = Vector(0.0, player.velocity.y, 0.0)
+                // プレイヤーのベクトルを0にする
+                player.velocity = Vector(0.0, player.velocity.y, 0.0)
+            }
+        }
     }
 
     /**
@@ -100,7 +105,7 @@ class SkillUser(
 
                 // スキルが複合スキルのとき発動中か確認
                 if (skill is SeparatedSkill) {
-                    if (skill.isActivated)
+                    if (skill.activated)
                         return skill
                 }
             }
@@ -116,7 +121,7 @@ class SkillUser(
             keyList@for (skillKey in skillSet.keyList) {
                 if (skillKey.skill == null)
                    continue@keyList
-                if (skillKey.skill!!.`is`(skill))
+                if (skillKey.skill!!.match(skill))
                     return false
             }
         }
@@ -174,7 +179,7 @@ class SkillUser(
         }
 
         // インターバル確認
-        if (skill.isInInterval)
+        if (skill.inInterval)
             return
 
         // 複合スキルのとき
@@ -183,19 +188,25 @@ class SkillUser(
             // 現在の発動中スキルを取得
             val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
-            // 発動中スキルが発動しようとしてるスキルと同一でなければスキル解除
-            if (activatedSkill != null) {
-                if (activatedSkill != skill)
-                    activatedSkill.deactivate()
-            }
 
-            // 発動中だったら追加入力
-            if (skill.isActivated) {
-                skill.additionalInput()
-                return
+            // 複合スキル発動中のとき
+            if (activatedSkill != null) {
+                // 発動しようとしてるスキルが違う場合
+                // かつスキルキャンセル可能だったらキャンセルし、スキル発動
+                if (activatedSkill != skill && activatedSkill.canCancel) {
+                    activatedSkill.deactivate()
+                    skill.activate()
+                    return
+                    // スキルキャンセル不可だったら操作不能
+                }
+                // 同じスキルのとき追加入力
+                else {
+                    skill.additionalInput()
+                    return
+                }
             }
         }
-
+        // 単発スキルのとき
         skill.activate()
     }
 
@@ -254,7 +265,7 @@ class SkillUser(
             user.damage(damage, vector)
 
             // ゲーム中のときGameのonAttack()を呼び出す
-            val game = SkillMaster.instance.gameList.getFromUser(this)
+            val game = SkillMaster.INSTANCE.gameList.getFromUser(this)
             if (game is OnAttack)
                 game.onAttack(this)
         }
@@ -303,7 +314,7 @@ class SkillUser(
 
         // プレイヤーだった時の処理
         if (entity is Player) {
-            val user = SkillMaster.instance.userList.get(entity) ?: return false
+            val user = SkillMaster.INSTANCE.userList.get(entity) ?: return false
 
             // 攻撃
             attackUser(user, damage, vector, sound)
@@ -329,4 +340,15 @@ class SkillUser(
 
         return near
     }
+
+    fun sendMessage(msg: String) = player.sendMessage(msg)
+    fun sendActionBar(msg: String) = player.sendActionBar(PlainTextComponentSerializer.plainText().deserialize(msg))
+    fun sendTitle(title: String, sub: String) = player.showTitle(
+        Title.title(
+            PlainTextComponentSerializer.plainText().deserialize(title),
+            PlainTextComponentSerializer.plainText().deserialize(sub)
+        )
+    )
+    fun playSound(sound: Sound) = player.location.playSound(sound)
+    fun teleport(location: Location) = player.teleport(location)
 }

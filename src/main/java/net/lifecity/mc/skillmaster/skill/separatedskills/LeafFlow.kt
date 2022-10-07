@@ -26,12 +26,14 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
         "1回目の入力で前に移動します。",
         "2回目の入力で攻撃します。"
     ),
-    0,
     8,
     10,  //100
     user
 ) {
     override fun activate() {
+        if (user == null)
+            return
+
         super.activate()
         val vector = user.player.eyeLocation.direction
             .normalize()
@@ -41,13 +43,13 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
 
         // ランダムロケーションを生成
         val leaves: MutableList<Location> = ArrayList()
-        for (i in 0..11) leaves.add(randomLocation(0.25))
+        for (i in 0..11) randomLocation(0.25)?.let { leaves.add(it) }
         val wind: MutableList<Location> = ArrayList()
-        for (i in 0..3) wind.add(randomLocation(0.5))
+        for (i in 0..3) randomLocation(0.5)?.let { wind.add(it) }
 
         // エフェクト葉の流れ
         var count = 0
-        SkillMaster.instance.runTaskTimer(1) {
+        SkillMaster.INSTANCE.runTaskTimer(1) {
             if (!activated) cancel()
             if (count >= 10) cancel()
             if (user.player.velocity.length() <= 0.3) cancel()
@@ -73,7 +75,10 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
 
     }
 
-    private fun randomLocation(max: Double): Location {
+    private fun randomLocation(max: Double): Location? {
+        if (user == null)
+            return null
+
         val random = Random()
         var x = random.nextDouble() * max
         if (random.nextBoolean()) x *= -1.0
@@ -85,6 +90,8 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
     }
 
     override fun additionalInput() {
+        if (user == null)
+            return
 
         // 一番近いEntityを攻撃
         val b = user.attackNearest(
@@ -100,7 +107,8 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
                 particle(Particle.SWEEP_ATTACK, user.getNearEntities(1.8)[0].location.add(0.0, 2.0, 0.0))
             }
             for (i in 0..5) {
-                particle(Particle.FLAME, user.player.location.add(randomLocation(0.3)))
+                val randomLocation = randomLocation(0.3)
+                randomLocation?.let { user.player.location.add(it) }?.let { particle(Particle.FLAME, it) }
             }
         }
 
