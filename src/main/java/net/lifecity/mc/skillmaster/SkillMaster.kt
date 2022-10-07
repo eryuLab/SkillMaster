@@ -28,7 +28,7 @@ class SkillMaster : JavaPlugin() {
     lateinit var gameList: GameList
 
     override fun onEnable() {
-        CommandAPI.registerCommand(SkillCommand::class.java)
+       SkillCommand.register()
 
         EventListener.register()
 
