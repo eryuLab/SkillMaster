@@ -14,7 +14,7 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
     private val airItem: InvItem
         get() = InvItem(ItemStack(Material.AIR)) {
             //カーソルがairじゃなかったらカーソルをairに変更
-            if (this.cursor?.type == Material.AIR) {
+            if (this.cursor?.type != Material.AIR) {
                 this.isCancelled = true
 
                 val cursorSkill = sm.fromItemStack(this.cursor!!) //TODO: ここの!!をなくす
