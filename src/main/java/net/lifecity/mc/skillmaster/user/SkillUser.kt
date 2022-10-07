@@ -189,21 +189,24 @@ class SkillUser(
             val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
 
+            // 複合スキル発動中のとき
             if (activatedSkill != null) {
-                // 発動中スキルが発動しようとしてるスキルと同一でない
-                // かつ発動中スキルが解除可能だったら
-                if (activatedSkill != skill || activatedSkill.canCancel) {
+                // 発動しようとしてるスキルが違う場合
+                // かつスキルキャンセル可能だったらキャンセルし、スキル発動
+                if (activatedSkill != skill && activatedSkill.canCancel) {
                     activatedSkill.deactivate()
+                    skill.activate()
+                    return
+                    // スキルキャンセル不可だったら操作不能
+                }
+                // 同じスキルのとき追加入力
+                else {
+                    skill.additionalInput()
+                    return
                 }
             }
-
-            // 発動中だったら追加入力
-            if (skill.activated) {
-                skill.additionalInput()
-                return
-            }
         }
-
+        // 単発スキルのとき
         skill.activate()
     }
 

@@ -29,7 +29,8 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
     ),
     28,
     20,
-    user
+    user,
+    false
 ) {
 
     /**
