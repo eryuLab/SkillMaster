@@ -74,7 +74,7 @@ object SkillCommand {
 
                         user?.let {
                             if(menu == "skill") {
-                                it.openedInventory = SkillInventory(user, 0)
+                                it.openedInventory = SkillInventory(user, page = 0)
 
                                 it.openedInventory?.open()
                             } else if(menu == "weapon") {
