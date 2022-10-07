@@ -192,7 +192,7 @@ class SkillUser(
             if (activatedSkill != null) {
                 // 発動中スキルが発動しようとしてるスキルと同一でない
                 // かつ発動中スキルが解除可能だったら
-                if (activatedSkill != skill || activatedSkill.canCancel) {
+                if (activatedSkill != skill && activatedSkill.canCancel) {
                     activatedSkill.deactivate()
                 }
             }
