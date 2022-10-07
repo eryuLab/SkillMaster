@@ -15,7 +15,7 @@ abstract class SeparatedSkill(
     val activationTime: Int,
     interval: Int,
     user: SkillUser?,
-    val canCancelRelieve: Boolean = true
+    val canCancel: Boolean = true
 ) : Skill(name, weaponList, type, lore, interval, user = user) {
 
     var activated = false
