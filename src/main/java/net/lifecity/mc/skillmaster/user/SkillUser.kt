@@ -77,11 +77,14 @@ class SkillUser(
      * 発動中のスキルの解除と、自身のベクトルを0にする
      */
     fun leftClick() {
-        // 発動中のスキルを解除
-        getActivatedSkill()?.deactivate()
+        getActivatedSkill()?.let {
+            if(it.canCancel) { //もしスキル解除可能だったら
+                it.deactivate() // 発動中のスキルを解除
 
-        // プレイヤーのベクトルを0にする
-        player.velocity = Vector(0.0, player.velocity.y, 0.0)
+                // プレイヤーのベクトルを0にする
+                player.velocity = Vector(0.0, player.velocity.y, 0.0)
+            }
+        }
     }
 
     /**
@@ -185,10 +188,13 @@ class SkillUser(
             // 現在の発動中スキルを取得
             val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
-            // 発動中スキルが発動しようとしてるスキルと同一でなければスキル解除
+
             if (activatedSkill != null) {
-                if (activatedSkill != skill)
+                // 発動中スキルが発動しようとしてるスキルと同一でない
+                // かつ発動中スキルが解除可能だったら
+                if (activatedSkill != skill || activatedSkill.canCancel) {
                     activatedSkill.deactivate()
+                }
             }
 
             // 発動中だったら追加入力
