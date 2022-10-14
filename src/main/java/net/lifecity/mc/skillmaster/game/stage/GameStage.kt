@@ -6,7 +6,7 @@ import net.lifecity.mc.skillmaster.game.Game
  * ゲームに使う場所を管理します
  * スポーンやギミックに使うLocationは継承先のフィールドとして実装してください
  */
-class GameStage(val name: String) {
+class GameStage(val name: String, val highestHeight: Int) {
     val fieldMap = mutableMapOf<FieldType, GameField>()
 
     var nowGame: Game? = null // 稼働中のゲーム
