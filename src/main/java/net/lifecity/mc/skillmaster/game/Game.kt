@@ -22,6 +22,7 @@ abstract class Game protected constructor(
     protected val gameTime: Int, //ゲームの時間(秒)
     protected val countDownTime: Int //ゲーム開始前のカウントダウンの時間(秒)
 ) {
+    private val HEIGHT_LIMIT = 30
     protected var countDownTimer = CountDownTimer()
     protected var gameTimer = GameTimer()
     protected var elapsedTime = 0 //経過時間
@@ -256,7 +257,7 @@ abstract class Game protected constructor(
                     val userY = user.player.location.y
 
                     val stage = getNowStage() ?: return
-                    if (userY >= stage.highestHeight + 30) {
+                    if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
                         // 下方向に飛ばす
                         user.player.velocity.add(Vector(0.0, -2.75, 0.0))
                     }
