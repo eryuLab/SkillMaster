@@ -3,12 +3,14 @@ package net.lifecity.mc.skillmaster.game
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.game.stage.FieldType
+import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Sound
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.util.Vector
 
 /**
  * ひとつのゲームを管理します
@@ -20,6 +22,7 @@ abstract class Game protected constructor(
     protected val gameTime: Int, //ゲームの時間(秒)
     protected val countDownTime: Int //ゲーム開始前のカウントダウンの時間(秒)
 ) {
+    private val HEIGHT_LIMIT = 30
     protected var countDownTimer = CountDownTimer()
     protected var gameTimer = GameTimer()
     protected var elapsedTime = 0 //経過時間
@@ -119,6 +122,17 @@ abstract class Game protected constructor(
      * @return 存在したらtrue
      */
     abstract fun hasTeam(team: GameTeam): Boolean
+
+    /**
+     * このゲームのステージを取得します
+     * @return ステージ
+     */
+    fun getNowStage(): GameStage? {
+        for (stage in SkillMaster.INSTANCE.stageList.list) {
+            if (stage.nowGame == this) return stage
+        }
+        return null
+    }
 
 
     /**
@@ -235,6 +249,19 @@ abstract class Game protected constructor(
                 sendTitleAll("${ChatColor.YELLOW}Start!!", "")
                 // 爆発音
                 playSoundAll(Sound.ENTITY_GENERIC_EXPLODE)
+            }
+
+            // ユーザーの高さ確認
+            for (team in teams) {
+                for (user in team.userArray) {
+                    val userY = user.player.location.y
+
+                    val stage = getNowStage() ?: return
+                    if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
+                        // 下方向に飛ばす
+                        user.player.velocity.add(Vector(0.0, -2.75, 0.0))
+                    }
+                }
             }
 
             // ゲームの状態がゲーム中でなかったらタスクキャンセル

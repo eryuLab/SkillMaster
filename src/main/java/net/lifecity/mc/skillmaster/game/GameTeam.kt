@@ -9,7 +9,7 @@ import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Sound
 
-class GameTeam(private val name: String, private val color: ChatColor, private val userArray: Array<SkillUser>) {
+class GameTeam(private val name: String, private val color: ChatColor, val userArray: Array<SkillUser>) {
     /**
      * このチーム全員のゲームモードを変更します
      * @param mode このモードに変更します

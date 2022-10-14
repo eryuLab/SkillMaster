@@ -35,7 +35,7 @@ class SkillMaster : JavaPlugin() {
         userList = SkillUserList()
         stageList = GameStageList()
 
-        val stage = GameStage("闘技場")
+        val stage = GameStage("闘技場", -25)
         stage.addField(
             TwoPoint(
                 stage,
