@@ -18,6 +18,7 @@ class SkillManager(val user: SkillUser?) {
 
     init {
         // スキルの登録
+        /*
         skillList.add(LeafFlow(user))
         skillList.add(JumpAttackSlash(user))
         skillList.add(Wall(user))
@@ -26,6 +27,7 @@ class SkillManager(val user: SkillUser?) {
         skillList.add(HighJump(user))
         skillList.add(Kick(user))
         skillList.add(NormalDefense(user))
+         */
 
         for ((id, skill) in skillList.withIndex()) {
             skill.id = id
