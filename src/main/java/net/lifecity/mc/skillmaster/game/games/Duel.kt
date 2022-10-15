@@ -58,6 +58,10 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) :
         }
     }
 
+    override fun inStartGameTimer() {}
+
+    override fun inGameTimer() {}
+
     override fun afterGameTimer() {
         // サドンデスに変更
         suddenDeath = true
