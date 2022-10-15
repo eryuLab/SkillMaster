@@ -5,7 +5,7 @@ import net.lifecity.mc.skillmaster.game.GameResult
 import net.lifecity.mc.skillmaster.game.GameTeam
 import net.lifecity.mc.skillmaster.game.GameType
 import net.lifecity.mc.skillmaster.game.function.OnAttack
-import net.lifecity.mc.skillmaster.game.function.OnDie
+import net.lifecity.mc.skillmaster.game.function.OnUserDead
 import net.lifecity.mc.skillmaster.game.stage.FieldType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint
@@ -13,7 +13,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.ChatColor
 
 class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) :
-    Game(stage, GameType.DUEL, FieldType.TWO_POINT, 180, 5), OnAttack, OnDie {
+    Game(stage, GameType.DUEL, FieldType.TWO_POINT, 180, 5), OnAttack, OnUserDead {
 
     private val field: TwoPoint = stage.getField(FieldType.TWO_POINT) as TwoPoint
     private val teamA: GameTeam
