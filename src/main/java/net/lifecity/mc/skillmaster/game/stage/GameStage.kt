@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster.game.stage
 
 import net.lifecity.mc.skillmaster.game.Game
+import net.lifecity.mc.skillmaster.game.stage.field.OnePoint
+import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint
 
 /**
  * ゲームに使う場所を管理します
@@ -13,10 +15,15 @@ class GameStage(val name: String, val highestHeight: Int) {
 
     /**
      * フィールドを追加します
-     * @param field フィールド
      */
-    fun addField(field: GameField) {
-        fieldMap[field.type] = field
+    fun addField(onePoint: OnePoint? = null, twoPoint: TwoPoint? = null) {
+        val array = arrayOf(onePoint, twoPoint)
+        for (field in array) {
+            if (field == null)
+                continue
+
+            fieldMap[field.type] = field
+        }
     }
 
     /**
