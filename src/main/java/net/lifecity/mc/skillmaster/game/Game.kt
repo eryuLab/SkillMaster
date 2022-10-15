@@ -96,14 +96,19 @@ abstract class Game protected constructor(
     }
 
     /**
-     * ゲームタイマーが終了したときの処理
+     * ゲームタイマーが開始したときの処理
      */
-    abstract fun afterGameTimer()
+    abstract fun inStartGameTimer()
 
     /**
      * ゲームタイマーの中で１秒ごとに実行されるタスク
      */
     abstract fun inGameTimer()
+
+    /**
+     * ゲームタイマーが終了したときの処理
+     */
+    abstract fun afterGameTimer()
 
     /**
      * 勝敗の結果を表示します
