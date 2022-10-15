@@ -136,7 +136,6 @@ object SkillCommand {
                                 //ゲーム開始
                                 val duel = Duel(stage,user1,user2)
                                 duel.start()
-
                             })
                         )
                     )

@@ -257,11 +257,14 @@ abstract class Game protected constructor(
                 for (user in team.userArray) {
                     val userY = user.player.location.y
 
-                    val stage = getNowStage() ?: return
-                    if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
-                        // 下方向に飛ばす
-                        user.player.velocity.add(Vector(0.0, -2.75, 0.0))
+                    val stage = getNowStage()
+                    stage?.let {
+                        if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
+                            // 下方向に飛ばす
+                            user.player.velocity.add(Vector(0.0, -2.75, 0.0))
+                        }
                     }
+
                 }
             }
 
@@ -273,9 +276,8 @@ abstract class Game protected constructor(
                 afterGameTimer()
                 cancel()
             }
-            sendActionbarAll("count: $elapsedTime")
 
-            // todo ボスバー編集
+            sendActionbarAll("count: $elapsedTime")
             elapsedTime++
         }
     }
