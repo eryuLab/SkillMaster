@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.game.stage.FieldType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Sound
@@ -79,6 +80,9 @@ abstract class Game protected constructor(
         var count = 0
         val remainTime = 6
         SkillMaster.INSTANCE.runTaskTimer(20) {
+            // 残り時間表示
+            sendMessageAll("テレポートまで→${remainTime - count}..")
+
             if (count >= remainTime-1) {
                 // todo ロビーへ接続
                 sendMessageAll("ロビーへ接続できた気持ちになってください")
@@ -86,8 +90,6 @@ abstract class Game protected constructor(
                 cancel()
             }
 
-            // 残り時間表示
-            sendMessageAll("テレポートまで→${remainTime - count}..")
             count++
         }
 
@@ -140,7 +142,9 @@ abstract class Game protected constructor(
      */
     fun getNowStage(): GameStage? {
         for (stage in SkillMaster.INSTANCE.stageList.list) {
-            if (stage.nowGame === this) return stage
+            if (stage.nowGame === this) {
+                return stage
+            }
         }
         return null
     }
@@ -273,7 +277,9 @@ abstract class Game protected constructor(
                     stage?.let {
                         if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
                             // 下方向に飛ばす
-                            user.player.velocity.add(Vector(0.0, -2.75, 0.0))
+                            val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
+                            user.player.velocity = vector
+                            user.sendMessage("Here is Height Limit!!")
                         }
                     }
 
