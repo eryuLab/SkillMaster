@@ -275,15 +275,24 @@ abstract class Game protected constructor(
             // ユーザーの高さ確認
             for (team in teams) {
                 for (user in team.userArray) {
-                    val userY = user.player.location.y
-
                     val stage = getNowStage()
+
+                    // 1/4秒で確認
+
                     stage?.let {
-                        if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
-                            // 下方向に飛ばす
-                            val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
-                            user.player.velocity = vector
-                            user.sendMessage("高さ制限です!!")
+                        var count = 0
+                        SkillMaster.INSTANCE.runTaskTimer(5) {
+                            val userY = user.player.location.y
+                            if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
+                                // 下方向に飛ばす
+                                val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
+                                user.player.velocity = vector
+                                user.sendMessage("高さ制限です!!")
+                            }
+                            if (count > 3) {
+                                this.cancel()
+                            }
+                            count++
                         }
                     }
 
