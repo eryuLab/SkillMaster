@@ -288,6 +288,8 @@ abstract class Game protected constructor(
 
                 }
             }
+            // ゲーム中の処理を追加
+            inGameTimer()
 
             // ゲームの状態がゲーム中でなかったらタスクキャンセル
             if (state !== GameState.IN_GAMING) cancel()
