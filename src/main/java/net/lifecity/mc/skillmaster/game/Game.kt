@@ -61,8 +61,8 @@ abstract class Game protected constructor(
      */
     fun stop(winners: GameTeam) {
         // タイマーの停止
-        if (state == GameState.COUNT_DOWN) countDownTimer.cancel()
-        if (state == GameState.IN_GAMING) gameTimer.cancel()
+        if (state === GameState.COUNT_DOWN) countDownTimer.cancel()
+        if (state === GameState.IN_GAMING) gameTimer.cancel()
 
         // ゲーム状態移行
         state = GameState.WAITING_FOR_FINISH
@@ -224,7 +224,7 @@ abstract class Game protected constructor(
         private var count = 0
         override fun run() {
             // ゲームの状態がカウントダウン中でなかったらタスクキャンセル
-            if (state != GameState.COUNT_DOWN) cancel()
+            if (state !== GameState.COUNT_DOWN) cancel()
 
             // カウント確認
             if (count >= countDownTime - 1) {
@@ -269,7 +269,7 @@ abstract class Game protected constructor(
             }
 
             // ゲームの状態がゲーム中でなかったらタスクキャンセル
-            if (state != GameState.IN_GAMING) cancel()
+            if (state !== GameState.IN_GAMING) cancel()
 
             // 終了処理
             if (elapsedTime >= gameTime) {
