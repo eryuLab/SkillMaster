@@ -44,8 +44,14 @@ class RazorStub(user: SkillUser?) : Skill(
         val threshold = 1.0
         var target: T? = null
 
-        for (other in entities) {
+        for (other in entities) { //iterableリストの中を走査
+            //自分のベクトルと、対象のベクトルの差を計算 => 相手が向いている方向と自分が向いている方向が逆ならば最大, 同じならば最小
             val vec = other.location.toVector().subtract(entity.location.toVector())
+
+            // 自分のベクトルと、vecの外積の長さが1未満である => 自分のベクトルとvecがなす平行四辺形の面積が1未満、
+            // つまりここでもどの程度同じ方向を向いているか判定している。
+            // かつvecと自分のベクトルの内積が0以上 => 自分のベクトルがvecの向いている方向と同じ方向
+            // であるならば
             if (entity.location.direction.normalize().crossProduct(vec).lengthSquared() < threshold
                 && vec.normalize().dot(entity.location.direction.normalize()) >= 0) {
 
