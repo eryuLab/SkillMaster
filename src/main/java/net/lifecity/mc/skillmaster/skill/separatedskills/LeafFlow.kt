@@ -27,7 +27,7 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
         "2回目の入力で攻撃します。"
     ),
     8,
-    10,  //100
+    100,
     user
 ) {
     override fun activate() {

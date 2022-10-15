@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.game.function.OnDie
 import net.lifecity.mc.skillmaster.user.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventPriority
@@ -100,7 +101,7 @@ object EventListener {
                         return@event
                     }
 
-                    if(pl.health < 1) { //HPが１より小さい＝＞死んだとき
+                    if(pl.health - it.damage < 1) { //HPが１より小さい＝＞死んだとき
                         val dead = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
 
                         //ゲーム中なら

@@ -18,7 +18,7 @@ class HighJump(user: SkillUser?) : Skill(
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
     SkillType.MOVE,
     listOf("上に飛び上がります。"),
-    0,
+    100,
     30,
     user
 ) {

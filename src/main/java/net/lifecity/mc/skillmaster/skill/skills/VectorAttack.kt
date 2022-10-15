@@ -17,7 +17,7 @@ class VectorAttack(user: SkillUser?) : Skill(
     listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD, Weapon.MACE),
     SkillType.ATTACK,
     listOf("ユーザーが持つベクトルを力に変換して攻撃します。"),
-    0,
+    80,
     40,
     user
 ) {

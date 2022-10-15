@@ -19,7 +19,7 @@ class Kick(user: SkillUser?) : Skill(
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
     SkillType.ATTACK,
     listOf("相手を蹴り飛ばして、相手と距離を作ります。", "一番近い敵を攻撃します。"),
-    0,
+    60,
     5,
     user
 ) {
@@ -31,7 +31,7 @@ class Kick(user: SkillUser?) : Skill(
         val b = user.attackNearest(
             1.7,
             1.0,
-            user.player.eyeLocation.direction.multiply(1.8),
+            user.player.eyeLocation.direction.multiply(2.85),
             Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK
         )
         if (b) {

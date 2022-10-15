@@ -15,7 +15,7 @@ class MoveFast(user: SkillUser?) : Skill(
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
     SkillType.MOVE,
     listOf("向いている方向に高速移動します。", "上方向には飛べません。"),
-    0,
+    60,
     25,
     user
 ) {
