@@ -17,6 +17,7 @@ import org.bukkit.util.Vector
  * フィールドとチームは継承先で実装してください
  */
 abstract class Game protected constructor(
+    protected val stage: GameStage, //ゲームに使うステージ
     protected val gameType: GameType, //ゲームのタイプ
     protected val fieldType: FieldType, //フィールドのタイプ
     protected val gameTime: Int, //ゲームの時間(秒)
@@ -36,12 +37,16 @@ abstract class Game protected constructor(
 
     init {
         SkillMaster.INSTANCE.gameList.list.add(this)
+        stage.nowGame = this
     }
 
     /**
      * ゲームをスタートします
      */
     fun start() {
+        // stage設定
+
+
         // テレポート
         teleportAll()
 
@@ -128,7 +133,7 @@ abstract class Game protected constructor(
      */
     fun getNowStage(): GameStage? {
         for (stage in SkillMaster.INSTANCE.stageList.list) {
-            if (stage.nowGame == this) return stage
+            if (stage.nowGame === this) return stage
         }
         return null
     }
