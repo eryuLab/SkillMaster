@@ -23,9 +23,8 @@ abstract class Game protected constructor(
     protected val countDownTime: Int //ゲーム開始前のカウントダウンの時間(秒)
 ) {
     private val HEIGHT_LIMIT = 30
-    protected var countDownTimer = CountDownTimer()
-    protected var gameTimer = GameTimer()
-    protected var elapsedTime = 0 //経過時間
+    protected val countDownTimer = CountDownTimer()
+    protected val gameTimer = GameTimer()
     protected var state = GameState.WAITING_FOR_STARTING //ゲームの状態
 
     /**
@@ -62,8 +61,8 @@ abstract class Game protected constructor(
      */
     fun stop(winners: GameTeam) {
         // タイマーの停止
-        if (state === GameState.COUNT_DOWN) countDownTimer.cancel()
-        if (state === GameState.IN_GAMING) gameTimer.cancel()
+        if (state == GameState.COUNT_DOWN) countDownTimer.cancel()
+        if (state == GameState.IN_GAMING) gameTimer.cancel()
 
         // ゲーム状態移行
         state = GameState.WAITING_FOR_FINISH
@@ -225,7 +224,7 @@ abstract class Game protected constructor(
         private var count = 0
         override fun run() {
             // ゲームの状態がカウントダウン中でなかったらタスクキャンセル
-            if (state !== GameState.COUNT_DOWN) cancel()
+            if (state != GameState.COUNT_DOWN) cancel()
 
             // カウント確認
             if (count >= countDownTime - 1) {
@@ -242,6 +241,8 @@ abstract class Game protected constructor(
     }
 
     inner class GameTimer : BukkitRunnable() {
+        var elapsedTime = 0 //経過時間
+
         override fun run() {
             // 戦闘開始
             if (elapsedTime == 0) {
@@ -256,25 +257,27 @@ abstract class Game protected constructor(
                 for (user in team.userArray) {
                     val userY = user.player.location.y
 
-                    val stage = getNowStage() ?: return
-                    if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
-                        // 下方向に飛ばす
-                        user.player.velocity.add(Vector(0.0, -2.75, 0.0))
+                    val stage = getNowStage()
+                    stage?.let {
+                        if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
+                            // 下方向に飛ばす
+                            user.player.velocity.add(Vector(0.0, -2.75, 0.0))
+                        }
                     }
+
                 }
             }
 
             // ゲームの状態がゲーム中でなかったらタスクキャンセル
-            if (state !== GameState.IN_GAMING) cancel()
+            if (state != GameState.IN_GAMING) cancel()
 
             // 終了処理
             if (elapsedTime >= gameTime) {
                 afterGameTimer()
                 cancel()
             }
-            sendActionbarAll("count: $elapsedTime")
 
-            // todo ボスバー編集
+            sendActionbarAll("count: $elapsedTime")
             elapsedTime++
         }
     }
