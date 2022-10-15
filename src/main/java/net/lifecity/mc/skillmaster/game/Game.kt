@@ -95,6 +95,7 @@ abstract class Game protected constructor(
 
         // ゲームリストからこのゲームを削除
         SkillMaster.INSTANCE.gameList.list.remove(this)
+        stage.nowGame = null
     }
 
     /**
@@ -282,7 +283,7 @@ abstract class Game protected constructor(
                             // 下方向に飛ばす
                             val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
                             user.player.velocity = vector
-                            user.sendMessage("Here is Height Limit!!")
+                            user.sendMessage("高さ制限です!!")
                         }
                     }
 
