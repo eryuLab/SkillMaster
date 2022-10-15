@@ -40,6 +40,7 @@ class RazorStub(user: SkillUser?) : Skill(
                 drawParticle(livingTarget)
                 val vector = Vector(0.0, 1.0, 0.0)
                 livingTarget.velocity = vector
+                livingTarget.damage(5.0)
             }
         }
     }
