@@ -5,9 +5,12 @@ import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
+import org.bukkit.Location
+import org.bukkit.Particle
 import org.bukkit.entity.Entity
-import org.bukkit.entity.Player
 import org.bukkit.util.Vector
+import kotlin.math.cos
+import kotlin.math.sin
 
 class RazorStub(user: SkillUser?) : Skill(
     "レイザースタブ",
@@ -21,15 +24,15 @@ class RazorStub(user: SkillUser?) : Skill(
         if (user == null) return
 
         val player = this.user.player
-        val target = getTargetEntity(player, player.getNearbyEntities(3.0,3.0,3.0))
+        val target = getTargetEntity(player, player.getNearbyEntities(3.0, 3.0, 3.0))
 
         target?.let {
-            val targetPlayer = target as? Player ?: return
-            if (targetPlayer != player) {
+//            val targetPlayer = target as? Player ?: return
+            if (target != player) {
                 user.sendActionBar("${ChatColor.DARK_AQUA} スキル『$name』発動")
-                player.sendMessage("レイザースタブ発動")
-                val vector = Vector(0.0, 1.5, 0.0)
-                targetPlayer.velocity = vector
+                drawParticle(target)
+                val vector = Vector(0.0, 1.0, 0.0)
+                target.velocity = vector
                 super.deactivate()
             }
         }
@@ -53,14 +56,87 @@ class RazorStub(user: SkillUser?) : Skill(
             // かつvecと自分のベクトルの内積が0以上 => 自分のベクトルがvecの向いている方向と同じ方向
             // であるならば
             if (entity.location.direction.normalize().crossProduct(vec).lengthSquared() < threshold
-                && vec.normalize().dot(entity.location.direction.normalize()) >= 0) {
+                && vec.normalize().dot(entity.location.direction.normalize()) >= 0
+            ) {
 
-                if(target == null || target.location.distanceSquared(entity.location) > other.location.distanceSquared(entity.location)) {
+                if (target == null || target.location.distanceSquared(entity.location) > other.location.distanceSquared(
+                        entity.location
+                    )
+                ) {
                     target = other
                 }
             }
         }
         return target
     }
+
+    private fun drawParticle(target: Entity) {
+        if (user == null) return
+
+        val loc =
+            Location(target.world, target.location.x, target.location.y , target.location.z)
+
+        drawCircle(loc, Particle.SPELL_WITCH, 1.0, 30, 0.0, 0.0, 0.0)
+
+    }
+
+    private fun drawCircle(
+        origin: Location,
+        particle: Particle,
+        radius: Double,
+        points: Int,
+        rotX: Double,
+        rotY: Double,
+        rotZ: Double
+    ) {
+        for (i in 0 until points) {
+            val t = i * 2 * Math.PI / points
+            val point = Vector(radius * cos(t), 0.0, radius * sin(t))
+            rotX(point, rotX)
+            rotY(point, rotY)
+            rotZ(point, rotZ)
+            origin.add(point)
+            // spawn something at origin
+            origin.world.spawnParticle(particle, origin, 10, null)
+            origin.subtract(point)
+        }
+    }
+
+    /**
+     * 与えたVectorをX軸回りでtだけ回転させる
+     *
+     * @param point: 回転させたいVector
+     * @param t:     角度
+     */
+    private fun rotX(point: Vector, t: Double) {
+        val y = point.y
+        point.y = y * cos(t) - point.z * sin(t)
+        point.z = y * sin(t) + point.z * cos(t)
+    }
+
+    /**
+     * 与えたVectorをY軸回りでtだけ回転させる
+     *
+     * @param point: 回転させたいVector
+     * @param t:     角度
+     */
+    private fun rotY(point: Vector, t: Double) {
+        val z = point.z
+        point.z = z * cos(t) - point.x * sin(t)
+        point.x = z * sin(t) + point.x * cos(t)
+    }
+
+    /**
+     * 与えたVectorをZ軸回りでtだけ回転させる
+     *
+     * @param point: 回転させたいVector
+     * @param t:     角度
+     */
+    private fun rotZ(point: Vector, t: Double) {
+        val x = point.x
+        point.x = x * cos(t) - point.y * sin(t)
+        point.y = x * sin(t) + point.y * cos(t)
+    }
+
 
 }
