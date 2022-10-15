@@ -101,7 +101,7 @@ object EventListener {
                         return@event
                     }
 
-                    if(pl.health - it.damage < 1) { //HPが１より小さい＝＞死んだとき
+                    if(pl.health - it.damage <= 0) { //HPが０以下＝＞死んだとき
                         val dead = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
 
                         //ゲーム中なら
