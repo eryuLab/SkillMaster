@@ -29,7 +29,7 @@ class Wall(user: SkillUser?) : SeparatedSkill(
         "壁は時間経過で消える"
     ),
     10,
-    20,
+    240,
     user
 ) {
     override fun activate() {

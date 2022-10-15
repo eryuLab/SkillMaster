@@ -21,7 +21,7 @@ class NormalDefense(user: SkillUser?) : DefenseSkill(
     listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD),
     listOf("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"),
     10,
-    35,
+    60,
     user
 ) {
 

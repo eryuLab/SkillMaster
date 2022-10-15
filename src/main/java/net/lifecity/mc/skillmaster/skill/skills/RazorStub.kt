@@ -22,7 +22,7 @@ class RazorStub(user: SkillUser?) : Skill(
     listOf(Weapon.STRAIGHT_SWORD),
     SkillType.ATTACK,
     listOf("剣に闇をまとわせて斜め下から切り上げる"),
-    0,
+    360,
     user = user
 ) {
     override fun activate() {

@@ -28,7 +28,7 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         "3回目の入力で攻撃します。"
     ),
     28,
-    20,
+    360,
     user,
     false
 ) {
