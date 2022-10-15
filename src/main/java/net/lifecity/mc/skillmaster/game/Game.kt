@@ -44,9 +44,6 @@ abstract class Game protected constructor(
      * ゲームをスタートします
      */
     fun start() {
-        // stage設定
-
-
         // テレポート
         teleportAll()
 
@@ -102,6 +99,11 @@ abstract class Game protected constructor(
      * ゲームタイマーが終了したときの処理
      */
     abstract fun afterGameTimer()
+
+    /**
+     * ゲームタイマーの中で１秒ごとに実行されるタスク
+     */
+    abstract fun inGameTimer()
 
     /**
      * 勝敗の結果を表示します
