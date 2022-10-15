@@ -266,6 +266,9 @@ abstract class Game protected constructor(
                 sendTitleAll("${ChatColor.YELLOW}Start!!", "")
                 // 爆発音
                 playSoundAll(Sound.ENTITY_GENERIC_EXPLODE)
+
+                // 開始時の処理を呼び出し
+                inStartGameTimer()
             }
 
             // ユーザーの高さ確認
