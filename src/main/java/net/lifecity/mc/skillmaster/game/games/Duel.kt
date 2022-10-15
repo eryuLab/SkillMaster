@@ -12,8 +12,8 @@ import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.ChatColor
 
-class Duel(private val stage: GameStage, userA: SkillUser, userB: SkillUser) :
-    Game(GameType.ONE_ON_ONE, FieldType.TWO_POINT, 180, 5), OnAttack, OnDie {
+class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) :
+    Game(stage, GameType.DUEL, FieldType.TWO_POINT, 180, 5), OnAttack, OnDie {
 
     private val field: TwoPoint = stage.getField(FieldType.TWO_POINT) as TwoPoint
     private val teamA: GameTeam
