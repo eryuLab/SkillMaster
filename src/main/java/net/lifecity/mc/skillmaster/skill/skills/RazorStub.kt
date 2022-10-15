@@ -1,5 +1,8 @@
 package net.lifecity.mc.skillmaster.skill.skills
 
+import com.github.syari.spigot.api.scheduler.runTaskTimer
+import com.github.syari.spigot.api.sound.playSoundLegacy
+import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -7,7 +10,9 @@ import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
 import kotlin.math.cos
 import kotlin.math.sin
@@ -27,13 +32,14 @@ class RazorStub(user: SkillUser?) : Skill(
         val target = getTargetEntity(player, player.getNearbyEntities(3.0, 3.0, 3.0))
 
         target?.let {
-//            val targetPlayer = target as? Player ?: return
-            if (target != player) {
-                user.sendActionBar("${ChatColor.DARK_AQUA} スキル『$name』発動")
-                drawParticle(target)
-                val vector = Vector(0.0, 1.0, 0.0)
-                target.velocity = vector
+            val livingTarget = target as? LivingEntity ?: return
+            if (livingTarget != player) {
                 super.deactivate()
+
+                user.sendActionBar("${ChatColor.DARK_AQUA} スキル『$name』発動")
+                drawParticle(livingTarget)
+                val vector = Vector(0.0, 1.0, 0.0)
+                livingTarget.velocity = vector
             }
         }
     }
@@ -58,7 +64,6 @@ class RazorStub(user: SkillUser?) : Skill(
             if (entity.location.direction.normalize().crossProduct(vec).lengthSquared() < threshold
                 && vec.normalize().dot(entity.location.direction.normalize()) >= 0
             ) {
-
                 if (target == null || target.location.distanceSquared(entity.location) > other.location.distanceSquared(
                         entity.location
                     )
@@ -70,16 +75,47 @@ class RazorStub(user: SkillUser?) : Skill(
         return target
     }
 
+    /**
+     * パーティクルを表示する
+     */
     private fun drawParticle(target: Entity) {
         if (user == null) return
 
-        val loc =
-            Location(target.world, target.location.x, target.location.y , target.location.z)
+        val targetLoc =
+            Location(target.world, target.location.x, target.location.y, target.location.z)
 
-        drawCircle(loc, Particle.SPELL_WITCH, 1.0, 30, 0.0, 0.0, 0.0)
-
+        drawCircle(targetLoc, Particle.SPELL_WITCH, 1.0, 30, 0.0, 0.0, 0.0) //円のパーティクル表示
+        user.player.playSoundLegacy(Sound.ENTITY_PLAYER_ATTACK_SWEEP, pitch = 0.5F)
+        user.player.playSoundLegacy(Sound.ENTITY_WITHER_SHOOT, pitch = 0.5F, volume = 0.3F)
+        drawSlash(targetLoc, Particle.SPELL_WITCH, 10) //斬撃のパーティクル表示
     }
 
+    /**
+     * 斬撃のパーティクルを表示する
+     */
+    private fun drawSlash(
+        origin: Location,
+        particle: Particle,
+        points: Int
+    ) {
+        var i = 0
+        SkillMaster.INSTANCE.runTaskTimer(1) {
+            if (i < points) {
+                val t = i * 2 * Math.PI / points
+                val point = Vector(0.0, t, 0.0)
+                origin.add(point)
+                origin.world.spawnParticle(particle, origin, 10)
+                origin.subtract(point)
+            } else {
+                cancel()
+            }
+            i++
+        }
+    }
+
+    /**
+     * 円のパーティクルを表示する
+     */
     private fun drawCircle(
         origin: Location,
         particle: Particle,
@@ -137,6 +173,4 @@ class RazorStub(user: SkillUser?) : Skill(
         point.x = x * cos(t) - point.y * sin(t)
         point.y = x * sin(t) + point.y * cos(t)
     }
-
-
 }
