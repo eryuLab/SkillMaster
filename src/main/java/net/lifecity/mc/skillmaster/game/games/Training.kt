@@ -48,6 +48,8 @@ class Training(stage: GameStage, user: SkillUser) :
     }
 
     override fun afterGameTimer() {
+        stop(onlyTeam)
+
         husk?.let {
             it.damage(it.health)
         }
