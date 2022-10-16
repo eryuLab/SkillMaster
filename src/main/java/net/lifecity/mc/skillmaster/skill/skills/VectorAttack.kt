@@ -9,7 +9,6 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
-import org.bukkit.Sound
 import org.bukkit.block.data.BlockData
 
 class VectorAttack(user: SkillUser?) : Skill(
@@ -36,8 +35,7 @@ class VectorAttack(user: SkillUser?) : Skill(
         val b = user.attackNearest(
             1.8,
             damage,
-            user.player.velocity.multiply(0.25).setY(0.15),
-            Sound.ENTITY_PLAYER_ATTACK_CRIT
+            user.player.velocity.multiply(0.25).setY(0.15)
         )
         if (b) user.player.sendMessage("damage: $damage")
 

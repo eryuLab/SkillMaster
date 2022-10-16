@@ -97,8 +97,7 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
         val b = user.attackNearest(
             1.8,
             3.0,
-            user.player.velocity.normalize().multiply(1).setY(0.15),
-            Sound.ENTITY_PLAYER_ATTACK_SWEEP
+            user.player.velocity.normalize().multiply(1).setY(0.15)
         )
 
         // エフェクト

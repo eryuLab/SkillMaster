@@ -108,8 +108,7 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
             val b = user.attackNearest(
                 2.0,
                 5.0,
-                user.player.velocity.setY(0.5),
-                Sound.ENTITY_PLAYER_ATTACK_CRIT
+                user.player.velocity.setY(0.5)
             )
 
             if (b) {

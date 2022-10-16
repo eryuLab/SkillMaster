@@ -9,7 +9,6 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
-import org.bukkit.Sound
 
 /**
  * 敵を蹴り飛ばすスキル
@@ -31,8 +30,7 @@ class Kick(user: SkillUser?) : Skill(
         val b = user.attackNearest(
             1.7,
             1.0,
-            user.player.eyeLocation.direction.multiply(2.85),
-            Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK
+            user.player.eyeLocation.direction.multiply(2.85)
         )
         if (b) {
             val entity = user.getNearEntities(1.7)[0]
