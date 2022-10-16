@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.game.stage.FieldType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Sound
@@ -17,6 +18,7 @@ import org.bukkit.util.Vector
  * フィールドとチームは継承先で実装してください
  */
 abstract class Game protected constructor(
+    protected val stage: GameStage, //ゲームに使うステージ
     protected val gameType: GameType, //ゲームのタイプ
     protected val fieldType: FieldType, //フィールドのタイプ
     protected val gameTime: Int, //ゲームの時間(秒)
@@ -36,6 +38,7 @@ abstract class Game protected constructor(
 
     init {
         SkillMaster.INSTANCE.gameList.list.add(this)
+        stage.nowGame = this
     }
 
     /**
@@ -77,6 +80,9 @@ abstract class Game protected constructor(
         var count = 0
         val remainTime = 6
         SkillMaster.INSTANCE.runTaskTimer(20) {
+            // 残り時間表示
+            sendMessageAll("テレポートまで→${remainTime - count}..")
+
             if (count >= remainTime-1) {
                 // todo ロビーへ接続
                 sendMessageAll("ロビーへ接続できた気持ちになってください")
@@ -84,14 +90,23 @@ abstract class Game protected constructor(
                 cancel()
             }
 
-            // 残り時間表示
-            sendMessageAll("テレポートまで→${remainTime - count}..")
             count++
         }
 
         // ゲームリストからこのゲームを削除
         SkillMaster.INSTANCE.gameList.list.remove(this)
+        stage.nowGame = null
     }
+
+    /**
+     * ゲームタイマーが開始したときの処理
+     */
+    abstract fun inStartGameTimer()
+
+    /**
+     * ゲームタイマーの中で１秒ごとに実行されるタスク
+     */
+    abstract fun inGameTimer()
 
     /**
      * ゲームタイマーが終了したときの処理
@@ -128,7 +143,9 @@ abstract class Game protected constructor(
      */
     fun getNowStage(): GameStage? {
         for (stage in SkillMaster.INSTANCE.stageList.list) {
-            if (stage.nowGame == this) return stage
+            if (stage.nowGame === this) {
+                return stage
+            }
         }
         return null
     }
@@ -250,23 +267,39 @@ abstract class Game protected constructor(
                 sendTitleAll("${ChatColor.YELLOW}Start!!", "")
                 // 爆発音
                 playSoundAll(Sound.ENTITY_GENERIC_EXPLODE)
+
+                // 開始時の処理を呼び出し
+                inStartGameTimer()
             }
 
             // ユーザーの高さ確認
             for (team in teams) {
                 for (user in team.userArray) {
-                    val userY = user.player.location.y
-
                     val stage = getNowStage()
+
+                    // 1/4秒で確認
+
                     stage?.let {
-                        if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
-                            // 下方向に飛ばす
-                            user.player.velocity.add(Vector(0.0, -2.75, 0.0))
+                        var count = 0
+                        SkillMaster.INSTANCE.runTaskTimer(5) {
+                            val userY = user.player.location.y
+                            if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
+                                // 下方向に飛ばす
+                                val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
+                                user.player.velocity = vector
+                                user.sendMessage("高さ制限です!!")
+                            }
+                            if (count > 3) {
+                                this.cancel()
+                            }
+                            count++
                         }
                     }
 
                 }
             }
+            // ゲーム中の処理を追加
+            inGameTimer()
 
             // ゲームの状態がゲーム中でなかったらタスクキャンセル
             if (state !== GameState.IN_GAMING) cancel()

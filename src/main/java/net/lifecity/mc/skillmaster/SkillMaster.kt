@@ -4,6 +4,7 @@ import dev.jorel.commandapi.CommandAPI
 import net.lifecity.mc.skillmaster.game.GameList
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.game.stage.GameStageList
+import net.lifecity.mc.skillmaster.game.stage.field.OnePoint
 import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint
 import net.lifecity.mc.skillmaster.user.SkillUserList
 import net.lifecity.mc.skillmaster.utils.FileUtil
@@ -37,6 +38,10 @@ class SkillMaster : JavaPlugin() {
 
         val stage = GameStage("闘技場", -25)
         stage.addField(
+            OnePoint(
+                stage,
+                Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0)
+            ),
             TwoPoint(
                 stage,
                 Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0),

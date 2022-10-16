@@ -2,11 +2,10 @@ package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.event.events
 import net.lifecity.mc.skillmaster.game.function.OnAttack
-import net.lifecity.mc.skillmaster.game.function.OnDie
+import net.lifecity.mc.skillmaster.game.function.OnUserDead
 import net.lifecity.mc.skillmaster.user.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.weapon.Weapon
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventPriority
@@ -101,7 +100,7 @@ object EventListener {
                         return@event
                     }
 
-                    if(pl.health - it.damage < 1) { //HPが１より小さい＝＞死んだとき
+                    if(pl.health - it.damage <= 0) { //HPが０以下＝＞死んだとき
                         val dead = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
 
                         //ゲーム中なら
@@ -109,8 +108,8 @@ object EventListener {
                             val game = SkillMaster.INSTANCE.gameList.getFromUser(dead) ?: return@event
                             it.isCancelled = true
 
-                            val onDie = game as? OnDie
-                            onDie?.onDie(dead)
+                            val onUserDead = game as? OnUserDead
+                            onUserDead?.onDie(dead)
                         }
                     }
                 }
