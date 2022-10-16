@@ -14,6 +14,7 @@ class SkillManager(val user: SkillUser?) {
     // スキルの登録
     val skillList = listOf(
         RazorStub(user),
+        Thrust(user),
         LeafFlow(user),
         JumpAttackSlash(user),
         Wall(user),
