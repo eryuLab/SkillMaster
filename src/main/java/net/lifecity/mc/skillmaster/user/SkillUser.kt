@@ -10,6 +10,8 @@ import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.skill.DefenseSkill
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
+import net.lifecity.mc.skillmaster.skill.SkillManager
+import net.lifecity.mc.skillmaster.skill.skills.Thrust
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
@@ -28,7 +30,7 @@ class SkillUser(
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
-    var userInventory = UserInventory(this)
+    var userInventory: UserInventory
     var mode: UserMode = UserMode.BATTLE
         set(value) {
             // バトルからトレーニング
@@ -70,6 +72,10 @@ class SkillUser(
         // HPを設定
         player.maxHealth = 40.0
         player.health = 40.0
+        // スキル設定
+        rightCard.skillSet.keyList[0].skill = Thrust(this)
+        // インベントリ設定
+        userInventory = UserInventory(this)
     }
 
     /**
