@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.skill.skills
 
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
+import com.github.syari.spigot.api.sound.playSound
 import com.github.syari.spigot.api.sound.playSoundLegacy
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.Skill
@@ -9,8 +10,10 @@ import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
@@ -35,64 +38,46 @@ class Thrust(user: SkillUser?) :
 
         // 使用者を少し進ませる
         val direction = user.player.eyeLocation.direction
-        user.player.velocity.add(direction.multiply(0.65))
+        user.player.velocity = direction
 
         // ターゲットを取得
-        val radius = 2.5
-        val target = getTargetEntity(user.player, user.player.getNearbyEntities(2.5, 2.5, 2.5))
+        val target = getTargetEntity(user.player, user.player.getNearbyEntities(4.5, 4.5, 4.5))
 
         // 攻撃
         target?.let {
             val livingEntity = target as? LivingEntity ?: return
-            direction.multiply(1.8)
             user.attack(
                 livingEntity,
                 3.8,
-                direction.multiply(1.8),
+                direction.multiply(1.7),
                 false
             )
 
             // SE再生
-            user.player.playSoundLegacy(Sound.ENTITY_EVOKER_CAST_SPELL, pitch = 2f)
-            user.player.playSoundLegacy(Sound.ENTITY_EVOKER_FANGS_ATTACK, pitch = 2f)
+            user.player.playSound(Sound.ENTITY_EVOKER_CAST_SPELL, pitch = 2f)
+            user.player.playSound(Sound.ENTITY_EVOKER_FANGS_ATTACK, pitch = 2f)
 
             // エフェクト
             // 前方への突き
+            // 衝撃波
             var count = 0
-            var loc = target.location
-                SkillMaster.INSTANCE.runTaskTimer(1) {
-                    if (count >= 5) this.cancel()
+            var loc = user.player.eyeLocation
+            val vector = loc.direction.multiply(0.19)
+            SkillMaster.INSTANCE.runTaskTimer(1) {
+                if (count > 5)
+                    this.cancel()
 
-                    for (i in 1..6) {
-                        loc.add(direction.multiply(0.2))
-                        loc.spawnParticle(Particle.END_ROD)
-                        if (i % 3 == 0) {
-                            randomLocation(2.0)?.let { it1 -> loc.add(it1).spawnParticle(Particle.ELECTRIC_SPARK) }
-                        }
-                    }
-
-                    count++
+                // 突きの軌道
+                for (i in 1..4) {
+                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.BLACK_WOOL.createBlockData(), count = 3)
+                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.RED_CONCRETE_POWDER.createBlockData(), count = 3)
+                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.NETHERRACK.createBlockData())
+                    loc.spawnParticle(Particle.ELECTRIC_SPARK, count = 6)
+                    loc.add(vector)
                 }
 
-            // 後方の二つの円
-            drawCircle(
-                user.player.location.add(direction.multiply(-1.5)),
-                Particle.ELECTRIC_SPARK,
-                0.75,
-                30,
-                user.player.location.yaw.toDouble(),
-                (user.player.location.pitch * -1).toDouble(),
-                0.0
-            )
-            drawCircle(
-                user.player.location.add(direction.multiply(-3.0)),
-                Particle.ELECTRIC_SPARK,
-                0.75,
-                30,
-                user.player.location.yaw.toDouble(),
-                (user.player.location.pitch * -1).toDouble(),
-                0.0
-            )
+                count++
+            }
         }
     }
 
@@ -127,26 +112,14 @@ class Thrust(user: SkillUser?) :
         return target
     }
 
-    private fun randomLocation(max: Double): Location? {
-        if (user == null)
-            return null
-
-        val random = Random()
-        var x = random.nextDouble() * max
-        if (random.nextBoolean()) x *= -1.0
-        var y = random.nextDouble() * max
-        if (random.nextBoolean()) y *= -1.0
-        var z = random.nextDouble() * max
-        if (random.nextBoolean()) z *= -1.0
-        return Location(user.player.world, x, y, z)
-    }
-
     /**
      * 円のパーティクルを表示する
      */
     private fun drawCircle(
         origin: Location,
         particle: Particle,
+        data: Any? = null,
+        speed: Double = 0.0,
         radius: Double,
         points: Int,
         rotX: Double,
@@ -161,7 +134,7 @@ class Thrust(user: SkillUser?) :
             rotZ(point, rotZ)
             origin.add(point)
             // spawn something at origin
-            origin.world.spawnParticle(particle, origin, 10, null)
+            origin.spawnParticle(particle, speed = speed, count = 10, data = data)
             origin.subtract(point)
         }
     }
