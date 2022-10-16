@@ -29,7 +29,7 @@ class SkillUser(
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
     var userInventory = UserInventory(this)
-    var mode: UserMode = UserMode.TRAINING
+    var mode: UserMode = UserMode.BATTLE
         set(value) {
             // バトルからトレーニング
             if (mode == UserMode.BATTLE && value == UserMode.TRAINING) {
