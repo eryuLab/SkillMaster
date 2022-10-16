@@ -229,7 +229,7 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバックの力
      */
-    private fun damage(damage: Double, vector: Vector) {
+    private fun damage(damage: Double, vector: Vector, isAdd: Boolean) {
         // 防御スキル取得
         val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
@@ -243,7 +243,10 @@ class SkillUser(
 
         // ダメージとノックバックを与える
         player.damage(damage)
-        player.velocity.add(vector)
+        if (isAdd)
+            player.velocity.add(vector)
+        else
+            player.velocity = vector
     }
 
     /**
@@ -253,16 +256,16 @@ class SkillUser(
      * @param vector ノックバック
      * @param sound SE
      */
-    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, sound: Sound) {
+    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean, sound: Sound) {
         // SE再生
         player.location.playSound(sound)
 
         // トレーニングモード時は攻撃不可
         if (mode == UserMode.TRAINING)
-            user.damage(0.0, Vector(0.0, 0.0, 0.0))
+            user.damage(0.0, Vector(0.0, 0.0, 0.0), true)
         else {
             // ダメージを与える
-            user.damage(damage, vector)
+            user.damage(damage, vector, isAdd)
 
             // ゲーム中のときGameのonAttack()を呼び出す
             val game = SkillMaster.INSTANCE.gameList.getFromUser(this)
@@ -278,7 +281,7 @@ class SkillUser(
      * @param vector ノックバック
      * @param sound SE
      */
-    private fun attackEntity(entity: Entity, damage: Double, vector: Vector, sound: Sound) {
+    private fun attackEntity(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean, sound: Sound) {
         // SE再生
         player.location.playSound(sound)
 
@@ -291,7 +294,32 @@ class SkillUser(
             entity.damage(damage)
 
             // 標的をノックバックさせる
-            entity.velocity.add(vector)
+            if (isAdd)
+                entity.velocity.add(vector)
+            else
+                entity.velocity = vector
+        }
+    }
+
+    /**
+     * 対象を攻撃します
+     * @param entity 対象となるエンティティ
+     * @param damage 対象に与えるダメージ
+     * @param vector 対象に与えるベクトル
+     * @param isAdd ベクトルの与え方 true->add, false->set
+     * @param sound サウンドエフェクト
+     */
+    fun attack(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean, sound: Sound) {
+        // プレイヤーだった時の処理
+        if (entity is Player) {
+            val user = SkillMaster.INSTANCE.userList.get(entity) ?: return
+
+            // 攻撃
+            attackUser(user, damage, vector, isAdd, sound)
+        }
+        // プレイヤー以外の時の処理
+        else {
+            attackEntity(entity, damage, vector, isAdd, sound)
         }
     }
 
@@ -317,11 +345,11 @@ class SkillUser(
             val user = SkillMaster.INSTANCE.userList.get(entity) ?: return false
 
             // 攻撃
-            attackUser(user, damage, vector, sound)
+            attackUser(user, damage, vector, true, sound)
         }
         // プレイヤー以外の時の処理
         else {
-            attackEntity(entity, damage, vector, sound)
+            attackEntity(entity, damage, vector, true, sound)
         }
         return true
     }
