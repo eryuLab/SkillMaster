@@ -254,12 +254,8 @@ class SkillUser(
      * @param user 指定したユーザー
      * @param damage ダメージ
      * @param vector ノックバック
-     * @param sound SE
      */
-    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean, sound: Sound) {
-        // SE再生
-        player.location.playSound(sound)
-
+    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean) {
         // トレーニングモード時は攻撃不可
         if (mode == UserMode.TRAINING)
             user.damage(0.0, Vector(0.0, 0.0, 0.0), true)
@@ -279,12 +275,8 @@ class SkillUser(
      * @param entity 指定したエンティティ
      * @param damage ダメージ
      * @param vector ノックバック
-     * @param sound SE
      */
-    private fun attackEntity(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean, sound: Sound) {
-        // SE再生
-        player.location.playSound(sound)
-
+    private fun attackEntity(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
         // トレーニングモード時は攻撃不可
         if (mode == UserMode.TRAINING)
             return
@@ -307,19 +299,18 @@ class SkillUser(
      * @param damage 対象に与えるダメージ
      * @param vector 対象に与えるベクトル
      * @param isAdd ベクトルの与え方 true->add, false->set
-     * @param sound サウンドエフェクト
      */
-    fun attack(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean, sound: Sound) {
+    fun attack(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
         // プレイヤーだった時の処理
         if (entity is Player) {
             val user = SkillMaster.INSTANCE.userList.get(entity) ?: return
 
             // 攻撃
-            attackUser(user, damage, vector, isAdd, sound)
+            attackUser(user, damage, vector, isAdd)
         }
         // プレイヤー以外の時の処理
         else {
-            attackEntity(entity, damage, vector, isAdd, sound)
+            attackEntity(entity, damage, vector, isAdd)
         }
     }
 
@@ -328,10 +319,9 @@ class SkillUser(
      * @param radius この半径以内のエンティティに攻撃します
      * @param damage ダメージ
      * @param vector ノックバック
-     * @param sound SE
      * @return 攻撃が成功するとtrueを返します
      */
-    fun attackNearest(radius: Double, damage: Double, vector: Vector, sound: Sound): Boolean {
+    fun attackNearest(radius: Double, damage: Double, vector: Vector): Boolean {
         // 一番近くのエンティティを取得
         val entities = getNearEntities(radius)
 
@@ -345,11 +335,11 @@ class SkillUser(
             val user = SkillMaster.INSTANCE.userList.get(entity) ?: return false
 
             // 攻撃
-            attackUser(user, damage, vector, true, sound)
+            attackUser(user, damage, vector, true)
         }
         // プレイヤー以外の時の処理
         else {
-            attackEntity(entity, damage, vector, true, sound)
+            attackEntity(entity, damage, vector, true)
         }
         return true
     }
