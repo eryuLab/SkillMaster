@@ -18,7 +18,7 @@ interface AttackSkill {
      * @param vector 対象に与えるベクトル
      * @param isAdd ベクトルの与え方 true->add, false->set
      */
-    fun attack(attackUser: SkillUser, entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
+    fun attack(attackUser: SkillUser?, entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
         // プレイヤーだった時の処理
         if (entity is Player) {
             val target = SkillMaster.INSTANCE.userList.get(entity) ?: return
@@ -38,7 +38,9 @@ interface AttackSkill {
      * @param damage ダメージ
      * @param vector ノックバック
      */
-    private fun attackUser(attackUser: SkillUser, user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean) {
+    private fun attackUser(attackUser: SkillUser?, user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean) {
+        if (attackUser == null) return
+
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING)
             user.damage(0.0, Vector(0.0, 0.0, 0.0), true)
@@ -59,7 +61,9 @@ interface AttackSkill {
      * @param damage ダメージ
      * @param vector ノックバック
      */
-    private fun attackEntity(attackUser: SkillUser, target: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
+    private fun attackEntity(attackUser: SkillUser?, target: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
+        if (attackUser == null) return
+
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING)
             return
