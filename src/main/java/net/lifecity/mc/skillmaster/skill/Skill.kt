@@ -17,9 +17,9 @@ abstract class Skill(
     val type: SkillType,
     val lore: List<String>,
     val interval: Int,
-    var id: Int = 0,
     val user: SkillUser?
 ) {
+    var id: Int = 0
     var inInterval = false
 
     /**
