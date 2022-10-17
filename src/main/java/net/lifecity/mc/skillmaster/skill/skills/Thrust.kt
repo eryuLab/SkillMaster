@@ -69,9 +69,9 @@ class Thrust(user: SkillUser?) :
 
                 // 突きの軌道
                 for (i in 1..4) {
-                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.BLACK_WOOL.createBlockData(), count = 3)
-                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.RED_CONCRETE_POWDER.createBlockData(), count = 3)
-                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.NETHERRACK.createBlockData())
+                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.WHITE_WOOL.createBlockData(), count = 4)
+                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.DIAMOND_ORE.createBlockData())
+                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.WARPED_PLANKS.createBlockData())
                     loc.spawnParticle(Particle.ELECTRIC_SPARK, count = 6)
                     loc.add(vector)
                 }
