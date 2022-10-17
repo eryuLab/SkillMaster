@@ -17,7 +17,7 @@ abstract class Skill(
     val type: SkillType,
     val lore: List<String>,
     val interval: Int,
-    val user: SkillUser?
+    val user: SkillUser
 ) {
     var id: Int = 0
     var inInterval = false
@@ -26,8 +26,6 @@ abstract class Skill(
      * スキルを発動します
      */
     open fun activate() {
-        if (user == null)
-            return
 
         user.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
 
