@@ -6,7 +6,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
 
-abstract class CancelableSkill(
+abstract class SeparatedSkill(
     name: String,
     weaponList: List<Weapon>,
     type: SkillType,
@@ -32,7 +32,7 @@ abstract class CancelableSkill(
         //終了処理：ActivationTimer起動
         var count = 0
         SkillMaster.INSTANCE.runTaskTimer(1) {
-            if (!this@CancelableSkill.activated) //発動中か確認
+            if (!this@SeparatedSkill.activated) //発動中か確認
                 cancel()
 
             if (count >= activationTime) { //カウント確認
