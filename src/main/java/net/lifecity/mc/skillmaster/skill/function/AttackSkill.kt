@@ -11,8 +11,6 @@ import org.bukkit.util.Vector
 
 interface AttackSkill {
 
-    val user: SkillUser
-
     /**
      * 対象を攻撃します
      * @param entity 対象となるエンティティ
@@ -20,17 +18,17 @@ interface AttackSkill {
      * @param vector 対象に与えるベクトル
      * @param isAdd ベクトルの与え方 true->add, false->set
      */
-    fun attack(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
+    fun attack(attackUser: SkillUser, entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
         // プレイヤーだった時の処理
         if (entity is Player) {
             val target = SkillMaster.INSTANCE.userList.get(entity) ?: return
 
             // 攻撃
-            attackUser(user, damage, vector, isAdd)
+            attackUser(attackUser, target, damage, vector, isAdd)
         }
         // プレイヤー以外の時の処理
         else {
-            attackEntity(entity, damage, vector, isAdd)
+            attackEntity(attackUser, entity, damage, vector, isAdd)
         }
     }
 
@@ -40,9 +38,9 @@ interface AttackSkill {
      * @param damage ダメージ
      * @param vector ノックバック
      */
-    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean) {
+    private fun attackUser(attackUser: SkillUser, user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean) {
         // トレーニングモード時は攻撃不可
-        if (user.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.TRAINING)
             user.damage(0.0, Vector(0.0, 0.0, 0.0), true)
         else {
             // ダメージを与える
@@ -61,9 +59,9 @@ interface AttackSkill {
      * @param damage ダメージ
      * @param vector ノックバック
      */
-    private fun attackEntity(target: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
+    private fun attackEntity(attackUser: SkillUser, target: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
         // トレーニングモード時は攻撃不可
-        if (user.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.TRAINING)
             return
 
         if (target is Damageable) {
