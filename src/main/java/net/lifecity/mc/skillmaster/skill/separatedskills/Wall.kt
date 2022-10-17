@@ -13,7 +13,7 @@ import java.io.File
 import java.io.IOException
 import kotlin.math.roundToInt
 
-class Wall(user: SkillUser?) : SeparatedSkill(
+class Wall(user: SkillUser) : SeparatedSkill(
     "ウォール",
     listOf(
         Weapon.STRAIGHT_SWORD,
@@ -32,22 +32,14 @@ class Wall(user: SkillUser?) : SeparatedSkill(
     240,
     user
 ) {
-    override fun activate() {
-        if (user == null)
-            return
-
-        super.activate()
-        val player = user.player
-        val loc = player.location
+    override fun onActivate() {
         try {
-            createWall(loc)
+            createWall(user.player.location)
         } catch (e: IOException) {
-            player.sendMessage("壁の生成失敗")
+            user.player.sendMessage("壁の生成失敗")
         }
     }
 
-    override fun additionalInput() {
-    }
 
     @Throws(IOException::class)
     private fun createWall(origin: Location) {

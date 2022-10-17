@@ -1,6 +1,6 @@
 package net.lifecity.mc.skillmaster.skill
 
-import net.lifecity.mc.skillmaster.skill.defenseskills.NormalDefense
+import net.lifecity.mc.skillmaster.skill.separatedskills.NormalDefense
 import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttackSlash
 import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow
 import net.lifecity.mc.skillmaster.skill.separatedskills.Wall
@@ -8,7 +8,6 @@ import net.lifecity.mc.skillmaster.skill.skills.*
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.inventory.ItemStack
-import org.bukkit.util.Vector
 
 class SkillManager(val user: SkillUser?) {
     // スキルの登録

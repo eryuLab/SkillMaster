@@ -8,7 +8,7 @@ import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
-import net.lifecity.mc.skillmaster.skill.function.DefenseSkill
+import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -237,7 +237,7 @@ class SkillUser(
 
         // 防御スキルがあれば防御
         if (activatedSkill != null) {
-            if (activatedSkill is DefenseSkill) {
+            if (activatedSkill is Defense) {
                 activatedSkill.defense(damage, vector)
                 return
             }

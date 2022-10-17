@@ -1,10 +1,12 @@
-package net.lifecity.mc.skillmaster.skill.defenseskills
+package net.lifecity.mc.skillmaster.skill.separatedskills
 
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.DefenseSkill
+import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.SkillType
+import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
@@ -16,19 +18,19 @@ import java.util.*
 /**
  * 敵からの攻撃を一定時間完全に防御するスキル
  */
-class NormalDefense(user: SkillUser?) : DefenseSkill(
+class NormalDefense(user: SkillUser) : SeparatedSkill(
     "通常防御",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD),
+    SkillType.DEFENSE,
     listOf("基本的な防御姿勢になります。", "発動してから一瞬だけすべての攻撃を防ぐことができます。"),
     10,
     60,
     user
-) {
+), Defense {
+
+    override fun onActivate() {}
 
     override fun defense(damage: Double, vector: Vector) {
-        if (user == null)
-            return
-
         user.player.location.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
 
         // ガードエフェクト
@@ -56,6 +58,4 @@ class NormalDefense(user: SkillUser?) : DefenseSkill(
             count++
         }
     }
-
-    override fun additionalInput() {}
 }

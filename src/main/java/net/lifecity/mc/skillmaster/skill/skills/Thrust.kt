@@ -3,39 +3,28 @@ package net.lifecity.mc.skillmaster.skill.skills
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
-import com.github.syari.spigot.api.sound.playSoundLegacy
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
+import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
-import org.bukkit.util.Vector
-import java.util.*
-import kotlin.math.cos
-import kotlin.math.sin
 
-class Thrust(user: SkillUser?) :
-    Skill(
-        "スラスト",
-        listOf(Weapon.STRAIGHT_SWORD),
-        SkillType.ATTACK,
-        listOf("剣を手と垂直に構えて突き上げる"),
-        80,
-        user = user
-    ) {
+class Thrust(user: SkillUser) : Skill(
+    "スラスト",
+    listOf(Weapon.STRAIGHT_SWORD),
+    SkillType.ATTACK,
+    listOf("剣を手と垂直に構えて突き上げる"),
+    80,
+    user
+), Attack {
 
-    override fun activate() {
-        if (user == null) return
-
-        super.activate()
-
+    override fun onActivate() {
         // 使用者を少し進ませる
         val direction = user.player.eyeLocation.direction
         user.player.velocity = direction
@@ -46,7 +35,8 @@ class Thrust(user: SkillUser?) :
         // 攻撃
         target?.let {
             val livingEntity = target as? LivingEntity ?: return
-            user.attack(
+            attack(
+                user,
                 livingEntity,
                 3.8,
                 direction.multiply(1.7),
@@ -110,68 +100,5 @@ class Thrust(user: SkillUser?) :
             }
         }
         return target
-    }
-
-    /**
-     * 円のパーティクルを表示する
-     */
-    private fun drawCircle(
-        origin: Location,
-        particle: Particle,
-        data: Any? = null,
-        speed: Double = 0.0,
-        radius: Double,
-        points: Int,
-        rotX: Double,
-        rotY: Double,
-        rotZ: Double
-    ) {
-        for (i in 0 until points) {
-            val t = i * 2 * Math.PI / points
-            val point = Vector(radius * cos(t), 0.0, radius * sin(t))
-            rotX(point, rotX)
-            rotY(point, rotY)
-            rotZ(point, rotZ)
-            origin.add(point)
-            // spawn something at origin
-            origin.spawnParticle(particle, speed = speed, count = 10, data = data)
-            origin.subtract(point)
-        }
-    }
-
-    /**
-     * 与えたVectorをX軸回りでtだけ回転させる
-     *
-     * @param point: 回転させたいVector
-     * @param t:     角度
-     */
-    private fun rotX(point: Vector, t: Double) {
-        val y = point.y
-        point.y = y * cos(t) - point.z * sin(t)
-        point.z = y * sin(t) + point.z * cos(t)
-    }
-
-    /**
-     * 与えたVectorをY軸回りでtだけ回転させる
-     *
-     * @param point: 回転させたいVector
-     * @param t:     角度
-     */
-    private fun rotY(point: Vector, t: Double) {
-        val z = point.z
-        point.z = z * cos(t) - point.x * sin(t)
-        point.x = z * sin(t) + point.x * cos(t)
-    }
-
-    /**
-     * 与えたVectorをZ軸回りでtだけ回転させる
-     *
-     * @param point: 回転させたいVector
-     * @param t:     角度
-     */
-    private fun rotZ(point: Vector, t: Double) {
-        val x = point.x
-        point.x = x * cos(t) - point.y * sin(t)
-        point.y = x * sin(t) + point.y * cos(t)
     }
 }
