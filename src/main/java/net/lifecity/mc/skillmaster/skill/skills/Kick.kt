@@ -29,6 +29,9 @@ class Kick(user: SkillUser) : Skill(
     override fun onActivate() {
         val entityList = getNearEntities(1.7)
 
+        if (entityList.isEmpty())
+            return
+
         val target = entityList[0]
 
         if (target != null) {

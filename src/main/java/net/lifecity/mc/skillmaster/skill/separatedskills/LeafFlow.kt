@@ -89,7 +89,11 @@ class LeafFlow(user: SkillUser) : SeparatedSkill(
 
     override fun additionalInput() {
         // 一番近いEntityを攻撃
-        val target = getNearEntities(1.8)[0]
+        val entityList = getNearEntities(1.8)
+        if (entityList.isEmpty())
+            return
+
+        val target = entityList[0]
         if (target is LivingEntity) {
             attack(user, target, 4.0,  user.player.velocity.normalize().multiply(1).setY(0.15), true)
 
