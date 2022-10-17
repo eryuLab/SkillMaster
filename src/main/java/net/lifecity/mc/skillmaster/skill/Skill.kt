@@ -11,7 +11,7 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-open class Skill(
+abstract class Skill(
     val name: String,
     val weaponList: List<Weapon>,
     val type: SkillType,
@@ -28,8 +28,12 @@ open class Skill(
     open fun activate() {
         user?.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
 
+        onActivate()
+
         deactivate()
     }
+
+    abstract fun onActivate()
 
     /**
      * スキルを終了し、インターバルタイマーを起動します
