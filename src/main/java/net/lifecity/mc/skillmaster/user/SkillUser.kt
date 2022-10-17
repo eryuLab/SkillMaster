@@ -73,7 +73,7 @@ class SkillUser(
         player.maxHealth = 40.0
         player.health = 40.0
         // スキル設定
-        rightCard.skillSet.keyList[0].skill = Thrust(this)
+
         // インベントリ設定
         userInventory = UserInventory(this)
     }
