@@ -9,7 +9,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.inventory.ItemStack
 
-class SkillManager(val user: SkillUser?) {
+class SkillManager(val user: SkillUser) {
     // スキルの登録
     val skillList = listOf(
         RazorStub(user),
@@ -26,7 +26,7 @@ class SkillManager(val user: SkillUser?) {
 
     init {
         // スキルの登録
-        for ((id, skill) in skillList.withIndex() as Map<Int, Skill>) {
+        for ((id, skill) in skillList.withIndex()) {
             skill.id = id
         }
     }
