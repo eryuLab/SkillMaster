@@ -3,22 +3,18 @@ package net.lifecity.mc.skillmaster.user
 import com.github.syari.spigot.api.sound.playSound
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.kyori.adventure.title.Title
-import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
-import net.lifecity.mc.skillmaster.skill.DefenseSkill
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CancelableSkill
 import net.lifecity.mc.skillmaster.skill.Skill
-import net.lifecity.mc.skillmaster.skill.SkillManager
-import net.lifecity.mc.skillmaster.skill.skills.Thrust
+import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
+import net.lifecity.mc.skillmaster.skill.function.DefenseSkill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Sound
-import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -97,7 +93,7 @@ class SkillUser(
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    fun getActivatedSkill(): SeparatedSkill? {
+    fun getActivatedSkill(): CancelableSkill? {
         // スキルセットの配列を作成
         val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
@@ -110,7 +106,7 @@ class SkillUser(
                 val skill: Skill = skillKey.skill ?: continue@keyList
 
                 // スキルが複合スキルのとき発動中か確認
-                if (skill is SeparatedSkill) {
+                if (skill is CancelableSkill) {
                     if (skill.activated)
                         return skill
                 }
@@ -189,10 +185,10 @@ class SkillUser(
             return
 
         // 複合スキルのとき
-        if (skill is SeparatedSkill) {
+        if (skill is CancelableSkill) {
 
             // 現在の発動中スキルを取得
-            val activatedSkill: SeparatedSkill? = getActivatedSkill()
+            val activatedSkill: CancelableSkill? = getActivatedSkill()
 
 
             // 複合スキル発動中のとき
@@ -207,8 +203,10 @@ class SkillUser(
                 }
                 // 同じスキルのとき追加入力
                 else {
-                    skill.additionalInput()
-                    return
+                    if (skill is AdditionalInput) {
+                        skill.additionalInput()
+                        return
+                    }
                 }
             }
         }
@@ -237,7 +235,7 @@ class SkillUser(
      */
     fun damage(damage: Double, vector: Vector, isAdd: Boolean) {
         // 防御スキル取得
-        val activatedSkill: SeparatedSkill? = getActivatedSkill()
+        val activatedSkill: CancelableSkill? = getActivatedSkill()
 
         // 防御スキルがあれば防御
         if (activatedSkill != null) {
@@ -253,21 +251,6 @@ class SkillUser(
             player.velocity.add(vector)
         else
             player.velocity = vector
-    }
-
-    /**
-     * このユーザーから近いエンティティを取得します
-     * @param radius 検知する範囲の半径
-     * @return 近い順のエンティティのリスト
-     */
-    fun getNearEntities(radius: Double): List<Entity> {
-        // 半径radiusで近くのentityのリストを取得
-        val near = player.getNearbyEntities(radius, radius, radius)
-
-        // リストを近い順に並べる
-        EntityDistanceSort.quicksort(player, near, 0, near.size - 1)
-
-        return near
     }
 
     fun sendMessage(msg: String) = player.sendMessage(msg)
