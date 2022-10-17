@@ -51,8 +51,9 @@ class Thrust(user: SkillUser) : Skill(
             // 前方への突き
             // 衝撃波
             var count = 0
-            var loc = user.player.eyeLocation
-            val vector = loc.direction.multiply(0.19)
+            val loc = target.location
+            loc.add(0.0, 1.0, 0.0)
+            val vector = user.player.eyeLocation.direction.multiply(0.19)
             SkillMaster.INSTANCE.runTaskTimer(1) {
                 if (count > 5)
                     this.cancel()
