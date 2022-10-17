@@ -13,15 +13,13 @@ abstract class CancelableSkill(
     lore: List<String>,
     val activationTime: Int,
     interval: Int,
-    user: SkillUser?,
+    user: SkillUser,
     val canCancel: Boolean = true
 ) : Skill(name, weaponList, type, lore, interval, user) {
 
     var activated = false
 
     override fun activate() {
-        if (user == null)
-            return
 
         // ログ
         user.sendActionBar("" + ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動")
