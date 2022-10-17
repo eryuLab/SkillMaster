@@ -5,17 +5,15 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
-import net.lifecity.mc.skillmaster.skill.CancelableSkill
+import net.lifecity.mc.skillmaster.skill.SeparatedSkill
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.DefenseSkill
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
-import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Sound
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -93,7 +91,7 @@ class SkillUser(
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    fun getActivatedSkill(): CancelableSkill? {
+    fun getActivatedSkill(): SeparatedSkill? {
         // スキルセットの配列を作成
         val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
@@ -106,7 +104,7 @@ class SkillUser(
                 val skill: Skill = skillKey.skill ?: continue@keyList
 
                 // スキルが複合スキルのとき発動中か確認
-                if (skill is CancelableSkill) {
+                if (skill is SeparatedSkill) {
                     if (skill.activated)
                         return skill
                 }
@@ -185,10 +183,10 @@ class SkillUser(
             return
 
         // 複合スキルのとき
-        if (skill is CancelableSkill) {
+        if (skill is SeparatedSkill) {
 
             // 現在の発動中スキルを取得
-            val activatedSkill: CancelableSkill? = getActivatedSkill()
+            val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
 
             // 複合スキル発動中のとき
@@ -235,7 +233,7 @@ class SkillUser(
      */
     fun damage(damage: Double, vector: Vector, isAdd: Boolean) {
         // 防御スキル取得
-        val activatedSkill: CancelableSkill? = getActivatedSkill()
+        val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
         // 防御スキルがあれば防御
         if (activatedSkill != null) {
