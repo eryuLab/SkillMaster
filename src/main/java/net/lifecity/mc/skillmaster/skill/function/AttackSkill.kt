@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
-interface Attack {
+interface AttackSkill {
 
     val user: SkillUser
 
