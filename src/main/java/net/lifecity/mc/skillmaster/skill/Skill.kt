@@ -26,7 +26,10 @@ abstract class Skill(
      * スキルを発動します
      */
     open fun activate() {
-        user?.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
+        if (user == null)
+            return
+
+        user.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
 
         onActivate()
 
