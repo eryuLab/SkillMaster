@@ -43,11 +43,6 @@ abstract class SeparatedSkill(
     }
 
     /**
-     * 追加入力の処理
-     */
-    abstract fun additionalInput()
-
-    /**
      * スキルを終了します
      */
     override fun deactivate() {
