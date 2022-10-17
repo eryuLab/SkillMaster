@@ -235,7 +235,7 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバックの力
      */
-    private fun damage(damage: Double, vector: Vector, isAdd: Boolean) {
+    fun damage(damage: Double, vector: Vector, isAdd: Boolean) {
         // 防御スキル取得
         val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
@@ -253,101 +253,6 @@ class SkillUser(
             player.velocity.add(vector)
         else
             player.velocity = vector
-    }
-
-    /**
-     * 指定したユーザーを攻撃します
-     * @param user 指定したユーザー
-     * @param damage ダメージ
-     * @param vector ノックバック
-     */
-    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, isAdd: Boolean) {
-        // トレーニングモード時は攻撃不可
-        if (mode == UserMode.TRAINING)
-            user.damage(0.0, Vector(0.0, 0.0, 0.0), true)
-        else {
-            // ダメージを与える
-            user.damage(damage, vector, isAdd)
-
-            // ゲーム中のときGameのonAttack()を呼び出す
-            val game = SkillMaster.INSTANCE.gameList.getFromUser(this)
-            if (game is OnAttack)
-                game.onAttack(this)
-        }
-    }
-
-    /**
-     * 指定したエンティティを攻撃します
-     * @param entity 指定したエンティティ
-     * @param damage ダメージ
-     * @param vector ノックバック
-     */
-    private fun attackEntity(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
-        // トレーニングモード時は攻撃不可
-        if (mode == UserMode.TRAINING)
-            return
-
-        if (entity is Damageable) {
-            // 標的にダメージを与える
-            entity.damage(damage)
-
-            // 標的をノックバックさせる
-            if (isAdd)
-                entity.velocity.add(vector)
-            else
-                entity.velocity = vector
-        }
-    }
-
-    /**
-     * 対象を攻撃します
-     * @param entity 対象となるエンティティ
-     * @param damage 対象に与えるダメージ
-     * @param vector 対象に与えるベクトル
-     * @param isAdd ベクトルの与え方 true->add, false->set
-     */
-    fun attack(entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
-        // プレイヤーだった時の処理
-        if (entity is Player) {
-            val user = SkillMaster.INSTANCE.userList.get(entity) ?: return
-
-            // 攻撃
-            attackUser(user, damage, vector, isAdd)
-        }
-        // プレイヤー以外の時の処理
-        else {
-            attackEntity(entity, damage, vector, isAdd)
-        }
-    }
-
-    /**
-     * 一番近いEntityを攻撃します
-     * @param radius この半径以内のエンティティに攻撃します
-     * @param damage ダメージ
-     * @param vector ノックバック
-     * @return 攻撃が成功するとtrueを返します
-     */
-    fun attackNearest(radius: Double, damage: Double, vector: Vector): Boolean {
-        // 一番近くのエンティティを取得
-        val entities = getNearEntities(radius)
-
-        if (entities.isEmpty())
-            return false
-
-        val entity = entities[0]
-
-        // プレイヤーだった時の処理
-        if (entity is Player) {
-            val user = SkillMaster.INSTANCE.userList.get(entity) ?: return false
-
-            // 攻撃
-            attackUser(user, damage, vector, true)
-        }
-        // プレイヤー以外の時の処理
-        else {
-            attackEntity(entity, damage, vector, true)
-        }
-        return true
     }
 
     /**
