@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -18,7 +19,7 @@ interface AttackSkill {
      * @param vector 対象に与えるベクトル
      * @param isAdd ベクトルの与え方 true->add, false->set
      */
-    fun attack(attackUser: SkillUser?, entity: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
+    fun attack(attackUser: SkillUser?, entity: LivingEntity, damage: Double, vector: Vector, isAdd: Boolean) {
         // プレイヤーだった時の処理
         if (entity is Player) {
             val target = SkillMaster.INSTANCE.userList.get(entity) ?: return
@@ -61,22 +62,20 @@ interface AttackSkill {
      * @param damage ダメージ
      * @param vector ノックバック
      */
-    private fun attackEntity(attackUser: SkillUser?, target: Entity, damage: Double, vector: Vector, isAdd: Boolean) {
+    private fun attackEntity(attackUser: SkillUser?, target: LivingEntity, damage: Double, vector: Vector, isAdd: Boolean) {
         if (attackUser == null) return
 
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING)
             return
 
-        if (target is Damageable) {
-            // 標的にダメージを与える
-            target.damage(damage)
+        // 標的にダメージを与える
+        target.damage(damage)
 
-            // 標的をノックバックさせる
-            if (isAdd)
-                target.velocity.add(vector)
-            else
-                target.velocity = vector
-        }
+        // 標的をノックバックさせる
+        if (isAdd)
+            target.velocity.add(vector)
+        else
+            target.velocity = vector
     }
 }
