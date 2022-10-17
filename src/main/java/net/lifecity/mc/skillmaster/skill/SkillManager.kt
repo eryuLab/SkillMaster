@@ -27,7 +27,7 @@ class SkillManager(val user: SkillUser?) {
 
     init {
         // スキルの登録
-        for ((id, skill) in skillList.withIndex()) {
+        for ((id, skill) in skillList.withIndex() as Map<Int, Skill>) {
             skill.id = id
         }
     }
@@ -40,24 +40,11 @@ class SkillManager(val user: SkillUser?) {
     fun fromWeapon(weapon: Weapon): List<Skill> {
         val list = mutableListOf<Skill>()
 
-        for (skill in skillList) {
+        for (skill in skillList as List<Skill>) {
             if (skill.usable(weapon))
                 list.add(skill)
         }
         return list
-    }
-
-    /**
-     * クラスからスキルインスタンスを取得します
-     * @param skillClass スキルクラス
-     * @return スキルインスタンス
-     */
-    fun fromClass(skillClass: Class<Skill>): Skill? {
-        for (skill in skillList) {
-            if (skillClass.isInstance(skill))
-                return skill
-        }
-        return null
     }
 
     /**
@@ -71,7 +58,7 @@ class SkillManager(val user: SkillUser?) {
         if (!itemStack.itemMeta.hasCustomModelData())
             return null
 
-        for (skill in skillList) {
+        for (skill in skillList as List<Skill>) {
             if (skill.match(itemStack))
                 return skill
         }
