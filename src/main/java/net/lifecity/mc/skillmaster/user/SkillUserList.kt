@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.user
 
+import net.lifecity.mc.skillmaster.SkillUserNotFoundException
 import org.bukkit.entity.Player
 
 class SkillUserList {
@@ -10,12 +11,12 @@ class SkillUserList {
      * @param player プレイヤー
      * @return 特定されたSkillUser
      */
-    fun get(player: Player): SkillUser? {
+    fun get(player: Player): SkillUser {
         for (user in list) {
             if (user.player == player)
                 return user
         }
-        return null
+        throw SkillUserNotFoundException("SkillUser:${player.name} is not found")
     }
 
     /**
@@ -23,7 +24,12 @@ class SkillUserList {
      * @param player プレイヤー
      * @return 格納されていたらtrue
      */
-    fun contains(player: Player): Boolean = get(player) != null
+    fun contains(player: Player): Boolean {
+        for (user in list) {
+            if(user.player == player) return true
+        }
+        return false
+    }
 
     /**
      * プレイヤーをSkillUserとして登録します
@@ -40,6 +46,6 @@ class SkillUserList {
      */
     fun remove(player: Player) {
         val user = get(player)
-        if (user != null) list.remove(user)
+        list.remove(user)
     }
 }
