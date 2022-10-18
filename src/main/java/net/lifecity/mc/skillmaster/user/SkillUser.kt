@@ -230,32 +230,36 @@ class SkillUser(
      * ただし、防御されるかもしれません
      * 加算によってベクトルが与えられます
      * @param damage 攻撃の威力
-     * @param vector ノックバックの力
+     * @param vector ノックバック
      */
     fun damageAddVector(damage: Double, vector: Vector) {
-        // 防御スキル取得
-        val activatedSkill: SeparatedSkill? = getActivatedSkill()
-
-        // 防御スキルがあれば防御
-        if (activatedSkill != null) {
-            if (activatedSkill is Defense) {
-                activatedSkill.defense(damage, vector)
-                return
-            }
+        if (!canDefense(damage, vector)) {
+            // ダメージとノックバックを与える
+            player.damage(damage)
+            player.velocity.add(vector)
         }
-
-        // ダメージとノックバックを与える
-        player.damage(damage)
-        player.velocity.add(vector)
     }
 
     /**
      * このSkillUserへの攻撃を試みます
      * ただし、防御されるかもしれません
      * @param damage 攻撃の威力
-     * @param vector ノックバックの力
+     * @param vector ノックバック
      */
     fun damageChangeVector(damage: Double, vector: Vector) {
+        if (!canDefense(damage, vector)) {
+            // ダメージとノックバックを与える
+            player.damage(damage)
+            player.velocity = vector
+        }
+    }
+
+    /**
+     * 防御スキルがあれば防御します
+     * @param damage 攻撃の威力
+     * @param vector ノックバック
+     */
+    private fun canDefense(damage: Double, vector: Vector): Boolean {
         // 防御スキル取得
         val activatedSkill: SeparatedSkill? = getActivatedSkill()
 
@@ -263,13 +267,10 @@ class SkillUser(
         if (activatedSkill != null) {
             if (activatedSkill is Defense) {
                 activatedSkill.defense(damage, vector)
-                return
+                return true
             }
         }
-
-        // ダメージとノックバックを与える
-        player.damage(damage)
-        player.velocity = vector
+        return false
     }
 
     fun sendMessage(msg: String) = player.sendMessage(msg)
