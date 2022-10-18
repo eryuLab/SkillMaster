@@ -88,7 +88,7 @@ interface Attack {
     private fun attackUserChangeVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector) {
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING)
-            target.damageChangeVector(0.0, Vector(0.0, 0.0, 0.0))
+            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0))
         else {
             // ダメージを与える
             target.damageChangeVector(damage, vector)
