@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.skill
 
+import com.github.syari.spigot.api.item.displayName
+import net.lifecity.mc.skillmaster.SkillConvertException
 import net.lifecity.mc.skillmaster.skill.defenseskills.NormalDefense
 import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttackSlash
 import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow
@@ -51,12 +53,12 @@ class SkillManager(val user: SkillUser?) {
      * @param skillClass スキルクラス
      * @return スキルインスタンス
      */
-    fun fromClass(skillClass: Class<Skill>): Skill? {
+    fun fromClass(skillClass: Class<Skill>): Skill {
         for (skill in skillList) {
             if (skillClass.isInstance(skill))
                 return skill
         }
-        return null
+        throw SkillConvertException("$skillClass could not be converted to a Skill")
     }
 
     /**
@@ -74,6 +76,8 @@ class SkillManager(val user: SkillUser?) {
             if (skill.match(itemStack))
                 return skill
         }
-        return null
+
+        throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
+
     }
 }
