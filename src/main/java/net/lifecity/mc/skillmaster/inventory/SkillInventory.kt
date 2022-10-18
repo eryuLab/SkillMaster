@@ -17,11 +17,10 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
             if (this.cursor?.type != Material.AIR) {
                 this.isCancelled = true
 
-                val cursorSkill = sm.fromItemStack(this.cursor!!) //TODO: ここの!!をなくす
+                val canCovertItem = sm.canConvertItemStack(this.cursor!!)
 
-                cursorSkill?.let {
-                    this.cursor = ItemStack(Material.AIR)
-                }
+                if(canCovertItem) this.cursor = ItemStack(Material.AIR)
+
             }
         }
 
@@ -148,11 +147,10 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
                     if (this.cursor?.type == Material.AIR) {
                         this.cursor = skill.toItemStack()
                     } else {
-                        val cursorSkill = sm.fromItemStack(this.cursor!!) //TODO: ここの!!をなくす
 
-                        cursorSkill?.let {
-                            this.cursor = ItemStack(Material.AIR)
-                        }
+                        val canConvertItem = sm.canConvertItemStack(this.cursor!!) //TODO: ここの!!をなくす
+
+                        if(canConvertItem) this.cursor = ItemStack(Material.AIR)
 
                         this.currentItem?.amount = 1
                     }

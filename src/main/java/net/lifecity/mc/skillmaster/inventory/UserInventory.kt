@@ -100,28 +100,30 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
 
                     if(this.view.topInventory == openedInv.inv) {
                         //カーソルがスキルであればスキルを登録
-                        val cursorSkill = SkillManager(user).fromItemStack(this.cursor!!) //TODO: ここの!!をなくす
+                        try {
+                            val cursorSkill = SkillManager(user).fromItemStack(this.cursor!!) //TODO: ここの!!をなくす
 
-                        if(cursorSkill == null) {
+
+                            //セットできるか確認
+                            if(!user.settable(cursorSkill)) {
+                                this.isCancelled = true
+                                user.player.sendMessage("このスキルはすでに登録されています")
+                                return@InvItem
+                            }
+
+                            //スキルをセット
+                            key.skill = cursorSkill
+                            user.player.sendMessage("スキルを登録しました： ${key.button.jp}[${key.number}]: ${cursorSkill.name}")
+
+                            setItem(this.slot, if(skillItem(key) == null) ironBars else skillItem(key)!!)
+
+                            SkillMaster.INSTANCE.runTaskLater(1) {
+                                user.userInventory.inv.getItem(this@InvItem.slot)?.amount = 1
+                            }
+
+                        }catch (e: Exception) {
                             this.isCancelled = true
                             return@InvItem
-                        }
-
-                        //セットできるか確認
-                        if(!user.settable(cursorSkill)) {
-                            this.isCancelled = true
-                            user.player.sendMessage("このスキルはすでに登録されています")
-                            return@InvItem
-                        }
-
-                        //スキルをセット
-                        key.skill = cursorSkill
-                        user.player.sendMessage("スキルを登録しました： ${key.button.jp}[${key.number}]: ${cursorSkill.name}")
-
-                        setItem(this.slot, if(skillItem(key) == null) ironBars else skillItem(key)!!)
-
-                        SkillMaster.INSTANCE.runTaskLater(1) {
-                            user.userInventory.inv.getItem(this@InvItem.slot)?.amount = 1
                         }
                     }
                 }

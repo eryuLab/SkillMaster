@@ -66,11 +66,13 @@ class SkillManager(val user: SkillUser?) {
      * @param itemStack 特定の対象となるItemStack
      * @return 一致したSkill
      */
-    fun fromItemStack(itemStack: ItemStack): Skill? {
+    fun fromItemStack(itemStack: ItemStack): Skill {
         if (!itemStack.hasItemMeta())
-            return null
+            throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
+
         if (!itemStack.itemMeta.hasCustomModelData())
-            return null
+            throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
+
 
         for (skill in skillList) {
             if (skill.match(itemStack))
@@ -78,6 +80,25 @@ class SkillManager(val user: SkillUser?) {
         }
 
         throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
+    }
 
+    /**
+     * ItemStackからSkillに変換できるか否かを返します
+     * @param itemStack 特定の対象となるItemStack
+     * @return 変換できるか否か
+     */
+    fun canConvertItemStack(itemStack: ItemStack) : Boolean {
+        if (!itemStack.hasItemMeta())
+            return false
+
+        if (!itemStack.itemMeta.hasCustomModelData())
+            return false
+
+        for (skill in skillList) {
+            if (skill.match(itemStack))
+                return true
+        }
+
+        return false
     }
 }
