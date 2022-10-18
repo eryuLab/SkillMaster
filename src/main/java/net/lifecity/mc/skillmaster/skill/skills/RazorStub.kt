@@ -6,6 +6,7 @@ import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
 import org.bukkit.Location
@@ -85,93 +86,11 @@ class RazorStub(user: SkillUser?) : Skill(
         val targetLoc =
             Location(target.world, target.location.x, target.location.y, target.location.z)
 
-        drawCircle(targetLoc, Particle.SPELL_WITCH, 1.0, 30, 0.0, 0.0, 0.0) //円のパーティクル表示
+
+        val drawParticle = DrawParticle()
+        drawParticle.drawCircle(targetLoc, Particle.SPELL_WITCH, null, 1.0, 30) //円のパーティクル表示
         user.player.playSoundLegacy(Sound.ENTITY_PLAYER_ATTACK_SWEEP, pitch = 0.5F)
         user.player.playSoundLegacy(Sound.ENTITY_WITHER_SHOOT, pitch = 0.5F, volume = 0.3F)
-        drawSlash(targetLoc, Particle.SPELL_WITCH, 10) //斬撃のパーティクル表示
-    }
-
-    /**
-     * 斬撃のパーティクルを表示する
-     */
-    private fun drawSlash(
-        origin: Location,
-        particle: Particle,
-        points: Int
-    ) {
-        var i = 0
-        SkillMaster.INSTANCE.runTaskTimer(1) {
-            if (i < points) {
-                val t = i * 2 * Math.PI / points
-                val point = Vector(0.0, t, 0.0)
-                origin.add(point)
-                origin.world.spawnParticle(particle, origin, 10)
-                origin.subtract(point)
-            } else {
-                cancel()
-            }
-            i++
-        }
-    }
-
-    /**
-     * 円のパーティクルを表示する
-     */
-    private fun drawCircle(
-        origin: Location,
-        particle: Particle,
-        radius: Double,
-        points: Int,
-        rotX: Double,
-        rotY: Double,
-        rotZ: Double
-    ) {
-        for (i in 0 until points) {
-            val t = i * 2 * Math.PI / points
-            val point = Vector(radius * cos(t), 0.0, radius * sin(t))
-            rotX(point, rotX)
-            rotY(point, rotY)
-            rotZ(point, rotZ)
-            origin.add(point)
-            // spawn something at origin
-            origin.world.spawnParticle(particle, origin, 10, null)
-            origin.subtract(point)
-        }
-    }
-
-    /**
-     * 与えたVectorをX軸回りでtだけ回転させる
-     *
-     * @param point: 回転させたいVector
-     * @param t:     角度
-     */
-    private fun rotX(point: Vector, t: Double) {
-        val y = point.y
-        point.y = y * cos(t) - point.z * sin(t)
-        point.z = y * sin(t) + point.z * cos(t)
-    }
-
-    /**
-     * 与えたVectorをY軸回りでtだけ回転させる
-     *
-     * @param point: 回転させたいVector
-     * @param t:     角度
-     */
-    private fun rotY(point: Vector, t: Double) {
-        val z = point.z
-        point.z = z * cos(t) - point.x * sin(t)
-        point.x = z * sin(t) + point.x * cos(t)
-    }
-
-    /**
-     * 与えたVectorをZ軸回りでtだけ回転させる
-     *
-     * @param point: 回転させたいVector
-     * @param t:     角度
-     */
-    private fun rotZ(point: Vector, t: Double) {
-        val x = point.x
-        point.x = x * cos(t) - point.y * sin(t)
-        point.y = x * sin(t) + point.y * cos(t)
+        drawParticle.drawSlash(targetLoc, Particle.SPELL_WITCH, 10) //斬撃のパーティクル表示
     }
 }
