@@ -33,7 +33,7 @@ class RazorStub(user: SkillUser) : Skill(
             val livingTarget = target as? LivingEntity ?: return
             if (livingTarget != player) {
 
-                attack(user, target, 5.0, Vector(0.0, 1.0, 0.0), false)
+                attackChangeVector(user, target, 5.0, Vector(0.0, 1.0, 0.0))
                 drawParticle(livingTarget)
             }
         }

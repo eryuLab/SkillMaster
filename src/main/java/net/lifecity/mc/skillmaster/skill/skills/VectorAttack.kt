@@ -33,7 +33,7 @@ class VectorAttack(user: SkillUser) : Skill(
 
         if (target !is LivingEntity) return
 
-        attack(user, target, damage, user.player.velocity.multiply(0.25).setY(0.15), true)
+        attackAddVector(user, target, damage, user.player.velocity.multiply(0.25).setY(0.15))
         user.player.sendMessage("damage: $damage")
 
         // 軌道

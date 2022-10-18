@@ -106,7 +106,7 @@ class JumpAttackSlash(user: SkillUser) : SeparatedSkill(
             val target = getNearEntities(2.0)[0]
 
             if (target is LivingEntity) {
-                attack(user, target, 5.0, user.player.velocity.setY(0.5), true)
+                attackAddVector(user, target, 5.0, user.player.velocity.setY(0.5))
                 val loc = target.location.add(0.0, 2.0, 0.0)
                 loc?.spawnParticle(Particle.EXPLOSION_LARGE)
             }

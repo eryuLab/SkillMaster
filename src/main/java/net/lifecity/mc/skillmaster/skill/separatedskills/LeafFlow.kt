@@ -95,7 +95,7 @@ class LeafFlow(user: SkillUser) : SeparatedSkill(
 
         val target = entityList[0]
         if (target is LivingEntity) {
-            attack(user, target, 4.0,  user.player.velocity.normalize().multiply(1).setY(0.15), true)
+            attackAddVector(user, target, 4.0,  user.player.velocity.normalize().multiply(1).setY(0.15))
 
             for (i in 0..2) {
                 target.location.add(0.0, 2.0, 0.0).spawnParticle(Particle.SWEEP_ATTACK)

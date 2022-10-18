@@ -35,13 +35,7 @@ class Thrust(user: SkillUser) : Skill(
         // 攻撃
         target?.let {
             val livingEntity = target as? LivingEntity ?: return
-            attack(
-                user,
-                livingEntity,
-                3.8,
-                direction.multiply(1.7),
-                false
-            )
+            attackChangeVector(user, livingEntity, 3.8, direction)
 
             // SE再生
             user.player.playSound(Sound.ENTITY_EVOKER_CAST_SPELL, pitch = 2f)

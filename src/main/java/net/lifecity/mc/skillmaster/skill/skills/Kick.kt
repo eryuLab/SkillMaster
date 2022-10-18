@@ -36,7 +36,7 @@ class Kick(user: SkillUser) : Skill(
 
         if (target != null) {
             if (target !is LivingEntity) return
-            attack(user, target, 1.0, user.player.eyeLocation.direction.multiply(2.85), false)
+            attackAddVector(user, target, 1.0, user.player.eyeLocation.direction.multiply(2.85))
 
             var count = 0
             SkillMaster.INSTANCE.runTaskTimer(1) {
