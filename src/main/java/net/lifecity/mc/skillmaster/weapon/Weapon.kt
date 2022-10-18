@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.weapon
 
+import com.github.syari.spigot.api.item.displayName
+import net.lifecity.mc.skillmaster.WeaponConvertException
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -36,7 +38,7 @@ enum class Weapon(val jp: String, val number: Int = 0) {
         // カスタムモデルデータを確認
         val meta = itemStack.itemMeta
         if (!meta.hasCustomModelData()) return false
-        return if (meta.customModelData < number * 100 || meta.customModelData > number * 100 + 99) false else true
+        return !(meta.customModelData < number * 100 || meta.customModelData > number * 100 + 99)
     }
 
     companion object {
@@ -46,11 +48,11 @@ enum class Weapon(val jp: String, val number: Int = 0) {
          * @return 一致したWeapon
          */
         @JvmStatic
-        fun fromItemStack(itemStack: ItemStack): Weapon? {
+        fun fromItemStack(itemStack: ItemStack): Weapon {
             for (weapon in values()) {
                 if (weapon.match(itemStack)) return weapon
             }
-            return null
+            throw WeaponConvertException("${itemStack.displayName} could not be converted to a Weapon")
         }
 
         /**
@@ -59,11 +61,11 @@ enum class Weapon(val jp: String, val number: Int = 0) {
          * @return nameが一致したWeapon
          */
         @JvmStatic
-        fun fromJP(jpName: String): Weapon? {
+        fun fromJP(jpName: String): Weapon {
             for (weapon in values()) {
                 if (weapon.jp == jpName) return weapon
             }
-            return null
+            throw WeaponConvertException("$jpName could not be converted to a Weapon")
         }
 
         /**
@@ -71,11 +73,11 @@ enum class Weapon(val jp: String, val number: Int = 0) {
          * @param name この名前から検索します
          * @return 一致した武器
          */
-        fun fromName(name: String?): Weapon? {
+        fun fromName(name: String?): Weapon {
             for (weapon in values()) {
                 if (weapon.name.equals(name, ignoreCase = true)) return weapon
             }
-            return null
+            throw WeaponConvertException("$name could not be converted to a Weapon")
         }
 
         /**
@@ -83,11 +85,11 @@ enum class Weapon(val jp: String, val number: Int = 0) {
          * @param number この番号で検索します
          * @return 一致した武器
          */
-        fun fromNumber(number: Int): Weapon? {
+        fun fromNumber(number: Int): Weapon {
             for (weapon in values()) {
                 if (weapon.number == number) return weapon
             }
-            return null
+            throw WeaponConvertException("id:$number could not be converted to a Weapon")
         }
     }
 }
