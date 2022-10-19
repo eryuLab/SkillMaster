@@ -47,14 +47,19 @@ class DrawParticle {
     fun drawSlash(
         origin: Location,
         particle: Particle,
-        points: Int
+        data: Any? = null,
+        points: Int,
+        rotX: Double = 0.0,
+        rotY: Double = 0.0,
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
         SkillMaster.INSTANCE.runTaskTimer(1) {
             if (i < points) {
                 val t = i * 2 * PI / points
                 val point = Vector(0.0, t, 0.0)
-                spawnParticle(origin, particle, point)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
             } else {
                 cancel()
             }
