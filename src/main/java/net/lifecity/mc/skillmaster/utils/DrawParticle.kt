@@ -21,7 +21,7 @@ class DrawParticle {
      * @param rotZ:     Z軸回りに回転する角度
      * @param count: パーティクルの表示数
      */
-    fun spawnParticle(
+    private fun spawnParticle(
         origin: Location,
         particle: Particle,
         point: Vector,
@@ -82,12 +82,13 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 2 * PI / points
             val point = Vector(radius * cos(t), 0.0, radius * sin(t))
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
         }
     }
 
@@ -111,7 +112,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -119,7 +121,7 @@ class DrawParticle {
             if (i < points) {
                 val t = i * 2 * PI / points
                 val point = Vector(radius * cos(t), 0.0, radius * sin(t))
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
             } else {
                 cancel()
             }
@@ -147,12 +149,13 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 8 * PI / points
             val point = Vector(radius * t * sin(t), 0.0, radius * t * cos(t))
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
         }
     }
 
@@ -176,7 +179,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -184,7 +188,7 @@ class DrawParticle {
             if (i < points) {
                 val t = i * 8 * PI / points
                 val point = Vector(radius * t * sin(t), 0.0, radius * t * cos(t))
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
             } else {
                 cancel()
             }
@@ -212,12 +216,13 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 8 * PI / points
             val point = Vector(radius * t * sin(t), radius * t, radius * t * cos(t))
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
         }
     }
 
@@ -241,14 +246,15 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
         SkillMaster.INSTANCE.runTaskTimer(1) {
             if (i < points) {
                 val t = i * 8 * PI / points
                 val point = Vector(radius * t * sin(t), radius * t, radius * t * cos(t))
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
             } else {
                 cancel()
             }
@@ -276,12 +282,13 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 8 * PI / points
             val point = Vector(radius * sin(t), radius * t, radius * cos(t))
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count )
         }
     }
 
@@ -305,14 +312,15 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
         SkillMaster.INSTANCE.runTaskTimer(1) {
             if (i < points) {
                 val t = i * 8 * PI / points
                 val point = Vector(radius * sin(t), radius * t, radius * cos(t))
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
             } else {
                 cancel()
@@ -341,7 +349,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 8 * PI / points
@@ -350,7 +359,7 @@ class DrawParticle {
                 radius * sin(t % 10 * PI) * cos(t / 10 * PI),
                 radius * cos(t % 10 * PI) * cos(t / 10 * PI)
             )
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
         }
     }
@@ -375,7 +384,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -387,7 +397,7 @@ class DrawParticle {
                     radius * sin(t % 10 * PI) * cos(t / 10 * PI),
                     radius * cos(t % 10 * PI) * cos(t / 10 * PI)
                 )
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
             } else {
                 cancel()
@@ -417,7 +427,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 8 * PI / points
@@ -426,7 +437,7 @@ class DrawParticle {
                 0.0,
                 radius * sin(t).pow(3.0)
             )
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
         }
     }
@@ -451,7 +462,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -463,7 +475,7 @@ class DrawParticle {
                     0.0,
                     radius * sin(t).pow(3.0)
                 )
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
             } else {
                 cancel()
@@ -492,7 +504,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 2 * PI / points
@@ -501,7 +514,7 @@ class DrawParticle {
                 0.0,
                 size * (13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)) / 3
             )
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
         }
     }
@@ -526,7 +539,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -538,7 +552,7 @@ class DrawParticle {
                     0.0,
                     size * (13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)) / 3
                 )
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
             } else {
                 cancel()
@@ -578,7 +592,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 2 * PI / points
@@ -587,7 +602,7 @@ class DrawParticle {
                 0.0,
                 B * sin(b * t)
             )
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
         }
     }
@@ -623,7 +638,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -635,7 +651,7 @@ class DrawParticle {
                     0.0,
                     B * sin(b * t)
                 )
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
             } else {
                 cancel()
@@ -664,7 +680,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * 2 * PI / points
@@ -673,7 +690,7 @@ class DrawParticle {
                 0.0,
                 size * (1 + 2 * cos(t)) * sin(t)
             )
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
         }
     }
@@ -698,7 +715,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -710,7 +728,7 @@ class DrawParticle {
                     0.0,
                     size * (1 + 2 * cos(t)) * sin(t)
                 )
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
             } else {
                 cancel()
@@ -741,7 +759,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         for (i in 0 until points) {
             val t = i * scrollNum * 2 * PI / points
@@ -750,7 +769,7 @@ class DrawParticle {
                 0.0,
                 a * (1 - cos(t))
             )
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
         }
     }
@@ -777,7 +796,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         var i = 0
 
@@ -789,7 +809,7 @@ class DrawParticle {
                     0.0,
                     a * (1 - cos(t))
                 )
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
             } else {
                 cancel()
@@ -810,7 +830,8 @@ class DrawParticle {
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
-        rotZ: Double = 0.0
+        rotZ: Double = 0.0,
+        count: Int = 1
     ) {
         val xmax = sqrt(-(1 / b.pow(2.0)) * ln(2 * E.pow(-a.pow(2.0)) - 1))
         for (i in 0 until points) {
@@ -827,7 +848,7 @@ class DrawParticle {
                 0.0,
                 r * sin(t)
             )
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ)
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count)
 
         }
     }
