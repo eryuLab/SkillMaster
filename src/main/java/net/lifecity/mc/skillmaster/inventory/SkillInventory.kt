@@ -6,7 +6,6 @@ import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import kotlin.math.max
 
 class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user), val page: Int) :
     InventoryFrame(user, 6, "スキルメニュー:${user.selectedWeapon.jp}") {
@@ -142,11 +141,11 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
             val index = rowNum * 7 + num
             if (index < skillList.size) {
                 val skill = skillList[index]
-                return InvItem(skill.toItemStack()) {
+                return InvItem(skill.toItemStackInInv()) {
                     this.isCancelled = true
 
                     if (this.cursor?.type == Material.AIR) {
-                        this.cursor = skill.toItemStack()
+                        this.cursor = skill.toItemStackInInv()
                     } else {
                         val cursorSkill = sm.fromItemStack(this.cursor!!) //TODO: ここの!!をなくす
 

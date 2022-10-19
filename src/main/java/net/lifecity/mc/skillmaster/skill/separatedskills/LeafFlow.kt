@@ -4,20 +4,25 @@ import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
+import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
+import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import java.util.*
 
 /**
  * 前方に突進しながら敵を攻撃するスキル
  */
-class LeafFlow(user: SkillUser?) : SeparatedSkill(
+class LeafFlow(user: SkillUser) : CompositeSkill(
     "リーフフロー",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
     SkillType.ATTACK,
@@ -29,12 +34,8 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
     8,
     100,
     user
-) {
-    override fun activate() {
-        if (user == null)
-            return
-
-        super.activate()
+), AdditionalInput, Attack {
+    override fun onActivate() {
         val vector = user.player.eyeLocation.direction
             .normalize()
             .multiply(1.3)
@@ -72,13 +73,9 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
                 user.player.location.playSound(Sound.BLOCK_WET_GRASS_BREAK)
             count++
         }
-
     }
 
     private fun randomLocation(max: Double): Location? {
-        if (user == null)
-            return null
-
         val random = Random()
         var x = random.nextDouble() * max
         if (random.nextBoolean()) x *= -1.0
@@ -90,29 +87,34 @@ class LeafFlow(user: SkillUser?) : SeparatedSkill(
     }
 
     override fun additionalInput() {
-        if (user == null)
+        // 一番近いEntityを攻撃
+        val entityList = getNearEntities(1.8)
+        if (entityList.isEmpty())
             return
 
-        // 一番近いEntityを攻撃
-        val b = user.attackNearest(
-            1.8,
-            3.0,
-            user.player.velocity.normalize().multiply(1).setY(0.15),
-            Sound.ENTITY_PLAYER_ATTACK_SWEEP
-        )
+        val target = entityList[0]
+        if (target is LivingEntity) {
+            attackAddVector(user, target, 4.0,  user.player.velocity.normalize().multiply(1).setY(0.15))
 
-        // エフェクト
-        if (b) {
             for (i in 0..2) {
-                particle(Particle.SWEEP_ATTACK, user.getNearEntities(1.8)[0].location.add(0.0, 2.0, 0.0))
+                target.location.add(0.0, 2.0, 0.0).spawnParticle(Particle.SWEEP_ATTACK)
             }
             for (i in 0..5) {
                 val randomLocation = randomLocation(0.3)
-                randomLocation?.let { user.player.location.add(it) }?.let { particle(Particle.FLAME, it) }
+                randomLocation?.add(user.player.location)?.spawnParticle(Particle.FLAME)
             }
         }
-
         // 終了
         deactivate()
+    }
+
+    private fun getNearEntities(radius: Double): List<Entity?> {
+        // 半径radiusで近くのentityのリストを取得
+        val near = user.player.getNearbyEntities(radius, radius, radius)
+
+        // リストを近い順に並べる
+        EntityDistanceSort.quicksort(user.player, near, 0, near.size - 1)
+
+        return near
     }
 }

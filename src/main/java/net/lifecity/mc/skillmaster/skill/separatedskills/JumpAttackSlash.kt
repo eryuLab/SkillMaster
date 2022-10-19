@@ -5,19 +5,24 @@ import com.github.syari.spigot.api.scheduler.runTaskLater
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
+import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
+import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import java.util.*
 
 /**
  * 飛び上がり、地面に向かって突撃するスキル
  */
-class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
+class JumpAttackSlash(user: SkillUser) : CompositeSkill(
     "ジャンプアタック",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.LONG_SWORD),
     SkillType.ATTACK,
@@ -31,7 +36,7 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
     360,
     user,
     false
-) {
+), AdditionalInput, Attack {
 
     /**
      * step0: 飛び上がってから攻撃できるようになるまで
@@ -39,12 +44,8 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
      * step2: 攻撃の入力が終わるまで
      */
     private var step = 0
-    override fun activate() { //上方向に高く飛びあがる
-        if (user == null)
-            return
 
-        super.activate()
-
+    override fun onActivate() {
         // 上方向に高く飛びあがる
         val vector = user.player.eyeLocation.direction
             .normalize()
@@ -75,9 +76,6 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
     }
 
     override fun additionalInput() { //向いている方向(下)に突っ込み、攻撃する
-        if (user == null)
-            return
-
         if (step == 1) { //突っ込みの入力
             val vector = user.player.eyeLocation.direction
                 .normalize()
@@ -105,16 +103,12 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         } else if (step == 2) {
 
             // 一番近いEntityを攻撃
-            val b = user.attackNearest(
-                2.0,
-                5.0,
-                user.player.velocity.setY(0.5),
-                Sound.ENTITY_PLAYER_ATTACK_CRIT
-            )
+            val target = getNearEntities(2.0)[0]
 
-            if (b) {
-                val loc = user.getNearEntities(2.0)[0].location.add(0.0, 2.0, 0.0)
-                loc.spawnParticle(Particle.EXPLOSION_LARGE)
+            if (target is LivingEntity) {
+                attackAddVector(user, target, 5.0, user.player.velocity.setY(0.5))
+                val loc = target.location.add(0.0, 2.0, 0.0)
+                loc?.spawnParticle(Particle.EXPLOSION_LARGE)
             }
 
             deactivate() //終了処理
@@ -125,5 +119,20 @@ class JumpAttackSlash(user: SkillUser?) : SeparatedSkill(
         if (!activated) return
         super.deactivate()
         step = 0
+    }
+
+    override fun init() {
+        super.init()
+        step = 0
+    }
+
+    private fun getNearEntities(radius: Double): List<Entity?> {
+        // 半径radiusで近くのentityのリストを取得
+        val near = user.player.getNearbyEntities(radius, radius, radius)
+
+        // リストを近い順に並べる
+        EntityDistanceSort.quicksort(user.player, near, 0, near.size - 1)
+
+        return near
     }
 }

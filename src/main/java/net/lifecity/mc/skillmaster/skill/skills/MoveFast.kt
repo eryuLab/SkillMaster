@@ -10,20 +10,16 @@ import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
 
-class MoveFast(user: SkillUser?) : Skill(
+class MoveFast(user: SkillUser) : Skill(
     "高速移動",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
     SkillType.MOVE,
     listOf("向いている方向に高速移動します。", "上方向には飛べません。"),
-    60,
-    25,
+    50,
     user
 ) {
-    override fun activate() {
-        if (user == null)
-            return
-
-        super.activate()
+    override fun onActivate() {
+        user
         val vector = user.player.eyeLocation.direction.multiply(1.55)
 
         // Yの値が+だったら
