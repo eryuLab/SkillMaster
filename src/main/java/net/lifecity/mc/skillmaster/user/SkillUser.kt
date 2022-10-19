@@ -24,7 +24,6 @@ class SkillUser(
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
-    var userInventory: UserInventory
     var mode: UserMode = UserMode.BATTLE
         set(value) {
             // バトルからトレーニング
@@ -67,10 +66,9 @@ class SkillUser(
         player.maxHealth = 40.0
         player.health = 40.0
         // スキル設定
-
-        // インベントリ設定
-        userInventory = UserInventory(this)
     }
+
+    var userInventory: UserInventory = UserInventory(this)
 
     /**
      * 左クリックを入力した時の処理
