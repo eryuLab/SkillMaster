@@ -7,6 +7,7 @@ import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
+import java.lang.Exception
 
 interface Attack {
 
@@ -94,9 +95,13 @@ interface Attack {
             target.damageChangeVector(damage, vector)
 
             // ゲーム中のときGameのonAttack()を呼び出す
-            val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
-            if (game is OnAttack)
-                game.onAttack(target)
+            try {
+                val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
+                if (game is OnAttack)
+                    game.onAttack(target)
+            } catch (e: Exception) {
+                return
+            }
         }
     }
 
