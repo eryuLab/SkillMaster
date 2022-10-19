@@ -51,9 +51,9 @@ class RazorStub(user: SkillUser) : Skill(
 
 
         val drawParticle = DrawParticle()
-        drawParticle.drawCircle(targetLoc, Particle.SPELL_WITCH, null, 1.0, 30) //円のパーティクル表示
+        drawParticle.drawCircle(targetLoc, Particle.SPELL_WITCH, null, 1.0, 30, count = 10) //円のパーティクル表示
         user.player.playSoundLegacy(Sound.ENTITY_PLAYER_ATTACK_SWEEP, pitch = 0.5F)
         user.player.playSoundLegacy(Sound.ENTITY_WITHER_SHOOT, pitch = 0.5F, volume = 0.3F)
-        drawParticle.drawSlash(targetLoc, Particle.SPELL_WITCH, 10) //斬撃のパーティクル表示
+        drawParticle.drawSlash(targetLoc, Particle.SPELL_WITCH,  points = 10, count = 10) //斬撃のパーティクル表示
     }
 }
