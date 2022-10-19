@@ -5,32 +5,34 @@ import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
-import org.bukkit.scheduler.BukkitRunnable
 
-abstract class SeparatedSkill(
+abstract class CompositeSkill(
     name: String,
     weaponList: List<Weapon>,
     type: SkillType,
     lore: List<String>,
     val activationTime: Int,
     interval: Int,
-    user: SkillUser?,
+    user: SkillUser,
     val canCancel: Boolean = true
-) : Skill(name, weaponList, type, lore, interval, user = user) {
+) : Skill(name, weaponList, type, lore, interval, user) {
 
     var activated = false
 
     override fun activate() {
+
         // ログ
-        user?.sendActionBar("" + ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動")
+        user.sendActionBar("" + ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動")
 
         // 発動中にする
         activated = true
 
+        onActivate()
+
         //終了処理：ActivationTimer起動
         var count = 0
         SkillMaster.INSTANCE.runTaskTimer(1) {
-            if (!this@SeparatedSkill.activated) //発動中か確認
+            if (!this@CompositeSkill.activated) //発動中か確認
                 cancel()
 
             if (count >= activationTime) { //カウント確認
@@ -41,11 +43,6 @@ abstract class SeparatedSkill(
             count++
         }
     }
-
-    /**
-     * 追加入力の処理
-     */
-    abstract fun additionalInput()
 
     /**
      * スキルを終了します

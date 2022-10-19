@@ -1,34 +1,40 @@
 package net.lifecity.mc.skillmaster.skill
 
+import com.github.syari.spigot.api.item.customModelData
+import com.github.syari.spigot.api.item.displayName
+import com.github.syari.spigot.api.item.hasCustomModelData
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
-import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.Particle
 import org.bukkit.inventory.ItemStack
 
-open class Skill(
+abstract class Skill(
     val name: String,
     val weaponList: List<Weapon>,
     val type: SkillType,
     val lore: List<String>,
     val interval: Int,
-    var id: Int = 0,
-    val user: SkillUser?
+    val user: SkillUser
 ) {
+    var id: Int = 0
     var inInterval = false
 
     /**
      * スキルを発動します
      */
     open fun activate() {
-        user?.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
+
+        user.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
+
+        onActivate()
 
         deactivate()
     }
+
+    abstract fun onActivate()
 
     /**
      * スキルを終了し、インターバルタイマーを起動します
@@ -62,15 +68,6 @@ open class Skill(
     }
 
     /**
-     * パーティクルを表示します
-     * @param particle 表示するパーティクル
-     * @param location 表示する位置
-     */
-    fun particle(particle: Particle, location: Location, count: Int = 1) {
-        location.world.spawnParticle(particle, location, count)
-    }
-
-    /**
      * 引数の武器が使用可能かを返します
      * @param weapon この武器が使えるか確かめます
      * @return 武器が使えるかどうか
@@ -83,15 +80,15 @@ open class Skill(
      * このスキルをItemStackとして現します
      * @return ItemStackになったスキル
      */
-    fun toItemStack(): ItemStack {
+    fun toItemStackInInv(): ItemStack {
+        // アイテム作成
         val item = ItemStack(Material.ARROW)
 
-        val meta = item.itemMeta
+        // 名前設定
+        item.displayName = name
 
-        meta.setDisplayName(name)
-
+        // 伝承設定
         val lore = mutableListOf<String>()
-
         lore.add("" + ChatColor.WHITE + "武器: ")
         for (weapon in weaponList) {
             lore.add("" + ChatColor.WHITE + weapon.jp)
@@ -100,12 +97,10 @@ open class Skill(
         for (str in this.lore) {
             lore.add("" + ChatColor.WHITE + str)
         }
+        item.lore = lore
 
-        meta.lore = lore
-
-        meta.setCustomModelData(id)
-
-        item.itemMeta = meta
+        // カスタムモデルデータ設定
+        item.customModelData = id
 
         return item
     }
@@ -118,9 +113,9 @@ open class Skill(
     fun match(itemStack: ItemStack): Boolean {
         if (!itemStack.hasItemMeta())
             return false
-        if (!itemStack.itemMeta.hasCustomModelData())
+        if (!itemStack.hasCustomModelData())
             return false
-        return id == itemStack.itemMeta.customModelData
+        return id == itemStack.customModelData
     }
 
     /**

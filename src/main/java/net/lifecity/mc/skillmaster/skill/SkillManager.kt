@@ -2,7 +2,7 @@ package net.lifecity.mc.skillmaster.skill
 
 import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.SkillConvertException
-import net.lifecity.mc.skillmaster.skill.defenseskills.NormalDefense
+import net.lifecity.mc.skillmaster.skill.separatedskills.NormalDefense
 import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttackSlash
 import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow
 import net.lifecity.mc.skillmaster.skill.separatedskills.Wall
@@ -10,12 +10,12 @@ import net.lifecity.mc.skillmaster.skill.skills.*
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.inventory.ItemStack
-import org.bukkit.util.Vector
 
-class SkillManager(val user: SkillUser?) {
+class SkillManager(val user: SkillUser) {
     // スキルの登録
     val skillList = listOf(
         RazorStub(user),
+        Thrust(user),
         LeafFlow(user),
         JumpAttackSlash(user),
         Wall(user),
@@ -41,7 +41,7 @@ class SkillManager(val user: SkillUser?) {
     fun fromWeapon(weapon: Weapon): List<Skill> {
         val list = mutableListOf<Skill>()
 
-        for (skill in skillList) {
+        for (skill in skillList as List<Skill>) {
             if (skill.usable(weapon))
                 list.add(skill)
         }
@@ -74,7 +74,7 @@ class SkillManager(val user: SkillUser?) {
             throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
 
 
-        for (skill in skillList) {
+        for (skill in skillList as List<Skill>) {
             if (skill.match(itemStack))
                 return skill
         }

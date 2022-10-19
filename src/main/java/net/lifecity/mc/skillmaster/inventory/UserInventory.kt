@@ -1,7 +1,6 @@
 package net.lifecity.mc.skillmaster.inventory
 
 import com.github.syari.spigot.api.scheduler.runTaskLater
-import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -131,7 +130,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
 
         //スキルアイテムがある時のアイテム
         val nonNullItem =
-            key.skill?.toItemStack()?.let {
+            key.skill?.toItemStackInInv()?.let {
                 InvItem(
                     it
                 ) {

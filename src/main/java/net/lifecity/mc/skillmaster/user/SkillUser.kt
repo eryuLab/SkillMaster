@@ -3,21 +3,17 @@ package net.lifecity.mc.skillmaster.user
 import com.github.syari.spigot.api.sound.playSound
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.kyori.adventure.title.Title
-import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
-import net.lifecity.mc.skillmaster.skill.DefenseSkill
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.Skill
+import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
+import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
-import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Sound
-import org.bukkit.entity.Damageable
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -28,8 +24,7 @@ class SkillUser(
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
-    var userInventory = UserInventory(this)
-    var mode: UserMode = UserMode.TRAINING
+    var mode: UserMode = UserMode.BATTLE
         set(value) {
             // バトルからトレーニング
             if (mode == UserMode.BATTLE && value == UserMode.TRAINING) {
@@ -70,7 +65,10 @@ class SkillUser(
         // HPを設定
         player.maxHealth = 40.0
         player.health = 40.0
+        // スキル設定
     }
+
+    var userInventory: UserInventory = UserInventory(this)
 
     /**
      * 左クリックを入力した時の処理
@@ -91,7 +89,7 @@ class SkillUser(
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    fun getActivatedSkill(): SeparatedSkill? {
+    fun getActivatedSkill(): CompositeSkill? {
         // スキルセットの配列を作成
         val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
@@ -104,7 +102,7 @@ class SkillUser(
                 val skill: Skill = skillKey.skill ?: continue@keyList
 
                 // スキルが複合スキルのとき発動中か確認
-                if (skill is SeparatedSkill) {
+                if (skill is CompositeSkill) {
                     if (skill.activated)
                         return skill
                 }
@@ -183,10 +181,10 @@ class SkillUser(
             return
 
         // 複合スキルのとき
-        if (skill is SeparatedSkill) {
+        if (skill is CompositeSkill) {
 
             // 現在の発動中スキルを取得
-            val activatedSkill: SeparatedSkill? = getActivatedSkill()
+            val activatedSkill: CompositeSkill? = getActivatedSkill()
 
 
             // 複合スキル発動中のとき
@@ -201,8 +199,10 @@ class SkillUser(
                 }
                 // 同じスキルのとき追加入力
                 else {
-                    skill.additionalInput()
-                    return
+                    if (skill is AdditionalInput) {
+                        skill.additionalInput()
+                        return
+                    }
                 }
             }
         }
@@ -226,119 +226,49 @@ class SkillUser(
     /**
      * このSkillUserへの攻撃を試みます
      * ただし、防御されるかもしれません
+     * 加算によってベクトルが与えられます
      * @param damage 攻撃の威力
-     * @param vector ノックバックの力
+     * @param vector ノックバック
      */
-    private fun damage(damage: Double, vector: Vector) {
+    fun damageAddVector(damage: Double, vector: Vector) {
+        if (!canDefense(damage, vector)) {
+            // ダメージとノックバックを与える
+            player.damage(damage)
+            player.velocity.add(vector)
+        }
+    }
+
+    /**
+     * このSkillUserへの攻撃を試みます
+     * ただし、防御されるかもしれません
+     * @param damage 攻撃の威力
+     * @param vector ノックバック
+     */
+    fun damageChangeVector(damage: Double, vector: Vector) {
+        if (!canDefense(damage, vector)) {
+            // ダメージとノックバックを与える
+            player.damage(damage)
+            player.velocity = vector
+        }
+    }
+
+    /**
+     * 防御スキルがあれば防御します
+     * @param damage 攻撃の威力
+     * @param vector ノックバック
+     */
+    private fun canDefense(damage: Double, vector: Vector): Boolean {
         // 防御スキル取得
-        val activatedSkill: SeparatedSkill? = getActivatedSkill()
+        val activatedSkill: CompositeSkill? = getActivatedSkill()
 
         // 防御スキルがあれば防御
         if (activatedSkill != null) {
-            if (activatedSkill is DefenseSkill) {
+            if (activatedSkill is Defense) {
                 activatedSkill.defense(damage, vector)
-                return
+                return true
             }
         }
-
-        // ダメージとノックバックを与える
-        player.damage(damage)
-        player.velocity.add(vector)
-    }
-
-    /**
-     * 指定したユーザーを攻撃します
-     * @param user 指定したユーザー
-     * @param damage ダメージ
-     * @param vector ノックバック
-     * @param sound SE
-     */
-    private fun attackUser(user: SkillUser, damage: Double, vector: Vector, sound: Sound) {
-        // SE再生
-        player.location.playSound(sound)
-
-        // トレーニングモード時は攻撃不可
-        if (mode == UserMode.TRAINING)
-            user.damage(0.0, Vector(0.0, 0.0, 0.0))
-        else {
-            // ダメージを与える
-            user.damage(damage, vector)
-
-            // ゲーム中のときGameのonAttack()を呼び出す
-            val game = SkillMaster.INSTANCE.gameList.getFromUser(this)
-            if (game is OnAttack)
-                game.onAttack(this)
-        }
-    }
-
-    /**
-     * 指定したエンティティを攻撃します
-     * @param entity 指定したエンティティ
-     * @param damage ダメージ
-     * @param vector ノックバック
-     * @param sound SE
-     */
-    private fun attackEntity(entity: Entity, damage: Double, vector: Vector, sound: Sound) {
-        // SE再生
-        player.location.playSound(sound)
-
-        // トレーニングモード時は攻撃不可
-        if (mode == UserMode.TRAINING)
-            return
-
-        if (entity is Damageable) {
-            // 標的にダメージを与える
-            entity.damage(damage)
-
-            // 標的をノックバックさせる
-            entity.velocity.add(vector)
-        }
-    }
-
-    /**
-     * 一番近いEntityを攻撃します
-     * @param radius この半径以内のエンティティに攻撃します
-     * @param damage ダメージ
-     * @param vector ノックバック
-     * @param sound SE
-     * @return 攻撃が成功するとtrueを返します
-     */
-    fun attackNearest(radius: Double, damage: Double, vector: Vector, sound: Sound): Boolean {
-        // 一番近くのエンティティを取得
-        val entities = getNearEntities(radius)
-
-        if (entities.isEmpty())
-            return false
-
-        val entity = entities[0]
-
-        // プレイヤーだった時の処理
-        if (entity is Player) {
-            val user = SkillMaster.INSTANCE.userList.get(entity) ?: return false
-
-            // 攻撃
-            attackUser(user, damage, vector, sound)
-        }
-        // プレイヤー以外の時の処理
-        else {
-            attackEntity(entity, damage, vector, sound)
-        }
-        return true
-    }
-
-    /**
-     * このユーザーから近いエンティティを取得します
-     * @param radius 検知する範囲の半径
-     * @return 近い順のエンティティのリスト
-     */
-    fun getNearEntities(radius: Double): List<Entity> {
-        // 半径radiusで近くのentityのリストを取得
-        val near = player.getNearbyEntities(radius, radius, radius)
-
-        // リストを近い順に並べる
-        EntityDistanceSort.quicksort(player, near, 0, near.size - 1)
-
-        return near
+        return false
     }
 
     fun sendMessage(msg: String) = player.sendMessage(msg)

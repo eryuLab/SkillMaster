@@ -13,21 +13,17 @@ import java.util.*
 /**
  * 上に高く飛び上がるスキル
  */
-class HighJump(user: SkillUser?) : Skill(
+class HighJump(user: SkillUser) : Skill(
     "大ジャンプ",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
     SkillType.MOVE,
     listOf("上に飛び上がります。"),
     100,
-    30,
     user
 ) {
 
-    override fun activate() {
-        if (user == null)
-            return
+    override fun onActivate() {
 
-        super.activate()
         val vector = user.player.eyeLocation.direction
 
         // x方向を制限
@@ -59,9 +55,8 @@ class HighJump(user: SkillUser?) : Skill(
         SkillMaster.INSTANCE.runTaskTimer(2) {
             if (count >= 10) cancel()
             if (user.player.velocity.length() < 0.3) cancel()
-            particle(Particle.LAVA, user.player.location)
+            user.player.location.spawnParticle(Particle.LAVA)
             count++
         }
-
     }
 }
