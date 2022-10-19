@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.skill
 
+import com.github.syari.spigot.api.item.displayName
+import net.lifecity.mc.skillmaster.SkillConvertException
 import net.lifecity.mc.skillmaster.skill.separatedskills.NormalDefense
 import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttackSlash
 import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow
@@ -47,20 +49,56 @@ class SkillManager(val user: SkillUser) {
     }
 
     /**
+     * クラスからスキルインスタンスを取得します
+     * @param skillClass スキルクラス
+     * @return スキルインスタンス
+     */
+    fun fromClass(skillClass: Class<Skill>): Skill {
+        for (skill in skillList) {
+            if (skillClass.isInstance(skill))
+                return skill
+        }
+        throw SkillConvertException("$skillClass could not be converted to a Skill")
+    }
+
+    /**
      * ItemStackからSkillを特定します
      * @param itemStack 特定の対象となるItemStack
      * @return 一致したSkill
      */
-    fun fromItemStack(itemStack: ItemStack): Skill? {
+    fun fromItemStack(itemStack: ItemStack): Skill {
         if (!itemStack.hasItemMeta())
-            return null
+            throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
+
         if (!itemStack.itemMeta.hasCustomModelData())
-            return null
+            throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
+
 
         for (skill in skillList as List<Skill>) {
             if (skill.match(itemStack))
                 return skill
         }
-        return null
+
+        throw SkillConvertException("${itemStack.displayName} could not be converted to a Skill")
+    }
+
+    /**
+     * ItemStackからSkillに変換できるか否かを返します
+     * @param itemStack 特定の対象となるItemStack
+     * @return 変換できるか否か
+     */
+    fun canConvertItemStack(itemStack: ItemStack) : Boolean {
+        if (!itemStack.hasItemMeta())
+            return false
+
+        if (!itemStack.itemMeta.hasCustomModelData())
+            return false
+
+        for (skill in skillList) {
+            if (skill.match(itemStack))
+                return true
+        }
+
+        return false
     }
 }

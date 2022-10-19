@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.game
 
+import net.lifecity.mc.skillmaster.SkillUserNotFoundException
 import net.lifecity.mc.skillmaster.user.SkillUser
 
 class GameList {
@@ -11,11 +12,11 @@ class GameList {
      * @param user このユーザーを使います
      * @return 参加していたらtrue
      */
-    fun getFromUser(user: SkillUser): Game? {
+    fun getFromUser(user: SkillUser): Game {
         for (game in list) {
             if (game.joined(user)) return game
         }
-        return null
+        throw SkillUserNotFoundException("${user.player.name} do not join any games now")
     }
 
     /**
@@ -23,6 +24,11 @@ class GameList {
      * @param user このユーザーを使います
      * @return 参加していたらtrueを返します
      */
-    fun inGamingUser(user: SkillUser) = getFromUser(user) != null
+    fun inGamingUser(user: SkillUser) : Boolean{
+        for (game in list) {
+            if (game.joined(user)) return true
+        }
+        return false
+    }
 
 }
