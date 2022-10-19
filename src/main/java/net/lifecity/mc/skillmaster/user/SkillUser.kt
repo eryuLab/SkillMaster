@@ -5,7 +5,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Defense
@@ -91,7 +91,7 @@ class SkillUser(
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    fun getActivatedSkill(): SeparatedSkill? {
+    fun getActivatedSkill(): CompositeSkill? {
         // スキルセットの配列を作成
         val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
@@ -104,7 +104,7 @@ class SkillUser(
                 val skill: Skill = skillKey.skill ?: continue@keyList
 
                 // スキルが複合スキルのとき発動中か確認
-                if (skill is SeparatedSkill) {
+                if (skill is CompositeSkill) {
                     if (skill.activated)
                         return skill
                 }
@@ -183,10 +183,10 @@ class SkillUser(
             return
 
         // 複合スキルのとき
-        if (skill is SeparatedSkill) {
+        if (skill is CompositeSkill) {
 
             // 現在の発動中スキルを取得
-            val activatedSkill: SeparatedSkill? = getActivatedSkill()
+            val activatedSkill: CompositeSkill? = getActivatedSkill()
 
 
             // 複合スキル発動中のとき
@@ -261,7 +261,7 @@ class SkillUser(
      */
     private fun canDefense(damage: Double, vector: Vector): Boolean {
         // 防御スキル取得
-        val activatedSkill: SeparatedSkill? = getActivatedSkill()
+        val activatedSkill: CompositeSkill? = getActivatedSkill()
 
         // 防御スキルがあれば防御
         if (activatedSkill != null) {

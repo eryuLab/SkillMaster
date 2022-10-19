@@ -4,7 +4,7 @@ import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Attack
@@ -15,7 +15,6 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.block.data.type.Bed.Part
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import java.util.*
@@ -23,7 +22,7 @@ import java.util.*
 /**
  * 前方に突進しながら敵を攻撃するスキル
  */
-class LeafFlow(user: SkillUser) : SeparatedSkill(
+class LeafFlow(user: SkillUser) : CompositeSkill(
     "リーフフロー",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER),
     SkillType.ATTACK,

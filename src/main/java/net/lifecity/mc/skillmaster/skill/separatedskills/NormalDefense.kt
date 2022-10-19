@@ -4,7 +4,7 @@ import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -18,7 +18,7 @@ import java.util.*
 /**
  * 敵からの攻撃を一定時間完全に防御するスキル
  */
-class NormalDefense(user: SkillUser) : SeparatedSkill(
+class NormalDefense(user: SkillUser) : CompositeSkill(
     "通常防御",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD),
     SkillType.DEFENSE,

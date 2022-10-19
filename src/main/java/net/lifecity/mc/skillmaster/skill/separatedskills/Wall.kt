@@ -1,7 +1,7 @@
 package net.lifecity.mc.skillmaster.skill.separatedskills
 
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.WorldEditUtils
@@ -13,7 +13,7 @@ import java.io.File
 import java.io.IOException
 import kotlin.math.roundToInt
 
-class Wall(user: SkillUser) : SeparatedSkill(
+class Wall(user: SkillUser) : CompositeSkill(
     "ウォール",
     listOf(
         Weapon.STRAIGHT_SWORD,

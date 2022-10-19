@@ -5,7 +5,7 @@ import com.github.syari.spigot.api.scheduler.runTaskLater
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SeparatedSkill
+import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Attack
@@ -22,7 +22,7 @@ import java.util.*
 /**
  * 飛び上がり、地面に向かって突撃するスキル
  */
-class JumpAttackSlash(user: SkillUser) : SeparatedSkill(
+class JumpAttackSlash(user: SkillUser) : CompositeSkill(
     "ジャンプアタック",
     listOf(Weapon.STRAIGHT_SWORD, Weapon.LONG_SWORD),
     SkillType.ATTACK,
