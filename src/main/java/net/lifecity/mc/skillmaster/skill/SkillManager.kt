@@ -13,7 +13,7 @@ class SkillManager(val user: SkillUser) {
     val skillList = listOf(
         RazorStub(user),
         Thrust(user),
-        EmptyForm(user),
+        KaraNoKamae(user),
         LeafFlow(user),
         JumpAttackSlash(user),
         Wall(user),

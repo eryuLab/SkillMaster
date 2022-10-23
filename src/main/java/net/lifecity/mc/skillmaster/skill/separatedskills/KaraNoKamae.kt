@@ -5,7 +5,6 @@ import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.CompositeSkill
-import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -17,7 +16,7 @@ import org.bukkit.Sound
 import org.bukkit.util.Vector
 import kotlin.random.Random
 
-class EmptyForm(user: SkillUser): CompositeSkill(
+class KaraNoKamae(user: SkillUser): CompositeSkill(
     "空の構え",
     arrayListOf(Weapon.STRAIGHT_SWORD),
     SkillType.DEFENSE,
