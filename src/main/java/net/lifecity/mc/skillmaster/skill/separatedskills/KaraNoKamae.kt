@@ -8,6 +8,7 @@ import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Material
@@ -48,6 +49,23 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
 
             if (count >= 6)
                 cancel()
+
+            if (count % 3 == 0) {
+                // 円を描く
+                val draw = DrawParticle()
+                val origin = user.player.location.add(0.0, 1.0, 0.0)
+
+                draw.drawCircle(
+                    origin,
+                    Particle.FALLING_DUST,
+                    Material.LIGHT_BLUE_WOOL.createBlockData(),
+                    1.5,
+                    24,
+                    rotX = Math.PI * 90.0 / 180.0,
+                    rotY = Math.PI * (user.player.location.yaw / 180.0) * -1,
+                    count = 2
+                )
+            }
 
             for (i in 0..1) {
                 val loc = user.player.location.add(0.0, 1.0, 0.0).add(randomLocation(1.7))
