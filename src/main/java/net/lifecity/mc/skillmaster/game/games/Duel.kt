@@ -23,8 +23,8 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) :
     private var winner: GameTeam? = null
 
     init {
-        teamA = GameTeam("Alpha", ChatColor.RED, arrayOf(userA))
-        teamB = GameTeam("Beta", ChatColor.BLUE, arrayOf(userB))
+        teamA = GameTeam.Solo("Alpha", ChatColor.RED, userA)
+        teamB = GameTeam.Solo("Beta", ChatColor.BLUE, userB)
     }
 
     override val teams: Array<GameTeam>
