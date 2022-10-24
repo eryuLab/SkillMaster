@@ -37,14 +37,14 @@ object SkillCommand {
                 .then(MultiLiteralArgument("直剣", "短剣", "大剣", "太刀", "刺剣", "槌矛")
                     .executesPlayer(PlayerCommandExecutor {player, args ->
                         val name = args[0] as String
-                        val weapon = Weapon.fromJP(name)
-
-                        if(weapon == null) {
-                            player.sendMessage("武器が見つかりません")
+                        try {
+                            val weapon = Weapon.fromJP(name)
+                            player.inventory.addItem(weapon.toItemStack())
+                        } catch (e: WeaponConvertException) {
+                            player.sendMessage("${name}という武器が見つからない、または変換できません")
                             return@PlayerCommandExecutor
                         }
 
-                        player.inventory.addItem(weapon.toItemStack())
                     })
                 )
             )
@@ -53,10 +53,10 @@ object SkillCommand {
                 .then(MultiLiteralArgument("battle", "training", "unarmed")
                     .executesPlayer(PlayerCommandExecutor { player, args ->
                         val name = args[0] as String
-                        val user = SkillMaster.INSTANCE.userList.get(player)
+                        val user = SkillMaster.INSTANCE.userList[player]
                         val mode = UserMode.valueOf(name.uppercase())
 
-                        user?.let {
+                        user.let {
                             it.mode = mode
                             player.sendMessage("モードを${mode.jp}に変更しました")
                         }
@@ -76,14 +76,14 @@ object SkillCommand {
                 .then(MultiLiteralArgument("skill", "weapon")
                     .executesPlayer(PlayerCommandExecutor { player, args ->
                         val menu = args[0] as String
-                        val user = SkillMaster.INSTANCE.userList.get(player)
+                        val user = SkillMaster.INSTANCE.userList[player]
 
                         if(player.gameMode == GameMode.CREATIVE) {
 
                             player.sendMessage("${WHITE}[${RED}警告${WHITE}]: クリエイティブ時のメニューの挙動は補償されていません。")
                         }
 
-                        user?.let {
+                        user.let {
                             if(menu == "skill") {
                                 it.openedInventory = SkillInventory(user, page = 0)
 
@@ -107,7 +107,7 @@ object SkillCommand {
                                 val gamePlayer = args[1] as Player
 
                                 // ユーザー取得
-                                val user = SkillMaster.INSTANCE.userList.get(gamePlayer) ?: return@PlayerCommandExecutor
+                                val user = SkillMaster.INSTANCE.userList[gamePlayer]
 
                                 // プレイヤーがゲーム中か確認
                                 if (SkillMaster.INSTANCE.gameList.inGamingUser(user)) {
@@ -116,21 +116,21 @@ object SkillCommand {
                                 }
 
                                 // ステージ取得
-                                val stage = SkillMaster.INSTANCE.stageList.getFromName(stageName)
+                                try {
+                                    val stage = SkillMaster.INSTANCE.stageList.getFromName(stageName)
 
-                                if (stage == null) {
+                                    //ステージが使用中であるか確認
+                                    if(stage.inUsing()) {
+                                        player.sendMessage("${stageName}は使用中です")
+                                        return@PlayerCommandExecutor
+                                    }
+                                    val training = Training(stage, user)
+                                    training.start()
+                                }catch (e: StageNotFoundException) {
                                     player.sendMessage("${stageName}は登録されていません")
                                     return@PlayerCommandExecutor
                                 }
 
-                                //ステージが使用中であるか確認
-                                if(stage.inUsing()) {
-                                    player.sendMessage("${stageName}は使用中です")
-                                    return@PlayerCommandExecutor
-                                }
-
-                                val training = Training(stage, user)
-                                training.start()
                             })
                         )
                     )
@@ -151,8 +151,8 @@ object SkillCommand {
                                     }
 
                                     //ユーザー取得
-                                    val user1 = SkillMaster.INSTANCE.userList.get(player1) ?: return@PlayerCommandExecutor
-                                    val user2 = SkillMaster.INSTANCE.userList.get(player2) ?: return@PlayerCommandExecutor
+                                    val user1 = SkillMaster.INSTANCE.userList[player1]
+                                    val user2 = SkillMaster.INSTANCE.userList[player2]
 
                                     //ゲームがないか確認
                                     if(SkillMaster.INSTANCE.gameList.inGamingUser(user1)) {
@@ -165,22 +165,23 @@ object SkillCommand {
                                     }
 
                                     //ステージ取得
-                                    val stage = SkillMaster.INSTANCE.stageList.getFromName(stageName)
+                                    try {
+                                        val stage = SkillMaster.INSTANCE.stageList.getFromName(stageName)
 
-                                    if(stage == null) {
+                                        //ステージが使用中であるか確認
+                                        if(stage.inUsing()) {
+                                            player.sendMessage("${stageName}は使用中です")
+                                            return@PlayerCommandExecutor
+                                        }
+
+                                        //ゲーム開始
+                                        val duel = Duel(stage,user1,user2)
+                                        duel.start()
+
+                                    } catch (e: StageNotFoundException) {
                                         player.sendMessage("${stageName}は登録されていません")
                                         return@PlayerCommandExecutor
                                     }
-
-                                    //ステージが使用中であるか確認
-                                    if(stage.inUsing()) {
-                                        player.sendMessage("${stageName}は使用中です")
-                                        return@PlayerCommandExecutor
-                                    }
-
-                                    //ゲーム開始
-                                    val duel = Duel(stage,user1,user2)
-                                    duel.start()
                                 })
                             )
                         )
