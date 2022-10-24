@@ -20,3 +20,12 @@ class SkillUserNotFoundException(msg: String = "") : Exception(msg)
  */
 class SkillNotFoundException(msg: String = "") : Exception(msg)
 
+/**
+ * ゲームが見つからなかった時に発生するエラー
+ */
+class GameNotFoundException(msg: String = "") : Exception(msg)
+
+/**
+ * ステージが見つからなかった時に発生するエラー
+ */
+class StageNotFoundException(msg: String = "") : Exception(msg)
