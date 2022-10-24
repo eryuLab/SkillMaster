@@ -57,7 +57,7 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
 
                 draw.drawCircle(
                     origin,
-                    Particle.FALLING_DUST,
+                    Particle.BLOCK_DUST,
                     Material.LIGHT_BLUE_WOOL.createBlockData(),
                     1.5,
                     24,
@@ -67,19 +67,10 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
                 )
             }
 
-            for (i in 0..1) {
+            for (i in 0..3) {
                 val loc = user.player.location.add(0.0, 1.0, 0.0).add(randomLocation(1.7))
-                flowing(loc, Particle.FALLING_DUST, Material.WHITE_WOOL.createBlockData(), 2)
-                loc.spawnParticle(Particle.ELECTRIC_SPARK, count = 3)
+                flowing(loc, Particle.ELECTRIC_SPARK, particleCount = 3)
             }
-            val lightBlueLoc = user.player.location.add(0.0, 1.0, 0.0).add(randomLocation(1.7))
-            flowing(lightBlueLoc, Particle.FALLING_DUST, Material.LIGHT_BLUE_WOOL.createBlockData(), 2)
-            lightBlueLoc.spawnParticle(Particle.ELECTRIC_SPARK, count = 3)
-
-            val lightGrayLoc = user.player.location.add(0.0, 1.0, 0.0).add(randomLocation(1.7))
-            flowing(lightGrayLoc, Particle.FALLING_DUST, Material.LIGHT_GRAY_WOOL.createBlockData(), 2)
-            lightGrayLoc.spawnParticle(Particle.ELECTRIC_SPARK, count = 3)
-
             count++
         }
     }
