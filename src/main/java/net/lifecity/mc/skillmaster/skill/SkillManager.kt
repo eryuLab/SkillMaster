@@ -2,10 +2,7 @@ package net.lifecity.mc.skillmaster.skill
 
 import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.SkillConvertException
-import net.lifecity.mc.skillmaster.skill.separatedskills.NormalDefense
-import net.lifecity.mc.skillmaster.skill.separatedskills.JumpAttackSlash
-import net.lifecity.mc.skillmaster.skill.separatedskills.LeafFlow
-import net.lifecity.mc.skillmaster.skill.separatedskills.Wall
+import net.lifecity.mc.skillmaster.skill.separatedskills.*
 import net.lifecity.mc.skillmaster.skill.skills.*
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -16,6 +13,7 @@ class SkillManager(val user: SkillUser) {
     val skillList = listOf(
         RazorStub(user),
         Thrust(user),
+        KaraNoKamae(user),
         LeafFlow(user),
         JumpAttackSlash(user),
         Wall(user),

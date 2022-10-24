@@ -199,8 +199,11 @@ class SkillUser(
                 }
                 // 同じスキルのとき追加入力
                 else {
-                    if (skill is AdditionalInput) {
-                        skill.additionalInput()
+                    if (skill.activated) {
+                        if (skill is AdditionalInput) {
+                            skill.additionalInput()
+                            return
+                        }
                         return
                     }
                 }

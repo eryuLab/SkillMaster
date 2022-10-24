@@ -72,9 +72,13 @@ interface Attack {
             target.damageAddVector(damage, vector)
 
             // ゲーム中のときGameのonAttack()を呼び出す
-            val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
-            if (game is OnAttack)
-                game.onAttack(target)
+            try {
+                val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
+                if (game is OnAttack)
+                    game.onAttack(target)
+            } catch (e: Exception) {
+                return
+            }
         }
     }
 
