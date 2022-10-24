@@ -1,11 +1,17 @@
 package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.event.events
+import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.game.function.OnUserDead
+import net.lifecity.mc.skillmaster.inventory.SkillInventory
+import net.lifecity.mc.skillmaster.inventory.WeaponInventory
+import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.ChatColor
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventPriority
@@ -33,6 +39,19 @@ object EventListener {
 
             event<PlayerInteractEvent> {
                 val user = SkillMaster.INSTANCE.userList.get(it.player) ?: return@event
+
+                // 手のアイテムがメニュー棒のとき
+                if (user.handItem.type == Material.STICK) {
+                    if (user.handItem.displayName == "メニュー棒") {
+                        if(user.player.gameMode == GameMode.CREATIVE) {
+                            user.sendMessage("${ChatColor.WHITE}[${ChatColor.RED}警告${ChatColor.WHITE}]: クリエイティブ時のメニューの挙動は補償されていません。")
+                        }
+
+                        user.openedInventory = SkillInventory(user,  page = 0)
+                        user.openedInventory?.open()
+                        return@event
+                    }
+                }
 
                 if (user.mode == UserMode.UNARMED) return@event
 

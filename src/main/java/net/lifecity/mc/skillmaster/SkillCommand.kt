@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster
 
+import com.github.syari.spigot.api.item.displayName
 import dev.jorel.commandapi.CommandTree
 import dev.jorel.commandapi.arguments.LiteralArgument
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
@@ -14,7 +15,9 @@ import net.lifecity.mc.skillmaster.user.UserMode
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
+import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 object SkillCommand {
 
@@ -63,6 +66,13 @@ object SkillCommand {
             )
 
             .then(LiteralArgument("menu")
+                .executesPlayer(PlayerCommandExecutor { player, _ ->
+                    val stick = ItemStack(Material.STICK)
+                    stick.displayName = "メニュー棒"
+
+                    player.inventory.addItem(stick)
+                    player.sendMessage("メニュー棒を付与しました")
+                })
                 .then(MultiLiteralArgument("skill", "weapon")
                     .executesPlayer(PlayerCommandExecutor { player, args ->
                         val menu = args[0] as String
