@@ -117,9 +117,15 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
     private fun randomLocation(max: Double): Location {
         val random = Random
 
-        val x = random.nextDouble() * max
-        val y = random.nextDouble() * max
-        val z = random.nextDouble() * max
+        var x = random.nextDouble() * max
+        if (random.nextBoolean())
+            x *= -1
+        var y = random.nextDouble() * max
+        if (random.nextBoolean())
+            y *= -1
+        var z = random.nextDouble() * max
+        if (random.nextBoolean())
+            z *= -1
 
         return Location(user.player.world, x, y, z)
     }
