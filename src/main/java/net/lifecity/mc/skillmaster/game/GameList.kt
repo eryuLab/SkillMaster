@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.game
 
+import net.lifecity.mc.skillmaster.GameNotFoundException
 import net.lifecity.mc.skillmaster.SkillUserNotFoundException
 import net.lifecity.mc.skillmaster.user.SkillUser
 
@@ -16,7 +17,7 @@ class GameList {
         for (game in list) {
             if (game.joined(user)) return game
         }
-        throw SkillUserNotFoundException("${user.player.name} do not join any games now")
+        throw GameNotFoundException("${user.player.name} do not join any games now")
     }
 
     /**
