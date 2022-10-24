@@ -1,7 +1,5 @@
 package net.lifecity.mc.skillmaster.game
 
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
-import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.ChatColor
@@ -9,7 +7,7 @@ import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Sound
 
-class GameTeam(private val name: String, private val color: ChatColor, val userArray: Array<SkillUser>) {
+abstract class GameTeam(private val name: String, private val color: ChatColor, val userArray: Array<SkillUser>) {
     /**
      * このチーム全員のゲームモードを変更します
      * @param mode このモードに変更します
