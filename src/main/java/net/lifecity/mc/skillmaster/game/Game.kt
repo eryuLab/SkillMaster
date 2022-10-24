@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.game
 
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.StageNotFoundException
 import net.lifecity.mc.skillmaster.game.stage.FieldType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -141,13 +142,13 @@ abstract class Game protected constructor(
      * このゲームのステージを取得します
      * @return ステージ
      */
-    fun getNowStage(): GameStage? {
+    fun getNowStage(): GameStage {
         for (stage in SkillMaster.INSTANCE.stageList.list) {
             if (stage.nowGame === this) {
                 return stage
             }
         }
-        return null
+        throw StageNotFoundException("stage is not found")
     }
 
 
@@ -279,7 +280,7 @@ abstract class Game protected constructor(
 
                     // 1/4秒で確認
 
-                    stage?.let {
+                    stage.let {
                         var count = 0
                         SkillMaster.INSTANCE.runTaskTimer(5) {
                             val userY = user.player.location.y

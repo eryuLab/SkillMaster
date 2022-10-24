@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.game.stage
 
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.StageNotFoundException
 import net.lifecity.mc.skillmaster.game.Game
 import net.lifecity.mc.skillmaster.user.SkillUser
 
@@ -23,12 +24,12 @@ class GameStageList {
      * @param name 名前
      * @return ステージ
      */
-    fun getFromName(name: String) : GameStage? {
+    fun getFromName(name: String) : GameStage {
         for(stage in list) {
             if(stage.name == name) return stage
         }
 
-        return null
+        throw StageNotFoundException("stage: $name is not found.")
     }
 
     /**
@@ -36,9 +37,9 @@ class GameStageList {
      * @param user ユーザー
      * @return ユーザーが参加しているゲームのフィールド
      */
-    fun getFromUser(user: SkillUser) : GameStage? {
+    fun getFromUser(user: SkillUser) : GameStage {
         val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
-        return game?.let { getFromGame(it) }
+        return getFromGame(game)
     }
 
     /**
@@ -46,11 +47,11 @@ class GameStageList {
      * @param game ゲーム
      * @return 使用中のフィールド
      */
-    fun getFromGame(game: Game) : GameStage? {
+    fun getFromGame(game: Game) : GameStage {
         for(field in list) {
             if(field.nowGame == game) return field
         }
-        return null
+        throw StageNotFoundException("stage is not found")
     }
 
 }
