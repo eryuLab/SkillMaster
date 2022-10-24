@@ -22,7 +22,7 @@ class Training(stage: GameStage, user: SkillUser) :
     private var husk: Husk? = null
 
     init {
-        onlyTeam = GameTeam("OnlyTeam", ChatColor.GREEN, arrayOf(user))
+        onlyTeam = GameTeam.Solo("OnlyTeam", ChatColor.GREEN, user)
     }
 
     override val teams: Array<GameTeam>

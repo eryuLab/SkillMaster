@@ -1,7 +1,5 @@
 package net.lifecity.mc.skillmaster.game
 
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
-import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.ChatColor
@@ -9,7 +7,58 @@ import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Sound
 
-class GameTeam(private val name: String, private val color: ChatColor, val userArray: Array<SkillUser>) {
+sealed class GameTeam(private val name: String, private val color: ChatColor, val userArray: Array<SkillUser>) {
+
+    /**
+     * ソロ(一人)
+     */
+    class Solo(name: String, color: ChatColor,user: SkillUser)
+        :GameTeam(name, color, arrayOf(user))
+
+    /**
+     * デュオ(二人)
+     */
+    class Duo(name: String, color: ChatColor, userA: SkillUser, userB: SkillUser)
+        :GameTeam(name, color, arrayOf(userA, userB))
+
+    /**
+     * トリオ(三人)
+     */
+    class Trio(name: String, color: ChatColor, userA: SkillUser, userB: SkillUser, userC: SkillUser)
+        :GameTeam(name, color, arrayOf(userA, userB, userC))
+
+    /**
+     * カルテット(四人)
+     */
+    class Quartet(name: String, color: ChatColor,
+                  userA: SkillUser,
+                  userB: SkillUser,
+                  userC: SkillUser,
+                  userD: SkillUser)
+        :GameTeam(name, color, arrayOf(userA, userB, userC, userD))
+
+    /**
+     * クインテット(五人)
+     */
+    class Quintet(name: String, color: ChatColor,
+                  userA: SkillUser,
+                  userB: SkillUser,
+                  userC: SkillUser,
+                  userD: SkillUser,
+                  userE: SkillUser)
+        :GameTeam(name, color, arrayOf(userA, userB, userC, userD, userE))
+    /**
+     * セクステット(六人)
+     */
+    class Sextet(name: String, color: ChatColor,
+                 userA: SkillUser,
+                 userB: SkillUser,
+                 userC: SkillUser,
+                 userD: SkillUser,
+                 userE: SkillUser,
+                 userF: SkillUser)
+        :GameTeam(name, color, arrayOf(userA, userB, userC, userD, userE, userF))
+
     /**
      * このチーム全員のゲームモードを変更します
      * @param mode このモードに変更します
