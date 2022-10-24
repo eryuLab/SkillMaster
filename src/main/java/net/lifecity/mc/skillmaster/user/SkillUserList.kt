@@ -11,7 +11,7 @@ class SkillUserList {
      * @param player プレイヤー
      * @return 特定されたSkillUser
      */
-    fun get(player: Player): SkillUser {
+    operator fun get(player: Player): SkillUser {
         for (user in list) {
             if (user.player == player)
                 return user
