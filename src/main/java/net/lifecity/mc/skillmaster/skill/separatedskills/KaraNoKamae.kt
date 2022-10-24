@@ -23,7 +23,7 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
     SkillType.DEFENSE,
     arrayListOf("敵の攻撃を寸前で回避しながら前方に移動する"),
     10,
-    160,
+    140,
     user,
     true
 ), Defense {
