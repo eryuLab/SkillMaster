@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills
+package net.lifecity.mc.skillmaster.skill.compositeskills
 
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskLater

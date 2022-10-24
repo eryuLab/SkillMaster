@@ -2,7 +2,7 @@ package net.lifecity.mc.skillmaster.skill
 
 import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.SkillConvertException
-import net.lifecity.mc.skillmaster.skill.separatedskills.*
+import net.lifecity.mc.skillmaster.skill.compositeskills.*
 import net.lifecity.mc.skillmaster.skill.skills.*
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon

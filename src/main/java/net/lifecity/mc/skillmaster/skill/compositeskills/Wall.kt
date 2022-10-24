@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.separatedskills
+package net.lifecity.mc.skillmaster.skill.compositeskills
 
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.CompositeSkill
