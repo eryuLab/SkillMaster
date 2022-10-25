@@ -9,6 +9,7 @@ import net.lifecity.mc.skillmaster.inventory.WeaponInventory
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
+import net.lifecity.mc.skillmaster.utils.Messager
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
@@ -44,7 +45,7 @@ object EventListener {
                 if (user.handItem.type == Material.STICK) {
                     if (user.handItem.displayName == "メニュー棒") {
                         if(user.player.gameMode == GameMode.CREATIVE) {
-                            user.sendMessage("${ChatColor.WHITE}[${ChatColor.RED}警告${ChatColor.WHITE}]: クリエイティブ時のメニューの挙動は補償されていません。")
+                            Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                         }
 
                         user.openedInventory = SkillInventory(user,  page = 0)

@@ -12,6 +12,7 @@ import net.lifecity.mc.skillmaster.game.games.Training
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory
 import net.lifecity.mc.skillmaster.user.UserMode
+import net.lifecity.mc.skillmaster.utils.Messager
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
@@ -79,8 +80,7 @@ object SkillCommand {
                         val user = SkillMaster.INSTANCE.userList[player]
 
                         if(player.gameMode == GameMode.CREATIVE) {
-
-                            player.sendMessage("${WHITE}[${RED}警告${WHITE}]: クリエイティブ時のメニューの挙動は補償されていません。")
+                            Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                         }
 
                         user.let {
