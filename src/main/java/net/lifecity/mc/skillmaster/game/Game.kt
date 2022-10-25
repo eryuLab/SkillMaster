@@ -11,6 +11,8 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Sound
+import org.bukkit.boss.BarColor
+import org.bukkit.boss.BarStyle
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.util.Vector
 
@@ -27,8 +29,15 @@ abstract class Game protected constructor(
 ) {
     private val HEIGHT_LIMIT = 30
     protected val countDownTimer = CountDownTimer()
+    protected var elapsedTime = 0 //経過時間
     protected val gameTimer = GameTimer()
     protected var state = GameState.WAITING_FOR_STARTING //ゲームの状態
+    protected var bossBar = Bukkit.createBossBar(title, BarColor.GREEN, BarStyle.SEGMENTED_10)
+    private val title : String
+        get() {
+            val time = gameTime - elapsedTime
+            return "[${gameType.jp}]残り時間: $time"
+        }
 
     /**
      * このゲームのすべてチームの配列を取得します
@@ -49,6 +58,13 @@ abstract class Game protected constructor(
         // テレポート
         teleportAll()
 
+        // ボスバー
+        for (team in teams) {
+            for (user in team.userArray) {
+                bossBar.addPlayer(user.player)
+            }
+        }
+
         // ユーザーモード変更
         changeModeAll(UserMode.BATTLE)
 
@@ -64,6 +80,14 @@ abstract class Game protected constructor(
      * ゲームを終了します
      */
     fun stop(winners: GameTeam) {
+
+        // ボスバー
+        for (team in teams) {
+            for (user in team.userArray) {
+                bossBar.removePlayer(user.player)
+            }
+        }
+
         // タイマーの停止
         if (state === GameState.COUNT_DOWN) countDownTimer.cancel()
         if (state === GameState.IN_GAMING) gameTimer.cancel()
@@ -259,8 +283,6 @@ abstract class Game protected constructor(
     }
 
     inner class GameTimer : BukkitRunnable() {
-        var elapsedTime = 0 //経過時間
-
         override fun run() {
             // 戦闘開始
             if (elapsedTime == 0) {
@@ -311,7 +333,12 @@ abstract class Game protected constructor(
                 cancel()
             }
 
-            sendActionbarAll("count: $elapsedTime")
+            // ボスバー
+            // 60 - 10 / 60
+            val progress = ((gameTime - elapsedTime) / gameTime.toDouble())
+            bossBar.progress = progress
+            bossBar.setTitle(title)
+
             elapsedTime++
         }
     }
