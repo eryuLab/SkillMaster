@@ -16,6 +16,8 @@ class SkillMaster : JavaPlugin() {
 
     companion object {
         internal lateinit var INSTANCE : SkillMaster
+
+        const val PLUGIN_NAME = "SkillMaster"
     }
 
     init {
