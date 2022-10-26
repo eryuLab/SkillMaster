@@ -11,14 +11,24 @@ class TargetSearch {
         getTargetEntity(entity, entity.world.getNearbyLivingEntities(entity.location, range, range, range))
 
     fun getTargetEntity(entity: Entity, range: Double) =
-        getTargetEntity(entity, entity.world.getNearbyEntities(entity.location, range, range, range))
+        getTargetEntity(entity = entity, entities = entity.world.getNearbyEntities(entity.location, range, range, range))
+
+    fun getBehindPlayer(entity: Entity, range: Double) =
+        getBehindEntity(entity, entity.world.getNearbyPlayers(entity.location, range, range, range))
+
+    fun getBehindLivingEntity(entity: Entity, range: Double) =
+        getBehindEntity(entity, entity.world.getNearbyLivingEntities(entity.location, range, range, range))
+
+    fun getBehindEntity(entity: Entity, range: Double) =
+        getBehindEntity(entity = entity, entities = entity.world.getNearbyEntities(entity.location, range, range, range))
+
 
     /**
      * @param entity: 始点となるエンティティ
      * @param entities: 探索対象のEntityのIterableリスト
      * @return: 探索によって得られたEntity
      */
-    fun <T : Entity> getTargetEntity(entity: Entity, entities: Iterable<T>): T? {
+    private fun <T : Entity> getTargetEntity(entity: Entity, entities: Iterable<T>): T? {
         val threshold = 1.0
         var target: T? = null
 
@@ -49,7 +59,7 @@ class TargetSearch {
      * @param entities: 探索対象のEntityのIterableリスト
      * @return: 探索によって得られた背後にいるEntity
      */
-    fun <T : Entity> getBehindEntity(entity: Entity, entities: Iterable<T>): T? {
+    private fun <T : Entity> getBehindEntity(entity: Entity, entities: Iterable<T>): T? {
         var target: T? = null
 
         for (other in entities) { //iterableリストの中を走査
