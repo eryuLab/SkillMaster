@@ -14,13 +14,14 @@ class SkillManager(val user: SkillUser) {
         RazorStub(user),
         Thrust(user),
         KaraNoKamae(user),
+        Kick(user),
+
         LeafFlow(user),
         JumpAttackSlash(user),
         Wall(user),
         MoveFast(user),
         VectorAttack(user),
         HighJump(user),
-        Kick(user),
         NormalDefense(user),
     )
 
