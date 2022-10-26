@@ -95,10 +95,14 @@ object EventListener {
 
                             it.damage = 1.5
 
-                            // ゲーム中ならonAttack()呼び出し
-                            val game = SkillMaster.INSTANCE.gameList.getFromUser(user) ?: return@event
-                            val onAttack = game as? OnAttack
-                            onAttack?.onAttack(user)
+                            try {
+                                // ゲーム中ならonAttack()呼び出し
+                                val game = SkillMaster.INSTANCE.gameList.getFromUser(user) ?: return@event
+                                val onAttack = game as? OnAttack
+                                onAttack?.onAttack(user)
+                            } catch (e: Exception) {
+                                return@event
+                            }
                         }
                     }
                 }
