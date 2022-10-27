@@ -9,7 +9,7 @@ COPY --from=paper-builder /artifact/ /paper-files/
 
 COPY docker/paper/serverfiles /paper-files/
 COPY localDependencies/ /paper-files/plugins/
-COPY target/build /paper-files/plugins
+COPY build/libs /paper-files/plugins
 
 RUN nkf -Lu --overwrite /paper-files/start-server.sh
 
