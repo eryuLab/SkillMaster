@@ -12,7 +12,7 @@
 
 settings:
   debug: false
-  bungeecord: false
+  bungeecord: true
   netty-threads: 4
   sample-count: 12
   player-shuffle: 0
