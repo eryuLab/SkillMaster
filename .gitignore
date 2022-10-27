@@ -121,3 +121,4 @@ run/
 !localDependencies/*.jar
 
 docker/paper/serverfiles/eula.txt
+docker/paper/eula.txt

@@ -1,8 +1,8 @@
-FROM --platform=linux/amd64 openjdk:17 as waterfall-provider
+FROM openjdk:17-jdk
 WORKDIR /waterfall
 
-ADD https://api.papermc.io/v2/projects/waterfall/versions/1.19/builds/506/downloads/waterfall-1.19-506.jar waterfall.jar
+ADD https://api.papermc.io/v2/projects/waterfall/versions/1.19/builds/506/downloads/waterfall-1.19-506.jar /waterfall-files/waterfall.jar
 
-COPY docker/waterfall/serverfiles /waterfall-files
+COPY docker/waterfall/serverfiles/ /waterfall-files/
 
 CMD bash /waterfall-files/start-server.sh
