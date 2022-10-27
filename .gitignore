@@ -119,3 +119,5 @@ run/
 
 # Acoid ignore localDependencies
 !localDependencies/*.jar
+
+docker/paper/serverfiles/eula.txt
