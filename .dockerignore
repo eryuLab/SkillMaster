@@ -2,5 +2,5 @@
 .gradle
 
 src/test
-**/build/
 build/
+!build/libs
