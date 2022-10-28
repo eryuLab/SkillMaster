@@ -1,26 +1,72 @@
 package net.lifecity.mc.skillmaster.utils
 
+import org.bukkit.GameMode
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 
 class TargetSearch {
 
-    fun getTargetPlayer(entity: Entity, range: Double) =
-        getTargetEntity(entity, entity.world.getNearbyPlayers(entity.location, range, range, range))
+    fun getTargetPlayer(entity: Entity, range: Double) {
+        val players = entity.world.getNearbyPlayers(entity.location, range, range, range)
+        for (player in players) {
+            if (player.gameMode == GameMode.SPECTATOR)
+                players.remove(player)
+        }
+        getTargetEntity(entity, players)
+    }
 
-    fun getTargetLivingEntity(entity: Entity, range: Double) =
-        getTargetEntity(entity, entity.world.getNearbyLivingEntities(entity.location, range, range, range))
+    fun getTargetLivingEntity(entity: Entity, range: Double) {
+        val entities = entity.world.getNearbyLivingEntities(entity.location, range, range, range)
+        for (entity in entities) {
+            if (entity is Player) {
+                if (entity.gameMode == GameMode.SPECTATOR)
+                    entities.remove(entity)
+            }
+        }
+        getTargetEntity(entity, entities)
+    }
 
-    fun getTargetEntity(entity: Entity, range: Double) =
-        getTargetEntity(entity = entity, entities = entity.world.getNearbyEntities(entity.location, range, range, range))
+    fun getTargetEntity(entity: Entity, range: Double) {
+        val entities = entity.world.getNearbyEntities(entity.location, range, range, range)
+        for (entity in entities) {
+            if (entity is Player) {
+                if (entity.gameMode == GameMode.SPECTATOR)
+                    entities.remove(entity)
+            }
+        }
+        getTargetEntity(entity, entities)
+    }
 
-    fun getBehindPlayer(entity: Entity, range: Double) =
-        getBehindEntity(entity, entity.world.getNearbyPlayers(entity.location, range, range, range))
+    fun getBehindPlayer(entity: Entity, range: Double) {
+        val players = entity.world.getNearbyPlayers(entity.location, range, range, range)
+        for (player in players) {
+            if (player.gameMode == GameMode.SPECTATOR)
+                players.remove(player)
+        }
+        getBehindEntity(entity, players)
+    }
 
-    fun getBehindLivingEntity(entity: Entity, range: Double) =
-        getBehindEntity(entity, entity.world.getNearbyLivingEntities(entity.location, range, range, range))
+    fun getBehindLivingEntity(entity: Entity, range: Double) {
+        val entities = entity.world.getNearbyLivingEntities(entity.location, range, range, range)
+        for (entity in entities) {
+            if (entity is Player) {
+                if (entity.gameMode == GameMode.SPECTATOR)
+                    entities.remove(entity)
+            }
+        }
+        getBehindEntity(entity, entities)
+    }
 
-    fun getBehindEntity(entity: Entity, range: Double) =
-        getBehindEntity(entity = entity, entities = entity.world.getNearbyEntities(entity.location, range, range, range))
+    fun getBehindEntity(entity: Entity, range: Double) {
+        val entities = entity.world.getNearbyEntities(entity.location, range, range, range)
+        for (entity in entities) {
+            if (entity is Player) {
+                if (entity.gameMode == GameMode.SPECTATOR)
+                    entities.remove(entity)
+            }
+        }
+        getBehindEntity(entity, entities)
+    }
 
 
     /**
