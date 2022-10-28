@@ -44,7 +44,7 @@ services:
     networks:
       - skillmaster
     ports:
-      - "25565:25577"
+      - "25568:25577"
     environment:
       - SERVER_ID=waterfall_1
     depends_on:

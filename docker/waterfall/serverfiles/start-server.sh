@@ -9,4 +9,3 @@ cp -Rf /waterfall-files/* /waterfall/
 
 cd /waterfall/
 java -jar waterfall.jar
-

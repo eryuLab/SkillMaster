@@ -2,7 +2,7 @@
 
 set -e
 
-\cp -Rf /paper-files/* /paper/
+cp -Rf /paper-files/* /paper/
 
 cd /paper/
 
