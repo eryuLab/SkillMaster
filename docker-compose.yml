@@ -1,0 +1,53 @@
+version: '3.7'
+
+networks:
+  skillmaster:
+    external: false
+
+volumes:
+  paper_a:
+  paper_b:
+
+services:
+  papera:
+    build:
+      context: ./
+      dockerfile: ./docker/paper/Dockerfile
+    networks:
+      - skillmaster
+    volumes:
+      - paper_a:/paper/
+    ports:
+      - "25566:25565"
+    environment:
+      - SERVER_NUM=1
+      - SERVER_ID=p1
+    stdin_open: true
+  paperb:
+    build:
+      context: ./
+      dockerfile: ./docker/paper/Dockerfile
+    networks:
+      - skillmaster
+    volumes:
+      - paper_b:/paper/
+    ports:
+      - "25567:25565"
+    environment:
+      - SERVER_NUM=2
+      - SERVER_ID=p2
+    stdin_open: true
+  waterfall_1:
+    build:
+      context: ./
+      dockerfile: ./docker/waterfall/Dockerfile
+    networks:
+      - skillmaster
+    ports:
+      - "25565:25577"
+    environment:
+      - SERVER_ID=waterfall_1
+    depends_on:
+      - papera
+      - paperb
+    stdin_open: true

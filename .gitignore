@@ -116,3 +116,9 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+# Acoid ignore localDependencies
+!localDependencies/*.jar
+
+docker/paper/serverfiles/eula.txt
+docker/paper/eula.txt
