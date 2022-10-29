@@ -14,6 +14,7 @@ class SkillManager(val user: SkillUser) {
         RazorStub(user),
         Thrust(user),
         KaraNoKamae(user),
+        SlapStep(user),
         LeafFlow(user),
         JumpAttackSlash(user),
         Wall(user),
