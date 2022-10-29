@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM openjdk:17-jdk-alpine
 
 WORKDIR /work
 ADD https://api.papermc.io/v2/projects/paper/versions/1.18.2/builds/388/downloads/paper-1.18.2-388.jar /paper-files/paper.jar
