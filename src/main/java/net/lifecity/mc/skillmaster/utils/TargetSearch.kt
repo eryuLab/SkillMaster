@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster.utils
 
+import org.bukkit.GameMode
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 
 class TargetSearch {
 
@@ -33,6 +35,10 @@ class TargetSearch {
         var target: T? = null
 
         for (other in entities) { //iterableリストの中を走査
+            // スペクテイターか確認
+            if (other is Player && other.gameMode == GameMode.SPECTATOR)
+                continue
+
             //自分のベクトルと、対象のベクトルの差を計算 => 相手が向いている方向と自分が向いている方向が逆ならば最大, 同じならば最小
             val vec = other.location.toVector().subtract(entity.location.toVector())
 
@@ -63,6 +69,10 @@ class TargetSearch {
         var target: T? = null
 
         for (other in entities) { //iterableリストの中を走査
+            // スペクテイターか確認
+            if (other is Player && other.gameMode == GameMode.SPECTATOR)
+                continue
+
             //自分のベクトルと、対象のベクトルの差を計算 => 相手が向いている方向と自分が向いている方向が逆ならば最大, 同じならば最小
             val vec = entity.location.toVector().subtract(other.location.toVector()).multiply(-1)
 
