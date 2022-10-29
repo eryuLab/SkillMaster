@@ -141,6 +141,75 @@ class DrawParticle {
     }
 
     /**
+     * 指定したパーティクルで半円を描画するメソッド
+     *
+     * @param origin:   描画するLocation
+     * @param particle: パーティクルの種類
+     * @param data      :    パーティクルのデータ
+     * @param radius:   円の半径
+     * @param points:   図形を成す点の数
+     * @param rotX:     X軸回りに回転する角度
+     * @param rotY:     Y軸回りに回転する角度
+     * @param rotZ:     Z軸回りに回転する角度
+     */
+    fun drawSemiCircle(
+        origin: Location,
+        particle: Particle = Particle.SPELL_INSTANT,
+        data: Any? = null,
+        radius: Double,
+        points: Int,
+        rotX: Double = 0.0,
+        rotY: Double = 0.0,
+        rotZ: Double = 0.0,
+        count: Int = 1,
+        speed: Double = 1.0
+    ) {
+        for (i in 0 until points) {
+            val t = i * PI / points
+            val point = Vector(radius * cos(t), 0.0, radius * sin(t))
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
+        }
+    }
+
+    /**
+     * 指定したパーティクルでアニメーションする半円を描画するメソッド
+     *
+     * @param origin:   描画するLocation
+     * @param particle: パーティクルの種類
+     * @param data      :    パーティクルのデータ
+     * @param radius:   円の半径
+     * @param points:   図形を成す点の数
+     * @param rotX:     X軸回りに回転する角度
+     * @param rotY:     Y軸回りに回転する角度
+     * @param rotZ:     Z軸回りに回転する角度
+     */
+    fun drawAnimSemiCircle(
+        origin: Location,
+        particle: Particle = Particle.SPELL_INSTANT,
+        data: Any? = null,
+        radius: Double,
+        points: Int,
+        rotX: Double = 0.0,
+        rotY: Double = 0.0,
+        rotZ: Double = 0.0,
+        count: Int = 1,
+        speed: Double = 1.0
+    ) {
+        var i = 0
+
+        SkillMaster.INSTANCE.runTaskTimer(1) {
+            if (i < points) {
+                val t = i  * PI / points
+                val point = Vector(radius * cos(t), 0.0, radius * sin(t))
+                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
+            } else {
+                cancel()
+            }
+            i++
+        }
+    }
+
+    /**
      * 指定したパーティクルで渦巻を描画するメソッド
      *
      * @param origin:   描画するLocation
