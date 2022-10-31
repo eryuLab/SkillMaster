@@ -49,6 +49,7 @@ class DrawParticle {
      * @param origin:   描画するLocation
      * @param particle: パーティクルの種類
      * @param data      :    パーティクルのデータ
+     * @param cycle: 弧の周期
      * @param radius:   円の半径
      * @param points:   図形を成す点の数
      * @param rotX:     X軸回りに回転する角度
@@ -81,6 +82,7 @@ class DrawParticle {
      * @param origin:   描画するLocation
      * @param particle: パーティクルの種類
      * @param data      :    パーティクルのデータ
+     * @param cycle: 弧の周期
      * @param radius:   円の半径
      * @param points:   図形を成す点の数
      * @param rotX:     X軸回りに回転する角度
