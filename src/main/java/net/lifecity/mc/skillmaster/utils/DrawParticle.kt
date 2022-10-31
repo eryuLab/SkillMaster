@@ -43,14 +43,56 @@ class DrawParticle {
         origin.subtract(point)
     }
 
+    /**
+     * 指定したパーティクルで弧を描画するメソッド
+     *
+     * @param origin:   描画するLocation
+     * @param particle: パーティクルの種類
+     * @param data      :    パーティクルのデータ
+     * @param radius:   円の半径
+     * @param points:   図形を成す点の数
+     * @param rotX:     X軸回りに回転する角度
+     * @param rotY:     Y軸回りに回転する角度
+     * @param rotZ:     Z軸回りに回転する角度
+     */
+    fun drawArc(
+        origin: Location,
+        particle: Particle = Particle.SPELL_INSTANT,
+        data: Any? = null,
+        cycle: Double,
+        radius: Double,
+        points: Int,
+        rotX: Double = 0.0,
+        rotY: Double = 0.0,
+        rotZ: Double = 0.0,
+        count: Int = 1,
+        speed: Double = 1.0
+    ) {
+        for (i in 0 until points) {
+            val t = i * cycle / points
+            val point = Vector(radius * cos(t), 0.0, radius * sin(t))
+            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
+        }
+    }
 
     /**
-     * 斬撃のパーティクルを表示する
+     * 指定したパーティクルでアニメーションする弧を描画するメソッド
+     *
+     * @param origin:   描画するLocation
+     * @param particle: パーティクルの種類
+     * @param data      :    パーティクルのデータ
+     * @param radius:   円の半径
+     * @param points:   図形を成す点の数
+     * @param rotX:     X軸回りに回転する角度
+     * @param rotY:     Y軸回りに回転する角度
+     * @param rotZ:     Z軸回りに回転する角度
      */
-    fun drawSlash(
+    fun drawAnimArc(
         origin: Location,
-        particle: Particle,
+        particle: Particle = Particle.SPELL_INSTANT,
         data: Any? = null,
+        cycle: Double,
+        radius: Double,
         points: Int,
         rotX: Double = 0.0,
         rotY: Double = 0.0,
@@ -59,10 +101,11 @@ class DrawParticle {
         speed: Double = 1.0
     ) {
         var i = 0
+
         SkillMaster.INSTANCE.runTaskTimer(1) {
             if (i < points) {
-                val t = i * 2 * PI / points
-                val point = Vector(0.0, t, 0.0)
+                val t = i * cycle / points
+                val point = Vector(radius * cos(t), 0.0, radius * sin(t))
                 spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
             } else {
                 cancel()
@@ -94,13 +137,7 @@ class DrawParticle {
         rotZ: Double = 0.0,
         count: Int = 1,
         speed: Double = 1.0
-    ) {
-        for (i in 0 until points) {
-            val t = i * 2 * PI / points
-            val point = Vector(radius * cos(t), 0.0, radius * sin(t))
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
-        }
-    }
+    )  = drawArc(origin, particle, data, 2 * PI, radius, points, rotX, rotY, rotZ, count, speed)
 
     /**
      * 指定したパーティクルでアニメーションする円を描画するメソッド
@@ -125,20 +162,7 @@ class DrawParticle {
         rotZ: Double = 0.0,
         count: Int = 1,
         speed: Double = 1.0
-    ) {
-        var i = 0
-
-        SkillMaster.INSTANCE.runTaskTimer(1) {
-            if (i < points) {
-                val t = i * 2 * PI / points
-                val point = Vector(radius * cos(t), 0.0, radius * sin(t))
-                spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
-            } else {
-                cancel()
-            }
-            i++
-        }
-    }
+    ) = drawAnimArc(origin, particle, data, 2 * PI, radius, points, rotX, rotY, rotZ, count, speed)
 
     /**
      * 指定したパーティクルで半円を描画するメソッド
@@ -163,13 +187,7 @@ class DrawParticle {
         rotZ: Double = 0.0,
         count: Int = 1,
         speed: Double = 1.0
-    ) {
-        for (i in 0 until points) {
-            val t = i * PI / points
-            val point = Vector(radius * cos(t), 0.0, radius * sin(t))
-            spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
-        }
-    }
+    ) = drawArc(origin, particle, data, PI,  radius, points, rotX, rotY, rotZ, count, speed)
 
     /**
      * 指定したパーティクルでアニメーションする半円を描画するメソッド
@@ -194,13 +212,28 @@ class DrawParticle {
         rotZ: Double = 0.0,
         count: Int = 1,
         speed: Double = 1.0
+    ) = drawAnimArc(origin, particle, data, PI, radius, points, rotX, rotY, rotZ, count, speed)
+
+
+    /**
+     * 斬撃のパーティクルを表示する
+     */
+    fun drawSlash(
+        origin: Location,
+        particle: Particle,
+        data: Any? = null,
+        points: Int,
+        rotX: Double = 0.0,
+        rotY: Double = 0.0,
+        rotZ: Double = 0.0,
+        count: Int = 1,
+        speed: Double = 1.0
     ) {
         var i = 0
-
         SkillMaster.INSTANCE.runTaskTimer(1) {
             if (i < points) {
-                val t = i  * PI / points
-                val point = Vector(radius * cos(t), 0.0, radius * sin(t))
+                val t = i * 2 * PI / points
+                val point = Vector(0.0, t, 0.0)
                 spawnParticle(origin, particle, point, data, rotX, rotY, rotZ, count, speed)
             } else {
                 cancel()
@@ -208,6 +241,8 @@ class DrawParticle {
             i++
         }
     }
+
+
 
     /**
      * 指定したパーティクルで渦巻を描画するメソッド
@@ -802,7 +837,7 @@ class DrawParticle {
      * @param rotY:     Y軸回りに回転する角度
      * @param rotZ:     Z軸回りに回転する角度
      */
-    fun <T> drawAnimLimason(
+    fun drawAnimLimason(
         origin: Location,
         particle: Particle = Particle.SPELL_INSTANT,
         data: Any? = null,
