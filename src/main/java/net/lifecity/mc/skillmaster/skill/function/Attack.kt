@@ -65,11 +65,13 @@ interface Attack {
      */
     private fun attackUserAddVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector) {
         // トレーニングモード時は攻撃不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.TRAINING) {
             target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0))
-        else {
+            target.player.noDamageTicks = 0
+        } else {
             // ダメージを与える
             target.damageAddVector(damage, vector)
+            target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す
             try {
@@ -92,11 +94,13 @@ interface Attack {
      */
     private fun attackUserChangeVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector) {
         // トレーニングモード時は攻撃不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.TRAINING) {
             target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0))
-        else {
+            target.player.noDamageTicks = 0
+        } else {
             // ダメージを与える
             target.damageChangeVector(damage, vector)
+            target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す
             try {
@@ -124,6 +128,7 @@ interface Attack {
 
         // 標的にダメージを与える
         target.damage(damage)
+        target.noDamageTicks = 0
 
         // 標的をノックバックさせる
         target.velocity.add(vector)
@@ -144,6 +149,7 @@ interface Attack {
 
         // 標的にダメージを与える
         target.damage(damage)
+        target.noDamageTicks = 0
 
         // 標的をノックバックさせる
         target.velocity = vector
