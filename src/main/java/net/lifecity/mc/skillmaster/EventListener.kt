@@ -95,10 +95,14 @@ object EventListener {
 
                             it.damage = 1.5
 
-                            // ゲーム中ならonAttack()呼び出し
-                            val game = SkillMaster.INSTANCE.gameList.getFromUser(user) ?: return@event
-                            val onAttack = game as? OnAttack
-                            onAttack?.onAttack(user)
+                            try {
+                                // ゲーム中ならonAttack()呼び出し
+                                val game = SkillMaster.INSTANCE.gameList.getFromUser(user) ?: return@event
+                                val onAttack = game as? OnAttack
+                                onAttack?.onAttack(user)
+                            } catch (e: Exception) {
+                                return@event
+                            }
                         }
                     }
                 }
@@ -124,12 +128,14 @@ object EventListener {
                         val dead = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
 
                         //ゲーム中なら
-                        if(SkillMaster.INSTANCE.gameList.inGamingUser(dead)) {
+                        try {
                             val game = SkillMaster.INSTANCE.gameList.getFromUser(dead) ?: return@event
                             it.isCancelled = true
 
                             val onUserDead = game as? OnUserDead
                             onUserDead?.onDie(dead)
+                        } catch (e: Exception) {
+                            return@event
                         }
                     }
                 }
