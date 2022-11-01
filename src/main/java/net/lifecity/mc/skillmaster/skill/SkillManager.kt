@@ -4,6 +4,7 @@ import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.SkillConvertException
 import net.lifecity.mc.skillmaster.skill.compositeskills.*
 import net.lifecity.mc.skillmaster.skill.skills.*
+import net.lifecity.mc.skillmaster.skill.testskills.JuRenGeki
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.inventory.ItemStack
@@ -11,10 +12,12 @@ import org.bukkit.inventory.ItemStack
 class SkillManager(val user: SkillUser) {
     // スキルの登録
     val skillList = listOf(
+        // new type
         RazorStub(user),
         Thrust(user),
         KaraNoKamae(user),
         SlapStep(user),
+        // old type
         Kick(user),
         LeafFlow(user),
         JumpAttackSlash(user),
@@ -23,6 +26,8 @@ class SkillManager(val user: SkillUser) {
         VectorAttack(user),
         HighJump(user),
         NormalDefense(user),
+        // test
+        JuRenGeki(user),
     )
 
     init {

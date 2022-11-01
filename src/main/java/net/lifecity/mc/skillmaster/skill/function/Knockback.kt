@@ -29,6 +29,7 @@ interface Knockback {
         // 対象をノックバックさせる
         target.velocity.add(vector)
         target.damage(0.0)
+        target.noDamageTicks = 0
     }
 
     /**
@@ -49,6 +50,7 @@ interface Knockback {
         // 対象をノックバックさせる
         target.velocity = vector
         target.damage(0.0)
+        target.noDamageTicks = 0
     }
 
     /**
