@@ -59,7 +59,7 @@ object SkillCommand {
 
                         user.let {
                             it.mode = mode
-                            player.sendMessage("モードを${mode.name}に変更しました")
+                            player.sendMessage("モードを${mode.jp}に変更しました")
                         }
 
                     })

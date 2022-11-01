@@ -4,13 +4,13 @@ import net.lifecity.mc.skillmaster.UserModeNotFoundException
 import net.lifecity.mc.skillmaster.inventory.UserInventory
 import java.lang.reflect.TypeVariable
 
-sealed class UserMode(val name: String) {
+sealed class UserMode(val name: String, val jp: String) {
 
     companion object {
         fun valueOf(name: String): UserMode {
             val modeArray = arrayOf(Battle, Training, UnArmed)
             for (mode in modeArray) {
-                if (name.equals(mode.name, true))
+                if (mode.name.equals(name, true))
                     return mode
             }
             throw UserModeNotFoundException("user-mode is not found")
@@ -44,17 +44,17 @@ sealed class UserMode(val name: String) {
         }
     }
 
-    object Battle : UserMode("バトル") {
+    object Battle : UserMode("Battle", "バトル") {
         override fun toBattle(user: SkillUser) {}
         override fun toTraining(user: SkillUser) = initSkills(user)
         override fun toUnArmed(user: SkillUser) = clearInventory(user)
     }
-    object Training : UserMode("トレーニング") {
+    object Training : UserMode("Training", "トレーニング") {
         override fun toBattle(user: SkillUser) = initSkills(user)
         override fun toTraining(user: SkillUser) {}
         override fun toUnArmed(user: SkillUser) = clearInventory(user)
     }
-    object UnArmed : UserMode("武装解除") {
+    object UnArmed : UserMode("UnArmed", "武装解除") {
         override fun toBattle(user: SkillUser) {
             initSkills(user)
             initInventory(user)
