@@ -8,6 +8,19 @@ data class SkillSet(
         SkillKey(button, 2, null)
     )
 ) {
+
+    /**
+     * セットされているスキルの数を取得します
+     */
+    fun containedSize(): Int {
+        var size = 0
+        for (key in keyList) {
+            if (key.skill != null)
+                size++
+        }
+        return size
+    }
+
     /**
      * セットされているスキルをリセットします
      */

@@ -141,6 +141,13 @@ class SkillUser(
 
         // シフトが押されているときスキルセット番号変更
         if (player.isSneaking) {
+            // スキルが一定数以上格納されているか確認
+            val size = card.skillSet.containedSize()
+            if (size == 0 || size == 1) {
+                player.sendMessage("セットされているスキルの数が少ないため、変更できません")
+                return
+            }
+
             // セット番号の変更
             card.index++
 
