@@ -20,7 +20,7 @@ interface Knockback {
      */
     fun addVector(attackUser: SkillUser, target: LivingEntity, vector: Vector) {
         // トレーニング時はノックバック不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.Training)
             return
 
         // ゲームアクションを呼び出す
@@ -40,7 +40,7 @@ interface Knockback {
      */
     fun changeVector(attackUser: SkillUser, target: LivingEntity, vector: Vector) {
         // トレーニング時はノックバック不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.Training)
             return
 
         // ゲームアクションを呼び出す

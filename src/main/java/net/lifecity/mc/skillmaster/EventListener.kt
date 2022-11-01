@@ -5,13 +5,10 @@ import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.game.function.OnUserDead
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
-import net.lifecity.mc.skillmaster.inventory.WeaponInventory
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.utils.Messager
 import net.lifecity.mc.skillmaster.weapon.Weapon
-import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -54,7 +51,7 @@ object EventListener {
                     }
                 }
 
-                if (user.mode == UserMode.UNARMED) return@event
+                if (user.mode == UserMode.UnArmed) return@event
 
                 if (user.handItem.type == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
                     if (it.action.isLeftClick) { //攻撃を入力
@@ -82,13 +79,13 @@ object EventListener {
                 player?.let { pl ->
                     val user = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
 
-                    if(user.mode == UserMode.UNARMED) return@event
+                    if(user.mode == UserMode.UnArmed) return@event
 
                     if(user.handItem.type == Material.WOODEN_SWORD) {
                         if(user.getActivatedSkill() != null) {
                             it.isCancelled = true
                         } else {
-                            if(user.mode == UserMode.TRAINING) {
+                            if(user.mode == UserMode.Training) {
                                 it.isCancelled = true
                                 return@event
                             }
@@ -114,7 +111,7 @@ object EventListener {
                     val user = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
 
                     // 戦闘モードじゃなかったらダメージなし
-                    if(user.mode != UserMode.BATTLE) {
+                    if(user.mode != UserMode.Battle) {
                         it.isCancelled = true
                         return@event
                     }
@@ -144,7 +141,7 @@ object EventListener {
             event<PlayerSwapHandItemsEvent> {
                 val user = SkillMaster.INSTANCE.userList.get(it.player) ?: return@event
 
-                if(user.mode == UserMode.UNARMED) return@event
+                if(user.mode == UserMode.UnArmed) return@event
 
                 if(user.handItem.type == Material.WOODEN_SWORD) {
                     it.isCancelled = true
@@ -155,7 +152,7 @@ object EventListener {
             event<PlayerDropItemEvent> {
                 val user = SkillMaster.INSTANCE.userList.get(it.player) ?: return@event
 
-                if(user.mode == UserMode.UNARMED) return@event
+                if(user.mode == UserMode.UnArmed) return@event
 
                 if(it.itemDrop.itemStack.type == Material.WOODEN_SWORD) {
                     // 空中を見ていたら(視線の先にブロックがなければ)
@@ -177,7 +174,7 @@ object EventListener {
 
                     //プレイヤーインベントリの処理
                     if(it.clickedInventory?.type == InventoryType.PLAYER) {
-                        if(user.mode == UserMode.UNARMED) return@event
+                        if(user.mode == UserMode.UnArmed) return@event
 
                         val inv = user.userInventory
 

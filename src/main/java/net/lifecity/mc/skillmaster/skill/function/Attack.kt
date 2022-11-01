@@ -65,7 +65,7 @@ interface Attack {
      */
     private fun attackUserAddVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector) {
         // トレーニングモード時は攻撃不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.Training)
             target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0))
         else {
             // ダメージを与える
@@ -92,7 +92,7 @@ interface Attack {
      */
     private fun attackUserChangeVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector) {
         // トレーニングモード時は攻撃不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.Training)
             target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0))
         else {
             // ダメージを与える
@@ -119,7 +119,7 @@ interface Attack {
      */
     private fun attackEntityAddVector(attackUser: SkillUser, target: LivingEntity, damage: Double, vector: Vector) {
         // トレーニングモード時は攻撃不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.Training)
             return
 
         // 標的にダメージを与える
@@ -139,7 +139,7 @@ interface Attack {
      */
     private fun attackEntityChangeVector(attackUser: SkillUser, target: LivingEntity, damage: Double, vector: Vector) {
         // トレーニングモード時は攻撃不可
-        if (attackUser.mode == UserMode.TRAINING)
+        if (attackUser.mode == UserMode.Training)
             return
 
         // 標的にダメージを与える

@@ -24,27 +24,11 @@ class SkillUser(
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
-    var mode: UserMode = UserMode.BATTLE
+    var mode: UserMode = UserMode.Battle
         set(value) {
-            // バトルからトレーニング
-            if (mode == UserMode.BATTLE && value == UserMode.TRAINING) {
-                // 稼働中のスキルの初期化
-                initSkills()
-            }
-            // トレーニングからバトル
-            else if (mode == UserMode.TRAINING && value == UserMode.BATTLE) {
-                // 稼働中のスキルの初期化
-                initSkills()
-            }
-            // 武装解除からバトル、トレーニング
-            else if (mode == UserMode.UNARMED && (value == UserMode.BATTLE || value == UserMode.TRAINING)) {
-                // インベントリの初期化
-                userInventory = UserInventory(this)
-
-                // HPの初期化
-                player.maxHealth = 40.0
-                player.health = 40.0
-            }
+            // 変更時の処理
+            mode.onShift(this, field)
+            // 変更
             field = value
         }
     var selectedWeapon = Weapon.STRAIGHT_SWORD

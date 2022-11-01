@@ -66,7 +66,7 @@ abstract class Game protected constructor(
         }
 
         // ユーザーモード変更
-        changeModeAll(UserMode.BATTLE)
+        changeModeAll(UserMode.Battle)
 
         // カウントダウン
         state = GameState.COUNT_DOWN
