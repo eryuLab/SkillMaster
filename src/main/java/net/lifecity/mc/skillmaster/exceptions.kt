@@ -29,3 +29,8 @@ class GameNotFoundException(msg: String = "") : Exception(msg)
  * ステージが見つからなかった時に発生するエラー
  */
 class StageNotFoundException(msg: String = "") : Exception(msg)
+
+/**
+ * ユーザーモードが見つからなかった時に発生するエラー
+ */
+class UserModeNotFoundException(msg: String = "") : Exception(msg)
