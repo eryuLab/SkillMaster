@@ -1,8 +1,21 @@
 package net.lifecity.mc.skillmaster.user
 
+import net.lifecity.mc.skillmaster.UserModeNotFoundException
 import net.lifecity.mc.skillmaster.inventory.UserInventory
+import java.lang.reflect.TypeVariable
 
 sealed class UserMode(val name: String) {
+
+    companion object {
+        fun valueOf(name: String): UserMode {
+            val modeArray = arrayOf(Battle, Training, UnArmed)
+            for (mode in modeArray) {
+                if (name.equals(mode.name, true))
+                    return mode
+            }
+            throw UserModeNotFoundException("user-mode is not found")
+        }
+    }
 
     fun onShift(user: SkillUser, mode: UserMode) {
         when (mode) {
