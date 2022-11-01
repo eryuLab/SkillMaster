@@ -22,10 +22,14 @@ abstract class Skill(
     var id: Int = 0
     var inInterval = false
 
+    protected abstract fun canActivate(): Boolean
+
     /**
      * スキルを発動します
      */
     open fun activate() {
+        if (!canActivate())
+            return
 
         user.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
 
