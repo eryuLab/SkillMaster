@@ -20,6 +20,8 @@ abstract class CompositeSkill(
     var activated = false
 
     override fun activate() {
+        if (!canActivate())
+            return
 
         // ログ
         user.sendActionBar("" + ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動")
