@@ -18,13 +18,13 @@ class SkillManager(val user: SkillUser) {
         KaraNoKamae(user),
         SlapStep(user),
         // old type
+        Kick(user),
         LeafFlow(user),
         JumpAttackSlash(user),
         Wall(user),
         MoveFast(user),
         VectorAttack(user),
         HighJump(user),
-        Kick(user),
         NormalDefense(user),
         // test
         JuRenGeki(user),
