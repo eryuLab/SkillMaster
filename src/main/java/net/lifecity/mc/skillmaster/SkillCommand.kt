@@ -51,15 +51,15 @@ object SkillCommand {
             )
 
             .then(LiteralArgument("mode")
-                .then(MultiLiteralArgument("battle", "training", "unarmed")
+                .then(MultiLiteralArgument("Battle", "Training", "UnArmed")
                     .executesPlayer(PlayerCommandExecutor { player, args ->
                         val name = args[0] as String
                         val user = SkillMaster.INSTANCE.userList[player]
-                        val mode = UserMode.valueOf(name.uppercase())
+                        val mode = UserMode.valueOf(name)
 
                         user.let {
                             it.mode = mode
-                            player.sendMessage("モードを${mode.jp}に変更しました")
+                            player.sendMessage("モードを${mode.name}に変更しました")
                         }
 
                     })
