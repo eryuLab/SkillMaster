@@ -51,4 +51,4 @@ DockerマシンのIPアドレス(Linux等なら`localhost`)を`DOCKER_IP`と表�
 
 ## プラグインに貢献する方法
 
-Contributing を参照して下さい
+[Contributing](CONTRIBUTING.md) を参照して下さい
