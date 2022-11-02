@@ -14,7 +14,6 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Sound
-import org.bukkit.block.data.type.Comparator.Mode
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -27,7 +26,7 @@ class SkillUser(
 ) {
     private val modeManager: ModeManager = ModeManager(this)
     var mode: UserMode
-        get() = modeManager.mode
+        get() = modeManager.from
         set(value) = modeManager.shift(value)
 
     var selectedWeapon = Weapon.STRAIGHT_SWORD
