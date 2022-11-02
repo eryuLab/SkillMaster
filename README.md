@@ -11,9 +11,15 @@
 - Spigot 1.18.2
 
 ## 前提プラグイン
+- CommandAPI-8.4.1
+- EasySpigotAPI-2.4.0
+- kotlin-reflect-1.7.10
+- kotlin-stdlib-1.7.10
+- LuckPerms-Bukkit-5.4.30
+- VoxelSniper-6.1.2
+- WorldEdit-Bukkit-7.2.10
 
-
-## デバッグ環境の作成方法・操作方法
+## デバッグ環境の作成方法・デバッグ方法
 ### 作成方法
 
-### 操作方法
+### デバッグ方法
