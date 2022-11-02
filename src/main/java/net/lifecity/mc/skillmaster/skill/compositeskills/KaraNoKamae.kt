@@ -82,8 +82,7 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
 
         // ダメージ軽減
         val cut = damage - 2.0
-        user.player.damage(cut)
-        user.player.velocity.add(vector)
+        user.damageAddVector(cut, vector, true)
 
         // サウンド
         user.player.location.playSound(Sound.ENTITY_SHEEP_SHEAR, pitch = 2.0f)
