@@ -2,7 +2,7 @@ package net.lifecity.mc.skillmaster.user
 
 import net.lifecity.mc.skillmaster.inventory.UserInventory
 
-class ModeManager(val user: SkillUser, val mode: UserMode = UserMode.BATTLE) {
+class ModeManager(val user: SkillUser, var mode: UserMode = UserMode.BATTLE) {
 
     fun shift(mode: UserMode) {
         when (this.mode) {
@@ -36,6 +36,7 @@ class ModeManager(val user: SkillUser, val mode: UserMode = UserMode.BATTLE) {
                 }
             }
         }
+        this.mode = mode
     }
 
     private fun initSkills() {
