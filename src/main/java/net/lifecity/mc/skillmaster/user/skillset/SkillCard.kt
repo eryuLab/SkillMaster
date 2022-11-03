@@ -9,16 +9,20 @@ data class SkillCard(
 ) {
     var index: Int = 0
         set(value) {
-            val size = skillSet.containedSize()
-            if (size == 0 || size == 1)
+            if (skillSet.containedSize() == 0)
                 return
 
-            field = if (value >= skillSet.keyList.size) 0 else value
-
-            for (i in value..value + 2) {
-                if (now() == null) {
-                    field = if (i >= skillSet.keyList.size) 0 else i
+            // 番号変更後、スキルが存在したらbreak
+            val size = skillSet.keyList.size
+            var index = value
+            for (i in 0 until size) {
+                if (skillSet.keyList[index].skill != null) {
+                    field = index
+                    return
                 }
+                index++
+                if (index >= size)
+                    index = 0
             }
         }
 
