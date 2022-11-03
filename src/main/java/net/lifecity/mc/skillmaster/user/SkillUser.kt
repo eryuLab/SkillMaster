@@ -289,7 +289,7 @@ class SkillUser(
     fun damageChangeVector(damage: Double = 0.0, vector: Vector, noDefense: Boolean = false) {
         if (noDefense) {
             player.damage(damage)
-            player.velocity.add(vector)
+            player.velocity = vector
         } else if (!canDefense(damage, vector)) {
             // ダメージとノックバックを与える
             player.damage(damage)
