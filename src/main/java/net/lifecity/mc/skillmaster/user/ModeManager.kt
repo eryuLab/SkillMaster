@@ -2,41 +2,43 @@ package net.lifecity.mc.skillmaster.user
 
 import net.lifecity.mc.skillmaster.inventory.UserInventory
 
-class ModeManager(val user: SkillUser, var from: UserMode = UserMode.BATTLE) {
+class ModeManager(val user: SkillUser, var mode: UserMode = UserMode.BATTLE) {
 
     fun shift(to: UserMode) {
-        when (from) {
-            UserMode.BATTLE -> {
-                when (to) {
-                    UserMode.BATTLE -> return
-                    UserMode.TRAINING -> initSkills()
-                    UserMode.UNARMED -> clearInv()
-                }
-            }
-            UserMode.TRAINING -> {
-                when (to) {
-                    UserMode.BATTLE -> initSkills()
-                    UserMode.TRAINING -> return
-                    UserMode.UNARMED -> clearInv()
-                }
-            }
-            UserMode.UNARMED -> {
-                when (to) {
-                    UserMode.BATTLE -> {
-                        initSkills()
-                        initInv()
-                        initHP()
+        mode.also {from ->
+            when (from) {
+                UserMode.BATTLE -> {
+                    when (to) {
+                        UserMode.BATTLE -> return
+                        UserMode.TRAINING -> initSkills()
+                        UserMode.UNARMED -> clearInv()
                     }
-                    UserMode.TRAINING -> {
-                        initSkills()
-                        initInv()
-                        initHP()
+                }
+                UserMode.TRAINING -> {
+                    when (to) {
+                        UserMode.BATTLE -> initSkills()
+                        UserMode.TRAINING -> return
+                        UserMode.UNARMED -> clearInv()
                     }
-                    UserMode.UNARMED -> return
+                }
+                UserMode.UNARMED -> {
+                    when (to) {
+                        UserMode.BATTLE -> {
+                            initSkills()
+                            initInv()
+                            initHP()
+                        }
+                        UserMode.TRAINING -> {
+                            initSkills()
+                            initInv()
+                            initHP()
+                        }
+                        UserMode.UNARMED -> return
+                    }
                 }
             }
         }
-        this.from = to
+        mode = to
     }
 
     private fun initSkills() {
