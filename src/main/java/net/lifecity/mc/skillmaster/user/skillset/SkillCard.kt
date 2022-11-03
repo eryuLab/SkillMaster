@@ -14,7 +14,7 @@ data class SkillCard(
 
             // 番号変更後、スキルが存在したらbreak
             val size = skillSet.keyList.size
-            var index = value
+            var index = if (value >= size) 0 else value
             for (i in 0 until size) {
                 if (skillSet.keyList[index].skill != null) {
                     field = index
