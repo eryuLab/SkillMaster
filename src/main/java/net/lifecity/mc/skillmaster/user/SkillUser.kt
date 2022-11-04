@@ -123,25 +123,30 @@ class SkillUser(
 
         // シフトが押されているときスキルセット番号変更
         if (player.isSneaking) {
-            // スキルが一定数以上格納されているか確認
             val size = card.skillSet.containedSize()
-            if (size == 0 || size == 1) {
-                player.sendMessage("セットされているスキルの数が少ないため、変更できません")
+            // スキルセットが0のとき変更なし
+            if (size == 0) {
+                player.sendMessage("セットされているスキルがありません")
                 return
             }
+            // スキルセットが1のとき
+            if (size == 1) {
+                // 現在のスキルがあるとき変更なし
+                if (card.now() != null) {
+                    player.sendMessage("セットされているスキルが少ないため変更できません")
+                    return
+                }
+            }
+            // 現在のスキルがないのとき変更
+            // スキルセットが2以上のとき次のスキルがあるまで変更
 
             // セット番号の変更
             card.index++
-
             // SE再生
             player.location.playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW)
-
             // ログ出力
-            val skill: Skill? = card.now()
-            if (skill == null)
-                player.sendMessage("${card.button.jp}[${card.index}]はスキルがセットされていません")
-            else
-                player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
+            val skill: Skill = card.now()!!
+            player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
         }
         else
             skillInput(card.now(), weapon)
