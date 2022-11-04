@@ -22,7 +22,7 @@ abstract class Skill(
     var id: Int = 0
     var inInterval = false
 
-    protected abstract fun canActivate(): Boolean
+    protected open fun canActivate() = true
 
     /**
      * スキルを発動します

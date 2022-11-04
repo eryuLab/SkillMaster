@@ -14,6 +14,7 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Sound
+import org.bukkit.block.data.type.Comparator.Mode
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -26,24 +27,36 @@ class SkillUser(
 ) {
     var mode: UserMode = UserMode.BATTLE
         set(value) {
-            // バトルからトレーニング
-            if (mode == UserMode.BATTLE && value == UserMode.TRAINING) {
-                // 稼働中のスキルの初期化
-                initSkills()
-            }
-            // トレーニングからバトル
-            else if (mode == UserMode.TRAINING && value == UserMode.BATTLE) {
-                // 稼働中のスキルの初期化
-                initSkills()
-            }
-            // 武装解除からバトル、トレーニング
-            else if (mode == UserMode.UNARMED && (value == UserMode.BATTLE || value == UserMode.TRAINING)) {
-                // インベントリの初期化
-                userInventory = UserInventory(this)
-
-                // HPの初期化
-                player.maxHealth = 40.0
-                player.health = 40.0
+            when (field) {
+                UserMode.BATTLE -> {
+                    when (value) {
+                        UserMode.BATTLE -> return
+                        UserMode.TRAINING -> initSkills()
+                        UserMode.UNARMED -> clearInv()
+                    }
+                }
+                UserMode.TRAINING -> {
+                    when (value) {
+                        UserMode.BATTLE -> initSkills()
+                        UserMode.TRAINING -> return
+                        UserMode.UNARMED -> clearInv()
+                    }
+                }
+                UserMode.UNARMED -> {
+                    when (value) {
+                        UserMode.BATTLE -> {
+                            initSkills()
+                            initInv()
+                            initHP()
+                        }
+                        UserMode.TRAINING -> {
+                            initSkills()
+                            initInv()
+                            initHP()
+                        }
+                        UserMode.UNARMED -> return
+                    }
+                }
             }
             field = value
         }
@@ -233,6 +246,22 @@ class SkillUser(
         }
     }
 
+    private fun clearInv() {
+        val invStartIdx = 9
+        val invEndIdx = 35
+        for (index in invStartIdx..invEndIdx) {
+            player.inventory.clear(index)
+        }
+    }
+    private fun initInv() {
+        userInventory = UserInventory(this)
+    }
+
+    private fun initHP() {
+        player.maxHealth = 40.0
+        player.health = 40.0
+    }
+
     /**
      * このSkillUserへの攻撃を試みます
      * ただし、防御されるかもしれません
@@ -240,8 +269,11 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバック
      */
-    fun damageAddVector(damage: Double = 0.0, vector: Vector = Vector(0.0, 0.0, 0.0)) {
-        if (!canDefense(damage, vector)) {
+    fun damageAddVector(damage: Double = 0.0, vector: Vector = Vector(0.0, 0.0, 0.0), noDefense: Boolean = false) {
+        if (noDefense) {
+            player.damage(damage)
+            player.velocity.add(vector)
+        } else if (!canDefense(damage, vector)) {
             // ダメージとノックバックを与える
             player.damage(damage)
             player.velocity.add(vector)
@@ -254,8 +286,11 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバック
      */
-    fun damageChangeVector(damage: Double = 0.0, vector: Vector) {
-        if (!canDefense(damage, vector)) {
+    fun damageChangeVector(damage: Double = 0.0, vector: Vector, noDefense: Boolean = false) {
+        if (noDefense) {
+            player.damage(damage)
+            player.velocity = vector
+        } else if (!canDefense(damage, vector)) {
             // ダメージとノックバックを与える
             player.damage(damage)
             player.velocity = vector
