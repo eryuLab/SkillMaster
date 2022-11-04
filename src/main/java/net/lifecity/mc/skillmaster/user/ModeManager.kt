@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster.user
 
 import net.lifecity.mc.skillmaster.inventory.UserInventory
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 class ModeManager(val user: SkillUser, var mode: UserMode = UserMode.BATTLE) {
 
@@ -61,7 +63,7 @@ class ModeManager(val user: SkillUser, var mode: UserMode = UserMode.BATTLE) {
         val invStartIdx = 9
         val invEndIdx = 35
         for (index in invStartIdx..invEndIdx) {
-            user.player.inventory.clear(index)
+            user.player.inventory.setItem(index, ItemStack(Material.AIR))
         }
     }
 }
