@@ -14,7 +14,6 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Sound
-import org.bukkit.block.data.type.Comparator.Mode
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -25,41 +24,11 @@ class SkillUser(
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
-    var mode: UserMode = UserMode.BATTLE
-        set(value) {
-            when (field) {
-                UserMode.BATTLE -> {
-                    when (value) {
-                        UserMode.BATTLE -> return
-                        UserMode.TRAINING -> initSkills()
-                        UserMode.UNARMED -> clearInv()
-                    }
-                }
-                UserMode.TRAINING -> {
-                    when (value) {
-                        UserMode.BATTLE -> initSkills()
-                        UserMode.TRAINING -> return
-                        UserMode.UNARMED -> clearInv()
-                    }
-                }
-                UserMode.UNARMED -> {
-                    when (value) {
-                        UserMode.BATTLE -> {
-                            initSkills()
-                            initInv()
-                            initHP()
-                        }
-                        UserMode.TRAINING -> {
-                            initSkills()
-                            initInv()
-                            initHP()
-                        }
-                        UserMode.UNARMED -> return
-                    }
-                }
-            }
-            field = value
-        }
+    private val modeManager: ModeManager = ModeManager(this)
+    var mode: UserMode
+        get() = modeManager.from
+        set(value) = modeManager.shift(value)
+
     var selectedWeapon = Weapon.STRAIGHT_SWORD
         set(value) {
             // スキルセットをリセット
@@ -231,35 +200,6 @@ class SkillUser(
         }
         // 単発スキルのとき
         skill.activate()
-    }
-
-    /**
-     * セット内のスキルを初期化
-     */
-    fun initSkills() {
-        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
-
-        for (skillSet in skillSetArray) {
-            for (skillKey in skillSet.keyList) {
-                skillKey.skill?.init()
-            }
-        }
-    }
-
-    private fun clearInv() {
-        val invStartIdx = 9
-        val invEndIdx = 35
-        for (index in invStartIdx..invEndIdx) {
-            player.inventory.clear(index)
-        }
-    }
-    private fun initInv() {
-        userInventory = UserInventory(this)
-    }
-
-    private fun initHP() {
-        player.maxHealth = 40.0
-        player.health = 40.0
     }
 
     /**
