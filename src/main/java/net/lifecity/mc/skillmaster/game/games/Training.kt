@@ -1,9 +1,7 @@
 package net.lifecity.mc.skillmaster.game.games
 
 import net.lifecity.mc.skillmaster.game.*
-import net.lifecity.mc.skillmaster.game.stage.FieldType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
-import net.lifecity.mc.skillmaster.game.stage.field.OnePoint
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.ChatColor
 import org.bukkit.entity.EntityType
@@ -20,13 +18,13 @@ class Training(stage: GameStage, user: SkillUser) : Game {
     override lateinit var losers: GameTeam
     override var stage: GameStage? = stage
 
-    private val field: OnePoint = stage.getField(FieldType.ONE_POINT) as OnePoint
+    private val field = stage.getField(GameType.TRAINING)
     private var husk: Husk? = null
     private val gameManager = GameManager(this)
 
 
     override fun inStartGameTimer() {
-        husk = field.point.world.spawnEntity(field.point, EntityType.HUSK) as Husk
+        husk = field.tpLocations[0].world.spawnEntity(field.tpLocations[0], EntityType.HUSK) as Husk
         husk?.let {
             it.maxHealth = 40.0
             it.health = 40.0
@@ -64,7 +62,7 @@ class Training(stage: GameStage, user: SkillUser) : Game {
 
     override fun teleportTeam(team: GameTeam) {
         if (team === onlyTeam)
-            team.teleportAll(field.point)
+            team.teleportAll(field.tpLocations[0])
     }
 
     override fun onUserAttack(attacker: SkillUser) {

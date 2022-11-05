@@ -1,9 +1,7 @@
 package net.lifecity.mc.skillmaster.game.games
 
 import net.lifecity.mc.skillmaster.game.*
-import net.lifecity.mc.skillmaster.game.stage.FieldType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
-import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.ChatColor
 
@@ -21,7 +19,7 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
     override var stage: GameStage? = stage
 
     private var suddenDeath = false
-    private val field: TwoPoint = stage.getField(FieldType.TWO_POINT) as TwoPoint
+    private val field = stage.getField(GameType.DUEL)
 
 
     override fun inStartGameTimer() {}
@@ -55,9 +53,9 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
 
     override fun teleportTeam(team: GameTeam) {
         if (team === teamA)
-            team.teleportAll(field.pointA)
+            team.teleportAll(field.tpLocations[0])
         else if (team === teamB)
-            team.teleportAll(field.pointB)
+            team.teleportAll(field.tpLocations[1])
     }
 
     override fun onUserAttack(attacker: SkillUser) {
