@@ -1,6 +1,9 @@
 package net.lifecity.mc.skillmaster.game.stage
 
-open class GameField protected constructor(
-    val stage: GameStage,
-    val type: FieldType
+import net.lifecity.mc.skillmaster.game.Game
+import org.bukkit.Location
+
+data class GameField(
+    val tpLocations: List<Location>,
+    val otherLocations: List<Location>
 )
