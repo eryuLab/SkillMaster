@@ -5,8 +5,7 @@ import net.lifecity.mc.skillmaster.game.GameType
 import org.bukkit.Location
 
 /**
- * ゲームに使う場所を管理します
- * スポーンやギミックに使うLocationは継承先のフィールドとして実装してください
+ * ゲームに使う構造物を管理するクラス
  */
 class GameStage(val name: String, val highestHeight: Int, var nowGame: Game?) {
     val fields = mutableMapOf<GameType, GameField>()
@@ -19,7 +18,7 @@ class GameStage(val name: String, val highestHeight: Int, var nowGame: Game?) {
         fields[gameType] = field
     }
 
-    fun getField(gameType: GameType) = fields[gameType] ?: throw Exception()
+    fun getField(gameType: GameType) = fields[gameType] ?: throw Exception() //TODO: Exceptionつくる
 
     /**
      * 現在このフィールドが使用されているか判定します
