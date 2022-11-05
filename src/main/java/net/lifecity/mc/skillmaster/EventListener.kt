@@ -95,6 +95,7 @@ object EventListener {
                                 val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
                                 game.onUserAttack(user)
                             } catch (e: Exception) {
+                                e.printStackTrace()
                                 return@event
                             }
                         }
@@ -127,6 +128,7 @@ object EventListener {
                             it.isCancelled = true
                             game.onUserDead(dead)
                         } catch (e: Exception) {
+                            e.printStackTrace()
                             return@event
                         }
                     }

@@ -16,11 +16,11 @@ class Training(stage: GameStage, user: SkillUser) : Game {
     override val teams: Array<GameTeam> = arrayOf(onlyTeam)
     override lateinit var winners: GameTeam
     override lateinit var losers: GameTeam
-    override var stage: GameStage? = stage
+    override var stage: GameStage = stage
 
     private val field = stage.getField(GameType.TRAINING)
     private var husk: Husk? = null
-    private val gameManager = GameManager(this)
+    override val gameManager = GameManager(this)
 
 
     override fun inStartGameTimer() {

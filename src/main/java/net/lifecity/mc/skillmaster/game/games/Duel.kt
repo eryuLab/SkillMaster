@@ -9,18 +9,19 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
 
     private val teamA: GameTeam = GameTeam.Solo("Alpha", ChatColor.RED, userA)
     private val teamB: GameTeam = GameTeam.Solo("Beta", ChatColor.BLUE, userB)
-    private val gameManager = GameManager(this)
+
     override val countDownTime: Int = 5
     override val gameTime: Int = 180
     override var state: GameState = GameState.WAITING_FOR_STARTING
     override val teams: Array<GameTeam> = arrayOf(teamA, teamB)
     override lateinit var winners: GameTeam
     override lateinit var losers: GameTeam
-    override var stage: GameStage? = stage
+    override var stage: GameStage = stage
 
     private var suddenDeath = false
     private val field = stage.getField(GameType.DUEL)
 
+    override val gameManager = GameManager(this)
 
     override fun inStartGameTimer() {}
 

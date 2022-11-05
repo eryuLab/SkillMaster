@@ -36,7 +36,7 @@ class SkillMaster : JavaPlugin() {
         userList = SkillUserList()
         stageList = GameStageList()
 
-        val stage = GameStage("闘技場", -25, null)
+        val stage = GameStage("闘技場", -25)
         stage.addField(
             GameType.TRAINING,
             listOf(Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0)),

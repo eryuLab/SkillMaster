@@ -74,7 +74,7 @@ interface Attack {
             // ゲーム中のときGameのonAttack()を呼び出す
             try {
                 val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
-                game.onUserAttack(target)
+                game.onUserAttack(attackUser)
             } catch (e: Exception) {
                 return
             }
@@ -102,7 +102,7 @@ interface Attack {
             // ゲーム中のときGameのonAttack()を呼び出す
             try {
                 val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
-                game.onUserAttack(target)
+                game.onUserAttack(attackUser)
             } catch (e: Exception) {
                 return
             }

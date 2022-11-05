@@ -7,8 +7,9 @@ import org.bukkit.Location
 /**
  * ゲームに使う構造物を管理するクラス
  */
-class GameStage(val name: String, val highestHeight: Int, var nowGame: Game?) {
+class GameStage(val name: String, val highestHeight: Int) {
     val fields = mutableMapOf<GameType, GameField>()
+    var nowGame: Game? = null
 
     /**
      * フィールドを追加します

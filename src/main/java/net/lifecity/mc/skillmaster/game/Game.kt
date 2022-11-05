@@ -13,7 +13,8 @@ interface Game {
     val teams: Array<GameTeam>
     var winners: GameTeam
     var losers: GameTeam
-    var stage: GameStage?
+    var stage: GameStage
+    val gameManager: GameManager
 
     /**
      * ゲームタイマーが開始したときの処理

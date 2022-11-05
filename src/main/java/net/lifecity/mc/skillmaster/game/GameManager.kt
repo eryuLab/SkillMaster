@@ -10,6 +10,7 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Sound
+import org.bukkit.block.data.type.Wall.Height
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.scheduler.BukkitRunnable
@@ -21,8 +22,8 @@ import org.bukkit.util.Vector
 class GameManager(val game: Game) {
 
     private val HEIGHT_LIMIT = 30
-    private val countDownTimer = CountDownTimer()
-    private val gameTimer = GameTimer()
+    //private val countDownTimer = CountDownTimer()
+    //private val gameTimer = GameTimer()
     var elapsedTime = 0 //経過時間
     private var bossBar = Bukkit.createBossBar(title, BarColor.GREEN, BarStyle.SEGMENTED_10)
     private val title : String
@@ -33,7 +34,7 @@ class GameManager(val game: Game) {
 
     init {
         SkillMaster.INSTANCE.gameList.list.add(game)
-        game.stage?.nowGame = game
+        game.stage.nowGame = game
     }
 
     /**
@@ -55,16 +56,21 @@ class GameManager(val game: Game) {
 
         // カウントダウン
         game.state = GameState.COUNT_DOWN
-        countDownTimer.runTaskTimer(SkillMaster.INSTANCE, 0, 20)
+        CountDownTimer().runTaskTimer(SkillMaster.INSTANCE, 0, 20)
 
+        val delay = game.countDownTime * 20L
         // タイマースタート
-        gameTimer.runTaskTimer(SkillMaster.INSTANCE, game.countDownTime * 20L, 20)
+        GameTimer().runTaskTimer(SkillMaster.INSTANCE, delay, 20)
+        // 高さ制限
+        HeightTimer().runTaskTimer(SkillMaster.INSTANCE, delay, 5)
     }
 
     /**
      * ゲームを終了します
      */
     fun stop() {
+        if (game.state === GameState.WAITING_FOR_FINISH)
+            return
 
         // ボスバー
         for (team in game.teams) {
@@ -74,8 +80,8 @@ class GameManager(val game: Game) {
         }
 
         // タイマーの停止
-        if (game.state === GameState.COUNT_DOWN) countDownTimer.cancel()
-        if (game.state === GameState.IN_GAMING) gameTimer.cancel()
+        //if (game.state === GameState.COUNT_DOWN) countDownTimer.cancel()
+        //if (game.state === GameState.IN_GAMING) gameTimer.cancel()
 
         // ゲーム状態移行
         game.state = GameState.WAITING_FOR_FINISH
@@ -105,7 +111,7 @@ class GameManager(val game: Game) {
 
         // ゲームリストからこのゲームを削除
         SkillMaster.INSTANCE.gameList.list.remove(game)
-        game.stage = null
+        game.stage.nowGame = null
     }
 
 
@@ -262,32 +268,9 @@ class GameManager(val game: Game) {
                 game.inStartGameTimer()
             }
 
-            // ユーザーの高さ確認
-            for (team in game.teams) {
-                for (user in team.userArray) {
-                    val stage = getNowStage()
 
-                    // 1/4秒で確認
 
-                    stage.let {
-                        var count = 0
-                        SkillMaster.INSTANCE.runTaskTimer(5) {
-                            val userY = user.player.location.y
-                            if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
-                                // 下方向に飛ばす
-                                val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
-                                user.player.velocity = vector
-                                user.sendMessage("高さ制限です!!")
-                            }
-                            if (count > 3) {
-                                this.cancel()
-                            }
-                            count++
-                        }
-                    }
 
-                }
-            }
             // ゲーム中の処理を追加
             game.inGameTimer()
 
@@ -307,6 +290,30 @@ class GameManager(val game: Game) {
             bossBar.setTitle(title)
 
             elapsedTime++
+        }
+    }
+
+    inner class HeightTimer: BukkitRunnable() {
+
+        private val stage = getNowStage()
+        override fun run() {
+            if (game.state !== GameState.IN_GAMING)
+                cancel()
+
+            // ユーザーの高さ確認
+            for (team in game.teams) {
+                for (user in team.userArray) {
+
+                    // 1/4秒で確認
+                    val userY = user.player.location.y
+                    if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
+                        // 下方向に飛ばす
+                        val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
+                        user.player.velocity = vector
+                        user.sendMessage("高さ制限です!!")
+                    }
+                }
+            }
         }
     }
 }
