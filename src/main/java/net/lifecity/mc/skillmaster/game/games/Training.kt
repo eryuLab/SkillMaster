@@ -1,32 +1,29 @@
 package net.lifecity.mc.skillmaster.game.games
 
-import net.lifecity.mc.skillmaster.game.Game
-import net.lifecity.mc.skillmaster.game.GameResult
-import net.lifecity.mc.skillmaster.game.GameTeam
-import net.lifecity.mc.skillmaster.game.GameType
+import net.lifecity.mc.skillmaster.game.*
 import net.lifecity.mc.skillmaster.game.stage.FieldType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.game.stage.field.OnePoint
 import net.lifecity.mc.skillmaster.user.SkillUser
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.entity.Damageable
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Husk
 
-class Training(stage: GameStage, user: SkillUser) :
-    Game(stage, GameType.TRAINING, FieldType.TWO_POINT, 60, 3) {
+class Training(stage: GameStage, user: SkillUser) : Game {
+
+    private val onlyTeam: GameTeam = GameTeam.Solo("OnlyTeam", ChatColor.GREEN, user)
+    override val countDownTime: Int = 3
+    override val gameTime: Int = 60
+    override var state: GameState = GameState.WAITING_FOR_STARTING
+    override val teams: Array<GameTeam> = arrayOf(onlyTeam)
+    override lateinit var winners: GameTeam
+    override lateinit var losers: GameTeam
+    override var stage: GameStage? = stage
 
     private val field: OnePoint = stage.getField(FieldType.ONE_POINT) as OnePoint
-    private val onlyTeam: GameTeam
     private var husk: Husk? = null
+    private val gameManager = GameManager(this)
 
-    init {
-        onlyTeam = GameTeam.Solo("OnlyTeam", ChatColor.GREEN, user)
-    }
-
-    override val teams: Array<GameTeam>
-        get() = arrayOf(onlyTeam)
 
     override fun inStartGameTimer() {
         husk = field.point.world.spawnEntity(field.point, EntityType.HUSK) as Husk
@@ -42,13 +39,15 @@ class Training(stage: GameStage, user: SkillUser) :
     override fun inGameTimer() {
         husk?.let {
             if (it.isDead) {
-                stop(onlyTeam)
+                winners = onlyTeam
+                gameManager.stop()
             }
         }
     }
 
     override fun afterGameTimer() {
-        stop(onlyTeam)
+        winners = onlyTeam
+        gameManager.stop()
 
         husk?.let {
             it.damage(it.health)
@@ -59,8 +58,6 @@ class Training(stage: GameStage, user: SkillUser) :
         onlyTeam.sendTitle(GameResult.WIN.en, "終了します...")
     }
 
-    override fun hasTeam(team: GameTeam) = team === onlyTeam
-
     override fun teleportAll() {
         teleportTeam(onlyTeam)
     }
@@ -68,5 +65,11 @@ class Training(stage: GameStage, user: SkillUser) :
     override fun teleportTeam(team: GameTeam) {
         if (team === onlyTeam)
             team.teleportAll(field.point)
+    }
+
+    override fun onUserAttack(attacker: SkillUser) {
+    }
+
+    override fun onUserDead(dead: SkillUser) {
     }
 }
