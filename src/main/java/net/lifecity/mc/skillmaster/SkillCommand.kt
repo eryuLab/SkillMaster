@@ -7,6 +7,7 @@ import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.arguments.PlayerArgument
 import dev.jorel.commandapi.executors.CommandExecutor
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
+import net.lifecity.mc.skillmaster.game.GameManager
 import net.lifecity.mc.skillmaster.game.games.Duel
 import net.lifecity.mc.skillmaster.game.games.Training
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
@@ -125,7 +126,7 @@ object SkillCommand {
                                         return@PlayerCommandExecutor
                                     }
                                     val training = Training(stage, user)
-                                    training.start()
+                                    GameManager(training).start()
                                 }catch (e: StageNotFoundException) {
                                     player.sendMessage("${stageName}は登録されていません")
                                     return@PlayerCommandExecutor
@@ -176,7 +177,7 @@ object SkillCommand {
 
                                         //ゲーム開始
                                         val duel = Duel(stage,user1,user2)
-                                        duel.start()
+                                        GameManager(duel).start()
 
                                     } catch (e: StageNotFoundException) {
                                         player.sendMessage("${stageName}は登録されていません")
