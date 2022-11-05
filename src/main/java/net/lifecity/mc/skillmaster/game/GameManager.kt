@@ -21,10 +21,10 @@ import org.bukkit.util.Vector
 class GameManager(val game: Game) {
 
     private val HEIGHT_LIMIT = 30
-    protected val countDownTimer = CountDownTimer()
-    protected val gameTimer = GameTimer()
+    private val countDownTimer = CountDownTimer()
+    private val gameTimer = GameTimer()
     var elapsedTime = 0 //経過時間
-    protected var bossBar = Bukkit.createBossBar(title, BarColor.GREEN, BarStyle.SEGMENTED_10)
+    private var bossBar = Bukkit.createBossBar(title, BarColor.GREEN, BarStyle.SEGMENTED_10)
     private val title : String
         get() {
             val time = game.gameTime - elapsedTime
