@@ -8,4 +8,4 @@ COPY docker/paper/serverfiles/ /paper-files/
 COPY localDependencies/ /paper-files/plugins/
 COPY build/libs /paper-files/plugins/
 
-CMD bash /paper-files/start-server.sh
+CMD /bin/sh /paper-files/start-server.sh

@@ -5,4 +5,4 @@ ADD https://api.papermc.io/v2/projects/waterfall/versions/1.19/builds/506/downlo
 
 COPY docker/waterfall/serverfiles/ /waterfall-files/
 
-CMD bash /waterfall-files/start-server.sh
+CMD /bin/sh /waterfall-files/start-server.sh
