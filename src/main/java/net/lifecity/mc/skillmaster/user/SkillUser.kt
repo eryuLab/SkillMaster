@@ -215,10 +215,7 @@ class SkillUser(
      * @param vector ノックバック
      */
     fun damageAddVector(damage: Double = 0.0, vector: Vector = Vector(0.0, 0.0, 0.0), noDefense: Boolean = false) {
-        if (noDefense) {
-            player.damage(damage)
-            player.velocity.add(vector)
-        } else if (!canDefense(damage, vector)) {
+        if (noDefense || !canDefense(damage, vector)) {
             // ダメージとノックバックを与える
             player.damage(damage)
             player.velocity.add(vector)
@@ -232,10 +229,7 @@ class SkillUser(
      * @param vector ノックバック
      */
     fun damageChangeVector(damage: Double = 0.0, vector: Vector, noDefense: Boolean = false) {
-        if (noDefense) {
-            player.damage(damage)
-            player.velocity = vector
-        } else if (!canDefense(damage, vector)) {
+        if (noDefense || !canDefense(damage, vector)) {
             // ダメージとノックバックを与える
             player.damage(damage)
             player.velocity = vector
