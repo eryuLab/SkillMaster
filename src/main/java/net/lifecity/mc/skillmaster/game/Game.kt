@@ -7,14 +7,13 @@ import net.lifecity.mc.skillmaster.user.SkillUser
  * ひとつのゲームのひな型です(抽象的)
  */
 interface Game {
-    val gameType: GameType
     val countDownTime: Int
     val gameTime: Int
     var state: GameState
     val teams: Array<GameTeam>
-    val winners: GameTeam
-    val losers: GameTeam
-    val gameStage: GameStage
+    var winners: GameTeam
+    var losers: GameTeam
+    var stage: GameStage?
 
     /**
      * ゲームタイマーが開始したときの処理
