@@ -1,11 +1,9 @@
 package net.lifecity.mc.skillmaster
 
-import dev.jorel.commandapi.CommandAPI
 import net.lifecity.mc.skillmaster.game.GameList
+import net.lifecity.mc.skillmaster.game.GameType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.game.stage.GameStageList
-import net.lifecity.mc.skillmaster.game.stage.field.OnePoint
-import net.lifecity.mc.skillmaster.game.stage.field.TwoPoint
 import net.lifecity.mc.skillmaster.user.SkillUserList
 import net.lifecity.mc.skillmaster.utils.FileUtil
 import org.bukkit.Bukkit
@@ -31,7 +29,7 @@ class SkillMaster : JavaPlugin() {
     lateinit var gameList: GameList
 
     override fun onEnable() {
-       SkillCommand.register()
+        SkillCommand.register()
 
         EventListener.register()
 
@@ -40,15 +38,17 @@ class SkillMaster : JavaPlugin() {
 
         val stage = GameStage("闘技場", -25)
         stage.addField(
-            OnePoint(
-                stage,
-                Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0)
-            ),
-            TwoPoint(
-                stage,
+            GameType.TRAINING,
+            listOf(Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0)),
+            listOf()
+        )
+        stage.addField(
+            GameType.DUEL,
+            listOf(
                 Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0),
                 Location(Bukkit.getWorlds()[0], 123.0, -25.0, -18.0)
-            )
+            ),
+            listOf()
         )
 
         stageList.addStage(stage)

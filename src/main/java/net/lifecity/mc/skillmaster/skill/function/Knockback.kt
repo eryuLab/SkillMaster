@@ -1,13 +1,11 @@
 package net.lifecity.mc.skillmaster.skill.function
 
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
-import java.lang.Exception
 
 interface Knockback {
 
@@ -64,8 +62,7 @@ interface Knockback {
             // ゲーム中のときGameのonAttack()を呼び出す
             try {
                 val game = SkillMaster.INSTANCE.gameList.getFromUser(attackUser)
-                if (game is OnAttack)
-                    game.onAttack(attackUser)
+                game.onUserAttack(attackUser)
             } catch (e: Exception) {
                 return
             }

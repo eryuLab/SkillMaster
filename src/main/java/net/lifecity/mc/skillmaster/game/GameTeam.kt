@@ -6,9 +6,7 @@ import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Sound
-
 sealed class GameTeam(private val name: String, private val color: ChatColor, val userArray: Array<SkillUser>) {
-
     /**
      * ソロ(一人)
      */

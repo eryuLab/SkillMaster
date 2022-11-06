@@ -1,13 +1,11 @@
 package net.lifecity.mc.skillmaster.skill.function
 
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.game.function.OnAttack
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.UserMode
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
-import java.lang.Exception
 
 interface Attack {
 
@@ -76,8 +74,7 @@ interface Attack {
             // ゲーム中のときGameのonAttack()を呼び出す
             try {
                 val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
-                if (game is OnAttack)
-                    game.onAttack(target)
+                game.onUserAttack(attackUser)
             } catch (e: Exception) {
                 return
             }
@@ -105,8 +102,7 @@ interface Attack {
             // ゲーム中のときGameのonAttack()を呼び出す
             try {
                 val game = SkillMaster.INSTANCE.gameList.getFromUser(target)
-                if (game is OnAttack)
-                    game.onAttack(target)
+                game.onUserAttack(attackUser)
             } catch (e: Exception) {
                 return
             }

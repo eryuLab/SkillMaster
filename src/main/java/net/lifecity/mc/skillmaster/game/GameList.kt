@@ -15,7 +15,7 @@ class GameList {
      */
     fun getFromUser(user: SkillUser): Game {
         for (game in list) {
-            if (game.joined(user)) return game
+            if (game.gameManager.joined(user)) return game
         }
         throw GameNotFoundException("${user.player.name} do not join any games now")
     }
@@ -27,7 +27,7 @@ class GameList {
      */
     fun inGamingUser(user: SkillUser) : Boolean{
         for (game in list) {
-            if (game.joined(user)) return true
+            if (game.gameManager.joined(user)) return true
         }
         return false
     }

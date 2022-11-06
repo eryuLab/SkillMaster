@@ -18,7 +18,7 @@ services:
     volumes:
       - paper_a:/paper/
     ports:
-      - "25566:25565"
+      - "25568:25565"
     environment:
       - SERVER_NUM=1
       - SERVER_ID=p1
@@ -32,7 +32,7 @@ services:
     volumes:
       - paper_b:/paper/
     ports:
-      - "25567:25565"
+      - "25569:25565"
     environment:
       - SERVER_NUM=2
       - SERVER_ID=p2
@@ -44,7 +44,7 @@ services:
     networks:
       - skillmaster
     ports:
-      - "25568:25577"
+      - "25570:25577"
     environment:
       - SERVER_ID=waterfall_1
     depends_on:

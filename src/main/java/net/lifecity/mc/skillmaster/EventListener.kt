@@ -2,16 +2,11 @@ package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.event.events
 import com.github.syari.spigot.api.item.displayName
-import net.lifecity.mc.skillmaster.game.function.OnAttack
-import net.lifecity.mc.skillmaster.game.function.OnUserDead
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
-import net.lifecity.mc.skillmaster.inventory.WeaponInventory
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.utils.Messager
 import net.lifecity.mc.skillmaster.weapon.Weapon
-import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -97,10 +92,10 @@ object EventListener {
 
                             try {
                                 // ゲーム中ならonAttack()呼び出し
-                                val game = SkillMaster.INSTANCE.gameList.getFromUser(user) ?: return@event
-                                val onAttack = game as? OnAttack
-                                onAttack?.onAttack(user)
+                                val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
+                                game.onUserAttack(user)
                             } catch (e: Exception) {
+                                e.printStackTrace()
                                 return@event
                             }
                         }
@@ -131,10 +126,9 @@ object EventListener {
                         try {
                             val game = SkillMaster.INSTANCE.gameList.getFromUser(dead) ?: return@event
                             it.isCancelled = true
-
-                            val onUserDead = game as? OnUserDead
-                            onUserDead?.onDie(dead)
+                            game.onUserDead(dead)
                         } catch (e: Exception) {
+                            e.printStackTrace()
                             return@event
                         }
                     }

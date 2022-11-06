@@ -26,7 +26,7 @@ class SkillUser(
 ) {
     private val modeManager: ModeManager = ModeManager(this)
     var mode: UserMode
-        get() = modeManager.from
+        get() = modeManager.mode
         set(value) = modeManager.shift(value)
 
     var selectedWeapon = Weapon.STRAIGHT_SWORD
