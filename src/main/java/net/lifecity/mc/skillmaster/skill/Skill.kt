@@ -21,6 +21,7 @@ abstract class Skill(
 ) {
     var id: Int = 0
     var inInterval = false
+    var intervalCount = interval
 
     protected open fun canActivate() = true
 
@@ -52,15 +53,15 @@ abstract class Skill(
         inInterval = true
 
         // インターバル変わるまでのタイマー
-        var count = 0
         SkillMaster.INSTANCE.runTaskTimer(0, 1) {
             if (!inInterval)
                 cancel()
-            if (count >= interval) {
+            if (intervalCount >= interval) {
                 inInterval = false
+                intervalCount = interval
                 cancel()
             }
-            count++
+            intervalCount--
         }
     }
 
