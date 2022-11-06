@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster
 import com.github.syari.spigot.api.event.events
 import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
+import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.utils.Messager
@@ -160,6 +161,15 @@ object EventListener {
                     it.isCancelled = true
                     user.buttonInput(SkillButton.DROP, Weapon.fromItemStack(it.itemDrop.itemStack))
                 }
+                // インターバルアイテムの確認
+                val item = it.itemDrop.itemStack
+                val map = mapOf(
+                    Material.YELLOW_DYE to SkillButton.RIGHT.jp,
+                    Material.LIGHT_BLUE_DYE to SkillButton.SWAP.jp,
+                    Material.PINK_DYE to SkillButton.DROP.jp
+                )
+                if (map.containsKey(item.type) && map.containsValue(item.displayName))
+                    it.isCancelled = true
             }
 
             event<InventoryClickEvent>(priority = EventPriority.HIGHEST) {
