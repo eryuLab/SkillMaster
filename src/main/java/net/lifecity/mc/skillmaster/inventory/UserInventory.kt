@@ -29,6 +29,33 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
     }
 
     /**
+     * インターバルのアイテムを追加します
+     */
+    private fun setIntervalItem(key: SkillKey) {
+        val slot: Int
+        val material: Material
+        when (key.button) {
+            RIGHT -> {
+                slot = 38
+                material = Material.YELLOW_DYE
+            }
+            SWAP -> {
+                slot = 37
+                material = Material.LIGHT_BLUE_DYE
+            }
+            DROP -> {
+                slot = 36
+                material = Material.PINK_DYE
+            }
+        }
+        setItem(slot, InvItem(
+            createItemStack(material, key.button.jp)
+        ) {
+            this.isCancelled = true
+        })
+    }
+
+    /**
      * スキルと説明アイテムをセットで追加します
      * @param key 追加するSkillKey
      */
