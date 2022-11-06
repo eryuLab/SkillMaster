@@ -1,6 +1,7 @@
-package net.lifecity.mc.skillmaster.user
+package net.lifecity.mc.skillmaster.user.mode
 
 import net.lifecity.mc.skillmaster.inventory.UserInventory
+import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 

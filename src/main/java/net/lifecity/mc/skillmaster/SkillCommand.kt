@@ -7,13 +7,11 @@ import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.arguments.PlayerArgument
 import dev.jorel.commandapi.executors.CommandExecutor
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
-import net.lifecity.mc.skillmaster.game.GameManager
 import net.lifecity.mc.skillmaster.game.games.Duel
 import net.lifecity.mc.skillmaster.game.games.Training
-import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory
-import net.lifecity.mc.skillmaster.user.UserMode
+import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.utils.Messager
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor.*

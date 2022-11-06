@@ -1,7 +1,7 @@
 package net.lifecity.mc.skillmaster.game
 
 import net.lifecity.mc.skillmaster.user.SkillUser
-import net.lifecity.mc.skillmaster.user.UserMode
+import net.lifecity.mc.skillmaster.user.mode.UserMode
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Location

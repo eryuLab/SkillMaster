@@ -9,6 +9,8 @@ import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Defense
+import net.lifecity.mc.skillmaster.user.mode.ModeManager
+import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
 import net.lifecity.mc.skillmaster.weapon.Weapon

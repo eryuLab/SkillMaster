@@ -2,7 +2,7 @@ package net.lifecity.mc.skillmaster.skill.function
 
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
-import net.lifecity.mc.skillmaster.user.UserMode
+import net.lifecity.mc.skillmaster.user.mode.UserMode
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector

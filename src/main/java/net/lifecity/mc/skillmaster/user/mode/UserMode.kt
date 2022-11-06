@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.user
+package net.lifecity.mc.skillmaster.user.mode
 
 /**
  * SkillUserのモード

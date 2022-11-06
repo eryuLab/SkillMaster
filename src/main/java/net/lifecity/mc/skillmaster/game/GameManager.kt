@@ -5,12 +5,11 @@ import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.StageNotFoundException
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.user.SkillUser
-import net.lifecity.mc.skillmaster.user.UserMode
+import net.lifecity.mc.skillmaster.user.mode.UserMode
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Sound
-import org.bukkit.block.data.type.Wall.Height
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.scheduler.BukkitRunnable
