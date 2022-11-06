@@ -58,9 +58,7 @@ abstract class Skill(
 
         // インターバル変わるまでのタイマー
         SkillMaster.INSTANCE.runTaskTimer(0, 1) {
-            if (!inInterval)
-                cancel()
-            if (intervalCount <= 0) {
+            if (!inInterval) {
                 intervalCount = 0
                 cancel()
             }
