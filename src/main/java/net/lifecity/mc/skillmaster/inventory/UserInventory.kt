@@ -32,24 +32,13 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
      * インターバルのアイテムを追加します
      */
     private fun setIntervalItem(key: SkillKey) {
-        val slot: Int
-        val material: Material
-        when (key.button) {
-            RIGHT -> {
-                slot = 38
-                material = Material.YELLOW_DYE
-            }
-            SWAP -> {
-                slot = 37
-                material = Material.LIGHT_BLUE_DYE
-            }
-            DROP -> {
-                slot = 36
-                material = Material.PINK_DYE
-            }
+        val slot = when (key.button) {
+            RIGHT -> 38
+            SWAP -> 37
+            DROP -> 36
         }
         setItem(slot, InvItem(
-            createItemStack(material, key.button.jp)
+            createItemStack(key.button.material, key.button.jp)
         ) {
             this.isCancelled = true
         })

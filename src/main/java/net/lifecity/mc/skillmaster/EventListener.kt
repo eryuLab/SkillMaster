@@ -168,8 +168,12 @@ object EventListener {
                     Material.LIGHT_BLUE_DYE to SkillButton.SWAP.jp,
                     Material.PINK_DYE to SkillButton.DROP.jp
                 )
-                if (map.containsKey(item.type) && map.containsValue(item.displayName))
-                    it.isCancelled = true
+                for (button in SkillButton.values()) {
+                    if (button.material == item.type && button.jp == item.displayName) {
+                        it.isCancelled = true
+                        break
+                    }
+                }
             }
 
             event<InventoryClickEvent>(priority = EventPriority.HIGHEST) {
