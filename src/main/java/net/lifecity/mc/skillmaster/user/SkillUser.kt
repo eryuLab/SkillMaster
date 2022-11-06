@@ -149,9 +149,17 @@ class SkillUser(
             // ログ出力
             val skill: Skill = card.now()!!
             player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
+
+            // インターバルアイテムの更新
+            userInventory.updateInterval(card.nowKey())
         }
-        else
+        else {
+            // スキルを入力
             skillInput(card.now(), weapon)
+
+            // インターバルアイテムの更新
+            userInventory.updateInterval(card.nowKey())
+        }
     }
 
     /**
