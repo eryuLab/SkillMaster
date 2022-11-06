@@ -29,6 +29,16 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
     }
 
     /**
+     * インターバルの表示を更新します
+     * スキルを使用した時とスキルセット番号を変えた時に呼び出してください
+     */
+    fun updateInterval(key: SkillKey) {
+        if (key.skill == null)
+            return
+        user.player.setCooldown(key.button.material, key.skill!!.intervalCount)
+    }
+
+    /**
      * インターバルのアイテムを追加します
      */
     private fun setIntervalItem(key: SkillKey) {
