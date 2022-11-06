@@ -8,6 +8,7 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillButton.*
 import net.lifecity.mc.skillmaster.user.skillset.SkillKey
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryType
+import java.lang.IllegalArgumentException
 
 class UserInventory(user: SkillUser) : InventoryFrame(user) {
 
@@ -36,7 +37,11 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
     fun updateInterval(key: SkillKey) {
         if (key.skill == null)
             return
-        user.player.setCooldown(key.button.material, key.skill!!.intervalCount)
+        try {
+            user.player.setCooldown(key.button.material, key.skill!!.intervalCount)
+        } catch (e: IllegalArgumentException) {
+            return
+        }
     }
 
     /**
