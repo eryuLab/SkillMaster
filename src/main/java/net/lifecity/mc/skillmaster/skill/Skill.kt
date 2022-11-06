@@ -22,7 +22,7 @@ abstract class Skill(
     var id: Int = 0
     var intervalCount = 0
     val inInterval: Boolean
-        get() = intervalCount != 0
+        get() = intervalCount > 0
 
     protected open fun canActivate() = true
 
