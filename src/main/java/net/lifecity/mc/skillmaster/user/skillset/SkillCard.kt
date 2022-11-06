@@ -27,6 +27,10 @@ data class SkillCard(
         }
 
     fun now(): Skill? {
-        return skillSet.keyList[index].skill
+        return nowKey().skill
+    }
+
+    fun nowKey(): SkillKey {
+        return skillSet.keyList[index]
     }
 }
