@@ -24,6 +24,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
         for (keyList in keyLists) {
             for (key in keyList) {
                 setSkillItem(key)
+                setIntervalItem(key)
             }
         }
     }
