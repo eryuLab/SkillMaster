@@ -44,9 +44,9 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
      */
     private fun setIntervalItem(key: SkillKey) {
         val slot = when (key.button) {
-            RIGHT -> 38
-            SWAP -> 37
-            DROP -> 36
+            RIGHT -> 0
+            SWAP -> 1
+            DROP -> 2
         }
         setItem(slot, InvItem(
             createItemStack(key.button.material, key.button.jp)
