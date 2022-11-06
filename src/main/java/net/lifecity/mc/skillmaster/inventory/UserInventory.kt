@@ -37,11 +37,12 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
     fun updateInterval(key: SkillKey) {
         if (key.skill == null)
             return
-        try {
-            user.player.setCooldown(key.button.material, key.skill!!.intervalCount)
-        } catch (e: IllegalArgumentException) {
-            return
-        }
+
+        var interval = key.skill!!.intervalCount
+        if (interval < 0)
+            interval = 0
+
+        user.player.setCooldown(key.button.material, interval)
     }
 
     /**
