@@ -32,37 +32,37 @@ class Thrust(user: SkillUser) : Skill(
         // ターゲットを取得
         val target = getTargetEntity(user.player, user.player.getNearbyEntities(4.5, 4.5, 4.5))
 
+        // SE再生
+        user.player.playSound(Sound.ENTITY_EVOKER_CAST_SPELL, pitch = 2f)
+        user.player.playSound(Sound.ENTITY_EVOKER_FANGS_ATTACK, pitch = 2f)
+
+        // エフェクト
+        // 前方への突き
+        // 衝撃波
+        var count = 0
+        val loc = target?.location ?: user.player.eyeLocation
+        loc.add(0.0, 1.0, 0.0)
+        val vector = user.player.eyeLocation.direction.multiply(0.19)
+        SkillMaster.INSTANCE.runTaskTimer(1) {
+            if (count > 5)
+                this.cancel()
+
+            // 突きの軌道
+            for (i in 1..4) {
+                loc.spawnParticle(Particle.FALLING_DUST, data = Material.WHITE_WOOL.createBlockData(), count = 4)
+                loc.spawnParticle(Particle.FALLING_DUST, data = Material.DIAMOND_ORE.createBlockData())
+                loc.spawnParticle(Particle.FALLING_DUST, data = Material.WARPED_PLANKS.createBlockData())
+                loc.spawnParticle(Particle.ELECTRIC_SPARK, count = 6)
+                loc.add(vector)
+            }
+
+            count++
+        }
+
         // 攻撃
         target?.let {
             val livingEntity = target as? LivingEntity ?: return
             attackChangeVector(user, livingEntity, 3.8, direction)
-
-            // SE再生
-            user.player.playSound(Sound.ENTITY_EVOKER_CAST_SPELL, pitch = 2f)
-            user.player.playSound(Sound.ENTITY_EVOKER_FANGS_ATTACK, pitch = 2f)
-
-            // エフェクト
-            // 前方への突き
-            // 衝撃波
-            var count = 0
-            val loc = target.location
-            loc.add(0.0, 1.0, 0.0)
-            val vector = user.player.eyeLocation.direction.multiply(0.19)
-            SkillMaster.INSTANCE.runTaskTimer(1) {
-                if (count > 5)
-                    this.cancel()
-
-                // 突きの軌道
-                for (i in 1..4) {
-                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.WHITE_WOOL.createBlockData(), count = 4)
-                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.DIAMOND_ORE.createBlockData())
-                    loc.spawnParticle(Particle.FALLING_DUST, data = Material.WARPED_PLANKS.createBlockData())
-                    loc.spawnParticle(Particle.ELECTRIC_SPARK, count = 6)
-                    loc.add(vector)
-                }
-
-                count++
-            }
         }
     }
 
