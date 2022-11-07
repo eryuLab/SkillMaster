@@ -214,7 +214,7 @@ class SkillUser(
         skill.activate()
     }
 
-    fun updateInterval(skill: Skill) {
+    fun updateIntervalItem(skill: Skill) {
         val cardArray = arrayOf(rightCard, swapCard, dropCard)
         for (card in cardArray) {
             for (key in card.skillSet.keyList) {
