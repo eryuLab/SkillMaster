@@ -50,7 +50,7 @@ abstract class Skill(
             return
 
         // インターバルの処理を開始する
-        startInterval()
+        intervalStartSetUP()
 
         // インターバルアイテムの更新
         user.updateIntervalItem(this)
@@ -65,7 +65,7 @@ abstract class Skill(
         }
     }
 
-    private fun startInterval() {
+    private fun intervalStartSetUP() {
         // インターバルのカウントダウンを開始する
         intervalCountDown = interval
         // インターバル中にする
