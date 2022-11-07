@@ -20,9 +20,8 @@ abstract class Skill(
     val user: SkillUser
 ) {
     var id: Int = 0
-    var intervalCount = 0
-    val inInterval: Boolean
-        get() = intervalCount > 0
+    var intervalCountDown = 0
+    var inInterval: Boolean = false
 
     protected open fun canActivate() = true
 
@@ -50,27 +49,41 @@ abstract class Skill(
         if (inInterval)
             return
 
-        // インターバル中にする
-        intervalCount = interval
+        // インターバルの処理を開始する
+        startInterval()
 
         // インターバルアイテムの更新
-        user.updateInterval(this)
+        user.updateIntervalItem(this)
 
         // インターバル変わるまでのタイマー
         SkillMaster.INSTANCE.runTaskTimer(0, 1) {
             if (!inInterval) {
-                intervalCount = 0
+                stopInterval()
                 cancel()
             }
-            intervalCount--
+            intervalCountDown--
         }
+    }
+
+    private fun startInterval() {
+        // インターバルのカウントダウンを開始する
+        intervalCountDown = interval
+        // インターバル中にする
+        inInterval = true
+    }
+
+    private fun stopInterval() {
+        // インターバルを初期化
+        intervalCountDown = 0
+        // 非インターバル中化
+        inInterval = false
     }
 
     /**
      * スキルの状態を初期化します
      */
     open fun init() {
-        intervalCount = 0
+        intervalCountDown = 0
     }
 
     /**
