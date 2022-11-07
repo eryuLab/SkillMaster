@@ -8,7 +8,6 @@ import net.lifecity.mc.skillmaster.user.skillset.SkillButton.*
 import net.lifecity.mc.skillmaster.user.skillset.SkillKey
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryType
-import java.lang.IllegalArgumentException
 
 class UserInventory(user: SkillUser) : InventoryFrame(user) {
 
@@ -38,7 +37,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
         if (key.skill == null)
             return
 
-        var interval = key.skill!!.intervalCount
+        var interval = key.skill!!.intervalCountDown
         if (interval < 0)
             interval = 0
 
