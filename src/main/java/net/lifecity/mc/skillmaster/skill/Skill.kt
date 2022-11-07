@@ -20,6 +20,12 @@ abstract class Skill(
     val user: SkillUser
 ) {
     var id: Int = 0
+
+    /**
+     * 残りインターバルtickを表します。
+     * 0が代入されているときはインターバルが終了しているときで、
+     * このスキルを再度発動することができます。
+     */
     var intervalCountDown = 0
     var inInterval: Boolean = false
 
@@ -49,15 +55,17 @@ abstract class Skill(
         if (inInterval)
             return
 
-        // インターバルの処理を開始する
+        // インターバルの処理を開始のための初期化をする
         intervalStartSetUP()
 
         // インターバルアイテムの更新
         user.updateIntervalItem(this)
 
         // インターバル変わるまでのタイマー
-        SkillMaster.INSTANCE.runTaskTimer(0, 1) {
-            if (!inInterval) {
+        SkillMaster.INSTANCE.runTaskTimer(1) {
+
+            // インターバルが終わっているか超過しているときに終了処理
+            if (!inInterval || intervalCountDown <= 0) {
                 stopInterval()
                 cancel()
             }
@@ -65,6 +73,9 @@ abstract class Skill(
         }
     }
 
+    /**
+     * インターバルを開始できるように関連するプロパティを初期化します
+     */
     private fun intervalStartSetUP() {
         // インターバルのカウントダウンを開始する
         intervalCountDown = interval
@@ -72,6 +83,10 @@ abstract class Skill(
         inInterval = true
     }
 
+    /**
+     * インターバルを終了します。
+     * また、関連プロパティをスキルが発動できる値に初期化します。
+     */
     private fun stopInterval() {
         // インターバルを初期化
         intervalCountDown = 0
@@ -83,7 +98,7 @@ abstract class Skill(
      * スキルの状態を初期化します
      */
     open fun init() {
-        intervalCountDown = 0
+        stopInterval()
     }
 
     /**
