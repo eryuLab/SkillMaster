@@ -40,7 +40,7 @@ object NearTargets {
     }
 
     @JvmStatic
-    fun search(player: Player, distance: Double) {
+    fun search(player: Player, distance: Double): MutableList<LivingEntity> {
         val entities = player.getNearbyEntities(distance, distance, distance)
         val livingEntities = mutableListOf<LivingEntity>()
         for (entity in entities) {
@@ -49,13 +49,13 @@ object NearTargets {
         }
         val start = livingEntities.size
         val end = start - 1
-        quickSort(player, livingEntities, start, end)
+        return quickSort(player, livingEntities, start, end)
     }
 
-    fun quickSort(player: Player, list: MutableList<LivingEntity>, start: Int, end: Int) {
+    fun quickSort(player: Player, list: MutableList<LivingEntity>, start: Int, end: Int): MutableList<LivingEntity> {
 
         //基本条件
-        if (start >= end) return
+        if (start >= end) return list
 
         //ピボット全体で要素を再配置します
         val pivot = partition(player, list, start, end)
@@ -65,5 +65,7 @@ object NearTargets {
 
         //ピボット以外の要素を含むサブアレイで繰り返します
         quickSort(player, list, pivot + 1, end)
+
+        return list
     }
 }
