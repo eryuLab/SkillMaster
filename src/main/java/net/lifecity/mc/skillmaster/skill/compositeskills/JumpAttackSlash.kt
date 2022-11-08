@@ -10,7 +10,7 @@ import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
-import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
+import net.lifecity.mc.skillmaster.utils.NearTargets
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
@@ -103,13 +103,16 @@ class JumpAttackSlash(user: SkillUser) : CompositeSkill(
         } else if (step == 2) {
 
             // 一番近いEntityを攻撃
-            val target = getNearEntities(2.0)[0]
+            val targets = NearTargets.search(user.player, 2.0)
 
-            if (target is LivingEntity) {
-                attackAddVector(user, target, 5.0, user.player.velocity.setY(0.5))
-                val loc = target.location.add(0.0, 2.0, 0.0)
-                loc?.spawnParticle(Particle.EXPLOSION_LARGE)
-            }
+            if (targets.isEmpty())
+                return
+
+            val target = targets[0]
+
+            attackAddVector(user, target, 5.0, user.player.velocity.setY(0.5))
+            val loc = target.location.add(0.0, 2.0, 0.0)
+            loc.spawnParticle(Particle.EXPLOSION_LARGE)
 
             deactivate() //終了処理
         }
@@ -124,15 +127,5 @@ class JumpAttackSlash(user: SkillUser) : CompositeSkill(
     override fun init() {
         super.init()
         step = 0
-    }
-
-    private fun getNearEntities(radius: Double): List<Entity?> {
-        // 半径radiusで近くのentityのリストを取得
-        val near = user.player.getNearbyEntities(radius, radius, radius)
-
-        // リストを近い順に並べる
-        EntityDistanceSort.quicksort(user.player, near, 0, near.size - 1)
-
-        return near
     }
 }

@@ -9,7 +9,7 @@ import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
-import net.lifecity.mc.skillmaster.utils.EntityDistanceSort
+import net.lifecity.mc.skillmaster.utils.NearTargets
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Material
@@ -44,9 +44,9 @@ class LeafFlow(user: SkillUser) : CompositeSkill(
 
         // ランダムロケーションを生成
         val leaves: MutableList<Location> = ArrayList()
-        for (i in 0..11) randomLocation(0.25)?.let { leaves.add(it) }
+        for (i in 0..11) randomLocation(0.25).let { leaves.add(it) }
         val wind: MutableList<Location> = ArrayList()
-        for (i in 0..3) randomLocation(0.5)?.let { wind.add(it) }
+        for (i in 0..3) randomLocation(0.5).let { wind.add(it) }
 
         // エフェクト葉の流れ
         var count = 0
@@ -75,7 +75,7 @@ class LeafFlow(user: SkillUser) : CompositeSkill(
         }
     }
 
-    private fun randomLocation(max: Double): Location? {
+    private fun randomLocation(max: Double): Location {
         val random = Random()
         var x = random.nextDouble() * max
         if (random.nextBoolean()) x *= -1.0
@@ -88,33 +88,21 @@ class LeafFlow(user: SkillUser) : CompositeSkill(
 
     override fun additionalInput() {
         // 一番近いEntityを攻撃
-        val entityList = getNearEntities(1.8)
+        val entityList = NearTargets.search(user.player, 1.8)
         if (entityList.isEmpty())
             return
 
         val target = entityList[0]
-        if (target is LivingEntity) {
-            attackAddVector(user, target, 4.0,  user.player.velocity.normalize().multiply(1).setY(0.15))
+        attackAddVector(user, target, 4.0,  user.player.velocity.normalize().multiply(1).setY(0.15))
 
-            for (i in 0..2) {
-                target.location.add(0.0, 2.0, 0.0).spawnParticle(Particle.SWEEP_ATTACK)
-            }
-            for (i in 0..5) {
-                val randomLocation = randomLocation(0.3)
-                randomLocation?.add(user.player.location)?.spawnParticle(Particle.FLAME)
-            }
+        for (i in 0..2) {
+            target.location.add(0.0, 2.0, 0.0).spawnParticle(Particle.SWEEP_ATTACK)
+        }
+        for (i in 0..5) {
+            val randomLocation = randomLocation(0.3)
+            randomLocation.add(user.player.location).spawnParticle(Particle.FLAME)
         }
         // 終了
         deactivate()
-    }
-
-    private fun getNearEntities(radius: Double): List<Entity?> {
-        // 半径radiusで近くのentityのリストを取得
-        val near = user.player.getNearbyEntities(radius, radius, radius)
-
-        // リストを近い順に並べる
-        EntityDistanceSort.quicksort(user.player, near, 0, near.size - 1)
-
-        return near
     }
 }
