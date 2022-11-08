@@ -1,19 +1,19 @@
 package net.lifecity.mc.skillmaster.utils
 
-import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
 /**
  * Entityのリストをプレイヤーから近い順に並べ替えるクラス
  */
-object EntityDistanceSort {
-    private fun swap(list: MutableList<Entity>, i: Int, j: Int) {
+object NearTargets {
+    private fun swap(list: MutableList<LivingEntity>, i: Int, j: Int) {
         val entity = list[i]
         list[i] = list[j]
         list[j] = entity
     }
 
-    private fun partition(player: Player, list: MutableList<Entity>, start: Int, end: Int): Int {
+    private fun partition(player: Player, list: MutableList<LivingEntity>, start: Int, end: Int): Int {
         //アレイからピボットとして右端の要素を選択します
         val pivot = list[end]
 
@@ -40,7 +40,20 @@ object EntityDistanceSort {
     }
 
     @JvmStatic
-    fun quicksort(player: Player, list: MutableList<Entity>, start: Int, end: Int) {
+    fun search(player: Player, distance: Double) {
+        val entities = player.getNearbyEntities(distance, distance, distance)
+        val livingEntities = mutableListOf<LivingEntity>()
+        for (entity in entities) {
+            if (entity is LivingEntity)
+                livingEntities.add(entity)
+        }
+        val start = livingEntities.size
+        val end = start - 1
+        quickSort(player, livingEntities, start, end)
+    }
+
+    fun quickSort(player: Player, list: MutableList<LivingEntity>, start: Int, end: Int) {
+
         //基本条件
         if (start >= end) return
 
@@ -48,9 +61,9 @@ object EntityDistanceSort {
         val pivot = partition(player, list, start, end)
 
         //ピボットよりも小さい要素を含むサブアレイで繰り返します
-        quicksort(player, list, start, pivot - 1)
+        quickSort(player, list, start, pivot - 1)
 
         //ピボット以外の要素を含むサブアレイで繰り返します
-        quicksort(player, list, pivot + 1, end)
+        quickSort(player, list, pivot + 1, end)
     }
 }
