@@ -1,7 +1,9 @@
 package net.lifecity.mc.skillmaster.user.skillset
 
-enum class SkillButton(val jp: String) {
-    RIGHT("右クリック"),
-    SWAP("スワップ"),
-    DROP("ドロップ")
+import org.bukkit.Material
+
+enum class SkillButton(val jp: String, val material: Material) {
+    RIGHT("右クリック", Material.YELLOW_DYE),
+    SWAP("スワップ", Material.LIGHT_BLUE_DYE),
+    DROP("ドロップ", Material.PINK_DYE)
 }

@@ -24,8 +24,40 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
         for (keyList in keyLists) {
             for (key in keyList) {
                 setSkillItem(key)
+                setIntervalItem(key)
             }
         }
+    }
+
+    /**
+     * インターバルの表示を更新します
+     * スキルを使用した時とスキルセット番号を変えた時に呼び出してください
+     */
+    fun updateInterval(key: SkillKey) {
+        if (key.skill == null)
+            return
+
+        var interval = key.skill!!.intervalCountDown
+        if (interval < 0)
+            interval = 0
+
+        user.player.setCooldown(key.button.material, interval)
+    }
+
+    /**
+     * インターバルのアイテムを追加します
+     */
+    private fun setIntervalItem(key: SkillKey) {
+        val slot = when (key.button) {
+            RIGHT -> 2
+            SWAP -> 1
+            DROP -> 0
+        }
+        setItem(slot, InvItem(
+            createItemStack(key.button.material, key.button.jp)
+        ) {
+            this.isCancelled = true
+        })
     }
 
     /**

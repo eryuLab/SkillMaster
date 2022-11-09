@@ -149,9 +149,14 @@ class SkillUser(
             // ログ出力
             val skill: Skill = card.now()!!
             player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
+
+            // インターバルアイテムの更新
+            userInventory.updateInterval(card.nowKey())
         }
-        else
+        else {
+            // スキルを入力
             skillInput(card.now(), weapon)
+        }
     }
 
     /**
@@ -207,6 +212,16 @@ class SkillUser(
         }
         // 単発スキルのとき
         skill.activate()
+    }
+
+    fun updateIntervalItem(skill: Skill) {
+        val cardArray = arrayOf(rightCard, swapCard, dropCard)
+        for (card in cardArray) {
+            for (key in card.skillSet.keyList) {
+                if (key.skill == skill)
+                    userInventory.updateInterval(key)
+            }
+        }
     }
 
     /**

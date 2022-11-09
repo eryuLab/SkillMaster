@@ -20,7 +20,14 @@ abstract class Skill(
     val user: SkillUser
 ) {
     var id: Int = 0
-    var inInterval = false
+
+    /**
+     * 残りインターバルtickを表します。
+     * 0が代入されているときはインターバルが終了しているときで、
+     * このスキルを再度発動することができます。
+     */
+    var intervalCountDown = 0
+    var inInterval: Boolean = false
 
     protected open fun canActivate() = true
 
@@ -31,7 +38,7 @@ abstract class Skill(
         if (!canActivate())
             return
 
-        user.sendActionBar("" + ChatColor.DARK_AQUA + "スキル『" + name + "』発動")
+        user.sendActionBar("${ChatColor.DARK_AQUA}『${name}』発動")
 
         onActivate()
 
@@ -48,27 +55,50 @@ abstract class Skill(
         if (inInterval)
             return
 
-        // インターバル中にする
-        inInterval = true
+        // インターバルの処理を開始のための初期化をする
+        intervalStartSetUP()
+
+        // インターバルアイテムの更新
+        user.updateIntervalItem(this)
 
         // インターバル変わるまでのタイマー
-        var count = 0
-        SkillMaster.INSTANCE.runTaskTimer(0, 1) {
-            if (!inInterval)
-                cancel()
-            if (count >= interval) {
-                inInterval = false
+        SkillMaster.INSTANCE.runTaskTimer(1) {
+
+            // インターバルが終わっているか超過しているときに終了処理
+            if (!inInterval || intervalCountDown <= 0) {
+                stopInterval()
                 cancel()
             }
-            count++
+            intervalCountDown--
         }
+    }
+
+    /**
+     * インターバルを開始できるように関連するプロパティを初期化します
+     */
+    private fun intervalStartSetUP() {
+        // インターバルのカウントダウンを開始する
+        intervalCountDown = interval
+        // インターバル中にする
+        inInterval = true
+    }
+
+    /**
+     * インターバルを終了します。
+     * また、関連プロパティをスキルが発動できる値に初期化します。
+     */
+    private fun stopInterval() {
+        // インターバルを初期化
+        intervalCountDown = 0
+        // 非インターバル中化
+        inInterval = false
     }
 
     /**
      * スキルの状態を初期化します
      */
     open fun init() {
-        inInterval = false
+        stopInterval()
     }
 
     /**
