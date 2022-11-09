@@ -49,7 +49,7 @@ class Thrust(user: SkillUser) : Skill(
                 this.cancel()
 
             // 突きの軌道
-            for (i in 1..4) {
+            repeat (4) {
                 loc.spawnParticle(Particle.FALLING_DUST, data = Material.WHITE_WOOL.createBlockData(), count = 4)
                 loc.spawnParticle(Particle.FALLING_DUST, data = Material.DIAMOND_ORE.createBlockData())
                 loc.spawnParticle(Particle.FALLING_DUST, data = Material.WARPED_PLANKS.createBlockData())
