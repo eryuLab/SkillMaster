@@ -24,7 +24,7 @@ abstract class CompositeSkill(
             return
 
         // ログ
-        user.sendActionBar("" + ChatColor.DARK_AQUA + "複合スキル『" + name + "』発動")
+        user.sendActionBar("${ChatColor.DARK_AQUA}『" + name + "』発動")
 
         // 発動中にする
         activated = true
@@ -56,7 +56,7 @@ abstract class CompositeSkill(
         activated = false //発動解除
 
         // ログ
-        user.sendActionBar("" + ChatColor.RED + "複合スキル『" + name + "』終了")
+        user.sendActionBar("${ChatColor.RED}『" + name + "』終了")
 
         // インターバル処理
         super.deactivate()
