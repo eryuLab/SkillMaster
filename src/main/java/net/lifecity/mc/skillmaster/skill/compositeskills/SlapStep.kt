@@ -91,11 +91,13 @@ class SlapStep(user: SkillUser): CompositeSkill(
      * @return ブロックがあるとtrue
      */
     private fun checkBottom(): Boolean {
-        val loc = user.player.location
-        val loc1 = loc.add(0.0, -1.0, 0.0)
-        val loc2 = loc.add(0.0, -1.25, 0.0)
+        val loc1 = user.player.location.add(0.0, -1.0, 0.0)
+        val loc2 = user.player.location.add(0.0, -1.25, 0.0)
 
-        if (loc1.block.type == Material.AIR && loc2.block.type == Material.AIR)
+        val type1 = loc1.block.type
+        val type2 = loc2.block.type
+
+        if (type1 == Material.AIR && type2 == Material.AIR)
             return false
         return true
     }
