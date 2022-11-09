@@ -2,7 +2,11 @@ package net.lifecity.mc.skillmaster.utils
 
 import org.bukkit.GameMode
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.util.Vector
+import kotlin.math.PI
+import kotlin.math.acos
 
 class TargetSearch {
 
@@ -13,7 +17,10 @@ class TargetSearch {
         getTargetEntity(entity, entity.world.getNearbyLivingEntities(entity.location, range, range, range))
 
     fun getTargetEntity(entity: Entity, range: Double) =
-        getTargetEntity(entity = entity, entities = entity.world.getNearbyEntities(entity.location, range, range, range))
+        getTargetEntity(
+            entity = entity,
+            entities = entity.world.getNearbyEntities(entity.location, range, range, range)
+        )
 
     fun getBehindPlayer(entity: Entity, range: Double) =
         getBehindEntity(entity, entity.world.getNearbyPlayers(entity.location, range, range, range))
@@ -22,8 +29,17 @@ class TargetSearch {
         getBehindEntity(entity, entity.world.getNearbyLivingEntities(entity.location, range, range, range))
 
     fun getBehindEntity(entity: Entity, range: Double) =
-        getBehindEntity(entity = entity, entities = entity.world.getNearbyEntities(entity.location, range, range, range))
+        getBehindEntity(
+            entity = entity,
+            entities = entity.world.getNearbyEntities(entity.location, range, range, range)
+        )
 
+
+    fun getPlayerPositionRelation(playerA: Player, playerB: Player) =
+        getEntityPositionalRelation(playerA, playerB)
+
+    fun getLivingEntityPositionRelation(livingentityA: LivingEntity, livingentityB: Player) =
+        getEntityPositionalRelation(livingentityA, livingentityB)
 
     /**
      * @param entity: 始点となるエンティティ
@@ -92,5 +108,25 @@ class TargetSearch {
             }
         }
         return target
+    }
+
+
+    /**
+     * ２体のエンティティの位置からΘとΦ(ラジアン)を求めるメソッド
+     * @return: Pair(Θ, Φ)
+     */
+    fun getEntityPositionalRelation(entityA: Entity, entityB: Entity): Pair<Double, Double> {
+        val vec = entityB.location.toVector().subtract(entityA.location.toVector())
+
+        val unitY = Vector(0, 1, 0)
+        val unitZ = Vector(0, 0, 1)
+
+        val cosTheta = unitY.dot(vec) / vec.length()
+        val cosPhi = unitZ.dot(vec.setY(0)) / vec.setY(0).length()
+
+        val theta = acos(cosTheta) * (PI / 180)
+        val phi = acos(cosPhi) * (PI / 180)
+
+        return Pair(theta, phi)
     }
 }
