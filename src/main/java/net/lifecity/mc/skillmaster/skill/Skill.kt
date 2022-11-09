@@ -38,7 +38,7 @@ abstract class Skill(
         if (!canActivate())
             return
 
-        user.sendActionBar("${ChatColor.DARK_AQUA}『" + name + "』発動")
+        user.sendActionBar("${ChatColor.DARK_AQUA}『${name}』発動")
 
         onActivate()
 
