@@ -38,7 +38,7 @@ class Okigiri(user: SkillUser): CompositeSkill(
             val targets = NearTargets.search(user.player, 1.4)
             if (targets.isNotEmpty()) {
                 val target = targets[0]
-                attackAddVector(user, target, 3.5, user.player.eyeLocation.direction.multiply(0.35))
+                attackAddVector(user, target, 3.5, user.player.eyeLocation.direction.setY(0.15).multiply(0.35))
                 cancel()
             }
         }
