@@ -5,7 +5,6 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
-import kotlin.math.PI
 import kotlin.math.acos
 
 class TargetSearch {
@@ -31,14 +30,14 @@ class TargetSearch {
     fun getBehindEntity(entity: Entity, range: Double) =
         getBehindEntity(
             entity = entity,
-            entities = entity.world.getNearbyEntities(entity.location, range, range, range)
+            entities = entity.getNearbyEntities(range, range, range)
         )
 
 
     fun getPlayerPositionRelation(playerA: Player, playerB: Player) =
         getEntityPositionalRelation(playerA, playerB)
 
-    fun getLivingEntityPositionRelation(livingentityA: LivingEntity, livingentityB: Player) =
+    fun getLivingEntityPositionRelation(livingentityA: LivingEntity, livingentityB: LivingEntity) =
         getEntityPositionalRelation(livingentityA, livingentityB)
 
     /**
@@ -124,8 +123,8 @@ class TargetSearch {
         val cosTheta = unitY.dot(vec) / vec.length()
         val cosPhi = unitZ.dot(vec.setY(0)) / vec.setY(0).length()
 
-        val theta = acos(cosTheta) * (PI / 180)
-        val phi = acos(cosPhi) * (PI / 180)
+        val theta = acos(cosTheta)
+        val phi = acos(cosPhi)
 
         return Pair(theta, phi)
     }
