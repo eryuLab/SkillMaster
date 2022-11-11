@@ -72,9 +72,8 @@ class Okigiri(user: SkillUser): CompositeSkill(
             }
 
             // 攻撃対象を取得
-            val targets = NearTargets.search(user.player, 1.4)
-            if (targets.isNotEmpty()) {
-                val target = targets[0]
+            val target = NearTargets.search(user.player, 1.4)
+            if (target != null) {
                 attackAddVector(user, target, 3.5, user.player.eyeLocation.direction.setY(0.15).multiply(0.35))
 
                 // SEとLE
@@ -92,7 +91,6 @@ class Okigiri(user: SkillUser): CompositeSkill(
                 }
                 cancel()
             }
-
             count++
         }
     }
