@@ -30,7 +30,7 @@ class TargetSearch {
     fun getBehindEntity(entity: Entity, range: Double) =
         getBehindEntity(
             entity = entity,
-            entities = entity.getNearbyEntities(range, range, range)
+            entities = entity.world.getNearbyEntities(entity.location, range, range, range)
         )
 
 
