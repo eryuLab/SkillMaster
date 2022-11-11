@@ -38,7 +38,7 @@ class TargetSearch {
     fun getPlayerPositionRelation(playerA: Player, playerB: Player) =
         getEntityPositionalRelation(playerA, playerB)
 
-    fun getLivingEntityPositionRelation(livingentityA: LivingEntity, livingentityB: Player) =
+    fun getLivingEntityPositionRelation(livingentityA: LivingEntity, livingentityB: LivingEntity) =
         getEntityPositionalRelation(livingentityA, livingentityB)
 
     /**
