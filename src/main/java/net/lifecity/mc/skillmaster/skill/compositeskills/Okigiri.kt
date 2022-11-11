@@ -11,6 +11,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.utils.NearTargets
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.util.Vector
@@ -40,22 +41,32 @@ class Okigiri(user: SkillUser): CompositeSkill(
 
         // 攻撃処理
         var count = 0
+        // 軌道の初期座標
+        val orbit = user.player.location.add(0.0, 1.0, 0.0)
+        // 軌道の加算に使われるvector
+        val direction = user.player.eyeLocation.direction.multiply(0.3)
+        val draw = DrawParticle()
         SkillMaster.INSTANCE.runTaskTimer(1) {
             // 非発動化したらキャンセル
             if (!activated)
                 cancel()
 
             // LE
-            val draw = DrawParticle()
+            // 軌道
+            repeat(3) {
+                orbit.spawnParticle(Particle.SOUL_FIRE_FLAME, 2, speed = 0.01)
+                orbit.add(direction)
+            }
+            // 円
             if (count % 4 == 0) {
                 draw.drawCircle(
                     user.player.location.add(0.0, 1.0, 0.0),
                     Particle.CRIT,
                     radius = 1.3,
-                    points = 3,
+                    points = 15,
                     rotX = Math.PI * 90.0 / 180.0,
                     rotY = Math.PI * (user.player.location.yaw / 180.0) * -1,
-                    count = 4,
+                    count = 12,
                     speed = 0.0
                 )
             }
@@ -69,7 +80,7 @@ class Okigiri(user: SkillUser): CompositeSkill(
                 // SEとLE
                 var hitEffectCount = 0
                 SkillMaster.INSTANCE.runTaskTimer(2) {
-                    if (hitEffectCount > 5) {
+                    if (hitEffectCount > 3) {
                         cancel()
                     }
 
