@@ -36,8 +36,8 @@ class Thrust(user: SkillUser) : Skill(
             return false
 
         // 発動者から見て対象が斜め上以上にいたら発動不可
-        val theta = search.getLivingEntityPositionRelation(user.player, target!!).first
-        user.sendMessage("theta: $theta")
+        var theta = search.getLivingEntityPositionRelation(user.player, target!!).first
+        theta *= 180 / Math.PI
         if (theta <= 60)
             return false
 
