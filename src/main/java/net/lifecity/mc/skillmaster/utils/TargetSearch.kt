@@ -5,7 +5,6 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
-import kotlin.math.PI
 import kotlin.math.acos
 
 class TargetSearch {
@@ -124,8 +123,8 @@ class TargetSearch {
         val cosTheta = unitY.dot(vec) / vec.length()
         val cosPhi = unitZ.dot(vec.setY(0)) / vec.setY(0).length()
 
-        val theta = acos(cosTheta) * (PI / 180)
-        val phi = acos(cosPhi) * (PI / 180)
+        val theta = acos(cosTheta)
+        val phi = acos(cosPhi)
 
         return Pair(theta, phi)
     }
