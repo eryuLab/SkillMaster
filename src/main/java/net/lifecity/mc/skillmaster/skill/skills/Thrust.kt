@@ -21,17 +21,33 @@ class Thrust(user: SkillUser) : Skill(
     listOf(Weapon.STRAIGHT_SWORD),
     SkillType.ATTACK,
     listOf("剣を手と垂直に構えて突き上げる"),
-    80,
+    50,
     user
 ), Attack {
+
+    var target: LivingEntity? = null
+
+    override fun canActivate(): Boolean {
+        val search = TargetSearch()
+
+        // targetがnullのとき発動不可
+        target = search.getTargetLivingEntity(user.player, 4.5)
+        if (target == null)
+            return false
+
+        // 発動者から見て対象が斜め上以上にいたら発動不可
+        val theta = search.getLivingEntityPositionRelation(user.player, target!!).first
+        if (theta <= 60)
+            return false
+
+        // 発動可
+        return true
+    }
 
     override fun onActivate() {
         // 使用者を少し進ませる
         val direction = user.player.eyeLocation.direction
         user.player.velocity = direction
-
-        // ターゲットを取得
-        val target = TargetSearch().getTargetLivingEntity(user.player, 4.5)
 
         // SE再生
         user.player.playSound(Sound.ENTITY_EVOKER_CAST_SPELL, pitch = 2f)
@@ -62,8 +78,8 @@ class Thrust(user: SkillUser) : Skill(
 
         // 攻撃
         target?.let {
-            val livingEntity = target as? LivingEntity ?: return
-            attackChangeVector(user, livingEntity, 3.8, direction)
+            val livingEntity = target ?: return
+            attackChangeVector(user, livingEntity, 3.8, direction.multiply(0.8))
         }
     }
 }
