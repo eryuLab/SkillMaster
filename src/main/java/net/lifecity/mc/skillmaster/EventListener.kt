@@ -94,7 +94,7 @@ object EventListener {
                                 // ゲーム中ならonAttack()呼び出し
                                 val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
                                 game.onUserAttack(user)
-                            } catch (e: Exception) {
+                            } catch (e: GameNotFoundException) {
                                 return@event
                             }
                         }
@@ -126,7 +126,7 @@ object EventListener {
                             val game = SkillMaster.INSTANCE.gameList.getFromUser(dead) ?: return@event
                             it.isCancelled = true
                             game.onUserDead(dead)
-                        } catch (e: Exception) {
+                        } catch (e: GameNotFoundException) {
                             return@event
                         }
                     }
