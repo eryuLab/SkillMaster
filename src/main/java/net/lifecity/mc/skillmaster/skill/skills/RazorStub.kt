@@ -24,9 +24,27 @@ class RazorStub(user: SkillUser) : Skill(
     listOf(Weapon.STRAIGHT_SWORD),
     SkillType.ATTACK,
     listOf("剣に闇をまとわせて斜め下から切り上げる"),
-    360,
+    80,
     user
 ), Attack {
+
+    var target: LivingEntity? = null
+
+    override fun canActivate(): Boolean {
+        // targetがいなかったら発動不可
+        target = TargetSearch().getTargetLivingEntity(user.player, 3.0)
+        if (target == null)
+            return false
+
+        // 真下を向いていたら発動不可
+        val pitch = user.player.eyeLocation.pitch
+        if (pitch >= 75)
+            return false
+
+        // 発動可
+        return true
+    }
+
     override fun onActivate() {
         val player = this.user.player
         val targetSearch = TargetSearch()
@@ -36,7 +54,7 @@ class RazorStub(user: SkillUser) : Skill(
             val livingTarget = target as? LivingEntity ?: return
             if (livingTarget != player) {
 
-                attackChangeVector(user, target, 5.0, Vector(0.0, 1.0, 0.0))
+                attackChangeVector(user, target, 6.0, Vector(0.0, 0.7, 0.0))
                 drawParticle(livingTarget)
             }
         }
