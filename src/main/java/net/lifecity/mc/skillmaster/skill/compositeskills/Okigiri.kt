@@ -5,7 +5,6 @@ import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.CompositeSkill
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -14,8 +13,8 @@ import net.lifecity.mc.skillmaster.utils.NearTargets
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.SoundCategory
-import org.bukkit.entity.LivingEntity
+import org.bukkit.util.Vector
+import kotlin.random.Random
 
 class Okigiri(user: SkillUser): CompositeSkill(
     "置き斬り",
@@ -35,31 +34,30 @@ class Okigiri(user: SkillUser): CompositeSkill(
             .setY(0.15)
         user.player.velocity = vector
 
+        // SE
+        user.player.location.playSound(Sound.ENTITY_BLAZE_SHOOT, pitch = 1.9f)
+        user.player.location.playSound(Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, pitch = 1.3f)
+
         // 攻撃処理
+        var count = 0
         SkillMaster.INSTANCE.runTaskTimer(1) {
             // 非発動化したらキャンセル
             if (!activated)
                 cancel()
 
-            // SEとLE
-            user.player.location.playSound(Sound.ENTITY_SPLASH_POTION_THROW, pitch = 0.2f)
+            // LE
             val draw = DrawParticle()
-            var count1 = 0
-            SkillMaster.INSTANCE.runTaskTimer(8) {
-                if (count1 >= 2)
-                    cancel()
-
+            if (count % 4 == 0) {
                 draw.drawCircle(
-                        user.player.location.add(0.0, 1.0, 0.0),
-                        Particle.CRIT,
-                        radius = 1.8,
-                        points = 17,
-                        rotX = Math.PI * 90.0 / 180.0,
-                        rotY = Math.PI * (user.player.location.yaw / 180.0) * -1,
-                        count = 4
+                    user.player.location.add(0.0, 1.0, 0.0),
+                    Particle.CRIT,
+                    radius = 1.3,
+                    points = 3,
+                    rotX = Math.PI * 90.0 / 180.0,
+                    rotY = Math.PI * (user.player.location.yaw / 180.0) * -1,
+                    count = 4,
+                    speed = 0.0
                 )
-
-                count1++
             }
 
             // 攻撃対象を取得
@@ -69,19 +67,30 @@ class Okigiri(user: SkillUser): CompositeSkill(
                 attackAddVector(user, target, 3.5, user.player.eyeLocation.direction.setY(0.15).multiply(0.35))
 
                 // SEとLE
-                var effectCount = 0
-                SkillMaster.INSTANCE.runTaskTimer(3) {
-                    if (effectCount > 4) {
+                var hitEffectCount = 0
+                SkillMaster.INSTANCE.runTaskTimer(2) {
+                    if (hitEffectCount > 5) {
                         cancel()
                     }
 
-                    target.location.spawnParticle(Particle.SWEEP_ATTACK, 3, 0.3, 0.3, 0.3)
+                    val location = target.location.add(0.0, 1.0, 0.0).add(randomVector())
+                    location.spawnParticle(Particle.SWEEP_ATTACK, 3)
                     target.location.playSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP)
 
-                    effectCount++
+                    hitEffectCount++
                 }
                 cancel()
             }
+
+            count++
         }
+    }
+
+    fun randomVector(): Vector {
+        val x = Random.nextDouble(-1.0, 1.0)
+        val y = Random.nextDouble(-1.0, 1.0)
+        val z = Random.nextDouble(-1.0, 1.0)
+
+        return Vector(x, y, z)
     }
 }
