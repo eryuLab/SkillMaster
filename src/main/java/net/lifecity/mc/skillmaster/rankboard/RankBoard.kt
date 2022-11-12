@@ -11,7 +11,7 @@ class RankBoard {
     private fun setRankBoardTexts(hologram: Hologram, text: List<String>) {
         hologram.appendTextLine("${ChatColor.YELLOW}>>>>> Rank Board <<<<<")
         for ((index,t) in text.withIndex()) {
-            hologram.appendTextLine("${ChatColor.YELLOW}${index + 1}${ChatColor.GREEN}. $t")
+            hologram.appendTextLine("${ChatColor.YELLOW}${index + 1}. ${ChatColor.GREEN}$t")
         }
     }
 
