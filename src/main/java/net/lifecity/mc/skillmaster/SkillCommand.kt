@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.item.displayName
+import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.arguments.PlayerArgument
@@ -56,42 +57,56 @@ object SkillCommand {
             }
         })
 
-    val menuCommands = CommandAPICommand("menu")
-        .withArguments(MultiLiteralArgument("skill", "weapon"))
+    val menuSkillCommand = CommandAPICommand("skill")
         .executesPlayer(PlayerCommandExecutor { player, args ->
-            if (args.isEmpty()) {
-                val stick = ItemStack(Material.STICK)
-                stick.displayName = "メニュー棒"
+            val user = SkillMaster.INSTANCE.userList[player]
 
-                player.inventory.addItem(stick)
-                player.sendMessage("メニュー棒を付与しました")
-            } else {
-                val menu = args[0] as String
+            if (player.gameMode == GameMode.CREATIVE) {
+                Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
+            }
+
+            user.let {
+                it.openedInventory = SkillInventory(user, page = 0)
+
+                it.openedInventory?.open()
+            }
+        })
+
+    val weaponSkillCommand = CommandAPICommand("weapon")
+
+    val menuCommands = CommandAPICommand("menu")
+        .withSubcommand(CommandAPICommand("skill")
+            .executesPlayer(PlayerCommandExecutor { player, args ->
                 val user = SkillMaster.INSTANCE.userList[player]
 
                 if (player.gameMode == GameMode.CREATIVE) {
                     Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                 }
 
-                user.let {
-                    when(menu) {
-                        "skill" -> {
-                            it.openedInventory = SkillInventory(user, page = 0)
+                user.openedInventory = SkillInventory(user, page = 0)
+                user.openedInventory?.open()
+            })
+        )
+        .withSubcommand(CommandAPICommand("weapon")
+            .executesPlayer(PlayerCommandExecutor { player, args ->
+                val user = SkillMaster.INSTANCE.userList[player]
 
-                            it.openedInventory?.open()
-                        }
-                        "weapon" -> {
-                            it.openedInventory = WeaponInventory(it)
-
-                            it.openedInventory?.open()
-                        }
-
-                        else -> {}
-                    }
+                if (player.gameMode == GameMode.CREATIVE) {
+                    Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                 }
-            }
 
+                user.openedInventory = WeaponInventory(user, page = 0)
+                user.openedInventory?.open()
+            })
+        )
+        .executesPlayer(PlayerCommandExecutor { player, args ->
+            val stick = ItemStack(Material.STICK)
+            stick.displayName = "メニュー棒"
+
+            player.inventory.addItem(stick)
+            player.sendMessage("メニュー棒を付与しました")
         })
+
 
     val gameTrainingCommand = CommandAPICommand("training")
         .withArguments(MultiLiteralArgument("闘技場"))
@@ -180,8 +195,6 @@ object SkillCommand {
 
     val gameCommands = CommandAPICommand("game")
         .withSubcommands(gameTrainingCommand, gameDuelCommand)
-
-
 
 
     fun register() {
