@@ -44,9 +44,13 @@ class LeafFlow(user: SkillUser) : CompositeSkill(
 
         // ランダムロケーションを生成
         val leaves: MutableList<Location> = ArrayList()
-        for (i in 0..11) randomLocation(0.25).let { leaves.add(it) }
+        repeat(11) {
+            randomLocation(0.25).let { leaves.add(it) }
+        }
         val wind: MutableList<Location> = ArrayList()
-        for (i in 0..3) randomLocation(0.5).let { wind.add(it) }
+        repeat (3) {
+            randomLocation(0.5).let { wind.add(it) }
+        }
 
         // エフェクト葉の流れ
         var count = 0
@@ -88,17 +92,14 @@ class LeafFlow(user: SkillUser) : CompositeSkill(
 
     override fun additionalInput() {
         // 一番近いEntityを攻撃
-        val entityList = NearTargets.search(user.player, 1.8)
-        if (entityList.isEmpty())
-            return
+        val target = NearTargets.search(user.player, 1.8) ?: return
 
-        val target = entityList[0]
         attackAddVector(user, target, 4.0,  user.player.velocity.normalize().multiply(1).setY(0.15))
 
-        for (i in 0..2) {
+        repeat(2) {
             target.location.add(0.0, 2.0, 0.0).spawnParticle(Particle.SWEEP_ATTACK)
         }
-        for (i in 0..5) {
+        repeat(5) {
             val randomLocation = randomLocation(0.3)
             randomLocation.add(user.player.location).spawnParticle(Particle.FLAME)
         }
