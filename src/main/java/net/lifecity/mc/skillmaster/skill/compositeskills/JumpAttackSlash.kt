@@ -103,12 +103,7 @@ class JumpAttackSlash(user: SkillUser) : CompositeSkill(
         } else if (step == 2) {
 
             // 一番近いEntityを攻撃
-            val targets = NearTargets.search(user.player, 2.0)
-
-            if (targets.isEmpty())
-                return
-
-            val target = targets[0]
+            val target = NearTargets.search(user.player, 2.0) ?: return
 
             attackAddVector(user, target, 5.0, user.player.velocity.setY(0.5))
             val loc = target.location.add(0.0, 2.0, 0.0)
@@ -119,8 +114,6 @@ class JumpAttackSlash(user: SkillUser) : CompositeSkill(
     }
 
     override fun deactivate() {
-        if (!activated) return
-        super.deactivate()
         step = 0
     }
 
