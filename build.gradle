@@ -28,6 +28,9 @@ repositories {
     maven {
         url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
     }
+    maven {
+        url "https://repo.codemc.io/repository/maven-public/"
+    }
 }
 
 dependencies {
@@ -50,6 +53,8 @@ dependencies {
     api('com.github.sya-ri:EasySpigotAPI:2.4.0') {
         exclude group: 'org.spigotmc', module: 'spigot-api'
     }
+
+    compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
 
 }
 
