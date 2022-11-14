@@ -231,7 +231,7 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバック
      */
-    fun damageAddVector(damage: Double = 0.0, vector: Vector = Vector(0.0, 0.0, 0.0), noDefense: Boolean = false) {
+    fun damageAddVector(damage: Double = 0.0, vector: Vector = Vector(0.0, 0.0, 0.0), noDefense: Boolean = false, dmgLoc: Location) {
         if (noDefense || !canDefense(damage, vector)) {
             // ダメージとノックバックを与える
             player.damage(damage)
@@ -245,7 +245,7 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバック
      */
-    fun damageChangeVector(damage: Double = 0.0, vector: Vector, noDefense: Boolean = false) {
+    fun damageChangeVector(damage: Double = 0.0, vector: Vector, noDefense: Boolean = false, dmgLoc: Location) {
         if (noDefense || !canDefense(damage, vector)) {
             // ダメージとノックバックを与える
             player.damage(damage)
