@@ -5,5 +5,5 @@ import org.bukkit.util.Vector
 
 interface Defense {
 
-    fun defense(damage: Double, vector: Vector ,dmgLoc: Location)
+    fun defense(damage: Double, vector: Vector, atkLoc: Location)
 }
