@@ -61,14 +61,14 @@ interface Attack {
      * @param damage ダメージ
      * @param vector ノックバック
      */
-    private fun attackUserAddVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector) {
+    private fun attackUserAddVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector, noDefense: Boolean = false) {
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING) {
-            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), dmgLoc = attackUser.player.location)
+            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, attackUser.player.location)
             target.player.noDamageTicks = 0
         } else {
             // ダメージを与える
-            target.damageAddVector(damage, vector, dmgLoc = attackUser.player.location)
+            target.damageAddVector(damage, vector, noDefense, attackUser.player.location)
             target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す
@@ -89,14 +89,14 @@ interface Attack {
      * @param damage ダメージ
      * @param vector ノックバック
      */
-    private fun attackUserChangeVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector) {
+    private fun attackUserChangeVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector, noDefense: Boolean = false) {
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING) {
-            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), dmgLoc = attackUser.player.location)
+            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, attackUser.player.location)
             target.player.noDamageTicks = 0
         } else {
             // ダメージを与える
-            target.damageChangeVector(damage, vector, dmgLoc = attackUser.player.location)
+            target.damageChangeVector(damage, vector, noDefense, attackUser.player.location)
             target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す
