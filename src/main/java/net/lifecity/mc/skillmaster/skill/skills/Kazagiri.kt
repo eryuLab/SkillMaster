@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster.skill.skills
 
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
+import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.TargetSearch
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -14,8 +15,9 @@ class Kazagiri(user: SkillUser): Skill(
         arrayListOf("前方を切り上げ"),
         60,
         user
-) {
+), Attack {
     var target: LivingEntity? = null
+    var theta = 0.0
 
     override fun canActivate(): Boolean {
         val search = TargetSearch()
@@ -28,7 +30,7 @@ class Kazagiri(user: SkillUser): Skill(
 
         // 攻撃対象が真上、真下にいる場合発動不可
         // 攻撃対象との位置関係を取得
-        var theta = search.getLivingEntityPositionRelation(user.player, target!!).first
+        theta = search.getLivingEntityPositionRelation(user.player, target!!).first
         theta *= 180 / Math.PI
         // 攻撃対象が真上にいるとき発動不可
         if (theta <= 15)
@@ -42,7 +44,19 @@ class Kazagiri(user: SkillUser): Skill(
     }
 
     override fun onActivate() {
+        // ノックバックベクトル取得
+        val vector = user.player.eyeLocation.direction
+        // 攻撃対象が斜めにいたとき
+        if ((theta in 15.0..60.0) || (theta in 120.0..165.0)) {
+            vector.y = 0.0
+        }
+        // 攻撃対象が横にいたとき
+        if (theta in 60.0..120.0) {
+            vector.y = 0.3
+        }
+
         // 攻撃処理
+        attackChangeVector(user, target!!, 2.0, vector)
         // SEとLE
     }
 }
