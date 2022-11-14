@@ -1,12 +1,21 @@
 package net.lifecity.mc.skillmaster.skill.skills
 
+import com.github.syari.spigot.api.scheduler.runTaskTimer
+import com.github.syari.spigot.api.sound.playSound
+import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.utils.TargetSearch
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Color
+import org.bukkit.Material
+import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity
+import kotlin.random.Random
 
 class Kazagiri(user: SkillUser): Skill(
         "風斬り",
@@ -54,9 +63,54 @@ class Kazagiri(user: SkillUser): Skill(
         if (theta in 60.0..120.0) {
             vector.y = 0.3
         }
+        vector.normalize()
 
         // 攻撃処理
         attackChangeVector(user, target!!, 2.0, vector)
-        // SEとLE
+
+        // SE
+        user.player.location.playSound(Sound.ENTITY_WITHER_SHOOT, volume = 0.3f, pitch = 1.3f)
+        user.player.location.playSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP)
+
+        // LE
+        val draw = DrawParticle()
+        val cycle = 120
+        val loc = user.player.location.add(0.0, 1.0, 0.0)
+        val direction = user.player.eyeLocation.direction.setY(0).normalize()
+        var effectCount = 0
+        SkillMaster.INSTANCE.runTaskTimer(2) {
+            if (effectCount >= 2) {
+                cancel()
+            }
+
+            loc.add(direction)
+            draw.drawAnimArc(
+                loc,
+                Particle.DUST_COLOR_TRANSITION,
+                data = Particle.DustTransition(Color.AQUA, Color.WHITE, 2.0f),
+                cycle = Math.PI * (cycle / 180.0),
+                radius = 1.3,
+                points = 6,
+                rotX = Math.PI,
+                rotY = Math.PI * ((user.player.location.yaw + cycle + 45) / 180.0) * -1,
+                rotZ = Math.PI * Random.nextDouble() * 0.1,
+                count = 4,
+                speed = 0.01
+            )
+
+            effectCount++
+        }
+
+        // 後ろに円
+        draw.drawCircle(
+            user.player.location.add(user.player.location.direction.multiply(-1)),
+            Particle.SOUL_FIRE_FLAME,
+            radius = 1.2,
+            points = 15,
+            rotX = Math.PI * 90.0 / 180.0,
+            rotY = Math.PI * (user.player.location.yaw / 180.0) * -1,
+            count = 4,
+            speed = 0.01
+        )
     }
 }
