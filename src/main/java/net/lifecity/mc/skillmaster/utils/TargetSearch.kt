@@ -42,9 +42,9 @@ class TargetSearch {
         getEntityPositionalRelation(livingentityA, livingentityB)
 
     /**
-     * @param entity 視点となるエンティティ
+     * @param entity 始点となるエンティティ
      * @param loc 対象となる座標
-     * @return 探索範囲内にlocがあるときtrueを返します
+     * @return entityの正面の位置に地点locがあるか否かを返す
      */
     fun isFacing(entity: Entity, loc: Location): Boolean {
         val threshold = 1.0
