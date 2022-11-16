@@ -9,6 +9,7 @@ import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -30,7 +31,7 @@ class NormalDefense(user: SkillUser) : CompositeSkill(
 
     override fun onActivate() {}
 
-    override fun defense(damage: Double, vector: Vector) {
+    override fun defense(damage: Double, vector: Vector, atkLoc: Location) {
         user.player.location.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
 
         // ガードエフェクト

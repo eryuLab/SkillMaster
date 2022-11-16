@@ -75,14 +75,14 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
         }
     }
 
-    override fun defense(damage: Double, vector: Vector) {
+    override fun defense(damage: Double, vector: Vector, atkLoc: Location) {
         // 攻撃を寸前で回避(ノックバック無効、ダメージ軽減)(4回まで)
         if (count >= 4)
             deactivate()
 
         // ダメージ軽減
         val cut = damage - 2.0
-        user.damageAddVector(cut, vector, true)
+        user.damageAddVector(cut, vector, true, atkLoc)
 
         // サウンド
         user.player.location.playSound(Sound.ENTITY_SHEEP_SHEAR, pitch = 2.0f)
