@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.skill.function
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.user.mode.UserMode
+import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -16,14 +17,23 @@ interface Attack {
      * @param entity 攻撃対象
      * @param damage ダメージ
      * @param vector ノックバック
+     * @param noDefense 防御スキル無視で攻撃します
+     * @param atkLoc 攻撃が発動した座標
      */
-    fun attackAddVector(attackUser: SkillUser, entity: LivingEntity, damage: Double, vector: Vector) {
+    fun attackAddVector(
+        attackUser: SkillUser,
+        entity: LivingEntity,
+        damage: Double,
+        vector: Vector,
+        noDefense: Boolean = false,
+        atkLoc: Location = attackUser.player.location
+    ) {
         // プレイヤーだった時の処理
         if (entity is Player) {
             val target = SkillMaster.INSTANCE.userList[entity]
 
             // 攻撃
-            attackUserAddVector(attackUser, target, damage, vector)
+            attackUserAddVector(attackUser, target, damage, vector, noDefense, atkLoc)
         }
         // プレイヤー以外の時の処理
         else {
@@ -38,14 +48,23 @@ interface Attack {
      * @param entity 攻撃対象
      * @param damage ダメージ
      * @param vector ノックバック
+     * @param noDefense 防御スキル無視で攻撃します
+     * @param atkLoc 攻撃が発動した座標
      */
-    fun attackChangeVector(attackUser: SkillUser, entity: LivingEntity, damage: Double, vector: Vector) {
+    fun attackChangeVector(
+        attackUser: SkillUser,
+        entity: LivingEntity,
+        damage: Double,
+        vector: Vector,
+        noDefense: Boolean = false,
+        atkLoc: Location = attackUser.player.location
+    ) {
         // プレイヤーだった時の処理
         if (entity is Player) {
             val target = SkillMaster.INSTANCE.userList[entity]
 
             // 攻撃
-            attackUserChangeVector(attackUser, target, damage, vector)
+            attackUserChangeVector(attackUser, target, damage, vector, noDefense, atkLoc)
         }
         // プレイヤー以外の時の処理
         else {
@@ -60,15 +79,24 @@ interface Attack {
      * @param target 攻撃対象
      * @param damage ダメージ
      * @param vector ノックバック
+     * @param noDefense 防御スキル無視で攻撃します
+     * @param atkLoc 攻撃が発動した座標
      */
-    private fun attackUserAddVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector, noDefense: Boolean = false) {
+    private fun attackUserAddVector(
+        attackUser: SkillUser,
+        target: SkillUser,
+        damage: Double,
+        vector: Vector,
+        noDefense: Boolean,
+        atkLoc: Location
+    ) {
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING) {
-            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, attackUser.player.location)
+            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, atkLoc)
             target.player.noDamageTicks = 0
         } else {
             // ダメージを与える
-            target.damageAddVector(damage, vector, noDefense, attackUser.player.location)
+            target.damageAddVector(damage, vector, noDefense, atkLoc)
             target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す
@@ -88,15 +116,24 @@ interface Attack {
      * @param target 攻撃対象
      * @param damage ダメージ
      * @param vector ノックバック
+     * @param noDefense 防御スキル無視で攻撃します
+     * @param atkLoc 攻撃が発動した座標
      */
-    private fun attackUserChangeVector(attackUser: SkillUser, target: SkillUser, damage: Double, vector: Vector, noDefense: Boolean = false) {
+    private fun attackUserChangeVector(
+        attackUser: SkillUser,
+        target: SkillUser,
+        damage: Double,
+        vector: Vector,
+        noDefense: Boolean = false,
+        atkLoc: Location = attackUser.player.location
+    ) {
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING) {
-            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, attackUser.player.location)
+            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, atkLoc)
             target.player.noDamageTicks = 0
         } else {
             // ダメージを与える
-            target.damageChangeVector(damage, vector, noDefense, attackUser.player.location)
+            target.damageChangeVector(damage, vector, noDefense, atkLoc)
             target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す
