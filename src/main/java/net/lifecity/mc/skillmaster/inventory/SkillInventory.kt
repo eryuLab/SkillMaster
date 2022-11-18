@@ -1,12 +1,14 @@
 package net.lifecity.mc.skillmaster.inventory
 
+import net.lifecity.mc.skillmaster.skill.ISkill
+import net.lifecity.mc.skillmaster.skill.SkillList
 import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user), val page: Int) :
+class SkillInventory(user: SkillUser, val page: Int) :
     InventoryFrame(user, 6, "スキルメニュー:${user.selectedWeapon.jp}") {
 
     private val airItem: InvItem
@@ -15,7 +17,7 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
             if (this.cursor?.type != Material.AIR) {
                 this.isCancelled = true
 
-                val canCovertItem = sm.canConvertItemStack(this.cursor!!)
+                val canCovertItem = SkillList.canConvertItemStack(this.cursor!!)
 
                 if(canCovertItem) this.cursor = ItemStack(Material.AIR)
 
@@ -24,8 +26,7 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
 
 
     override fun init() {
-        val skillManager = SkillManager(user)
-        val skillList = skillManager.fromWeapon(user.selectedWeapon)
+        val skillList = SkillList.fromWeapon(user.selectedWeapon)
 
         // 仕切り
         for (i in 1..53 step 9) {
@@ -52,7 +53,7 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
         val rowList = mutableListOf<TypeRow>()
         for (type in SkillType.values()) {
             // 種類分けされたスキルリストを生成
-            val skillListByType = mutableListOf<Skill>()
+            val skillListByType = mutableListOf<ISkill>()
             for (skill in skillList) {
                 if (skill.type == type) skillListByType.add(skill)
             }
@@ -131,7 +132,7 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
 
     inner class TypeRow(
         val type: SkillType,
-        private val skillList: List<Skill>,
+        private val skillList: List<ISkill>,
         private val rowNum: Int
     ) {
 
@@ -139,14 +140,15 @@ class SkillInventory(user: SkillUser, val sm: SkillManager = SkillManager(user),
             val index = rowNum * 7 + num
             if (index < skillList.size) {
                 val skill = skillList[index]
-                return InvItem(skill.toItemStackInInv()) {
+                val skillManager = SkillManager(skill)
+                return InvItem(skillManager.toItemStackInInv()) {
                     this.isCancelled = true
 
                     if (this.cursor?.type == Material.AIR) {
-                        this.cursor = skill.toItemStackInInv()
+                        this.cursor = skillManager.toItemStackInInv()
                     } else {
 
-                        val canConvertItem = sm.canConvertItemStack(this.cursor!!) //TODO: ここの!!をなくす
+                        val canConvertItem = SkillList.canConvertItemStack(this.cursor!!) //TODO: ここの!!をなくす
 
                         if(canConvertItem) this.cursor = ItemStack(Material.AIR)
 
