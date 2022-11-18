@@ -71,13 +71,6 @@ class GameManager(val game: Game) {
         if (game.state === GameState.WAITING_FOR_FINISH)
             return
 
-        // ボスバー
-        for (team in game.teams) {
-            for (user in team.userArray) {
-                bossBar.removePlayer(user.player)
-            }
-        }
-
         // タイマーの停止
         //if (game.state === GameState.COUNT_DOWN) countDownTimer.cancel()
         //if (game.state === GameState.IN_GAMING) gameTimer.cancel()
@@ -102,6 +95,10 @@ class GameManager(val game: Game) {
                 // todo ロビーへ接続
                 sendMessageAll("ロビーへ接続できた気持ちになってください")
                 setGameModeElseTeam(game.winners, GameMode.SURVIVAL)
+
+                // ボスバーからプレイヤーを削除
+                bossBar.removeAll()
+
                 cancel()
             }
 
