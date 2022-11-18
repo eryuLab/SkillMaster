@@ -8,4 +8,9 @@ interface ISkill {
     val type: SkillType
     val lore: List<String>
     val interval: Int
+    val inInterval: Boolean
+
+    fun onActivate()
+
+    fun onDeactivate()
 }
