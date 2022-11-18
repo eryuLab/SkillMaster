@@ -26,7 +26,7 @@ class KaraNoKamae(
     override val interval: Int = 140,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : DefenseSkill(), ICompositeSkill {
+) : DefenseSkill, ICompositeSkill {
 
     var count = 0
 

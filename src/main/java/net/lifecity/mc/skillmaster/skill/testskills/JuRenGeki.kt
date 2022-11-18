@@ -20,7 +20,7 @@ class JuRenGeki(
     override val interval: Int = 0,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : AttackSkill(), ICompositeSkill {
+) : AttackSkill, ICompositeSkill {
 
     val skillController = SkillController(this)
 

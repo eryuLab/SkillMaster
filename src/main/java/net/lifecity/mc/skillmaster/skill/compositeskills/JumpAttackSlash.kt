@@ -33,7 +33,7 @@ class JumpAttackSlash(
     override val interval: Int = 360,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : AttackSkill(), ICompositeSkill {
+) : AttackSkill, ICompositeSkill {
 
     val skillController = SkillController(this)
 

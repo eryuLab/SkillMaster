@@ -7,7 +7,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
-abstract class KnockbackSkill {
+interface KnockbackSkill {
     /**
      * 対象をノックバックさせます
      * 加算によってベクトルを与えます

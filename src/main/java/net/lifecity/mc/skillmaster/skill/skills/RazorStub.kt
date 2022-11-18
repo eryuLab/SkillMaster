@@ -25,7 +25,7 @@ class RazorStub(
     override val interval: Int = 80,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : AttackSkill(), ISkill {
+) : AttackSkill, ISkill {
 
     var target: LivingEntity? = null
     override fun register() {

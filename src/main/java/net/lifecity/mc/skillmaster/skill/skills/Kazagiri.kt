@@ -26,7 +26,7 @@ class Kazagiri(
     override val interval: Int = 60,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : AttackSkill(), ISkill {
+) : AttackSkill, ISkill {
 
     var target: LivingEntity? = null
     var theta = 0.0

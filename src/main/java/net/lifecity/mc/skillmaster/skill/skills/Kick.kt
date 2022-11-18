@@ -24,7 +24,7 @@ class Kick(
     override val interval: Int = 60,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : KnockbackSkill(), ISkill {
+) : KnockbackSkill, ISkill {
     override fun register() {
         SkillManager(this).register()
     }

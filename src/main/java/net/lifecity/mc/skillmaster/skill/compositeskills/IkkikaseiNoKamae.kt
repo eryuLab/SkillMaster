@@ -2,12 +2,9 @@ package net.lifecity.mc.skillmaster.skill.compositeskills
 
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskLater
-import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.CompositeSkill
-import net.lifecity.mc.skillmaster.skill.SkillType
-import net.lifecity.mc.skillmaster.skill.function.Defense
+import net.lifecity.mc.skillmaster.skill.*
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.utils.TargetSearch
@@ -19,16 +16,27 @@ import org.bukkit.Sound
 import org.bukkit.util.Vector
 import kotlin.random.Random
 
-class IkkikaseiNoKamae(user: SkillUser): CompositeSkill(
-    "一気呵成の構え",
-    arrayListOf(Weapon.STRAIGHT_SWORD),
-    SkillType.DEFENSE,
-    arrayListOf("一定時間剣の刃で攻撃を受け止める"),
-    6,
-    80,
-    user,
-    false
-), Defense {
+class IkkikaseiNoKamae(
+    override val activationTime: Int = 6,
+    override val canCancel: Boolean = false,
+    override val name: String =  "一気呵成の構え",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.DEFENSE,
+    override val lore: List<String> = listOf("一定時間剣の刃で攻撃を受け止める"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 80,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+): DefenseSkill, ICompositeSkill {
+    override fun onAdditionalInput() {
+    }
+
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean = true
+
     override fun onActivate() {
         // SE
         user.player.location.playSound(Sound.ENTITY_CREEPER_DEATH, pitch = 1.5f)
@@ -42,6 +50,9 @@ class IkkikaseiNoKamae(user: SkillUser): CompositeSkill(
             count = 3,
             speed = 0.02
         )
+    }
+
+    override fun onDeactivate() {
     }
 
     override fun defense(damage: Double, vector: Vector, atkLoc: Location) {

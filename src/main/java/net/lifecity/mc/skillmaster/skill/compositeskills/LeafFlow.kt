@@ -32,7 +32,7 @@ class LeafFlow(
     override val interval: Int = 100,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : AttackSkill(), ICompositeSkill {
+) : AttackSkill, ICompositeSkill {
 
     val skillController = SkillController(this)
 

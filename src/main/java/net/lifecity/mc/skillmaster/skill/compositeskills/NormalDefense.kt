@@ -31,7 +31,7 @@ class NormalDefense(
     override val interval: Int = 60,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : DefenseSkill(), ICompositeSkill {
+) : DefenseSkill, ICompositeSkill {
     override fun onAdditionalInput() {}
 
     override fun register() {

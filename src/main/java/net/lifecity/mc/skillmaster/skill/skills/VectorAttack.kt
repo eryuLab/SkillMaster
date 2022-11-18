@@ -24,7 +24,7 @@ class VectorAttack(
     override val interval: Int = 100,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : AttackSkill(), ISkill {
+) : AttackSkill, ISkill {
     override fun register() {
         SkillManager(this).register()
     }

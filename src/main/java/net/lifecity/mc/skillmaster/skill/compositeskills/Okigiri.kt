@@ -28,7 +28,7 @@ class Okigiri(
     override val interval: Int = 80,
     override var inInterval: Boolean = false,
     override val user: SkillUser
-) : AttackSkill(), ICompositeSkill {
+) : AttackSkill, ICompositeSkill {
     override fun onAdditionalInput() {
     }
 
