@@ -19,6 +19,7 @@ class SkillManager(val user: SkillUser) {
         SlapStep(user),
         Kick(user),
         Okigiri(user),
+        IkkikaseiNoKamae(user),
         Kazagiri(user),
         // old type
         LeafFlow(user),
