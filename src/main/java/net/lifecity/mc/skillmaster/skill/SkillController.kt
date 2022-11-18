@@ -2,10 +2,9 @@ package net.lifecity.mc.skillmaster.skill
 
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.ChatColor
 
-class SkillController(val user: SkillUser, val skill: ISkill) {
+data class SkillController(val skill: ISkill) {
 
     /**
      * 残りインターバルtickを表します。
@@ -15,18 +14,34 @@ class SkillController(val user: SkillUser, val skill: ISkill) {
     var intervalCountDown = 0
     var inInterval: Boolean = false
 
-    fun canActivate(skill: ISkill) = true
-
     /**
      * スキルを発動します
      */
     fun activate() {
-        if (!canActivate(skill))
+        if (!skill.canActivate())
             return
 
-        user.sendActionBar("${ChatColor.DARK_AQUA}『${skill.name}』発動")
+        skill.user.sendActionBar("${ChatColor.DARK_AQUA}『${skill.name}』発動")
 
         skill.onActivate()
+        skill.isActivated = true
+
+        //終了処理：ActivationTimer起動
+        if(skill is ICompositeSkill) {
+            var count = 0
+            SkillMaster.INSTANCE.runTaskTimer(1) {
+                if (!skill.isActivated) //発動中か確認
+                    cancel()
+
+                if (count >= skill.activationTime) { //カウント確認
+                    deactivate()
+                    cancel()
+                }
+
+                count++
+            }
+        }
+
 
         deactivate()
     }
@@ -39,13 +54,18 @@ class SkillController(val user: SkillUser, val skill: ISkill) {
         if (skill.inInterval)
             return
 
+        if (!skill.isActivated) //発動していなかったら戻る
+            return
+
+        skill.isActivated = false //発動解除
+
         skill.onDeactivate()
 
         // インターバルの処理を開始のための初期化をする
         intervalStartSetUP()
 
         // インターバルアイテムの更新
-        user.updateIntervalItem(skill)
+        skill.user.updateIntervalItem(skill)
 
         // インターバル変わるまでのタイマー
         SkillMaster.INSTANCE.runTaskTimer(1) {
@@ -82,6 +102,8 @@ class SkillController(val user: SkillUser, val skill: ISkill) {
 
     fun init() {
         stopInterval()
+
+        skill.isActivated = false
     }
 
 }

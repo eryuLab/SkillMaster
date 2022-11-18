@@ -1,5 +1,6 @@
 package net.lifecity.mc.skillmaster.skill
 
+import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 
 interface ISkill {
@@ -7,8 +8,14 @@ interface ISkill {
     val weaponList: List<Weapon>
     val type: SkillType
     val lore: List<String>
+    var isActivated: Boolean
     val interval: Int
-    val inInterval: Boolean
+    var inInterval: Boolean
+    val user: SkillUser
+
+    fun register()
+
+    fun canActivate() : Boolean
 
     fun onActivate()
 
