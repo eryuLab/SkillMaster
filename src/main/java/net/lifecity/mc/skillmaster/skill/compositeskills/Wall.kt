@@ -1,6 +1,8 @@
 package net.lifecity.mc.skillmaster.skill.compositeskills
 
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.ICompositeSkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.WorldEditUtils
@@ -12,9 +14,11 @@ import java.io.File
 import java.io.IOException
 import kotlin.math.roundToInt
 
-class Wall(user: SkillUser) : CompositeSkill(
-    "ウォール",
-    listOf(
+class Wall(
+    override val activationTime: Int = 10,
+    override val canCancel: Boolean = true,
+    override val name: String = "ウォール",
+    override val weaponList: List<Weapon> = listOf(
         Weapon.STRAIGHT_SWORD,
         Weapon.DAGGER,
         Weapon.GREAT_SWORD,
@@ -22,21 +26,34 @@ class Wall(user: SkillUser) : CompositeSkill(
         Weapon.RAPIER,
         Weapon.MACE
     ),
-    SkillType.ATTACK,
-    listOf(
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf(
         "ガラスの壁を生成し、相手の攻撃から身を守る",
         "壁は時間経過で消える"
     ),
-    10,
-    240,
-    user
-) {
+    override var isActivated: Boolean = false,
+    override val interval: Int = 240,
+    override var inInterval: Boolean,
+    override val user: SkillUser
+) : ICompositeSkill {
+    override fun onAdditionalInput() {
+    }
+
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean  = true
+
     override fun onActivate() {
         try {
             createWall(user.player.location)
         } catch (e: IOException) {
             user.player.sendMessage("壁の生成失敗")
         }
+    }
+
+    override fun onDeactivate() {
     }
 
 
@@ -52,48 +69,56 @@ class Wall(user: SkillUser) : CompositeSkill(
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             NORTH_EAST -> {
                 val schematic =
                     File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/north_east_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             EAST -> {
                 val schematic =
                     File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/east_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             SOUTH_EAST -> {
                 val schematic =
                     File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/south_east_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             SOUTH -> {
                 val schematic =
                     File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/south_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             SOUTH_WEST -> {
                 val schematic =
                     File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/south_west_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             WEST -> {
                 val schematic =
                     File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/west_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             NORTH_WEST -> {
                 val schematic =
                     File(SkillMaster.INSTANCE.dataFolder.toString() + File.separator + "/schematics/north_west_wall.schem")
                 val clip = worldEditUtils.load(schematic)
                 worldEditUtils.pasteAndAutoUndo(origin, clip, activationTime)
             }
+
             else -> {}
         }
     }

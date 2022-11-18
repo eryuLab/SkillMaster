@@ -3,6 +3,9 @@ package net.lifecity.mc.skillmaster.skill.skills
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.AttackSkill
+import net.lifecity.mc.skillmaster.skill.ISkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -12,14 +15,22 @@ import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 
-class VectorAttack(user: SkillUser) : Skill(
-    "ベクトルアタック",
-    listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD, Weapon.MACE),
-    SkillType.ATTACK,
-    listOf("ユーザーが持つベクトルを力に変換して攻撃します。"),
-    100,
-    user
-), Attack {
+class VectorAttack(
+    override val name: String = "ベクトルアタック",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD, Weapon.GREAT_SWORD, Weapon.LONG_SWORD, Weapon.MACE),
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf("ユーザーが持つベクトルを力に変換して攻撃します。"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 100,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : AttackSkill(), ISkill {
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean = true
+
     override fun onActivate() {
         val vector = user.player.eyeLocation.direction.multiply(1.2)
         user.player.velocity = user.player.velocity.add(vector)
@@ -55,6 +66,8 @@ class VectorAttack(user: SkillUser) : Skill(
             count++
         }
     }
+
+    override fun onDeactivate() {}
 
     /**
      * @param entity: 始点となるエンティティ

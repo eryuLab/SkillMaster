@@ -5,6 +5,8 @@ import com.github.syari.spigot.api.scheduler.runTaskLater
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.ICompositeSkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
@@ -13,16 +15,26 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 
-class SlapStep(user: SkillUser): CompositeSkill(
-    "スラップステップ",
-    arrayListOf(Weapon.STRAIGHT_SWORD),
-    SkillType.MOVE,
-    arrayListOf("前後に3ステップ"),
-    20,
-    120,
-    user,
-    true
-) {
+class SlapStep(
+    override val activationTime: Int = 20,
+    override val canCancel: Boolean = true,
+    override val name: String = "スラップステップ",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.MOVE,
+    override val lore: List<String> = listOf("前後に3ステップ"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 120,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : ICompositeSkill {
+    override fun onAdditionalInput() {
+    }
+
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean = true
 
     override fun onActivate() {
         // 下にブロックがあるか確認
@@ -38,7 +50,11 @@ class SlapStep(user: SkillUser): CompositeSkill(
             if (count >= 7)
                 cancel()
 
-            user.player.eyeLocation.spawnParticle(Particle.FALLING_DUST, data = Material.WHITE_WOOL.createBlockData(), count = 3)
+            user.player.eyeLocation.spawnParticle(
+                Particle.FALLING_DUST,
+                data = Material.WHITE_WOOL.createBlockData(),
+                count = 3
+            )
 
             count++
         }
@@ -46,8 +62,8 @@ class SlapStep(user: SkillUser): CompositeSkill(
         draw.drawCircle(user.player.location, Particle.CRIT, radius = 1.5, points = 20, speed = 0.1)
 
         //10tick待つ
-        SkillMaster.INSTANCE.runTaskLater(7) one@ {
-            if (!activated)
+        SkillMaster.INSTANCE.runTaskLater(7) one@{
+            if (!isActivated)
                 return@one
 
             // 下にブロックがあるか確認
@@ -61,8 +77,8 @@ class SlapStep(user: SkillUser): CompositeSkill(
             draw.drawCircle(user.player.location, Particle.CRIT, radius = 1.5, points = 20, speed = 0.1)
 
             // 10tick待つ
-            SkillMaster.INSTANCE.runTaskLater(7) two@ {
-                if (!activated)
+            SkillMaster.INSTANCE.runTaskLater(7) two@{
+                if (!isActivated)
                     return@two
 
                 // 下にブロックがあるか確認
@@ -76,6 +92,9 @@ class SlapStep(user: SkillUser): CompositeSkill(
                 draw.drawCircle(user.player.location, Particle.CRIT, radius = 1.5, points = 20, speed = 0.1)
             }
         }
+    }
+
+    override fun onDeactivate() {
     }
 
     private fun stepSound() {

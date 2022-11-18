@@ -3,6 +3,9 @@ package net.lifecity.mc.skillmaster.skill.skills
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.AttackSkill
+import net.lifecity.mc.skillmaster.skill.ISkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
@@ -14,16 +17,22 @@ import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity
 import kotlin.random.Random
 
-class Kazagiri(user: SkillUser): Skill(
-        "風斬り",
-        arrayListOf(Weapon.STRAIGHT_SWORD),
-        SkillType.ATTACK,
-        arrayListOf("前方を切り上げ"),
-        60,
-        user
-), Attack {
+class Kazagiri(
+    override val name: String = "風斬り",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf("前方を切り上げ"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 60,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : AttackSkill(), ISkill {
+
     var target: LivingEntity? = null
     var theta = 0.0
+    override fun register() {
+        SkillManager(this).register()
+    }
 
     override fun canActivate(): Boolean {
         val search = TargetSearch()
@@ -109,5 +118,8 @@ class Kazagiri(user: SkillUser): Skill(
             count = 4,
             speed = 0.01
         )
+    }
+
+    override fun onDeactivate() {
     }
 }

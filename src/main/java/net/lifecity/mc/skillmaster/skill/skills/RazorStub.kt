@@ -1,6 +1,9 @@
 package net.lifecity.mc.skillmaster.skill.skills
 
 import com.github.syari.spigot.api.sound.playSoundLegacy
+import net.lifecity.mc.skillmaster.skill.AttackSkill
+import net.lifecity.mc.skillmaster.skill.ISkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
@@ -13,16 +16,21 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
 
-class RazorStub(user: SkillUser) : Skill(
-    "レイザースタブ",
-    listOf(Weapon.STRAIGHT_SWORD),
-    SkillType.ATTACK,
-    listOf("剣に闇をまとわせて斜め下から切り上げる"),
-    80,
-    user
-), Attack {
+class RazorStub(
+    override val name: String = "レイザースタブ",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf("剣に闇をまとわせて斜め下から切り上げる"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 80,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : AttackSkill(), ISkill {
 
     var target: LivingEntity? = null
+    override fun register() {
+        SkillManager(this).register()
+    }
 
     override fun canActivate(): Boolean {
         // targetがいなかったら発動不可
@@ -54,6 +62,8 @@ class RazorStub(user: SkillUser) : Skill(
         }
     }
 
+    override fun onDeactivate() {}
+
     /**
      * パーティクルを表示する
      */
@@ -66,6 +76,6 @@ class RazorStub(user: SkillUser) : Skill(
         drawParticle.drawCircle(targetLoc, Particle.SPELL_WITCH, null, 1.0, 30, count = 10) //円のパーティクル表示
         user.player.playSoundLegacy(Sound.ENTITY_PLAYER_ATTACK_SWEEP, pitch = 0.5F)
         user.player.playSoundLegacy(Sound.ENTITY_WITHER_SHOOT, pitch = 0.5F, volume = 0.3F)
-        drawParticle.drawSlash(targetLoc, Particle.SPELL_WITCH,  points = 10, count = 10) //斬撃のパーティクル表示
+        drawParticle.drawSlash(targetLoc, Particle.SPELL_WITCH, points = 10, count = 10) //斬撃のパーティクル表示
     }
 }

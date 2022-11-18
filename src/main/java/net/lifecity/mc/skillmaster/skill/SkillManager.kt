@@ -29,7 +29,7 @@ class SkillManager(val skill: ISkill) {
     }
 
     /**
-     * このスキルをItemStackとして現します
+     * スキルをItemStackとして現します
      * @return ItemStackになったスキル
      */
     fun toItemStackInInv(): ItemStack {

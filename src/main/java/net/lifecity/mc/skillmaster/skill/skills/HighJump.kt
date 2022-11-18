@@ -3,6 +3,8 @@ package net.lifecity.mc.skillmaster.skill.skills
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.ISkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -12,14 +14,21 @@ import java.util.*
 /**
  * 上に高く飛び上がるスキル
  */
-class HighJump(user: SkillUser) : Skill(
-    "大ジャンプ",
-    listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
-    SkillType.MOVE,
-    listOf("上に飛び上がります。"),
-    100,
-    user
-) {
+class HighJump(
+    override val name: String = "大ジャンプ",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
+    override val type: SkillType = SkillType.MOVE,
+    override val lore: List<String> = listOf("上に飛び上がります。"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 100,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : ISkill {
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean = true
 
     override fun onActivate() {
 
@@ -57,5 +66,8 @@ class HighJump(user: SkillUser) : Skill(
             user.player.location.spawnParticle(Particle.LAVA)
             count++
         }
+    }
+
+    override fun onDeactivate() {
     }
 }

@@ -12,7 +12,6 @@ interface ISkill {
     val interval: Int
     var inInterval: Boolean
     val user: SkillUser
-    val skillController: SkillController
 
     fun register()
 

@@ -4,6 +4,9 @@ import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.AttackSkill
+import net.lifecity.mc.skillmaster.skill.ISkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.TargetSearch
@@ -13,16 +16,22 @@ import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity
 
-class Thrust(user: SkillUser) : Skill(
-    "スラスト",
-    listOf(Weapon.STRAIGHT_SWORD),
-    SkillType.ATTACK,
-    listOf("剣を手と垂直に構えて突き上げる"),
-    80,
-    user
-), Attack {
+class Thrust(
+    override val name: String = "スラスト",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf("剣を手と垂直に構えて突き上げる"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 80,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : AttackSkill(), ISkill {
+
 
     var target: LivingEntity? = null
+    override fun register() {
+        SkillManager(this).register()
+    }
 
     override fun canActivate(): Boolean {
         val search = TargetSearch()
@@ -63,7 +72,7 @@ class Thrust(user: SkillUser) : Skill(
                 this.cancel()
 
             // 突きの軌道
-            repeat (4) {
+            repeat(4) {
                 loc.spawnParticle(Particle.FALLING_DUST, data = Material.WHITE_WOOL.createBlockData(), count = 4)
                 loc.spawnParticle(Particle.FALLING_DUST, data = Material.DIAMOND_ORE.createBlockData())
                 loc.spawnParticle(Particle.FALLING_DUST, data = Material.WARPED_PLANKS.createBlockData())
@@ -80,4 +89,6 @@ class Thrust(user: SkillUser) : Skill(
             attackChangeVector(user, livingEntity, 3.8, direction.multiply(0.8))
         }
     }
+
+    override fun onDeactivate() {}
 }

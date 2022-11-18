@@ -4,6 +4,9 @@ import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.skill.AttackSkill
+import net.lifecity.mc.skillmaster.skill.ICompositeSkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
@@ -14,16 +17,27 @@ import org.bukkit.Sound
 import org.bukkit.util.Vector
 import kotlin.random.Random
 
-class Okigiri(user: SkillUser): CompositeSkill(
-    "置き斬り",
-    arrayListOf(Weapon.STRAIGHT_SWORD),
-    SkillType.ATTACK,
-    arrayListOf(""),
-    10,
-    80,
-    user,
-    false
-), Attack {
+class Okigiri(
+    override val activationTime: Int = 10,
+    override val canCancel: Boolean = false,
+    override val name: String = "置き斬り",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf(),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 80,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : AttackSkill(), ICompositeSkill {
+    override fun onAdditionalInput() {
+    }
+
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean  = true
+
     override fun onActivate() {
         // 前方へ移動
         val vector = user.player.eyeLocation.direction
@@ -45,7 +59,7 @@ class Okigiri(user: SkillUser): CompositeSkill(
         val draw = DrawParticle()
         SkillMaster.INSTANCE.runTaskTimer(1) {
             // 非発動化したらキャンセル
-            if (!activated)
+            if (!isActivated)
                 cancel()
 
             // LE
@@ -90,6 +104,10 @@ class Okigiri(user: SkillUser): CompositeSkill(
             }
             count++
         }
+    }
+
+    override fun onDeactivate() {
+        TODO("Not yet implemented")
     }
 
     fun randomVector(): Vector {

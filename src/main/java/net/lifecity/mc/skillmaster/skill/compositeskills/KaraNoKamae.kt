@@ -4,8 +4,7 @@ import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SkillType
-import net.lifecity.mc.skillmaster.skill.function.Defense
+import net.lifecity.mc.skillmaster.skill.*
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.weapon.Weapon
@@ -16,19 +15,31 @@ import org.bukkit.Sound
 import org.bukkit.util.Vector
 import kotlin.random.Random
 
-class KaraNoKamae(user: SkillUser): CompositeSkill(
-    "空の構え",
-    arrayListOf(Weapon.STRAIGHT_SWORD),
-    SkillType.DEFENSE,
-    arrayListOf("敵の攻撃を寸前で回避しながら前方に移動する"),
-    10,
-    140,
-    user,
-    true
-), Defense {
+class KaraNoKamae(
+    override val activationTime: Int = 10,
+    override val canCancel: Boolean = true,
+    override val name: String = "空の構え",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.DEFENSE,
+    override val lore: List<String> = listOf("敵の攻撃を寸前で回避しながら前方に移動する"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 140,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : DefenseSkill(), ICompositeSkill {
 
     var count = 0
 
+    val skillController = SkillController(this)
+
+    override fun onAdditionalInput() {
+    }
+
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean = true
     override fun onActivate() {
         // 前方に突進
         val vector = user.player.eyeLocation.direction
@@ -43,7 +54,7 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
 
         var count = 0
         SkillMaster.INSTANCE.runTaskTimer(1) {
-            if (!activated)
+            if (!isActivated)
                 cancel()
 
             if (count >= 6)
@@ -74,10 +85,13 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
         }
     }
 
+    override fun onDeactivate() {
+    }
+
     override fun defense(damage: Double, vector: Vector, atkLoc: Location) {
         // 攻撃を寸前で回避(ノックバック無効、ダメージ軽減)(4回まで)
         if (count >= 4)
-            deactivate()
+            skillController.deactivate()
 
         // ダメージ軽減
         val cut = damage - 2.0
@@ -110,6 +124,7 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
             count++
         }
     }
+
     /**
      * 指定座標を中心にランダムな座標生成します
      */

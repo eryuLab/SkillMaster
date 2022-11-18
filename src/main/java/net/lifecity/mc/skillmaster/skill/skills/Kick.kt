@@ -1,8 +1,10 @@
 package net.lifecity.mc.skillmaster.skill.skills
 
 import com.github.syari.spigot.api.sound.playSound
+import net.lifecity.mc.skillmaster.skill.ISkill
+import net.lifecity.mc.skillmaster.skill.KnockbackSkill
+import net.lifecity.mc.skillmaster.skill.SkillManager
 import net.lifecity.mc.skillmaster.skill.SkillType
-import net.lifecity.mc.skillmaster.skill.function.Knockback
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.utils.TargetSearch
@@ -13,14 +15,21 @@ import org.bukkit.Sound
 /**
  * 敵を蹴り飛ばすスキル
  */
-class Kick(user: SkillUser) : Skill(
-    "蹴り",
-    listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
-    SkillType.ATTACK,
-    listOf("相手を蹴り飛ばします。"),
-    60,
-    user
-), Knockback {
+class Kick(
+    override val name: String = "蹴り",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD, Weapon.DAGGER, Weapon.RAPIER, Weapon.MACE),
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf("相手を蹴り飛ばします。"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 60,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : KnockbackSkill(), ISkill {
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun canActivate(): Boolean = true
 
     override fun onActivate() {
         // ユーザーの視点方向を確認
@@ -72,4 +81,6 @@ class Kick(user: SkillUser) : Skill(
             speed = 0.0
         )
     }
+
+    override fun onDeactivate() {}
 }

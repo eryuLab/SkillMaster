@@ -22,7 +22,7 @@ class JuRenGeki(
     override val user: SkillUser
 ) : AttackSkill(), ICompositeSkill {
 
-    override val skillController = SkillController(this)
+    val skillController = SkillController(this)
 
     override fun register() {
         SkillManager(this).register()
