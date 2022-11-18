@@ -4,6 +4,7 @@ import net.lifecity.mc.skillmaster.game.GameList
 import net.lifecity.mc.skillmaster.game.GameType
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.game.stage.GameStageList
+import net.lifecity.mc.skillmaster.skill.SkillList
 import net.lifecity.mc.skillmaster.user.SkillUserList
 import net.lifecity.mc.skillmaster.utils.FileUtil
 import org.bukkit.Bukkit

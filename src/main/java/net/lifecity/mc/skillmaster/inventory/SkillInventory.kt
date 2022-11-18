@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack
 class SkillInventory(user: SkillUser, val page: Int) :
     InventoryFrame(user, 6, "スキルメニュー:${user.selectedWeapon.jp}") {
 
+
     private val airItem: InvItem
         get() = InvItem(ItemStack(Material.AIR)) {
             //カーソルがairじゃなかったらカーソルをairに変更
@@ -26,6 +27,8 @@ class SkillInventory(user: SkillUser, val page: Int) :
 
 
     override fun init() {
+        SkillList.register(user)
+
         val skillList = SkillList.fromWeapon(user.selectedWeapon)
 
         // 仕切り

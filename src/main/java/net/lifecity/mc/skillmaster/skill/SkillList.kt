@@ -2,11 +2,40 @@ package net.lifecity.mc.skillmaster.skill
 
 import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.SkillConvertException
+import net.lifecity.mc.skillmaster.skill.compositeskills.*
+import net.lifecity.mc.skillmaster.skill.skills.*
+import net.lifecity.mc.skillmaster.skill.testskills.JuRenGeki
+import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.inventory.ItemStack
 
 object SkillList {
-    val skillList = mutableListOf<ISkill>()
+    lateinit var skillList : List<ISkill>
+
+    fun register(user: SkillUser) {
+        val skillList = listOf(
+            // new type
+            RazorStub(user= user),
+            Thrust(user= user),
+            KaraNoKamae(user= user),
+            SlapStep(user= user),
+            Kick(user= user),
+            Okigiri(user= user),
+            IkkikaseiNoKamae(user= user),
+            Kazagiri(user= user),
+            // old type
+            LeafFlow(user= user),
+            JumpAttackSlash(user= user),
+            Wall(user= user),
+            MoveFast(user= user),
+            VectorAttack(user= user),
+            HighJump(user= user),
+            NormalDefense(user= user),
+            // test
+            JuRenGeki(user= user),
+        )
+        this.skillList = skillList
+    }
 
     /**
      * 武器からスキルリストを取得します

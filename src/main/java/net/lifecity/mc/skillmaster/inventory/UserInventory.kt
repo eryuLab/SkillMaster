@@ -17,6 +17,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
         get() = InvItem(createItemStack(Material.IRON_BARS)) { this.isCancelled = true }
 
     override fun init() {
+        SkillList.register(user)
         //アイテムを設置
         val keyLists = listOf(
             user.rightCard.skillSet.keyList,
