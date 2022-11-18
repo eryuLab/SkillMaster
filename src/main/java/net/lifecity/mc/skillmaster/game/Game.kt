@@ -46,7 +46,7 @@ interface Game {
      */
     fun teleportTeam(team: GameTeam)
 
-    fun onUserLeave(leaver: SkillUser)
+    fun onUserLogout(leaver: SkillUser)
 
     fun onUserAttack(attacker: SkillUser)
 
