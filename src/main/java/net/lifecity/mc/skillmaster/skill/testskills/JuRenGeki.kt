@@ -2,28 +2,40 @@ package net.lifecity.mc.skillmaster.skill.testskills
 
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.SkillType
-import net.lifecity.mc.skillmaster.skill.function.Attack
+import net.lifecity.mc.skillmaster.skill.*
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.utils.TargetSearch
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Particle
 
-class JuRenGeki(user: SkillUser): CompositeSkill(
-    "十連撃",
-    arrayListOf(Weapon.STRAIGHT_SWORD),
-    SkillType.ATTACK,
-    arrayListOf("テスト用十連撃"),
-    20,
-    0,
-    user,
-    true
-), Attack {
+class JuRenGeki(
+    override val activationTime: Int = 20,
+    override val canCancel: Boolean = true,
+    override val name: String = "十連撃",
+    override val weaponList: List<Weapon> = listOf(Weapon.STRAIGHT_SWORD),
+    override val type: SkillType = SkillType.ATTACK,
+    override val lore: List<String> = listOf("テスト用十連撃"),
+    override var isActivated: Boolean = false,
+    override val interval: Int = 0,
+    override var inInterval: Boolean = false,
+    override val user: SkillUser
+) : AttackSkill(), ICompositeSkill {
+
+    override val skillController = SkillController(this)
+
+    override fun register() {
+        SkillManager(this).register()
+    }
+
+    override fun onAdditionalInput() {}
+
+    override fun canActivate(): Boolean = true
+
     override fun onActivate() {
         val target = TargetSearch().getTargetLivingEntity(user.player, 3.0)
         if (target == null) {
-            deactivate()
+            skillController.deactivate()
             return
         }
 
@@ -32,7 +44,7 @@ class JuRenGeki(user: SkillUser): CompositeSkill(
         val draw = DrawParticle()
         var count = 0
         SkillMaster.INSTANCE.runTaskTimer(2) {
-            if (!activated)
+            if (!isActivated)
                 cancel()
 
             if (count >= 10)
@@ -45,4 +57,6 @@ class JuRenGeki(user: SkillUser): CompositeSkill(
             count++
         }
     }
+
+    override fun onDeactivate() {}
 }

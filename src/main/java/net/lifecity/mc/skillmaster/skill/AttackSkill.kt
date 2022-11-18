@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.skill.function
+package net.lifecity.mc.skillmaster.skill
 
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -8,8 +8,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
-interface Attack {
-
+open class AttackSkill {
     /**
      * 対象を攻撃します
      * 加算によってベクトルを与えます

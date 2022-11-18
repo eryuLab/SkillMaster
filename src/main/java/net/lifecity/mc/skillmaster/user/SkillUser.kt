@@ -5,7 +5,6 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
-import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Defense
 import net.lifecity.mc.skillmaster.user.mode.ModeManager
 import net.lifecity.mc.skillmaster.user.mode.UserMode

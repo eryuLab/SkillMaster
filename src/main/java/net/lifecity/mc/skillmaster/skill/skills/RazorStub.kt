@@ -2,7 +2,6 @@ package net.lifecity.mc.skillmaster.skill.skills
 
 import com.github.syari.spigot.api.sound.playSoundLegacy
 import net.lifecity.mc.skillmaster.skill.SkillType
-import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.utils.TargetSearch
