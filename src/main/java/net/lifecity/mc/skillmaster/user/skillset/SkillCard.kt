@@ -1,5 +1,7 @@
 package net.lifecity.mc.skillmaster.user.skillset
 
+import net.lifecity.mc.skillmaster.skill.ISkill
+
 data class SkillCard(
     val button: SkillButton,
     val skillSet: SkillSet = SkillSet(button)
@@ -23,7 +25,7 @@ data class SkillCard(
             }
         }
 
-    fun now(): Skill? {
+    fun now(): ISkill? {
         return nowKey().skill
     }
 

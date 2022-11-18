@@ -5,6 +5,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.kyori.adventure.title.Title
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
+import net.lifecity.mc.skillmaster.skill.*
 import net.lifecity.mc.skillmaster.user.mode.ModeManager
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
@@ -56,8 +57,10 @@ class SkillUser(
      */
     fun leftClick() {
         getActivatedSkill()?.let {
+            val skillController = SkillController(skill = it)
+
             if(it.canCancel) { //もしスキル解除可能だったら
-                it.deactivate() // 発動中のスキルを解除
+                skillController.deactivate() // 発動中のスキルを解除
 
                 // プレイヤーのベクトルを0にする
                 player.velocity = Vector(0.0, player.velocity.y, 0.0)
@@ -69,7 +72,7 @@ class SkillUser(
      * 発動中のスキルを返します
      * @return 発動中のスキル
      */
-    fun getActivatedSkill(): CompositeSkill? {
+    fun getActivatedSkill(): ICompositeSkill? {
         // スキルセットの配列を作成
         val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
@@ -79,11 +82,11 @@ class SkillUser(
             // スキルセットのスキルリストで繰り返し
             keyList@ for (skillKey in skillSet.keyList) {
                 // スキルがnullだったらcontinue
-                val skill: Skill = skillKey.skill ?: continue@keyList
+                val skill: ISkill = skillKey.skill ?: continue@keyList
 
                 // スキルが複合スキルのとき発動中か確認
-                if (skill is CompositeSkill) {
-                    if (skill.activated)
+                if (skill is ICompositeSkill) {
+                    if (skill.isActivated)
                         return skill
                 }
             }
@@ -91,7 +94,7 @@ class SkillUser(
         return null
     }
 
-    fun settable(skill: Skill): Boolean {
+    fun canSet(skill: ISkill): Boolean {
         // スキルセットの配列を作成
         val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
 
@@ -143,7 +146,7 @@ class SkillUser(
             // SE再生
             player.location.playSound(Sound.ENTITY_EXPERIENCE_BOTTLE_THROW)
             // ログ出力
-            val skill: Skill = card.now()!!
+            val skill: ISkill = card.now()!!
             player.sendMessage("${card.button.jp}[${card.index}]を「${skill.name}」に変更しました")
 
             // インターバルアイテムの更新
@@ -160,15 +163,18 @@ class SkillUser(
      * @param skill スキル
      * @param weapon 手に持っている武器
      */
-    private fun skillInput(skill: Skill?, weapon: Weapon?) {
+    private fun skillInput(skill: ISkill?, weapon: Weapon?) {
         // スキルが存在するか
         if (skill == null) {
             player.sendMessage("スキルがセットされていません")
             return
         }
 
+        val skillManager = SkillManager(skill)
+        val skillController = SkillController(skill)
+
         // 持っている武器を確認
-        if (!skill.usable(weapon)) {
+        if (!skillManager.canUse(weapon)) {
             player.sendMessage("この武器ではこのスキルを使用できません")
             return
         }
@@ -178,10 +184,10 @@ class SkillUser(
             return
 
         // 複合スキルのとき
-        if (skill is CompositeSkill) {
+        if (skill is ICompositeSkill) {
 
             // 現在の発動中スキルを取得
-            val activatedSkill: CompositeSkill? = getActivatedSkill()
+            val activatedSkill: ICompositeSkill? = getActivatedSkill()
 
 
             // 複合スキル発動中のとき
@@ -189,28 +195,25 @@ class SkillUser(
                 // 発動しようとしてるスキルが違う場合
                 // かつスキルキャンセル可能だったらキャンセルし、スキル発動
                 if (activatedSkill != skill && activatedSkill.canCancel) {
-                    activatedSkill.deactivate()
-                    skill.activate()
+                    skillController.deactivate()
+                    skillController.activate()
                     return
                     // スキルキャンセル不可だったら操作不能
                 }
                 // 同じスキルのとき追加入力
                 else {
-                    if (skill.activated) {
-                        if (skill is AdditionalInput) {
-                            skill.additionalInput()
-                            return
-                        }
+                    if (skill.isActivated) {
+                        skill.onAdditionalInput()
                         return
                     }
                 }
             }
         }
         // 単発スキルのとき
-        skill.activate()
+        skillController.activate()
     }
 
-    fun updateIntervalItem(skill: Skill) {
+    fun updateIntervalItem(skill: ISkill) {
         val cardArray = arrayOf(rightCard, swapCard, dropCard)
         for (card in cardArray) {
             for (key in card.skillSet.keyList) {
@@ -256,11 +259,11 @@ class SkillUser(
      */
     private fun canDefense(damage: Double, vector: Vector, atkLoc: Location): Boolean {
         // 防御スキル取得
-        val activatedSkill: CompositeSkill? = getActivatedSkill()
+        val activatedSkill: ICompositeSkill? = getActivatedSkill()
 
         // 防御スキルがあれば防御
         if (activatedSkill != null) {
-            if (activatedSkill is Defense) {
+            if (activatedSkill is DefenseSkill) {
                 activatedSkill.defense(damage, vector, atkLoc)
                 return true
             }
