@@ -5,7 +5,6 @@ import com.github.syari.spigot.api.scheduler.runTaskLater
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.AdditionalInput
 import net.lifecity.mc.skillmaster.skill.function.Attack
@@ -15,8 +14,6 @@ import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.entity.Entity
-import org.bukkit.entity.LivingEntity
 import java.util.*
 
 /**

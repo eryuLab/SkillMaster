@@ -3,7 +3,6 @@ package net.lifecity.mc.skillmaster
 import com.github.syari.spigot.api.event.events
 import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.utils.Messager

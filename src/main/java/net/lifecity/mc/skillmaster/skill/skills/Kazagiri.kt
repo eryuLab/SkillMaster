@@ -3,7 +3,6 @@ package net.lifecity.mc.skillmaster.skill.skills
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSound
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -11,7 +10,6 @@ import net.lifecity.mc.skillmaster.utils.DrawParticle
 import net.lifecity.mc.skillmaster.utils.TargetSearch
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Color
-import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity

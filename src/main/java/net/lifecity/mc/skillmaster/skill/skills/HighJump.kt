@@ -3,7 +3,6 @@ package net.lifecity.mc.skillmaster.skill.skills
 import com.github.syari.spigot.api.particle.spawnParticle
 import com.github.syari.spigot.api.scheduler.runTaskTimer
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon

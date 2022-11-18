@@ -1,9 +1,6 @@
 package net.lifecity.mc.skillmaster.skill.skills
 
-import com.github.syari.spigot.api.scheduler.runTaskTimer
 import com.github.syari.spigot.api.sound.playSoundLegacy
-import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Attack
 import net.lifecity.mc.skillmaster.user.SkillUser
@@ -16,8 +13,6 @@ import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
-import kotlin.math.cos
-import kotlin.math.sin
 
 class RazorStub(user: SkillUser) : Skill(
     "レイザースタブ",

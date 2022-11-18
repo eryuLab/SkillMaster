@@ -1,7 +1,6 @@
 package net.lifecity.mc.skillmaster.skill.skills
 
 import com.github.syari.spigot.api.sound.playSound
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.skill.function.Knockback
 import net.lifecity.mc.skillmaster.user.SkillUser

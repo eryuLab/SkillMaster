@@ -1,7 +1,6 @@
 package net.lifecity.mc.skillmaster.skill.compositeskills
 
 import net.lifecity.mc.skillmaster.SkillMaster
-import net.lifecity.mc.skillmaster.skill.CompositeSkill
 import net.lifecity.mc.skillmaster.skill.SkillType
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.WorldEditUtils
