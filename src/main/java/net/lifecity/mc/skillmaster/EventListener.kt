@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.event.events
 import com.github.syari.spigot.api.item.displayName
+import net.lifecity.mc.skillmaster.game.GameList
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.mode.UserMode
@@ -31,6 +32,15 @@ object EventListener {
             }
 
             event<PlayerQuitEvent> {
+                try {
+                    val user = SkillMaster.INSTANCE.userList[it.player]
+                    val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
+
+                    game.onUserLogout(user)
+
+                } catch (e: GameNotFoundException) {
+                    return@event
+                }
                 SkillMaster.INSTANCE.userList.remove(it.player)
             }
 
