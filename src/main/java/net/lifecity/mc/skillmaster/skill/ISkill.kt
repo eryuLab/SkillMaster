@@ -13,8 +13,6 @@ interface ISkill {
     var inInterval: Boolean
     val user: SkillUser
 
-    fun register()
-
     fun canActivate() : Boolean
 
     fun onActivate()

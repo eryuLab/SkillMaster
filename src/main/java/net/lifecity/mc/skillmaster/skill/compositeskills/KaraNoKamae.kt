@@ -35,10 +35,6 @@ class KaraNoKamae(
     override fun onAdditionalInput() {
     }
 
-    override fun register() {
-        SkillManager(this).register()
-    }
-
     override fun canActivate(): Boolean = true
     override fun onActivate() {
         // 前方に突進

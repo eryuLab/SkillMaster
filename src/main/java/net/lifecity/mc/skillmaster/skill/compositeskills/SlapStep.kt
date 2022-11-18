@@ -30,10 +30,6 @@ class SlapStep(
     override fun onAdditionalInput() {
     }
 
-    override fun register() {
-        SkillManager(this).register()
-    }
-
     override fun canActivate(): Boolean = true
 
     override fun onActivate() {

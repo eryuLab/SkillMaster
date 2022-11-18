@@ -24,9 +24,6 @@ class JuRenGeki(
 
     val skillController = SkillController(this)
 
-    override fun register() {
-        SkillManager(this).register()
-    }
 
     override fun onAdditionalInput() {}
 

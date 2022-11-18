@@ -30,9 +30,6 @@ class Kazagiri(
 
     var target: LivingEntity? = null
     var theta = 0.0
-    override fun register() {
-        SkillManager(this).register()
-    }
 
     override fun canActivate(): Boolean {
         val search = TargetSearch()

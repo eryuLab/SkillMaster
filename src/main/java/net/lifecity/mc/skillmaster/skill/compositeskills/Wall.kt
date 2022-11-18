@@ -33,14 +33,10 @@ class Wall(
     ),
     override var isActivated: Boolean = false,
     override val interval: Int = 240,
-    override var inInterval: Boolean,
+    override var inInterval: Boolean = false,
     override val user: SkillUser
 ) : ICompositeSkill {
     override fun onAdditionalInput() {
-    }
-
-    override fun register() {
-        SkillManager(this).register()
     }
 
     override fun canActivate(): Boolean  = true

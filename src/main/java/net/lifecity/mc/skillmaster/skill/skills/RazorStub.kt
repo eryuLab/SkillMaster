@@ -28,9 +28,6 @@ class RazorStub(
 ) : AttackSkill, ISkill {
 
     var target: LivingEntity? = null
-    override fun register() {
-        SkillManager(this).register()
-    }
 
     override fun canActivate(): Boolean {
         // targetがいなかったら発動不可

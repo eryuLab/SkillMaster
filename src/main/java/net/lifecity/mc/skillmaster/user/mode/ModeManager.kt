@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.user.mode
 
 import net.lifecity.mc.skillmaster.inventory.UserInventory
+import net.lifecity.mc.skillmaster.skill.SkillController
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -49,7 +50,10 @@ class ModeManager(val user: SkillUser, var mode: UserMode = UserMode.BATTLE) {
 
         for (skillSet in skillSetArray) {
             for (skillKey in skillSet.keyList) {
-                skillKey.skill?.init()
+                skillKey.skill?.let {
+                    val skillController = SkillController(it)
+                    skillController.init()
+                }
             }
         }
     }

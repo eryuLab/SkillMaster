@@ -102,7 +102,7 @@ class SkillUser(
             keyList@for (skillKey in skillSet.keyList) {
                 if (skillKey.skill == null)
                    continue@keyList
-                if (skillKey.skill!!.match(skill))
+                if (SkillManager(skillKey.skill!!).match(skill))
                     return false
             }
         }

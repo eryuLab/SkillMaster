@@ -33,11 +33,6 @@ class NormalDefense(
     override val user: SkillUser
 ) : DefenseSkill, ICompositeSkill {
     override fun onAdditionalInput() {}
-
-    override fun register() {
-        SkillManager(this).register()
-    }
-
     override fun canActivate(): Boolean = true
 
     override fun onActivate() {}

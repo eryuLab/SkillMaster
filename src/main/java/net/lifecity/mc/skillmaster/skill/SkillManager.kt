@@ -15,8 +15,29 @@ import org.bukkit.inventory.ItemStack
 
 class SkillManager(val skill: ISkill) {
 
-    fun register() {
-        SkillList.skillList.add(skill)
+    fun register(user: SkillUser) {
+        val skillList = listOf(
+            // new type
+            RazorStub(user= user),
+            Thrust(user= user),
+            KaraNoKamae(user= user),
+            SlapStep(user= user),
+            Kick(user= user),
+            Okigiri(user= user),
+            IkkikaseiNoKamae(user= user),
+            Kazagiri(user= user),
+            // old type
+            LeafFlow(user= user),
+            JumpAttackSlash(user= user),
+            Wall(user= user),
+            MoveFast(user= user),
+            VectorAttack(user= user),
+            HighJump(user= user),
+            NormalDefense(user= user),
+            // test
+            JuRenGeki(user= user),
+        )
+        SkillList.skillList.addAll(skillList)
     }
 
     /**

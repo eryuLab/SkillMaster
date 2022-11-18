@@ -29,9 +29,6 @@ class Thrust(
 
 
     var target: LivingEntity? = null
-    override fun register() {
-        SkillManager(this).register()
-    }
 
     override fun canActivate(): Boolean {
         val search = TargetSearch()

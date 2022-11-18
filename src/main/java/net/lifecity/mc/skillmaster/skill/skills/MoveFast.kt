@@ -21,9 +21,6 @@ class MoveFast(
     override var inInterval: Boolean = false,
     override val user: SkillUser
 ) : ISkill {
-    override fun register() {
-        SkillManager(this).register()
-    }
 
     override fun canActivate(): Boolean = true
 
