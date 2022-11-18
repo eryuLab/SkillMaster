@@ -8,7 +8,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
-open class AttackSkill {
+abstract class AttackSkill {
     /**
      * 対象を攻撃します
      * 加算によってベクトルを与えます
