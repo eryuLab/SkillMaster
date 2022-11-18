@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.utils
 
 import org.bukkit.GameMode
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -39,6 +40,20 @@ class TargetSearch {
 
     fun getLivingEntityPositionRelation(livingentityA: LivingEntity, livingentityB: LivingEntity) =
         getEntityPositionalRelation(livingentityA, livingentityB)
+
+    /**
+     * @param entity 始点となるエンティティ
+     * @param loc 対象となる座標
+     * @return entityの正面の位置に地点locがあるか否かを返す
+     */
+    fun isFacing(entity: Entity, loc: Location): Boolean {
+        val threshold = 1.0
+
+        val vec = loc.toVector().subtract(entity.location.toVector())
+
+        return (entity.location.direction.normalize().crossProduct(vec).lengthSquared() < threshold
+                && vec.normalize().dot(entity.location.direction.normalize()) >= 0)
+    }
 
     /**
      * @param entity: 始点となるエンティティ
