@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster
 import com.github.syari.spigot.api.item.displayName
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPICommand
+import dev.jorel.commandapi.annotations.Subcommand
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.arguments.PlayerArgument
 import dev.jorel.commandapi.executors.CommandExecutor
@@ -43,6 +44,26 @@ object SkillCommand {
                 player.sendMessage("${name}という武器が見つからない、または変換できません")
             }
         })
+
+    val itemCommands = CommandAPICommand("item")
+        .withSubcommand(CommandAPICommand("メニュー棒")
+            .executesPlayer(PlayerCommandExecutor { player, _ ->
+                val stick = ItemStack(Material.STICK)
+                stick.displayName = "メニュー棒"
+
+                player.inventory.addItem(stick)
+                player.sendMessage("メニュー棒を付与しました")
+            })
+        )
+        .withSubcommand(CommandAPICommand("ゲーム端末")
+            .executesPlayer(PlayerCommandExecutor { player, _ ->
+                val sign = ItemStack(Material.OAK_SIGN)
+                sign.displayName = "ゲーム端末"
+
+                player.inventory.addItem(sign)
+                player.sendMessage("ゲーム端末を付与しました")
+            })
+        )
 
     val modeCommands = CommandAPICommand("mode")
         .withArguments(MultiLiteralArgument("battle", "training", "unarmed"))
@@ -199,7 +220,7 @@ object SkillCommand {
 
     fun register() {
         CommandAPICommand("skill")
-            .withSubcommands(weaponCommands, modeCommands, menuCommands, gameCommands)
+            .withSubcommands(weaponCommands, itemCommands, modeCommands, menuCommands, gameCommands)
             .executes(CommandExecutor { sender, _ ->
                 helpMsgList.forEach { sender.sendMessage(it) }
             })
