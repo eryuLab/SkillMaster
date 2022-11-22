@@ -34,7 +34,7 @@ object EventListener {
             }
 
             event<PlayerInteractEvent> {
-                val user = SkillMaster.INSTANCE.userList.get(it.player) ?: return@event
+                val user = SkillMaster.INSTANCE.userList[it.player]
 
                 // 手のアイテムがメニュー棒のとき
                 if (user.handItem.type == Material.STICK) {
@@ -75,7 +75,7 @@ object EventListener {
                 // プレイヤーが木の剣で攻撃したらイベントキャンセル
                 val player = it.damager as? Player
                 player?.let { pl ->
-                    val user = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
+                    val user = SkillMaster.INSTANCE.userList[pl]
 
                     if(user.mode == UserMode.UNARMED) return@event
 
@@ -105,7 +105,7 @@ object EventListener {
             event<EntityDamageEvent> {
                 val player = it.entity as? Player
                 player?.let { pl ->
-                    val user = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
+                    val user = SkillMaster.INSTANCE.userList[pl]
 
                     // 戦闘モードじゃなかったらダメージなし
                     if(user.mode != UserMode.BATTLE) {
@@ -119,11 +119,11 @@ object EventListener {
                     }
 
                     if(pl.health - it.damage <= 0) { //HPが０以下＝＞死んだとき
-                        val dead = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
+                        val dead = SkillMaster.INSTANCE.userList[pl]
 
                         //ゲーム中なら
                         try {
-                            val game = SkillMaster.INSTANCE.gameList.getFromUser(dead) ?: return@event
+                            val game = SkillMaster.INSTANCE.gameList.getFromUser(dead)
                             it.isCancelled = true
                             game.onUserDead(dead)
                         } catch (e: GameNotFoundException) {
@@ -134,7 +134,7 @@ object EventListener {
             }
 
             event<PlayerSwapHandItemsEvent> {
-                val user = SkillMaster.INSTANCE.userList.get(it.player) ?: return@event
+                val user = SkillMaster.INSTANCE.userList[it.player]
 
                 if(user.mode == UserMode.UNARMED) return@event
 
@@ -145,7 +145,7 @@ object EventListener {
             }
 
             event<PlayerDropItemEvent> {
-                val user = SkillMaster.INSTANCE.userList.get(it.player) ?: return@event
+                val user = SkillMaster.INSTANCE.userList[it.player]
 
                 if(user.mode == UserMode.UNARMED) return@event
 
@@ -176,7 +176,7 @@ object EventListener {
             event<InventoryClickEvent>(priority = EventPriority.HIGHEST) {
                 val player = it.whoClicked as? Player
                 player?.let { pl ->
-                    val user = SkillMaster.INSTANCE.userList.get(pl) ?: return@event
+                    val user = SkillMaster.INSTANCE.userList[pl]
 
                     if(it.clickedInventory == null) return@event
 
