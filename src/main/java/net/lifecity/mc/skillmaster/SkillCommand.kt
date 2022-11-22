@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack
 object SkillCommand {
 
     val helpMsgList = arrayOf(
-        "======== " + RED + "Skill" + WHITE + "-" + YELLOW + "Command" + WHITE + "-" + BLUE + "Help" + WHITE + " ========",
+        "======== ${RED}Skill${WHITE}-${YELLOW}Command${WHITE}-${BLUE}Help${WHITE} ========",
         "/skill weapon [武器] -> 武器を取得します。",
         "/skill item [アイテム] -> 専用のアイテムを取得します。",
         "/skill mode [モード] -> 自身のモードを変更します。",
