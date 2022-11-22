@@ -1,9 +1,7 @@
 package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.item.displayName
-import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPICommand
-import dev.jorel.commandapi.annotations.Subcommand
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.arguments.PlayerArgument
 import dev.jorel.commandapi.executors.CommandExecutor
@@ -13,7 +11,7 @@ import net.lifecity.mc.skillmaster.game.games.Training
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory
 import net.lifecity.mc.skillmaster.user.mode.UserMode
-import net.lifecity.mc.skillmaster.utils.Messager
+import net.lifecity.mc.skillmaster.utils.Messenger
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
@@ -42,7 +40,7 @@ object SkillCommand {
                 val weapon = Weapon.fromJP(name)
                 player.inventory.addItem(weapon.toItemStack())
             } catch (e: WeaponConvertException) {
-                Messager.sendError(player, "${name}という武器が見つからない、または変換できません")
+                Messenger.sendError(player, "${name}という武器が見つからない、または変換できません")
             }
         })
 
@@ -53,7 +51,7 @@ object SkillCommand {
                 stick.displayName = "メニュー棒"
 
                 player.inventory.addItem(stick)
-                Messager.sendLog(player, "メニュー棒を付与しました")
+                Messenger.sendLog(player, "メニュー棒を付与しました")
             })
         )
         .withSubcommand(CommandAPICommand("ゲーム端末")
@@ -62,7 +60,7 @@ object SkillCommand {
                 sign.displayName = "ゲーム端末"
 
                 player.inventory.addItem(sign)
-                Messager.sendLog(player, "ゲーム端末を付与しました")
+                Messenger.sendLog(player, "ゲーム端末を付与しました")
             })
         )
 
@@ -75,7 +73,7 @@ object SkillCommand {
 
             user.let {
                 it.mode = mode
-                Messager.sendLog(player, "モードを${mode.jp}に変更しました")
+                Messenger.sendLog(player, "モードを${mode.jp}に変更しました")
             }
         })
 
@@ -85,7 +83,7 @@ object SkillCommand {
                 val user = SkillMaster.INSTANCE.userList[player]
 
                 if (player.gameMode == GameMode.CREATIVE) {
-                    Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
+                    Messenger.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                 }
 
                 user.openedInventory = SkillInventory(user, page = 0)
@@ -97,7 +95,7 @@ object SkillCommand {
                 val user = SkillMaster.INSTANCE.userList[player]
 
                 if (player.gameMode == GameMode.CREATIVE) {
-                    Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
+                    Messenger.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                 }
 
                 user.openedInventory = WeaponInventory(user, page = 0)
@@ -118,7 +116,7 @@ object SkillCommand {
 
             // プレイヤーがゲーム中か確認
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user)) {
-                Messager.sendError(player, "${gamePlayer.name}はすでにゲーム中です")
+                Messenger.sendError(player, "${gamePlayer.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
 
@@ -128,13 +126,13 @@ object SkillCommand {
 
                 //ステージが使用中であるか確認
                 if (stage.inUsing()) {
-                    Messager.sendError(player, "現在${stageName}は使用中です")
+                    Messenger.sendError(player, "現在${stageName}は使用中です")
                     return@PlayerCommandExecutor
                 }
                 val training = Training(stage, user)
                 training.gameManager.start()
             } catch (e: StageNotFoundException) {
-                Messager.sendError(player, "${stageName}は登録されていません")
+                Messenger.sendError(player, "${stageName}は登録されていません")
                 return@PlayerCommandExecutor
             }
 
@@ -151,7 +149,7 @@ object SkillCommand {
 
             //プレイヤー引数確認
             if (player1 == player2) {
-                Messager.sendError(player, "一人で戦うことはできません")
+                Messenger.sendError(player, "一人で戦うことはできません")
                 return@PlayerCommandExecutor
             }
 
@@ -161,11 +159,11 @@ object SkillCommand {
 
             //ゲームがないか確認
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user1)) {
-                Messager.sendError(player, "${player1.name}はすでにゲーム中です")
+                Messenger.sendError(player, "${player1.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user2)) {
-                Messager.sendError(player, "${player2.name}はすでにゲーム中です")
+                Messenger.sendError(player, "${player2.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
 
@@ -176,7 +174,7 @@ object SkillCommand {
 
                 //ステージが使用中であるか確認
                 if (stage.inUsing()) {
-                    Messager.sendError(player, "現在${stageName}は使用中です")
+                    Messenger.sendError(player, "現在${stageName}は使用中です")
                     return@PlayerCommandExecutor
                 }
 
@@ -185,7 +183,7 @@ object SkillCommand {
                 duel.gameManager.start()
 
             } catch (e: StageNotFoundException) {
-                Messager.sendError(player, "${stageName}は登録されていません")
+                Messenger.sendError(player, "${stageName}は登録されていません")
                 return@PlayerCommandExecutor
             }
         })

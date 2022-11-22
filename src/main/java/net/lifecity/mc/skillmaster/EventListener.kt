@@ -3,10 +3,9 @@ package net.lifecity.mc.skillmaster
 import com.github.syari.spigot.api.event.events
 import com.github.syari.spigot.api.item.displayName
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
-import net.lifecity.mc.skillmaster.skill.Skill
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
-import net.lifecity.mc.skillmaster.utils.Messager
+import net.lifecity.mc.skillmaster.utils.Messenger
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -41,7 +40,7 @@ object EventListener {
                 if (user.handItem.type == Material.STICK) {
                     if (user.handItem.displayName == "メニュー棒") {
                         if(user.player.gameMode == GameMode.CREATIVE) {
-                            Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
+                            Messenger.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                         }
 
                         user.openedInventory = SkillInventory(user,  page = 0)
