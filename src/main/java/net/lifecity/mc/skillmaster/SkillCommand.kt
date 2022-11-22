@@ -42,7 +42,7 @@ object SkillCommand {
                 val weapon = Weapon.fromJP(name)
                 player.inventory.addItem(weapon.toItemStack())
             } catch (e: WeaponConvertException) {
-                player.sendMessage("${name}という武器が見つからない、または変換できません")
+                Messager.sendError(player, "${name}という武器が見つからない、または変換できません")
             }
         })
 
@@ -53,7 +53,7 @@ object SkillCommand {
                 stick.displayName = "メニュー棒"
 
                 player.inventory.addItem(stick)
-                player.sendMessage("メニュー棒を付与しました")
+                Messager.sendLog(player, "メニュー棒を付与しました")
             })
         )
         .withSubcommand(CommandAPICommand("ゲーム端末")
@@ -62,7 +62,7 @@ object SkillCommand {
                 sign.displayName = "ゲーム端末"
 
                 player.inventory.addItem(sign)
-                player.sendMessage("ゲーム端末を付与しました")
+                Messager.sendLog(player, "ゲーム端末を付与しました")
             })
         )
 
@@ -75,7 +75,7 @@ object SkillCommand {
 
             user.let {
                 it.mode = mode
-                player.sendMessage("モードを${mode.jp}に変更しました")
+                Messager.sendLog(player, "モードを${mode.jp}に変更しました")
             }
         })
 
@@ -118,7 +118,7 @@ object SkillCommand {
 
             // プレイヤーがゲーム中か確認
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user)) {
-                player.sendMessage("${player.name}はすでにゲーム中です")
+                Messager.sendError(player, "${gamePlayer.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
 
@@ -128,13 +128,13 @@ object SkillCommand {
 
                 //ステージが使用中であるか確認
                 if (stage.inUsing()) {
-                    player.sendMessage("${stageName}は使用中です")
+                    Messager.sendError(player, "現在${stageName}は使用中です")
                     return@PlayerCommandExecutor
                 }
                 val training = Training(stage, user)
                 training.gameManager.start()
             } catch (e: StageNotFoundException) {
-                player.sendMessage("${stageName}は登録されていません")
+                Messager.sendError(player, "${stageName}は登録されていません")
                 return@PlayerCommandExecutor
             }
 
@@ -151,7 +151,7 @@ object SkillCommand {
 
             //プレイヤー引数確認
             if (player1 == player2) {
-                player.sendMessage("一人で戦うことはできません")
+                Messager.sendError(player, "一人で戦うことはできません")
                 return@PlayerCommandExecutor
             }
 
@@ -161,11 +161,11 @@ object SkillCommand {
 
             //ゲームがないか確認
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user1)) {
-                player.sendMessage("${player1.name}はすでにゲーム中です")
+                Messager.sendError(player, "${player1.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user2)) {
-                player.sendMessage("${player2.name}はすでにゲーム中です")
+                Messager.sendError(player, "${player2.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
 
@@ -176,7 +176,7 @@ object SkillCommand {
 
                 //ステージが使用中であるか確認
                 if (stage.inUsing()) {
-                    player.sendMessage("${stageName}は使用中です")
+                    Messager.sendError(player, "現在${stageName}は使用中です")
                     return@PlayerCommandExecutor
                 }
 
@@ -185,7 +185,7 @@ object SkillCommand {
                 duel.gameManager.start()
 
             } catch (e: StageNotFoundException) {
-                player.sendMessage("${stageName}は登録されていません")
+                Messager.sendError(player, "${stageName}は登録されていません")
                 return@PlayerCommandExecutor
             }
         })
