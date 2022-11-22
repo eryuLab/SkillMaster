@@ -28,6 +28,8 @@ class SkillMaster : JavaPlugin() {
 
     lateinit var gameList: GameList
 
+    var consoleLocList = mutableListOf<Location>()
+
     override fun onEnable() {
         SkillCommand.register()
 
