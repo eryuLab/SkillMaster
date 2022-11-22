@@ -54,13 +54,13 @@ object SkillCommand {
                 Messenger.sendLog(player, "メニュー棒を付与しました")
             })
         )
-        .withSubcommand(CommandAPICommand("ゲーム端末")
+        .withSubcommand(CommandAPICommand("設定用ツール")
             .executesPlayer(PlayerCommandExecutor { player, _ ->
-                val sign = ItemStack(Material.OAK_SIGN)
-                sign.displayName = "ゲーム端末"
+                val tool = ItemStack(Material.AMETHYST_SHARD)
+                tool.displayName = "設定用ツール"
 
-                player.inventory.addItem(sign)
-                Messenger.sendLog(player, "ゲーム端末を付与しました")
+                player.inventory.addItem(tool)
+                Messenger.sendLog(player, "設定用ツールを付与しました")
             })
         )
 
