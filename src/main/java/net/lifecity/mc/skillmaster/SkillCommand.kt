@@ -26,9 +26,10 @@ object SkillCommand {
     val helpMsgList = arrayOf(
         "======== " + RED + "Skill" + WHITE + "-" + YELLOW + "Command" + WHITE + "-" + BLUE + "Help" + WHITE + " ========",
         "/skill weapon [武器] -> 武器を取得します。",
+        "/skill item [アイテム] -> 専用のアイテムを取得します。",
         "/skill mode [モード] -> 自身のモードを変更します。",
         "/skill menu [メニュー] -> メニューを開きます。",
-        "/skill duel [マップ] [プレイヤー1] [プレイヤー2] -> マップと2人のプレイヤーを指定してデュエルゲームを開始します。",
+        "/skill game [ゲーム] [マップ] [プレイヤー]... -> ゲームを開始します。",
         "すべてプレイヤー用のコマンドです。コンソールからは入力しないでください。",
         "================"
     )
@@ -78,23 +79,6 @@ object SkillCommand {
             }
         })
 
-    val menuSkillCommand = CommandAPICommand("skill")
-        .executesPlayer(PlayerCommandExecutor { player, args ->
-            val user = SkillMaster.INSTANCE.userList[player]
-
-            if (player.gameMode == GameMode.CREATIVE) {
-                Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
-            }
-
-            user.let {
-                it.openedInventory = SkillInventory(user, page = 0)
-
-                it.openedInventory?.open()
-            }
-        })
-
-    val weaponSkillCommand = CommandAPICommand("weapon")
-
     val menuCommands = CommandAPICommand("menu")
         .withSubcommand(CommandAPICommand("skill")
             .executesPlayer(PlayerCommandExecutor { player, args ->
@@ -120,13 +104,6 @@ object SkillCommand {
                 user.openedInventory?.open()
             })
         )
-        .executesPlayer(PlayerCommandExecutor { player, args ->
-            val stick = ItemStack(Material.STICK)
-            stick.displayName = "メニュー棒"
-
-            player.inventory.addItem(stick)
-            player.sendMessage("メニュー棒を付与しました")
-        })
 
 
     val gameTrainingCommand = CommandAPICommand("training")
