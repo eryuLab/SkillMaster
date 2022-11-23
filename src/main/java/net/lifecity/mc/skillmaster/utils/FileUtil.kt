@@ -6,7 +6,11 @@ import java.io.File
 import java.io.IOException
 
 class FileUtil {
-    private val files = arrayOf(
+    private val data = arrayOf(
+        "sign.yml"
+    )
+
+    private val schems = arrayOf(
         "east_wall.schem",
         "north_east_wall.schem",
         "north_wall.schem",
@@ -18,7 +22,19 @@ class FileUtil {
     )
 
     fun init() {
-        for (fileName in files) {
+        for (fileName in data) {
+            val file = File(SkillMaster.INSTANCE.dataFolder, "data/$fileName")
+
+            if (!file.exists()) {
+                try {
+                    file.createNewFile()
+                    FileUtils.copy
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        for (fileName in schems) {
             val stream = SkillMaster.INSTANCE.getResource("schematics/$fileName")
             if (stream != null) {
                 val file = File(SkillMaster.INSTANCE.dataFolder, "schematics/$fileName")
