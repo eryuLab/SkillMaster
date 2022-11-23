@@ -83,7 +83,22 @@ object EventListener {
 
                                 // ログ
                                 Messenger.sendLog(it.player, "ゲームコンソールを実装しました")
+                                return@event
                             }
+                        }
+                    }
+                }
+
+                // ゲームの看板をクリックしたときの処理
+                if (it.action == Action.LEFT_CLICK_BLOCK || it.action == Action.RIGHT_CLICK_BLOCK) {
+                    val loc = it.interactionPoint ?: return@event
+
+                    if (loc.block.state is Sign) {
+                        val sign = loc.block.state as Sign
+
+                        if (SkillMaster.INSTANCE.signList.contains(sign)) {
+                            it.player.sendMessage("ゲームコンソールにアクセス")
+                            return@event
                         }
                     }
                 }
