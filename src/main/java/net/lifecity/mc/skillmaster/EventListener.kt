@@ -2,6 +2,9 @@ package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.event.events
 import com.github.syari.spigot.api.item.displayName
+import com.github.syari.spigot.api.sound.playSound
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
@@ -9,9 +12,12 @@ import net.lifecity.mc.skillmaster.utils.Messenger
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.GameMode
 import org.bukkit.Material
+import org.bukkit.Sound
+import org.bukkit.block.Sign
 import org.bukkit.entity.Player
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -49,6 +55,39 @@ object EventListener {
                     }
                 }
 
+                // 手のアイテムが設定用ツールのとき
+                if (user.handItem.type == Material.AMETHYST_SHARD) {
+                    if (user.handItem.displayName == "設定用ツール") {
+                        if (it.action == Action.RIGHT_CLICK_BLOCK) {
+                            // コンソール追加
+                            val state = it.interactionPoint?.block?.state
+                            if (state is Sign) {
+                                // すでに登録されているか確認
+                                if (SkillMaster.INSTANCE.signList.contains(state)) {
+                                    Messenger.sendLog(it.player, "すでに登録されています")
+                                    return@event
+                                }
+
+                                // テキスト編集
+                                state.line(0, Component.text("[ GameConsole ]"))
+                                state.line(1, Component.text("Type: none"))
+                                state.line(2, Component.text("Stage: none"))
+                                state.line(3, Component.text("State: none"))
+                                state.update()
+
+                                // 音
+                                it.player.location.playSound(Sound.ENTITY_ARROW_SHOOT, pitch = 0.7f)
+
+                                // 登録
+                                SkillMaster.INSTANCE.signList.add(state)
+
+                                // ログ
+                                Messenger.sendLog(it.player, "ゲームコンソールを実装しました")
+                            }
+                        }
+                    }
+                }
+
                 if (user.mode == UserMode.UNARMED) return@event
 
                 if (user.handItem.type == Material.WOODEN_SWORD) { //木の剣を持っているときだけ
@@ -68,6 +107,31 @@ object EventListener {
                             false
                         }
                     }
+                }
+            }
+
+            event<BlockBreakEvent> {
+                // ブロックがゲームの看板であるとき
+                if (it.block.state is Sign) {
+                    val sign = it.block.state as Sign
+
+                    // 登録されているか確認
+                    if (!SkillMaster.INSTANCE.signList.contains(sign))
+                        return@event
+
+                    val handItem = it.player.inventory.itemInMainHand
+                    if (handItem.type != Material.AMETHYST_SHARD || handItem.displayName != "設定用ツール") {
+                        it.isCancelled = true
+                        return@event
+                    }
+                    // 音
+                    it.player.location.playSound(Sound.ITEM_CROSSBOW_SHOOT, pitch = 0.7f)
+
+                    // 削除
+                    SkillMaster.INSTANCE.signList.remove(sign)
+
+                    // ログ
+                    Messenger.sendLog(it.player, "ゲームコンソールを削除しました")
                 }
             }
 
