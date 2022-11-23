@@ -2,6 +2,7 @@ package net.lifecity.mc.skillmaster
 
 import net.lifecity.mc.skillmaster.game.GameList
 import net.lifecity.mc.skillmaster.game.GameType
+import net.lifecity.mc.skillmaster.game.sign.SignList
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.game.stage.GameStageList
 import net.lifecity.mc.skillmaster.user.SkillUserList
@@ -28,7 +29,7 @@ class SkillMaster : JavaPlugin() {
 
     lateinit var gameList: GameList
 
-    var consoleLocList = mutableListOf<Location>()
+    lateinit var signList: SignList
 
     override fun onEnable() {
         SkillCommand.register()
@@ -55,6 +56,7 @@ class SkillMaster : JavaPlugin() {
 
         stageList.addStage(stage)
         gameList = GameList()
+        signList = SignList()
 
         val fileUtils = FileUtil()
         fileUtils.init()
