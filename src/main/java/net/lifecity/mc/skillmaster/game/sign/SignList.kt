@@ -38,8 +38,10 @@ class SignList {
     fun remove(sign: Sign) {
         val singLoc = sign.location
         for (loc in list) {
-            if (loc.blockX == singLoc.blockX && loc.blockY == singLoc.blockY && loc.blockZ == singLoc.blockZ)
+            if (loc.blockX == singLoc.blockX && loc.blockY == singLoc.blockY && loc.blockZ == singLoc.blockZ) {
                 list.remove(loc)
+                break
+            }
         }
     }
 }
