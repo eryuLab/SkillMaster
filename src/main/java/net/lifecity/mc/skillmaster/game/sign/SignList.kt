@@ -13,9 +13,11 @@ class SignList {
      * @return 登録されているときtrue
      */
     fun contains(sign: Sign): Boolean {
-        val singLoc = sign.location
+        return contains(sign.location)
+    }
+    fun contains(location: Location): Boolean {
         for (loc in list) {
-            if (loc.blockX == singLoc.blockX && loc.blockY == singLoc.blockY && loc.blockZ == singLoc.blockZ)
+            if (loc.blockX == location.blockX && loc.blockY == location.blockY && loc.blockZ == location.blockZ)
                 return true
         }
         return false
@@ -26,9 +28,12 @@ class SignList {
      * @param sign 看板
      */
     fun add(sign: Sign) {
-        if (contains(sign))
+        add(sign.location)
+    }
+    fun add(location: Location) {
+        if (contains(location))
             return
-        list.add(sign.location)
+        list.add(location)
     }
 
     /**
@@ -36,9 +41,11 @@ class SignList {
      * @param sign 看板
      */
     fun remove(sign: Sign) {
-        val singLoc = sign.location
+        remove(sign.location)
+    }
+    fun remove(location: Location) {
         for (loc in list) {
-            if (loc.blockX == singLoc.blockX && loc.blockY == singLoc.blockY && loc.blockZ == singLoc.blockZ) {
+            if (loc.blockX == location.blockX && loc.blockY == location.blockY && loc.blockZ == location.blockZ) {
                 list.remove(loc)
                 break
             }
