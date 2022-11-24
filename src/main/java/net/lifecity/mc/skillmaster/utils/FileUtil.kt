@@ -24,11 +24,10 @@ class FileUtil {
     fun init() {
         for (fileName in data) {
             val file = File(SkillMaster.INSTANCE.dataFolder, "data/$fileName")
-
-            if (!file.exists()) {
+            val stream = SkillMaster.INSTANCE.getResource("data/$fileName")
+            if (!file.exists() && stream != null) {
                 try {
-                    file.createNewFile()
-                    FileUtils.copy
+                    FileUtils.copyInputStreamToFile(stream, file)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
