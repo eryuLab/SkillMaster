@@ -11,7 +11,7 @@ import java.util.logging.Level
 
 class CustomConfig(private val path: String) {
 
-    private var config: FileConfiguration? = null
+    var config: FileConfiguration? = null
         get() {
             if (field == null)
                 reload()
