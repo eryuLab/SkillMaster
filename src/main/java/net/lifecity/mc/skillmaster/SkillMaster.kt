@@ -60,10 +60,12 @@ class SkillMaster : JavaPlugin() {
 
         val fileUtils = FileUtil()
         fileUtils.init()
+        fileUtils.load()
     }
 
     override fun onDisable() {
-        // Plugin shutdown logic
+        val fileUtils = FileUtil()
+        fileUtils.save()
     }
 
 
