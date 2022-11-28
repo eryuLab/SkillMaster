@@ -9,7 +9,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.logging.Level
 
-class CustomConfig(private val path: String) {
+open class CustomConfig(private val path: String) {
 
     var config: FileConfiguration? = null
         get() {
@@ -18,6 +18,10 @@ class CustomConfig(private val path: String) {
             return field
         }
     private var file: File? = null
+
+    init {
+        file = File(SkillMaster.INSTANCE.dataFolder, path)
+    }
 
     fun reload() {
         if (file == null) {
