@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.utils.file.data
 
 import net.lifecity.mc.skillmaster.SkillMaster
+import org.bukkit.Location
 
 class SignConfig: CustomConfig("data/sign.yml") {
 
@@ -18,7 +19,7 @@ class SignConfig: CustomConfig("data/sign.yml") {
     fun onDisable() {
         // セーブ
         val list = SkillMaster.INSTANCE.signList.list
-        for ((loc, index) in list.withIndex()) {
+        for ((index, loc) in list.withIndex()) {
             config?.set("sign.${index}", loc)
         }
         save()
