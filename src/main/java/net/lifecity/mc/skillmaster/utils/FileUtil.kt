@@ -61,12 +61,16 @@ class FileUtil {
 
     fun save() {
         try {
+            val file = File(SkillMaster.INSTANCE.dataFolder, "data/sign.yml")
+
             val config = YamlConfiguration()
-            config.load("data/sign.yml")
+
             for ((loc, index) in SkillMaster.INSTANCE.signList.list.withIndex()) {
                 config.set("sign.$index", loc)
             }
-            config.save("data/sign.yml")
+
+            config.save(file)
+
         } catch (e: IOException) {
             e.printStackTrace()
         }
