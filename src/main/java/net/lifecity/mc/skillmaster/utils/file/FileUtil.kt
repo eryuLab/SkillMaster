@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.utils
+package net.lifecity.mc.skillmaster.utils.file
 
 import net.lifecity.mc.skillmaster.SkillMaster
 import org.apache.commons.io.FileUtils
