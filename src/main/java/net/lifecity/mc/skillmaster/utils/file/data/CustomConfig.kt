@@ -17,17 +17,11 @@ open class CustomConfig(private val path: String) {
                 reload()
             return field
         }
-    private var file: File? = null
+    private var file = File(SkillMaster.INSTANCE.dataFolder, path)
 
-    init {
-        file = File(SkillMaster.INSTANCE.dataFolder, path)
-    }
 
     fun reload() {
-        if (file == null) {
-            file = File(SkillMaster.INSTANCE.dataFolder, path)
-        }
-        config = YamlConfiguration.loadConfiguration(file!!)
+        config = YamlConfiguration.loadConfiguration(file)
 
         val stream = InputStreamReader(SkillMaster.INSTANCE.getResource(path)!!, "UTF-8")
         val defConfig = YamlConfiguration.loadConfiguration(stream)
@@ -35,20 +29,17 @@ open class CustomConfig(private val path: String) {
     }
 
     fun save() {
-        if (config == null || file == null)
+        if (config == null)
             return
         try {
-            config!!.save(file!!)
+            config!!.save(file)
         } catch (e: IOException) {
             SkillMaster.INSTANCE.logger.log(Level.SEVERE, "ファイル${file}を保存できませんでした。", e)
         }
     }
 
     fun saveDefault() {
-        if (file == null) {
-            file = File(SkillMaster.INSTANCE.dataFolder, path)
-        }
-        if (!file!!.exists()) {
+        if (!file.exists()) {
             SkillMaster.INSTANCE.saveResource(path, false)
         }
     }
