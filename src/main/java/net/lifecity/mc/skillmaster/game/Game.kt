@@ -46,6 +46,8 @@ interface Game {
      */
     fun teleportTeam(team: GameTeam)
 
+    fun onUserLogout(leaver: SkillUser)
+
     fun onUserAttack(attacker: SkillUser)
 
     fun onUserDead(dead: SkillUser)

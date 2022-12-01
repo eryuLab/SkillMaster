@@ -59,6 +59,20 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
             team.teleportAll(field.tpLocations[1])
     }
 
+    override fun onUserLogout(leaver: SkillUser) {
+        // 引数がこのゲームのプレイヤーじゃなかったら
+        if (!gameManager.joined(leaver)) return
+
+        // 勝利チームを取得し、終了
+        if (teamA.belongs(leaver)) {
+            winners = teamB
+            gameManager.stop()
+        } else if (teamB.belongs(leaver)) {
+            winners = teamA
+            gameManager.stop()
+        }
+    }
+
     override fun onUserAttack(attacker: SkillUser) {
         // 引数がこのゲームのプレイヤーじゃなかったらreturn
         if (!gameManager.joined(attacker)) return
