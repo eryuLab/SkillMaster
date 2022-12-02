@@ -34,7 +34,7 @@ class SkillUser(
     var selectedWeapon = Weapon.STRAIGHT_SWORD
         set(value) {
             // スキルセットをリセット
-            val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+            val skillSetArray = arrayOf(rightCard.skillKeySet, swapCard.skillKeySet, dropCard.skillKeySet)
             for (skillSet in skillSetArray)
                 skillSet.clean()
 
@@ -75,7 +75,7 @@ class SkillUser(
      */
     fun getActivatedSkill(): CompositeSkill? {
         // スキルセットの配列を作成
-        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+        val skillSetArray = arrayOf(rightCard.skillKeySet, swapCard.skillKeySet, dropCard.skillKeySet)
 
         // 配列で繰り返し
         for (skillSet in skillSetArray) {
@@ -97,7 +97,7 @@ class SkillUser(
 
     fun settable(skill: Skill): Boolean {
         // スキルセットの配列を作成
-        val skillSetArray = arrayOf(rightCard.skillSet, swapCard.skillSet, dropCard.skillSet)
+        val skillSetArray = arrayOf(rightCard.skillKeySet, swapCard.skillKeySet, dropCard.skillKeySet)
 
         for (skillSet in skillSetArray) {
             keyList@for (skillKey in skillSet.keyList) {
@@ -125,7 +125,7 @@ class SkillUser(
 
         // シフトが押されているときスキルセット番号変更
         if (player.isSneaking) {
-            val size = card.skillSet.containedSize()
+            val size = card.skillKeySet.containedSize()
             // スキルセットが0のとき変更なし
             if (size == 0) {
                 player.sendMessage("セットされているスキルがありません")
@@ -217,7 +217,7 @@ class SkillUser(
     fun updateIntervalItem(skill: Skill) {
         val cardArray = arrayOf(rightCard, swapCard, dropCard)
         for (card in cardArray) {
-            for (key in card.skillSet.keyList) {
+            for (key in card.skillKeySet.keyList) {
                 if (key.skill == skill)
                     userInventory.updateInterval(key)
             }

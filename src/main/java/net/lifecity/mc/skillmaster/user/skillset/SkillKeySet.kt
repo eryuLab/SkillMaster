@@ -1,6 +1,6 @@
 package net.lifecity.mc.skillmaster.user.skillset
 
-data class SkillSet(
+data class SkillKeySet(
     val button: SkillButton,
     val keyList: List<SkillKey> = listOf(
         SkillKey(button, 0, null),
