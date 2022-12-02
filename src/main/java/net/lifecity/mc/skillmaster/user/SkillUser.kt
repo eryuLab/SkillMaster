@@ -13,6 +13,7 @@ import net.lifecity.mc.skillmaster.user.mode.ModeManager
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.user.skillset.SkillCard
+import net.lifecity.mc.skillmaster.user.skillset.SkillSet
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -22,6 +23,7 @@ import org.bukkit.util.Vector
 class SkillUser(
     val player: Player,
     var openedInventory: InventoryFrame? = null,
+    val currentSkillSet: SkillSet = SkillSet(0),
     val rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
     val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     val dropCard: SkillCard = SkillCard(SkillButton.DROP)
