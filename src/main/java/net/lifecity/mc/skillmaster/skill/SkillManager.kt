@@ -69,6 +69,19 @@ class SkillManager(val user: SkillUser) {
     }
 
     /**
+     * クラス名からスキルインスタンスを取得します
+     * @param name クラス名
+     * @return スキルインスタンス
+     */
+    fun fromClassName(name: String): Skill {
+        for (skill in skillList) {
+            if (skill::class.java.simpleName == name)
+                return skill
+        }
+        throw SkillConvertException("$name could not be converted to a Skill")
+    }
+
+    /**
      * ItemStackからSkillを特定します
      * @param itemStack 特定の対象となるItemStack
      * @return 一致したSkill
