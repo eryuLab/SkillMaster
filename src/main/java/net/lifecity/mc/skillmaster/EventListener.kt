@@ -36,6 +36,15 @@ object EventListener {
             }
 
             event<PlayerQuitEvent> {
+                try {
+                    val user = SkillMaster.INSTANCE.userList[it.player]
+                    val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
+
+                    game.onUserLogout(user)
+
+                } catch (e: GameNotFoundException) {
+                    return@event
+                }
                 SkillMaster.INSTANCE.userList.remove(it.player)
             }
 

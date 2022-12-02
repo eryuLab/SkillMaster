@@ -65,6 +65,11 @@ class Training(stage: GameStage, user: SkillUser) : Game {
             team.teleportAll(field.tpLocations[0])
     }
 
+    override fun onUserLogout(leaver: SkillUser) {
+        winners = onlyTeam
+        gameManager.stop()
+    }
+
     override fun onUserAttack(attacker: SkillUser) {
     }
 
