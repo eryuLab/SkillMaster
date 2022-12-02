@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 cp -Rf /paper-files/* /paper/
 cd /paper/
 java \

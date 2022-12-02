@@ -1,7 +1,6 @@
 package net.lifecity.mc.skillmaster
 
 import com.github.syari.spigot.api.item.displayName
-import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.arguments.PlayerArgument
@@ -12,7 +11,7 @@ import net.lifecity.mc.skillmaster.game.games.Training
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory
 import net.lifecity.mc.skillmaster.user.mode.UserMode
-import net.lifecity.mc.skillmaster.utils.Messager
+import net.lifecity.mc.skillmaster.utils.Messenger
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
@@ -23,11 +22,12 @@ import org.bukkit.inventory.ItemStack
 object SkillCommand {
 
     val helpMsgList = arrayOf(
-        "======== " + RED + "Skill" + WHITE + "-" + YELLOW + "Command" + WHITE + "-" + BLUE + "Help" + WHITE + " ========",
+        "======== ${RED}Skill${WHITE}-${YELLOW}Command${WHITE}-${BLUE}Help${WHITE} ========",
         "/skill weapon [武器] -> 武器を取得します。",
+        "/skill item [アイテム] -> 専用のアイテムを取得します。",
         "/skill mode [モード] -> 自身のモードを変更します。",
         "/skill menu [メニュー] -> メニューを開きます。",
-        "/skill duel [マップ] [プレイヤー1] [プレイヤー2] -> マップと2人のプレイヤーを指定してデュエルゲームを開始します。",
+        "/skill game [ゲーム] [マップ] [プレイヤー]... -> ゲームを開始します。",
         "すべてプレイヤー用のコマンドです。コンソールからは入力しないでください。",
         "================"
     )
@@ -40,9 +40,29 @@ object SkillCommand {
                 val weapon = Weapon.fromJP(name)
                 player.inventory.addItem(weapon.toItemStack())
             } catch (e: WeaponConvertException) {
-                player.sendMessage("${name}という武器が見つからない、または変換できません")
+                Messenger.sendError(player, "${name}という武器が見つからない、または変換できません")
             }
         })
+
+    val itemCommands = CommandAPICommand("item")
+        .withSubcommand(CommandAPICommand("メニュー棒")
+            .executesPlayer(PlayerCommandExecutor { player, _ ->
+                val stick = ItemStack(Material.STICK)
+                stick.displayName = "メニュー棒"
+
+                player.inventory.addItem(stick)
+                Messenger.sendLog(player, "メニュー棒を付与しました")
+            })
+        )
+        .withSubcommand(CommandAPICommand("設定用ツール")
+            .executesPlayer(PlayerCommandExecutor { player, _ ->
+                val tool = ItemStack(Material.AMETHYST_SHARD)
+                tool.displayName = "設定用ツール"
+
+                player.inventory.addItem(tool)
+                Messenger.sendLog(player, "設定用ツールを付与しました")
+            })
+        )
 
     val modeCommands = CommandAPICommand("mode")
         .withArguments(MultiLiteralArgument("battle", "training", "unarmed"))
@@ -53,26 +73,9 @@ object SkillCommand {
 
             user.let {
                 it.mode = mode
-                player.sendMessage("モードを${mode.jp}に変更しました")
+                Messenger.sendLog(player, "モードを${mode.jp}に変更しました")
             }
         })
-
-    val menuSkillCommand = CommandAPICommand("skill")
-        .executesPlayer(PlayerCommandExecutor { player, args ->
-            val user = SkillMaster.INSTANCE.userList[player]
-
-            if (player.gameMode == GameMode.CREATIVE) {
-                Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
-            }
-
-            user.let {
-                it.openedInventory = SkillInventory(user, page = 0)
-
-                it.openedInventory?.open()
-            }
-        })
-
-    val weaponSkillCommand = CommandAPICommand("weapon")
 
     val menuCommands = CommandAPICommand("menu")
         .withSubcommand(CommandAPICommand("skill")
@@ -80,7 +83,7 @@ object SkillCommand {
                 val user = SkillMaster.INSTANCE.userList[player]
 
                 if (player.gameMode == GameMode.CREATIVE) {
-                    Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
+                    Messenger.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                 }
 
                 user.openedInventory = SkillInventory(user, page = 0)
@@ -92,20 +95,13 @@ object SkillCommand {
                 val user = SkillMaster.INSTANCE.userList[player]
 
                 if (player.gameMode == GameMode.CREATIVE) {
-                    Messager.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
+                    Messenger.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
                 }
 
                 user.openedInventory = WeaponInventory(user, page = 0)
                 user.openedInventory?.open()
             })
         )
-        .executesPlayer(PlayerCommandExecutor { player, args ->
-            val stick = ItemStack(Material.STICK)
-            stick.displayName = "メニュー棒"
-
-            player.inventory.addItem(stick)
-            player.sendMessage("メニュー棒を付与しました")
-        })
 
 
     val gameTrainingCommand = CommandAPICommand("training")
@@ -120,7 +116,7 @@ object SkillCommand {
 
             // プレイヤーがゲーム中か確認
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user)) {
-                player.sendMessage("${player.name}はすでにゲーム中です")
+                Messenger.sendError(player, "${gamePlayer.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
 
@@ -130,13 +126,13 @@ object SkillCommand {
 
                 //ステージが使用中であるか確認
                 if (stage.inUsing()) {
-                    player.sendMessage("${stageName}は使用中です")
+                    Messenger.sendError(player, "現在${stageName}は使用中です")
                     return@PlayerCommandExecutor
                 }
                 val training = Training(stage, user)
                 training.gameManager.start()
             } catch (e: StageNotFoundException) {
-                player.sendMessage("${stageName}は登録されていません")
+                Messenger.sendError(player, "${stageName}は登録されていません")
                 return@PlayerCommandExecutor
             }
 
@@ -153,7 +149,7 @@ object SkillCommand {
 
             //プレイヤー引数確認
             if (player1 == player2) {
-                player.sendMessage("一人で戦うことはできません")
+                Messenger.sendError(player, "一人で戦うことはできません")
                 return@PlayerCommandExecutor
             }
 
@@ -163,11 +159,11 @@ object SkillCommand {
 
             //ゲームがないか確認
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user1)) {
-                player.sendMessage("${player1.name}はすでにゲーム中です")
+                Messenger.sendError(player, "${player1.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
             if (SkillMaster.INSTANCE.gameList.inGamingUser(user2)) {
-                player.sendMessage("${player2.name}はすでにゲーム中です")
+                Messenger.sendError(player, "${player2.name}はすでにゲーム中です")
                 return@PlayerCommandExecutor
             }
 
@@ -178,7 +174,7 @@ object SkillCommand {
 
                 //ステージが使用中であるか確認
                 if (stage.inUsing()) {
-                    player.sendMessage("${stageName}は使用中です")
+                    Messenger.sendError(player, "現在${stageName}は使用中です")
                     return@PlayerCommandExecutor
                 }
 
@@ -187,7 +183,7 @@ object SkillCommand {
                 duel.gameManager.start()
 
             } catch (e: StageNotFoundException) {
-                player.sendMessage("${stageName}は登録されていません")
+                Messenger.sendError(player, "${stageName}は登録されていません")
                 return@PlayerCommandExecutor
             }
         })
@@ -199,7 +195,7 @@ object SkillCommand {
 
     fun register() {
         CommandAPICommand("skill")
-            .withSubcommands(weaponCommands, modeCommands, menuCommands, gameCommands)
+            .withSubcommands(weaponCommands, itemCommands, modeCommands, menuCommands, gameCommands)
             .executes(CommandExecutor { sender, _ ->
                 helpMsgList.forEach { sender.sendMessage(it) }
             })

@@ -1,4 +1,4 @@
-package net.lifecity.mc.skillmaster.utils
+package net.lifecity.mc.skillmaster.utils.file
 
 import net.lifecity.mc.skillmaster.SkillMaster
 import org.apache.commons.io.FileUtils
@@ -6,7 +6,7 @@ import java.io.File
 import java.io.IOException
 
 class FileUtil {
-    private val files = arrayOf(
+    private val schems = arrayOf(
         "east_wall.schem",
         "north_east_wall.schem",
         "north_wall.schem",
@@ -18,7 +18,7 @@ class FileUtil {
     )
 
     fun init() {
-        for (fileName in files) {
+        for (fileName in schems) {
             val stream = SkillMaster.INSTANCE.getResource("schematics/$fileName")
             if (stream != null) {
                 val file = File(SkillMaster.INSTANCE.dataFolder, "schematics/$fileName")
