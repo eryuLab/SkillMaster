@@ -5,4 +5,7 @@ data class SkillSet(
     var rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
     var swapCard: SkillCard = SkillCard(SkillButton.SWAP),
     var dropCard: SkillCard = SkillCard(SkillButton.DROP)
-)
+) {
+    val cards: List<SkillCard>
+        get() = listOf(rightCard, swapCard, dropCard)
+}
