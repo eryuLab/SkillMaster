@@ -16,9 +16,9 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
     override fun init() {
         //アイテムを設置
         val keyLists = listOf(
-            user.rightCard.skillKeySet.keyList,
-            user.swapCard.skillKeySet.keyList,
-            user.dropCard.skillKeySet.keyList
+            user.currentSkillSet.rightCard.skillKeySet.keyList,
+            user.currentSkillSet.swapCard.skillKeySet.keyList,
+            user.currentSkillSet.dropCard.skillKeySet.keyList
         )
 
         for (keyList in keyLists) {
