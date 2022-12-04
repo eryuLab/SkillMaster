@@ -60,7 +60,7 @@ class SkillUser(
         player.maxHealth = 40.0
         player.health = 40.0
         // スキル設定
-        SkillMaster.INSTANCE.skillSetConfig.onPlayerQuit(this)
+        SkillMaster.INSTANCE.skillSetConfig.onPlayerJoin(this)
     }
 
     var userInventory: UserInventory = UserInventory(this)
