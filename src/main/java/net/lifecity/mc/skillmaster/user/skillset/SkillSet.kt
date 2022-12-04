@@ -8,4 +8,15 @@ data class SkillSet(
 ) {
     val cards: List<SkillCard>
         get() = listOf(rightCard, swapCard, dropCard)
+
+    val keyList: List<SkillKey>
+        get() {
+            val list = mutableListOf<SkillKey>()
+            for (card in cards) {
+                for (num in 0..2) {
+                    list.add(card.skillKeySet.keyList[num])
+                }
+            }
+            return list
+        }
 }

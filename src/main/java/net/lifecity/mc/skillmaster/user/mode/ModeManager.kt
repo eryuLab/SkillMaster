@@ -45,10 +45,8 @@ class ModeManager(val user: SkillUser, var mode: UserMode = UserMode.BATTLE) {
     }
 
     private fun initSkills() {
-        for (skillKeySet in user.currentSkillSet.cards) {
-            for (skillKey in skillKeySet.skillKeySet.keyList) {
-                skillKey.skill?.init()
-            }
+        for (skillKey in user.currentSkillSet.keyList) {
+            skillKey.skill?.init()
         }
     }
     private fun initInv() {

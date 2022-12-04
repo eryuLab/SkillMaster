@@ -15,17 +15,9 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
         get() = InvItem(createItemStack(Material.IRON_BARS)) { this.isCancelled = true }
     override fun init() {
         //アイテムを設置
-        val keyLists = listOf(
-            user.currentSkillSet.rightCard.skillKeySet.keyList,
-            user.currentSkillSet.swapCard.skillKeySet.keyList,
-            user.currentSkillSet.dropCard.skillKeySet.keyList
-        )
-
-        for (keyList in keyLists) {
-            for (key in keyList) {
-                setSkillItem(key)
-                setIntervalItem(key)
-            }
+        for (key in user.currentSkillSet.keyList) {
+            setSkillItem(key)
+            setIntervalItem(key)
         }
     }
 
