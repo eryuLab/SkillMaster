@@ -9,6 +9,7 @@ import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.utils.Messenger
+import net.lifecity.mc.skillmaster.utils.file.data.SkillSetConfig
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -33,11 +34,12 @@ object EventListener {
         SkillMaster.INSTANCE.events {
             event<PlayerJoinEvent> {
                 SkillMaster.INSTANCE.userList.add(it.player)
+                SkillSetConfig().onPlayerJoin(SkillMaster.INSTANCE.userList[it.player])
             }
 
             event<PlayerQuitEvent> {
+                val user = SkillMaster.INSTANCE.userList[it.player]
                 try {
-                    val user = SkillMaster.INSTANCE.userList[it.player]
                     val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
 
                     game.onUserLogout(user)
@@ -45,6 +47,7 @@ object EventListener {
                 } catch (e: GameNotFoundException) {
                     return@event
                 }
+                SkillSetConfig().onPlayerQuit(user)
                 SkillMaster.INSTANCE.userList.remove(it.player)
             }
 
