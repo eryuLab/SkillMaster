@@ -23,12 +23,19 @@ import org.bukkit.util.Vector
 class SkillUser(
     val player: Player,
     var openedInventory: InventoryFrame? = null,
-    val currentSkillSet: SkillSet = SkillSet(0),
-    val rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
-    val swapCard: SkillCard = SkillCard(SkillButton.SWAP),
-    val dropCard: SkillCard = SkillCard(SkillButton.DROP)
+    val skillSetList: List<SkillSet> = arrayListOf(
+        SkillSet(0),
+        SkillSet(1),
+        SkillSet(2),
+        SkillSet(3),
+        SkillSet(4)
+    )
 ) {
+    val currentSkillSet: SkillSet
+        get() = skillSetList[0]
+
     private val modeManager: ModeManager = ModeManager(this)
+
     var mode: UserMode
         get() = modeManager.mode
         set(value) = modeManager.shift(value)
@@ -36,14 +43,14 @@ class SkillUser(
     var selectedWeapon = Weapon.STRAIGHT_SWORD
         set(value) {
             // スキルセットをリセット
-            val skillSetArray = arrayOf(rightCard.skillKeySet, swapCard.skillKeySet, dropCard.skillKeySet)
-            for (skillSet in skillSetArray)
-                skillSet.clean()
+            for (skillCard in currentSkillSet.cards)
+                skillCard.skillKeySet.clean()
 
             field = value
         }
     val handItem
         get() = player.inventory.itemInMainHand
+
     private val handWeapon
         get() = Weapon.fromItemStack(handItem)
 
@@ -77,13 +84,11 @@ class SkillUser(
      */
     fun getActivatedSkill(): CompositeSkill? {
         // スキルセットの配列を作成
-        val skillSetArray = arrayOf(rightCard.skillKeySet, swapCard.skillKeySet, dropCard.skillKeySet)
-
         // 配列で繰り返し
-        for (skillSet in skillSetArray) {
+        for (skillCard in currentSkillSet.cards) {
 
             // スキルセットのスキルリストで繰り返し
-            keyList@ for (skillKey in skillSet.keyList) {
+            keyList@ for (skillKey in skillCard.skillKeySet.keyList) {
                 // スキルがnullだったらcontinue
                 val skill: Skill = skillKey.skill ?: continue@keyList
 
@@ -99,10 +104,8 @@ class SkillUser(
 
     fun settable(skill: Skill): Boolean {
         // スキルセットの配列を作成
-        val skillSetArray = arrayOf(rightCard.skillKeySet, swapCard.skillKeySet, dropCard.skillKeySet)
-
-        for (skillSet in skillSetArray) {
-            keyList@for (skillKey in skillSet.keyList) {
+        for (skillCard in currentSkillSet.cards) {
+            keyList@for (skillKey in skillCard.skillKeySet.keyList) {
                 if (skillKey.skill == null)
                    continue@keyList
                 if (skillKey.skill!!.match(skill))
@@ -120,9 +123,9 @@ class SkillUser(
     fun buttonInput(button: SkillButton, weapon: Weapon? = handWeapon) {
         // スキルカード特定
         val card: SkillCard = when (button) {
-            SkillButton.RIGHT -> rightCard
-            SkillButton.SWAP -> swapCard
-            SkillButton.DROP -> dropCard
+            SkillButton.RIGHT -> currentSkillSet.rightCard
+            SkillButton.SWAP -> currentSkillSet.swapCard
+            SkillButton.DROP -> currentSkillSet.dropCard
         }
 
         // シフトが押されているときスキルセット番号変更
@@ -217,8 +220,7 @@ class SkillUser(
     }
 
     fun updateIntervalItem(skill: Skill) {
-        val cardArray = arrayOf(rightCard, swapCard, dropCard)
-        for (card in cardArray) {
+        for (card in currentSkillSet.cards) {
             for (key in card.skillKeySet.keyList) {
                 if (key.skill == skill)
                     userInventory.updateInterval(key)
