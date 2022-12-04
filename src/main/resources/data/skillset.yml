@@ -1,6 +1,7 @@
 # skill-set:
 #   player-name:
-#     current:
+#     '0':
 #       r1: kazagiri
 #       d3: wall
+#     '1':
 skill-set:
