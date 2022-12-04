@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.user
 import com.github.syari.spigot.api.sound.playSound
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.kyori.adventure.title.Title
+import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.inventory.UserInventory
 import net.lifecity.mc.skillmaster.skill.CompositeSkill
@@ -59,6 +60,7 @@ class SkillUser(
         player.maxHealth = 40.0
         player.health = 40.0
         // スキル設定
+        SkillMaster.INSTANCE.skillSetConfig.onPlayerQuit(this)
     }
 
     var userInventory: UserInventory = UserInventory(this)
