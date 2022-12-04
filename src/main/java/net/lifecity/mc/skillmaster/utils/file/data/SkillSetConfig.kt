@@ -38,5 +38,6 @@ class SkillSetConfig: CustomConfig("data/skillset.yml") {
                 config?.set("skill-set.${playerName}.'${setNum}'.${key.button.systemName}${key.number}", skillClassName)
             }
         }
+        save()
     }
 }
