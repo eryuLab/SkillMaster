@@ -28,7 +28,15 @@ class SkillSetConfig: CustomConfig("data/skillset.yml") {
         }
     }
 
-    fun onPlayerLeft(player: Player) {
-
+    fun onPlayerQuit(user: SkillUser) {
+        val playerName = user.player.name
+        for (setNum in 0..4) {
+            val skillSet = user.skillSetList[setNum]
+            key@for (key in skillSet.keyList) {
+                val skill = key.skill ?: continue@key
+                val skillClassName = skill::class.java.simpleName
+                config?.set("skill-set.${playerName}.'${setNum}'.${key.button.systemName}${key.number}", skillClassName)
+            }
+        }
     }
 }
