@@ -1,6 +1,7 @@
 package net.lifecity.mc.skillmaster.utils
 
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
@@ -9,8 +10,8 @@ import org.bukkit.entity.Player
  */
 object NearTargets {
     @JvmStatic
-    fun search(player: Player, distance: Double): LivingEntity? {
-        val entities = player.getNearbyEntities(distance, distance, distance)
+    fun search(location: Location, distance: Double): LivingEntity? {
+        val entities = location.getNearbyEntities(distance, distance, distance)
 
         val livingEntities = mutableListOf<LivingEntity>()
         for (entity in entities) {
@@ -22,9 +23,9 @@ object NearTargets {
             return null
 
         var nearestEntity = livingEntities[0]
-        var nearestDistance = nearestEntity.location.distance(player.location)
+        var nearestDistance = nearestEntity.location.distance(location)
         for (entity in livingEntities) {
-            val entityDistance = entity.location.distance(player.location)
+            val entityDistance = entity.location.distance(location)
             if (nearestDistance > entityDistance)
                 nearestEntity = entity
         }
