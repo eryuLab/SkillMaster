@@ -15,7 +15,7 @@ object NearTargets {
 
         val livingEntities = mutableListOf<LivingEntity>()
         for (entity in entities) {
-            if (entity is LivingEntity)
+            if (entity.location != location && entity is LivingEntity)
                 livingEntities.add(entity)
         }
 
