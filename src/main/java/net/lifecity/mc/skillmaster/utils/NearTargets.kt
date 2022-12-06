@@ -9,6 +9,11 @@ import org.bukkit.entity.Player
  * Entityのリストをプレイヤーから近い順に並べ替えるクラス
  */
 object NearTargets {
+
+    @JvmStatic
+    fun search(player: Player, distance: Double): LivingEntity? {
+        return search(player.location, distance)
+    }
     @JvmStatic
     fun search(location: Location, distance: Double): LivingEntity? {
         val entities = location.getNearbyEntities(distance, distance, distance)
