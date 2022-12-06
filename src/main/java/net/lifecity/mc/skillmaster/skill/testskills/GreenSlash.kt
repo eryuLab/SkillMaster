@@ -30,7 +30,7 @@ class GreenSlash(user: SkillUser): Skill(
         val stand = user.player.world.spawnEntity(loc, EntityType.ARMOR_STAND) as ArmorStand
 
         // 当たり判定処理
-        val target = NearTargets.search(loc, 2.0)
+        val target = NearTargets.search(loc, user.player.location, 2.0)
         if (target != null) {
             attackAddVector(
                 user,
