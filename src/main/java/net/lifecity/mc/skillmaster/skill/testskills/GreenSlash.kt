@@ -26,8 +26,15 @@ class GreenSlash(user: SkillUser): Skill(
 
     override fun onActivate() {
         // 当たり判定とエフェクトに使う防具立てを生成
-        val loc = user.player.location.add(user.player.eyeLocation.direction)
+        val loc = user.player.location.add(user.player.eyeLocation.direction.multiply(2))
         val stand = user.player.world.spawnEntity(loc, EntityType.ARMOR_STAND) as ArmorStand
+
+        // エフェクト処理
+        val effect = ItemStack(Material.CLAY_BALL)
+        effect.customModelData = 2
+        stand.setHelmet(effect)
+        stand.isVisible = false
+        stand.setGravity(false)
 
         // 当たり判定処理
         val target = NearTargets.search(loc, user.player.location, 2.0)
@@ -40,13 +47,6 @@ class GreenSlash(user: SkillUser): Skill(
                 atkLoc = loc
             )
         }
-
-        // エフェクト処理
-        val effect = ItemStack(Material.CLAY_BALL)
-        effect.customModelData = 2
-        stand.setHelmet(effect)
-        stand.isVisible = false
-        stand.setGravity(false)
 
         SkillMaster.INSTANCE.runTaskLater(6) {
             stand.remove()
