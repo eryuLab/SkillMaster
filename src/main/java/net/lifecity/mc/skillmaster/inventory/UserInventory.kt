@@ -128,7 +128,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
 
 
                             //セットできるか確認
-                            if(!user.settable(cursorSkill)) {
+                            if(!user.canSetSkill(cursorSkill)) {
                                 this.isCancelled = true
                                 user.player.sendMessage("このスキルはすでに登録されています")
                                 return@InvItem

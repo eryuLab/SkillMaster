@@ -104,7 +104,7 @@ class SkillUser(
         return null
     }
 
-    fun settable(skill: Skill): Boolean {
+    fun canSetSkill(skill: Skill): Boolean {
         // スキルセットの配列を作成
         for (skillCard in currentSkillSet.cards) {
             keyList@for (skillKey in skillCard.skillKeySet.keyList) {
