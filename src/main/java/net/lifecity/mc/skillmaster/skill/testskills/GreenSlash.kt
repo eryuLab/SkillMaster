@@ -30,12 +30,14 @@ class GreenSlash(user: SkillUser): Skill(
         val loc = user.player.location.add(user.player.location.direction.multiply(2))
         val stand = user.player.world.spawnEntity(loc, EntityType.ARMOR_STAND) as ArmorStand
 
+        // 防具立ての設定
+        stand.isVisible = false
+        stand.setGravity(false)
+
         // エフェクト処理
         val effect = ItemStack(Material.CLAY_BALL)
         effect.customModelData = 2
         stand.setHelmet(effect)
-        stand.isVisible = false
-        stand.setGravity(false)
 
         // 当たり判定処理
         val target = NearTargets.search(loc, user.player.location, 2.0)
