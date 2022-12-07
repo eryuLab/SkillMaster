@@ -24,7 +24,7 @@ import org.bukkit.util.Vector
 class SkillUser(
     val player: Player,
     var openedInventory: InventoryFrame? = null,
-    val skillSetList: List<SkillSet> = arrayListOf(
+    val skillSetList: List<SkillSet> = listOf(
         SkillSet(0),
         SkillSet(1),
         SkillSet(2),
