@@ -1,4 +1,14 @@
 package net.lifecity.mc.skillmaster.inventory
 
-class LoadOutInventory {
+import net.lifecity.mc.skillmaster.user.SkillUser
+
+class LoadOutInventory(user: SkillUser)
+    : InventoryFrame(
+    user,
+    3,
+    "ロードアウトメニュー"
+){
+    override fun init() {
+
+    }
 }
