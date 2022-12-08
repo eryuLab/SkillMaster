@@ -1,4 +1,4 @@
 package net.lifecity.mc.skillmaster.inventory
 
-class LoadoutInventory {
+class LoadOutInventory {
 }
