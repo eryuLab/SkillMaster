@@ -8,5 +8,7 @@ data class AttackData(
     val attacker: SkillUser,
     val damage: Double,
     val vector: Vector,
-    val attackLocation: Location
-) {}
+    val attackLocation: Location,
+    val noDefense: Boolean = false,
+    val atkLoc: Location = attacker.player.location
+)
