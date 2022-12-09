@@ -21,6 +21,7 @@ class SkillManager(val user: SkillUser) {
         Okigiri(user),
         IkkikaseiNoKamae(user),
         Kazagiri(user),
+        Parrying(user),
         // old type
         LeafFlow(user),
         JumpAttackSlash(user),
