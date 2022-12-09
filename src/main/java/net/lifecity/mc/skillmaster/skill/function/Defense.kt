@@ -6,7 +6,7 @@ import org.bukkit.util.Vector
 
 interface Defense {
 
-    fun defense(damage: Double, vector: Vector, atkLoc: Location)
+    fun defense(attacker: SkillUser, damage: Double, vector: Vector, atkLoc: Location)
 
     fun damageAddVector(user: SkillUser, damage: Double, vector: Vector) {
         user.player.damage(damage)
