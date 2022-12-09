@@ -4,7 +4,6 @@ import com.github.syari.spigot.api.event.events
 import com.github.syari.spigot.api.item.displayName
 import com.github.syari.spigot.api.sound.playSound
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
@@ -36,8 +35,9 @@ object EventListener {
             }
 
             event<PlayerQuitEvent> {
+                val user = SkillMaster.INSTANCE.userList[it.player]
+                SkillMaster.INSTANCE.skillSetConfig.onPlayerQuit(user)
                 try {
-                    val user = SkillMaster.INSTANCE.userList[it.player]
                     val game = SkillMaster.INSTANCE.gameList.getFromUser(user)
 
                     game.onUserLogout(user)

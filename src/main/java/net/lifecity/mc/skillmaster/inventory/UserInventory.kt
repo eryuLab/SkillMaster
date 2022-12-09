@@ -15,17 +15,9 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
         get() = InvItem(createItemStack(Material.IRON_BARS)) { this.isCancelled = true }
     override fun init() {
         //アイテムを設置
-        val keyLists = listOf(
-            user.rightCard.skillSet.keyList,
-            user.swapCard.skillSet.keyList,
-            user.dropCard.skillSet.keyList
-        )
-
-        for (keyList in keyLists) {
-            for (key in keyList) {
-                setSkillItem(key)
-                setIntervalItem(key)
-            }
+        for (key in user.currentSkillSet.keyList) {
+            setSkillItem(key)
+            setIntervalItem(key)
         }
     }
 
@@ -136,7 +128,7 @@ class UserInventory(user: SkillUser) : InventoryFrame(user) {
 
 
                             //セットできるか確認
-                            if(!user.settable(cursorSkill)) {
+                            if(!user.canSetSkill(cursorSkill)) {
                                 this.isCancelled = true
                                 user.player.sendMessage("このスキルはすでに登録されています")
                                 return@InvItem

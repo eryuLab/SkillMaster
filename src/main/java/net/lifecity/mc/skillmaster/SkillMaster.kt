@@ -8,6 +8,7 @@ import net.lifecity.mc.skillmaster.game.stage.GameStageList
 import net.lifecity.mc.skillmaster.user.SkillUserList
 import net.lifecity.mc.skillmaster.utils.file.FileUtil
 import net.lifecity.mc.skillmaster.utils.file.data.SignConfig
+import net.lifecity.mc.skillmaster.utils.file.data.SkillSetConfig
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.plugin.java.JavaPlugin
@@ -31,6 +32,9 @@ class SkillMaster : JavaPlugin() {
     lateinit var gameList: GameList
 
     lateinit var signList: SignList
+
+    lateinit var signConfig: SignConfig
+    lateinit var skillSetConfig: SkillSetConfig
 
     override fun onEnable() {
         SkillCommand.register()
@@ -62,11 +66,14 @@ class SkillMaster : JavaPlugin() {
         val fileUtils = FileUtil()
         fileUtils.init()
 
-        SignConfig().onEnable()
+        signConfig = SignConfig()
+        signConfig.onEnable()
+
+        skillSetConfig = SkillSetConfig()
     }
 
     override fun onDisable() {
-        SignConfig().onDisable()
+        signConfig.onDisable()
     }
 
 

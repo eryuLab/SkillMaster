@@ -1,32 +1,22 @@
 package net.lifecity.mc.skillmaster.user.skillset
 
 data class SkillSet(
-    val button: SkillButton,
-    val keyList: List<SkillKey> = listOf(
-        SkillKey(button, 0, null),
-        SkillKey(button, 1, null),
-        SkillKey(button, 2, null)
-    )
+    val number: Int,// 0で現在のスキルセット
+    var rightCard: SkillCard = SkillCard(SkillButton.RIGHT),
+    var swapCard: SkillCard = SkillCard(SkillButton.SWAP),
+    var dropCard: SkillCard = SkillCard(SkillButton.DROP)
 ) {
+    val cards: List<SkillCard>
+        get() = listOf(rightCard, swapCard, dropCard)
 
-    /**
-     * セットされているスキルの数を取得します
-     */
-    fun containedSize(): Int {
-        var size = 0
-        for (key in keyList) {
-            if (key.skill != null)
-                size++
+    val keyList: List<SkillKey>
+        get() {
+            val list = mutableListOf<SkillKey>()
+            for (card in cards) {
+                for (num in 0..2) {
+                    list.add(card.skillKeySet.keyList[num])
+                }
+            }
+            return list
         }
-        return size
-    }
-
-    /**
-     * セットされているスキルをリセットします
-     */
-    fun clean() {
-        for (skillKey in keyList) {
-            skillKey.skill = null
-        }
-    }
 }

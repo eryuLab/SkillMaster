@@ -45,12 +45,8 @@ class ModeManager(val user: SkillUser, var mode: UserMode = UserMode.BATTLE) {
     }
 
     private fun initSkills() {
-        val skillSetArray = arrayOf(user.rightCard.skillSet, user.swapCard.skillSet, user.dropCard.skillSet)
-
-        for (skillSet in skillSetArray) {
-            for (skillKey in skillSet.keyList) {
-                skillKey.skill?.init()
-            }
+        for (skillKey in user.currentSkillSet.keyList) {
+            skillKey.skill?.init()
         }
     }
     private fun initInv() {
