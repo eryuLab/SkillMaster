@@ -31,7 +31,7 @@ class NormalDefense(user: SkillUser) : CompositeSkill(
 
     override fun onActivate() {}
 
-    override fun defense(damage: Double, vector: Vector, atkLoc: Location) {
+    override fun defense(attackUser: SkillUser, damage: Double, vector: Vector, atkLoc: Location) {
         user.player.location.playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
 
         // ガードエフェクト

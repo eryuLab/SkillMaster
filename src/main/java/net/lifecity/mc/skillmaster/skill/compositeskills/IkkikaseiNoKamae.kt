@@ -44,7 +44,7 @@ class IkkikaseiNoKamae(user: SkillUser): CompositeSkill(
         )
     }
 
-    override fun defense(damage: Double, vector: Vector, atkLoc: Location) {
+    override fun defense(attackUser: SkillUser, damage: Double, vector: Vector, atkLoc: Location) {
         // 視点方向に攻撃者がいたら防御発動
         if (!TargetSearch().isFacing(user.player, atkLoc))
             return

@@ -75,7 +75,7 @@ class KaraNoKamae(user: SkillUser): CompositeSkill(
         }
     }
 
-    override fun defense(damage: Double, vector: Vector, atkLoc: Location) {
+    override fun defense(attackUser: SkillUser, damage: Double, vector: Vector, atkLoc: Location) {
         // 攻撃を寸前で回避(ノックバック無効、ダメージ軽減)(4回まで)
         if (count >= 4)
             deactivate()

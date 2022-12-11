@@ -38,6 +38,7 @@ class Parrying(user: SkillUser): CompositeSkill(
         if (TargetSearch().isFacing(user.player, atkLoc)) {
             // 攻撃者を跳ね返す
             val reflection = user.player.eyeLocation.direction.setY(0.7)
+            attacker.player.velocity = reflection
 
             // ダメージ計算
             val newDamage = damage - 6.0
@@ -52,6 +53,11 @@ class Parrying(user: SkillUser): CompositeSkill(
             // 発動したらフラグを立てて終了まで再度発動できなくする
             isParried = true
         }
+    }
+
+    override fun deactivate() {
+        isParried = false
+        super.deactivate()
     }
 
 }

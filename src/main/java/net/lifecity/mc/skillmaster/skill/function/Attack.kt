@@ -92,11 +92,11 @@ interface Attack {
     ) {
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING) {
-            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, atkLoc)
+            target.damageAddVector(attackUser, 0.0, Vector(0.0, 0.0, 0.0), noDefense, atkLoc)
             target.player.noDamageTicks = 0
         } else {
             // ダメージを与える
-            target.damageAddVector(damage, vector, noDefense, atkLoc)
+            target.damageAddVector(attackUser, damage, vector, noDefense, atkLoc)
             target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す
@@ -129,11 +129,11 @@ interface Attack {
     ) {
         // トレーニングモード時は攻撃不可
         if (attackUser.mode == UserMode.TRAINING) {
-            target.damageAddVector(0.0, Vector(0.0, 0.0, 0.0), noDefense, atkLoc)
+            target.damageAddVector(attackUser, 0.0, Vector(0.0, 0.0, 0.0), noDefense, atkLoc)
             target.player.noDamageTicks = 0
         } else {
             // ダメージを与える
-            target.damageChangeVector(damage, vector, noDefense, atkLoc)
+            target.damageChangeVector(attackUser, damage, vector, noDefense, atkLoc)
             target.player.noDamageTicks = 0
 
             // ゲーム中のときGameのonAttack()を呼び出す

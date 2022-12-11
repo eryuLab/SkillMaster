@@ -237,8 +237,8 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバック
      */
-    fun damageAddVector(damage: Double = 0.0, vector: Vector = Vector(0.0, 0.0, 0.0), noDefense: Boolean, atkLoc: Location) {
-        if (noDefense || !canDefense(damage, vector, atkLoc)) {
+    fun damageAddVector(attackUser: SkillUser, damage: Double = 0.0, vector: Vector = Vector(0.0, 0.0, 0.0), noDefense: Boolean, atkLoc: Location) {
+        if (noDefense || !canDefense(attackUser, damage, vector, atkLoc)) {
             // ダメージとノックバックを与える
             player.damage(damage)
             player.velocity.add(vector)
@@ -251,8 +251,8 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバック
      */
-    fun damageChangeVector(damage: Double = 0.0, vector: Vector, noDefense: Boolean = false, atkLoc: Location) {
-        if (noDefense || !canDefense(damage, vector, atkLoc)) {
+    fun damageChangeVector(attackUser: SkillUser, damage: Double = 0.0, vector: Vector, noDefense: Boolean = false, atkLoc: Location) {
+        if (noDefense || !canDefense(attackUser, damage, vector, atkLoc)) {
             // ダメージとノックバックを与える
             player.damage(damage)
             player.velocity = vector
@@ -264,14 +264,14 @@ class SkillUser(
      * @param damage 攻撃の威力
      * @param vector ノックバック
      */
-    private fun canDefense(damage: Double, vector: Vector, atkLoc: Location): Boolean {
+    private fun canDefense(attackUser: SkillUser, damage: Double, vector: Vector, atkLoc: Location): Boolean {
         // 防御スキル取得
         val activatedSkill: CompositeSkill? = getActivatedSkill()
 
         // 防御スキルがあれば防御
         if (activatedSkill != null) {
             if (activatedSkill is Defense) {
-                activatedSkill.defense(damage, vector, atkLoc)
+                activatedSkill.defense(attackUser, damage, vector, atkLoc)
                 return true
             }
         }
