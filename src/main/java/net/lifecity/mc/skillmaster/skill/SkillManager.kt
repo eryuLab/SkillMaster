@@ -5,6 +5,7 @@ import net.lifecity.mc.skillmaster.SkillConvertException
 import net.lifecity.mc.skillmaster.skill.compositeskills.*
 import net.lifecity.mc.skillmaster.skill.skills.*
 import net.lifecity.mc.skillmaster.skill.testskills.JuRenGeki
+import net.lifecity.mc.skillmaster.skill.testskills.LightEffect
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.weapon.Weapon
 import org.bukkit.inventory.ItemStack
@@ -31,6 +32,7 @@ class SkillManager(val user: SkillUser) {
         NormalDefense(user),
         // test
         JuRenGeki(user),
+        LightEffect(user),
     )
 
     init {
