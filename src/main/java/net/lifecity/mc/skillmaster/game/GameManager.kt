@@ -5,6 +5,7 @@ import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.StageNotFoundException
 import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.user.SkillUser
+import net.lifecity.mc.skillmaster.user.UserEffect
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -93,6 +94,11 @@ class GameManager(val game: Game) {
 
             if (count >= remainTime-1) {
                 // todo ロビーへ接続
+                for (team in game.teams) {
+                    for (user in team.userArray) {
+                        UserEffect(user).onTeleport()
+                    }
+                }
                 sendMessageAll("ロビーへ接続できた気持ちになってください")
                 setGameModeElseTeam(game.winners, GameMode.SURVIVAL)
 
