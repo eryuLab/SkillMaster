@@ -5,6 +5,7 @@ import com.github.syari.spigot.api.item.displayName
 import com.github.syari.spigot.api.sound.playSound
 import net.kyori.adventure.text.Component
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
+import net.lifecity.mc.skillmaster.user.UserEffect
 import net.lifecity.mc.skillmaster.user.mode.UserMode
 import net.lifecity.mc.skillmaster.user.skillset.SkillButton
 import net.lifecity.mc.skillmaster.utils.Messenger
@@ -33,6 +34,8 @@ object EventListener {
         SkillMaster.INSTANCE.events {
             event<PlayerJoinEvent> {
                 SkillMaster.INSTANCE.userList.add(it.player)
+                val user = SkillMaster.INSTANCE.userList[it.player]
+                UserEffect(user).onSpawn()
             }
 
             event<PlayerQuitEvent> {
@@ -230,6 +233,7 @@ object EventListener {
                             val game = SkillMaster.INSTANCE.gameList.getFromUser(dead)
                             it.isCancelled = true
                             game.onUserDead(dead)
+                            UserEffect(dead).onDead()
                         } catch (e: GameNotFoundException) {
                             return@event
                         }
