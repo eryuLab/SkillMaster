@@ -14,6 +14,7 @@ import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Sign
 import org.bukkit.entity.Player
+import org.bukkit.entity.Villager
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
@@ -130,6 +131,21 @@ object EventListener {
                         } else {
                             false
                         }
+                    }
+                }
+            }
+
+            event<PlayerInteractEntityEvent> {
+                // 特定のタグのついた村人をクリックしたときスキルメニューを開く
+                // エンティティが村人のとき
+                val entity = it.rightClicked
+                if (entity is Villager) {
+                    if ("skill_console" in entity.scoreboardTags) {
+                        val user = SkillMaster.INSTANCE.userList[it.player]
+
+                        user.openedInventory = SkillInventory(user,  page = 0)
+                        user.openedInventory?.open()
+                        return@event
                     }
                 }
             }
