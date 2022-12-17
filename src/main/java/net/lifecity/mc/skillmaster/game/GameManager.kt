@@ -128,7 +128,7 @@ class GameManager(val game: Game) {
      */
     fun joined(user: SkillUser): Boolean {
         for (team in game.teams) {
-            if (team.belongs(user)) return true
+            if (team.contains(user)) return true
         }
         return false
     }

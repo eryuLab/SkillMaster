@@ -128,10 +128,7 @@ sealed class GameTeam(
      * @param target 指定ユーザー
      * @return 所属していたらtrue
      */
-    fun belongs(target: SkillUser): Boolean {
-        for (user in userSet) {
-            if (user == target) return true
-        }
-        return false
+    fun contains(target: SkillUser): Boolean {
+        return target in userSet
     }
 }

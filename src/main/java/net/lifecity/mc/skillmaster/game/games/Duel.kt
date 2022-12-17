@@ -64,10 +64,10 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
         if (!gameManager.joined(leaver)) return
 
         // 勝利チームを取得し、終了
-        if (teamA.belongs(leaver)) {
+        if (teamA.contains(leaver)) {
             winners = teamB
             gameManager.stop()
-        } else if (teamB.belongs(leaver)) {
+        } else if (teamB.contains(leaver)) {
             winners = teamA
             gameManager.stop()
         }
@@ -80,10 +80,10 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
         // サドンデスなら終了
         if (suddenDeath) {
             // 勝利チームを取得し、終了
-            if (teamA.belongs(attacker)) {
+            if (teamA.contains(attacker)) {
                 winners = teamA
                 gameManager.stop()
-            } else if (teamB.belongs(attacker)) {
+            } else if (teamB.contains(attacker)) {
                 winners = teamB
                 gameManager.stop()
             }
@@ -92,10 +92,10 @@ class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
 
     override fun onUserDead(dead: SkillUser) {
         // 勝利チームを取得し、終了
-        if (teamA.belongs(dead)) {
+        if (teamA.contains(dead)) {
             winners = teamB
             gameManager.stop()
-        } else if (teamB.belongs(dead)) {
+        } else if (teamB.contains(dead)) {
             winners = teamA
             gameManager.stop()
         }
