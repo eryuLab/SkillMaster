@@ -96,7 +96,7 @@ class GameManager(val game: Game) {
             if (count >= remainTime-1) {
                 // todo ロビーへ接続
                 for (team in game.teams) {
-                    for (user in team.userArray) {
+                    for (user in team.userSet) {
                         UserEffect(user).onTeleport()
                     }
                 }
@@ -318,7 +318,7 @@ class GameManager(val game: Game) {
 
                     // 1/4秒で確認
                     val userY = user.player.location.y
-                    if (userY >= stage.highestHeight + HEIGHT_LIMIT) {
+                    if (userY >= stage.highest + HEIGHT_LIMIT) {
                         // 下方向に飛ばす
                         val vector = Vector(user.player.velocity.x, -4.0, user.player.velocity.z)
                         user.player.velocity = vector

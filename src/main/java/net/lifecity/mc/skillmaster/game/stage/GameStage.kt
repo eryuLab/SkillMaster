@@ -7,7 +7,7 @@ import org.bukkit.Location
 /**
  * ゲームに使う構造物を管理するクラス
  */
-class GameStage(val name: String, val highestHeight: Int) {
+class GameStage(val name: String, val highest: Int) {
     val fields = mutableMapOf<GameType, GameField>()
     var nowGame: Game? = null
 
