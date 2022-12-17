@@ -5,10 +5,10 @@ import net.lifecity.mc.skillmaster.game.stage.GameStage
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.ChatColor
 
-class Duel(stage: GameStage, userA: SkillUser, userB: SkillUser) : Game {
+class Duel(stage: GameStage) : Game {
 
-    private val teamA: GameTeam = GameTeam.Solo("Alpha", ChatColor.RED, userA)
-    private val teamB: GameTeam = GameTeam.Solo("Beta", ChatColor.BLUE, userB)
+    val teamA: GameTeam = GameTeam.Solo("Alpha", ChatColor.RED)
+    val teamB: GameTeam = GameTeam.Solo("Beta", ChatColor.BLUE)
 
     override val countDownTime: Int = 5
     override val gameTime: Int = 180

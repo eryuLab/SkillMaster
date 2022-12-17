@@ -129,7 +129,8 @@ object SkillCommand {
                     Messenger.sendError(player, "現在${stageName}は使用中です")
                     return@PlayerCommandExecutor
                 }
-                val training = Training(stage, user)
+                val training = Training(stage)
+                training.onlyTeam.addUser(user)
                 training.gameManager.start()
             } catch (e: StageNotFoundException) {
                 Messenger.sendError(player, "${stageName}は登録されていません")
@@ -179,7 +180,9 @@ object SkillCommand {
                 }
 
                 //ゲーム開始
-                val duel = Duel(stage, user1, user2)
+                val duel = Duel(stage)
+                duel.teamA.addUser(user1)
+                duel.teamB.addUser(user2)
                 duel.gameManager.start()
 
             } catch (e: StageNotFoundException) {

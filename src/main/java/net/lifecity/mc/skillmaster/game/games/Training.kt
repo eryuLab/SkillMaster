@@ -7,9 +7,9 @@ import org.bukkit.ChatColor
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Husk
 
-class Training(stage: GameStage, user: SkillUser) : Game {
+class Training(stage: GameStage) : Game {
 
-    private val onlyTeam: GameTeam = GameTeam.Solo("OnlyTeam", ChatColor.GREEN, user)
+    val onlyTeam: GameTeam = GameTeam.Solo("OnlyTeam", ChatColor.GREEN)
     override val countDownTime: Int = 3
     override val gameTime: Int = 60
     override var state: GameState = GameState.WAITING_FOR_STARTING
