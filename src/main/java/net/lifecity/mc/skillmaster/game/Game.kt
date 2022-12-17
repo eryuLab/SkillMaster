@@ -15,6 +15,22 @@ interface Game {
     var losers: GameTeam
     var stage: GameStage
     val gameManager: GameManager
+    val maxMember: Int
+        get() {
+            var count = 0
+            for (team in teams) {
+                count += team.size
+            }
+            return count
+        }
+    val currentMember: Int
+        get() {
+            var count = 0
+            for (team in teams) {
+                count += team.userSet.size
+            }
+            return count
+        }
 
     /**
      * ゲームタイマーが開始したときの処理
