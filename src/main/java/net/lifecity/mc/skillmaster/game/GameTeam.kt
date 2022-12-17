@@ -71,7 +71,7 @@ sealed class GameTeam(private val name: String, private val color: ChatColor, va
      * このチーム全員のユーザーモードを変更します
      * @param mode このモードに変更します
      */
-    fun changeMode(mode: UserMode) {
+    fun setUserMode(mode: UserMode) {
         for (user in userArray) {
             user.mode = mode
         }

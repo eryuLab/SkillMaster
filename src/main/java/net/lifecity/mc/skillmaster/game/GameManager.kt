@@ -52,7 +52,10 @@ class GameManager(val game: Game) {
         }
 
         // ユーザーモード変更
-        changeModeAll(UserMode.BATTLE)
+        setUserModeAll(UserMode.BATTLE)
+
+        // マイクラのゲームモード変更
+        setGameModeAll(GameMode.ADVENTURE)
 
         // カウントダウン
         game.state = GameState.COUNT_DOWN
@@ -159,6 +162,15 @@ class GameManager(val game: Game) {
         throw StageNotFoundException("stage is not found")
     }
 
+    /**
+     * ゲーム内すべてのプレイヤーのゲームモードを変更します
+     * @param mode ゲームモード(マイクラ)
+     */
+    fun setGameModeAll(mode: GameMode) {
+        for (team in game.teams) {
+            team.setGameMode(mode)
+        }
+    }
 
     /**
      * 対象以外のチームのゲームモードを変更します
@@ -174,9 +186,9 @@ class GameManager(val game: Game) {
      * ゲーム内すべてのプレイヤーのユーザーモードを変更します
      * @param mode このモードに変更します
      */
-    fun changeModeAll(mode: UserMode) {
+    fun setUserModeAll(mode: UserMode) {
         for (team in game.teams) {
-            team.changeMode(mode)
+            team.setUserMode(mode)
         }
     }
 
