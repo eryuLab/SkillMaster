@@ -314,7 +314,7 @@ class GameManager(val game: Game) {
 
             // ユーザーの高さ確認
             for (team in game.teams) {
-                for (user in team.userArray) {
+                for (user in team.userSet) {
 
                     // 1/4秒で確認
                     val userY = user.player.location.y
