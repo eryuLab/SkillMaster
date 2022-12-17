@@ -6,6 +6,8 @@ import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Sound
+import org.bukkit.boss.BossBar
+
 sealed class GameTeam(
     private val name: String,
     private val color: ChatColor,
@@ -86,6 +88,12 @@ sealed class GameTeam(
     fun sendMessage(msg: String) {
         for (user in userSet) {
             user.sendMessage(msg)
+        }
+    }
+
+    fun setBossBar(bossBar: BossBar) {
+        for (user in userSet) {
+            bossBar.addPlayer(user.player)
         }
     }
 

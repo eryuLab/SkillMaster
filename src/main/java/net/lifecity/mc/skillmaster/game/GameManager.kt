@@ -46,9 +46,7 @@ class GameManager(val game: Game) {
 
         // ボスバー
         for (team in game.teams) {
-            for (user in team.userArray) {
-                bossBar.addPlayer(user.player)
-            }
+            team.setBossBar(bossBar)
         }
 
         // ユーザーモード変更
