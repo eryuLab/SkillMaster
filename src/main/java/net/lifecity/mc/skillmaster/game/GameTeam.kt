@@ -6,63 +6,65 @@ import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Sound
-sealed class GameTeam(private val name: String, private val color: ChatColor, val userArray: Array<SkillUser>) {
+sealed class GameTeam(
+    private val name: String,
+    private val color: ChatColor,
+    val size: Int
+    ) {
+    val userSet: MutableSet<SkillUser> = mutableSetOf()
+
     /**
      * ソロ(一人)
      */
-    class Solo(name: String, color: ChatColor,user: SkillUser)
-        :GameTeam(name, color, arrayOf(user))
+    class Solo(name: String, color: ChatColor)
+        :GameTeam(name, color, size = 1)
 
     /**
      * デュオ(二人)
      */
-    class Duo(name: String, color: ChatColor, userA: SkillUser, userB: SkillUser)
-        :GameTeam(name, color, arrayOf(userA, userB))
+    class Duo(name: String, color: ChatColor)
+        :GameTeam(name, color, size = 2)
 
     /**
      * トリオ(三人)
      */
-    class Trio(name: String, color: ChatColor, userA: SkillUser, userB: SkillUser, userC: SkillUser)
-        :GameTeam(name, color, arrayOf(userA, userB, userC))
+    class Trio(name: String, color: ChatColor)
+        :GameTeam(name, color, size = 3)
 
     /**
      * カルテット(四人)
      */
-    class Quartet(name: String, color: ChatColor,
-                  userA: SkillUser,
-                  userB: SkillUser,
-                  userC: SkillUser,
-                  userD: SkillUser)
-        :GameTeam(name, color, arrayOf(userA, userB, userC, userD))
+    class Quartet(name: String, color: ChatColor)
+        :GameTeam(name, color, size = 4)
 
     /**
      * クインテット(五人)
      */
-    class Quintet(name: String, color: ChatColor,
-                  userA: SkillUser,
-                  userB: SkillUser,
-                  userC: SkillUser,
-                  userD: SkillUser,
-                  userE: SkillUser)
-        :GameTeam(name, color, arrayOf(userA, userB, userC, userD, userE))
+    class Quintet(name: String, color: ChatColor)
+        :GameTeam(name, color, size = 5)
     /**
      * セクステット(六人)
      */
-    class Sextet(name: String, color: ChatColor,
-                 userA: SkillUser,
-                 userB: SkillUser,
-                 userC: SkillUser,
-                 userD: SkillUser,
-                 userE: SkillUser,
-                 userF: SkillUser)
-        :GameTeam(name, color, arrayOf(userA, userB, userC, userD, userE, userF))
+    class Sextet(name: String, color: ChatColor)
+        :GameTeam(name, color, size = 6)
+
+    fun addUser(user: SkillUser) {
+        // すでに参加しているか
+        if (user in userSet) return
+
+        // 人数が上限でないか
+        if (userSet.size >= size) return
+
+        // 追加
+        userSet += user
+    }
 
     /**
      * このチーム全員のゲームモードを変更します
      * @param mode このモードに変更します
      */
     fun setGameMode(mode: GameMode) {
-        for (user in userArray) {
+        for (user in userSet) {
             user.player.gameMode = mode
         }
     }
@@ -72,7 +74,7 @@ sealed class GameTeam(private val name: String, private val color: ChatColor, va
      * @param mode このモードに変更します
      */
     fun setUserMode(mode: UserMode) {
-        for (user in userArray) {
+        for (user in userSet) {
             user.mode = mode
         }
     }
@@ -82,7 +84,7 @@ sealed class GameTeam(private val name: String, private val color: ChatColor, va
      * @param msg メッセージ
      */
     fun sendMessage(msg: String) {
-        for (user in userArray) {
+        for (user in userSet) {
             user.sendMessage(msg)
         }
     }
@@ -93,19 +95,19 @@ sealed class GameTeam(private val name: String, private val color: ChatColor, va
      * @param sub サブタイトル
      */
     fun sendTitle(title: String, sub: String) {
-        for (user in userArray) {
+        for (user in userSet) {
             user.sendTitle(title, sub)
         }
     }
 
     fun sendActionbar(msg: String) {
-        for (user in userArray) {
+        for (user in userSet) {
             user.sendActionBar(msg)
         }
     }
 
     fun playSound(sound: Sound) {
-        for (user in userArray) {
+        for (user in userSet) {
             //user.getPlayer().getLocation().playSound(sound);
             user.playSound(sound)
         }
@@ -116,7 +118,7 @@ sealed class GameTeam(private val name: String, private val color: ChatColor, va
      * @param location 指定地点
      */
     fun teleportAll(location: Location) {
-        for (user in userArray) {
+        for (user in userSet) {
             user.teleport(location)
         }
     }
@@ -127,7 +129,7 @@ sealed class GameTeam(private val name: String, private val color: ChatColor, va
      * @return 所属していたらtrue
      */
     fun belongs(target: SkillUser): Boolean {
-        for (user in userArray) {
+        for (user in userSet) {
             if (user == target) return true
         }
         return false
