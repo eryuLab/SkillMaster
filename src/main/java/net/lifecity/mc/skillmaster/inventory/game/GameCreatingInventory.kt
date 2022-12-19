@@ -13,7 +13,7 @@ class GameCreatingInventory(user: SkillUser)
         setModeSelectionItem()
 
         // マップ選択アイテム
-        setMapSelectionItem()
+        setStageSelectionItem()
 
         // 公開範囲設定アイテム
         setScopeItem()
@@ -33,13 +33,14 @@ class GameCreatingInventory(user: SkillUser)
         })
     }
 
-    fun setMapSelectionItem() {
+    fun setStageSelectionItem() {
         setItem(12, InvItem(createItemStack(
             Material.GRASS_BLOCK,
             "マップ選択"
         )) {
             isCancelled = true
-            Messenger.sendDebug(user.player, "マップ選択画面を表示")
+            user.openedInventory = GameStageSelectionInventory(user)
+            user.openedInventory?.open()
         })
     }
 
