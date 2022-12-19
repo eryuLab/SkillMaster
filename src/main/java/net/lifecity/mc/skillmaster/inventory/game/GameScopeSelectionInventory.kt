@@ -5,7 +5,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.Messenger
 import org.bukkit.Material
 
-class GameScopeSelectionInventory(user: SkillUser)
+class GameScopeSelectionInventory(user: SkillUser, private val isInfoInv: Boolean)
     :InventoryFrame(user, row = 3, "ゲーム公開範囲設定"){
 
     override fun init() {
@@ -35,7 +35,11 @@ class GameScopeSelectionInventory(user: SkillUser)
             "戻る"
         )) {
             isCancelled = true
-            user.openedInventory = GameCreatingInventory(user)
+            if (isInfoInv) {
+                user.openedInventory = GameInfoInventory(user)
+            } else {
+                user.openedInventory = GameCreatingInventory(user)
+            }
             user.openedInventory?.open()
         })
     }

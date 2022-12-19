@@ -50,7 +50,7 @@ class GameCreatingInventory(user: SkillUser)
             "公開範囲設定"
         )) {
             isCancelled = true
-            user.openedInventory = GameScopeSelectionInventory(user)
+            user.openedInventory = GameScopeSelectionInventory(user, isInfoInv = false)
             user.openedInventory?.open()
         })
     }
