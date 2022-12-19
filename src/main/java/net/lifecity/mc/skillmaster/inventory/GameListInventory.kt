@@ -22,31 +22,25 @@ class GameListInventory(user: SkillUser, val page: Int)
         setGameItems()
 
         // ページ移動のアイテムを表示
-        setItem(45, InvItem(createItemStack(
-            Material.ARROW,
-            "前のページ 現在: $page"
-        )) {
-            this.isCancelled = true
-            Messenger.sendDebug(user.player, "前のページ")
-        })
-        setItem(53, InvItem(createItemStack(
-            Material.ARROW,
-            "前のページ 現在: $page"
-        )) {
-            this.isCancelled = true
-            Messenger.sendDebug(user.player, "次のページ")
-        })
+        setPageItems()
 
-        // 参加枠ありのみ
-        // マップ絞り込み
+        // 絞り込みのアイテムを表示
+        setSearchItems()
+
         // ゲーム作成ボタン
+        setCreateGameItem()
 
         // 鉄格子
+        for (slot in 36..45) {
+            setItem(slot, ironBars)
+        }
         // 黒い仕切り
+        val blackPaneSlots = arrayOf(46, 50, 52)
+        blackPaneSlots.forEach { slot -> setItem(slot, blackPane) }
     }
 
     private fun setGameItems() {
-        val max = 36
+        val max = 35
         val start = page * max
         val end = if (gameList.list.size > start + max) start + max else gameList.list.size
         for (index in start..end) {
@@ -71,6 +65,60 @@ class GameListInventory(user: SkillUser, val page: Int)
 
             setItem(invSlot, gameItem)
         }
+    }
+
+    fun setPageItems() {
+        setItem(45, InvItem(createItemStack(
+            Material.ARROW,
+            "前のページ 現在: $page"
+        )) {
+            this.isCancelled = true
+            Messenger.sendDebug(user.player, "前のページ")
+        })
+        setItem(53, InvItem(createItemStack(
+            Material.ARROW,
+            "前のページ 現在: $page"
+        )) {
+            this.isCancelled = true
+            Messenger.sendDebug(user.player, "次のページ")
+        })
+    }
+
+    fun setSearchItems() {
+        // 参加枠ありのみ
+        setItem(47, InvItem(createItemStack(
+            Material.COMPOSTER,
+            "参加枠ありのみ"
+        )) {
+            this.isCancelled = true
+            Messenger.sendDebug(user.player, "参加枠ありのみ")
+        })
+        // ゲームモード絞り込み
+        setItem(48, InvItem(createItemStack(
+            Material.BOOK,
+            "ゲームモード絞り込み"
+        )) {
+            this.isCancelled = true
+            Messenger.sendDebug(user.player, "ゲームモード絞り込み")
+        })
+        // マップ絞り込み
+        setItem(49, InvItem(createItemStack(
+            Material.GRASS_BLOCK,
+            "マップ絞り込み"
+        )) {
+            this.isCancelled = true
+            Messenger.sendDebug(user.player, "マップ絞り込み")
+        })
+    }
+
+    fun setCreateGameItem() {
+        setItem(51, InvItem(createItemStack(
+            Material.WRITABLE_BOOK,
+            "ゲーム作成"
+        )) {
+            this.isCancelled = true
+            Messenger.sendDebug(user.player, "ゲーム作成画面を開く")
+        })
     }
 
 }
