@@ -5,11 +5,10 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.Messenger
 import org.bukkit.Material
 
-class GameListInventory(user: SkillUser, val page: Int = 0)
+class GameListInventory(user: SkillUser, private val page: Int = 0)
     :InventoryFrame(user, row = 6, "ゲーム一覧"){
 
-    val gameList = SkillMaster.INSTANCE.gameList
-    val max = 36
+    private val max = 35
 
     private val ironBars : InvItem
         get() = InvItem(createItemStack(Material.IRON_BARS)) { this.isCancelled = true }
@@ -31,7 +30,7 @@ class GameListInventory(user: SkillUser, val page: Int = 0)
         setCreateGameItem()
 
         // 鉄格子
-        for (slot in 36..45) {
+        for (slot in 36..44) {
             setItem(slot, ironBars)
         }
         // 黒い仕切り
@@ -40,7 +39,10 @@ class GameListInventory(user: SkillUser, val page: Int = 0)
     }
 
     private fun setGameItems() {
-        val max = 35
+        val gameList = SkillMaster.INSTANCE.gameList
+
+        if (gameList.list.size == 0) return
+
         val start = page * max
         val end = if (gameList.list.size > start + max) start + max else gameList.list.size
         for (index in start..end) {
