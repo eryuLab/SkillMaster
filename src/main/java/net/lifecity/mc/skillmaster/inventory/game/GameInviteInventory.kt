@@ -22,7 +22,8 @@ class GameInviteInventory(user: SkillUser)
             "参戦招待"
         )) {
             isCancelled = true
-            Messenger.sendDebug(user.player, "招きもの画面を表示")
+            user.openedInventory = GameInvitePlayerInventory(user, isWatcher = false)
+            user.openedInventory?.open()
         })
     }
 
@@ -32,7 +33,8 @@ class GameInviteInventory(user: SkillUser)
             "観戦招待"
         )) {
             isCancelled = true
-            Messenger.sendDebug(user.player, "招きもの画面を表示")
+            user.openedInventory = GameInvitePlayerInventory(user, isWatcher = true)
+            user.openedInventory?.open()
         })
     }
 }
