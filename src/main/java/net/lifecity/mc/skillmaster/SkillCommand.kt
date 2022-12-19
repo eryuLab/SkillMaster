@@ -8,6 +8,7 @@ import dev.jorel.commandapi.executors.CommandExecutor
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
 import net.lifecity.mc.skillmaster.game.games.Duel
 import net.lifecity.mc.skillmaster.game.games.Training
+import net.lifecity.mc.skillmaster.inventory.GameListInventory
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory
 import net.lifecity.mc.skillmaster.user.mode.UserMode
@@ -99,6 +100,18 @@ object SkillCommand {
                 }
 
                 user.openedInventory = WeaponInventory(user, page = 0)
+                user.openedInventory?.open()
+            })
+        )
+        .withSubcommand(CommandAPICommand("game")
+            .executesPlayer(PlayerCommandExecutor { player, args ->
+                val user = SkillMaster.INSTANCE.userList[player]
+
+                if (player.gameMode == GameMode.CREATIVE) {
+                    Messenger.sendAlert(user.player, "クリエイティブ時のメニューの挙動は補償されていません。")
+                }
+
+                user.openedInventory = GameListInventory(user)
                 user.openedInventory?.open()
             })
         )
