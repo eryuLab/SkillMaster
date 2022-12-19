@@ -50,7 +50,8 @@ class GameCreatingInventory(user: SkillUser)
             "公開範囲設定"
         )) {
             isCancelled = true
-            Messenger.sendDebug(user.player, "公開範囲設定画面を表示")
+            user.openedInventory = GameScopeSelectionInventory(user)
+            user.openedInventory?.open()
         })
     }
 
