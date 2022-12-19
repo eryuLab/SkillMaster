@@ -5,7 +5,7 @@ import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.Messenger
 import org.bukkit.Material
 
-class GameListInventory(user: SkillUser, val page: Int)
+class GameListInventory(user: SkillUser, val page: Int = 0)
     :InventoryFrame(user, row = 6, "ゲーム一覧"){
 
     val gameList = SkillMaster.INSTANCE.gameList
