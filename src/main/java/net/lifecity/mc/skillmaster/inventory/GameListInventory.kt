@@ -3,6 +3,7 @@ package net.lifecity.mc.skillmaster.inventory
 import net.lifecity.mc.skillmaster.SkillMaster
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.Messenger
+import org.bukkit.GameMode
 import org.bukkit.Material
 
 class GameListInventory(user: SkillUser, private val page: Int = 0)
@@ -96,14 +97,17 @@ class GameListInventory(user: SkillUser, private val page: Int = 0)
             this.isCancelled = true
             Messenger.sendDebug(user.player, "参加枠ありのみ")
         })
+
         // ゲームモード絞り込み
         setItem(48, InvItem(createItemStack(
             Material.BOOK,
             "ゲームモード絞り込み"
         )) {
             this.isCancelled = true
-            Messenger.sendDebug(user.player, "ゲームモード絞り込み")
+            user.openedInventory = GameModeSelectionInventory(user, fromCreatingInv = false)
+            user.openedInventory?.open()
         })
+
         // マップ絞り込み
         setItem(49, InvItem(createItemStack(
             Material.GRASS_BLOCK,

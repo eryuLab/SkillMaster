@@ -9,10 +9,10 @@ class GameCreatingInventory(user: SkillUser)
 
     override fun init() {
         // モード選択アイテム
-        setSelectModeItem()
+        setModeSelectionItem()
 
         // マップ選択アイテム
-        setSelectMapItem()
+        setMapSelectionItem()
 
         // 公開範囲設定アイテム
         setScopeItem()
@@ -21,17 +21,18 @@ class GameCreatingInventory(user: SkillUser)
         setCreatingGameItem()
     }
 
-    fun setSelectModeItem() {
+    fun setModeSelectionItem() {
         setItem(10, InvItem(createItemStack(
             Material.BOOK,
             "ゲームモード変更"
         )) {
             isCancelled = true
-            Messenger.sendDebug(user.player, "ゲームモード選択画面を表示")
+            user.openedInventory = GameModeSelectionInventory(user, fromCreatingInv = true)
+            user.openedInventory?.open()
         })
     }
 
-    fun setSelectMapItem() {
+    fun setMapSelectionItem() {
         setItem(12, InvItem(createItemStack(
             Material.GRASS_BLOCK,
             "マップ選択"
