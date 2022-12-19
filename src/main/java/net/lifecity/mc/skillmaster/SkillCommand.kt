@@ -8,7 +8,7 @@ import dev.jorel.commandapi.executors.CommandExecutor
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
 import net.lifecity.mc.skillmaster.game.games.Duel
 import net.lifecity.mc.skillmaster.game.games.Training
-import net.lifecity.mc.skillmaster.inventory.GameListInventory
+import net.lifecity.mc.skillmaster.inventory.game.GameListInventory
 import net.lifecity.mc.skillmaster.inventory.SkillInventory
 import net.lifecity.mc.skillmaster.inventory.WeaponInventory
 import net.lifecity.mc.skillmaster.user.mode.UserMode

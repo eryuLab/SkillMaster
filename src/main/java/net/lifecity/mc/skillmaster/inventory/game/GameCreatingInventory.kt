@@ -1,5 +1,6 @@
-package net.lifecity.mc.skillmaster.inventory
+package net.lifecity.mc.skillmaster.inventory.game
 
+import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.Messenger
 import org.bukkit.Material

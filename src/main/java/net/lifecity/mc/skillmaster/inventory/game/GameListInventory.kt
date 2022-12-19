@@ -1,13 +1,13 @@
-package net.lifecity.mc.skillmaster.inventory
+package net.lifecity.mc.skillmaster.inventory.game
 
 import net.lifecity.mc.skillmaster.SkillMaster
+import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.Messenger
-import org.bukkit.GameMode
 import org.bukkit.Material
 
 class GameListInventory(user: SkillUser, private val page: Int = 0)
-    :InventoryFrame(user, row = 6, "ゲーム一覧"){
+    : InventoryFrame(user, row = 6, "ゲーム一覧"){
 
     private val max = 35
 

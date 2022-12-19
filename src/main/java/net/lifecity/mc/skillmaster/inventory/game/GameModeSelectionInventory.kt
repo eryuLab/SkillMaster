@@ -1,10 +1,11 @@
-package net.lifecity.mc.skillmaster.inventory
+package net.lifecity.mc.skillmaster.inventory.game
 
+import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.user.SkillUser
 import org.bukkit.Material
 
 class GameModeSelectionInventory(user: SkillUser, val fromCreatingInv: Boolean)
-    :InventoryFrame(user, row = 3, "ゲームモード選択"){
+    : InventoryFrame(user, row = 3, "ゲームモード選択"){
 
     override fun init() {
         // ゲームモードアイテム(最大8つ)

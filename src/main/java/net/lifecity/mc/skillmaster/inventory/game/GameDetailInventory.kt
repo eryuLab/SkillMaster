@@ -1,13 +1,14 @@
-package net.lifecity.mc.skillmaster.inventory
+package net.lifecity.mc.skillmaster.inventory.game
 
 import net.lifecity.mc.skillmaster.game.Game
 import net.lifecity.mc.skillmaster.game.GameState
+import net.lifecity.mc.skillmaster.inventory.InventoryFrame
 import net.lifecity.mc.skillmaster.user.SkillUser
 import net.lifecity.mc.skillmaster.utils.Messenger
 import org.bukkit.Material
 
 class GameDetailInventory(user: SkillUser, private val game: Game)
-    :InventoryFrame(user, row = 3, "ゲーム詳細"){
+    : InventoryFrame(user, row = 3, "ゲーム詳細"){
     override fun init() {
         // ゲームの詳細情報
         setDetailItem()
