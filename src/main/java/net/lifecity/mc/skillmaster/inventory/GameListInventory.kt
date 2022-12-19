@@ -62,7 +62,8 @@ class GameListInventory(user: SkillUser, private val page: Int = 0)
                 )
             ) {
                 this.isCancelled = true
-                Messenger.sendDebug(user.player, "ゲームGUIを開く")
+                user.openedInventory = GameDetailInventory(user, game)
+                user.openedInventory?.open()
             }
 
             setItem(invSlot, gameItem)
